@@ -35,8 +35,11 @@ jobs:
       - name: 📦 Install dependencies (cached)
         run: npm ci
 
+      - name: 💅 Run format
+        run: npm run lint
+
       - name: 🔍 Run linter
-        run: npm run lint:fix
+        run: npm run lint
 
   build:
     runs-on: ubuntu-latest
