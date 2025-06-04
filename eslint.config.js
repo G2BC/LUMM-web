@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  { ignores: ["dist", "node_modules"] },
   {
     extends: [
       js.configs.recommended,
@@ -30,6 +30,19 @@ export default tseslint.config(
       ],
       "prefer-const": "error",
       "no-console": "error",
+      "prettier/prettier": [
+        "error",
+        {
+          semi: true,
+          singleQuote: false,
+          tabWidth: 2,
+          trailingComma: "es5",
+          printWidth: 100,
+          bracketSpacing: true,
+          arrowParens: "always",
+          endOfLine: "lf",
+        },
+      ],
     },
   }
 );
