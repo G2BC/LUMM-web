@@ -1,11 +1,15 @@
-import type React from "react";
+import { Suspense } from "react";
 import { Header } from "./header";
+import { Outlet } from "react-router";
+import { FullScreenLoader } from "./full-screen-loader";
 
-export function BaseLayout({ children }: { children: React.ReactNode }) {
+export function BaseLayout() {
   return (
-    <main>
-      <Header />
-      <div>{children}</div>
-    </main>
+    <Suspense fallback={<FullScreenLoader />}>
+      <main>
+        <Header />
+        <Outlet />
+      </main>
+    </Suspense>
   );
 }
