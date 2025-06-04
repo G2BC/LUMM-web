@@ -30,8 +30,8 @@ export function HeaderNav() {
           to={path}
           key={`header-nav-link-${index}`}
           className={clsx(
-            "h-full flex items-center border-b-solid border-b-[4px] border-b-transparent",
-            pathname === path && "!border-b-[#00C000]",
+            "h-full flex items-center border-b-solid border-b-[4px] border-b-transparent transition-all transition-colors duration-500",
+            pathname === path && "!border-b-[#00C000]"
           )}
         >
           <span className="text-white font-bold leading-0">{label}</span>
