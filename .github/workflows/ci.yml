@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: 💅 Run format
-        run: npm run lint
+        run: npm run format
 
       - name: 🔍 Run linter
         run: npm run lint
