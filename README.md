@@ -25,12 +25,12 @@ npm install
 npm run dev
 ```
 
-# ⚠️ Mantenha as Regras de Lint e Formatação
+## ⚠️ Mantenha as Regras de Lint e Formatação
 
-Para garantir a consistência e a qualidade do código neste projeto
+Para garantir a consistência e a qualidade do código neste projeto:
 
-- **Antes de mesclar um PR**, certifique-se de que seu código passou nas ferramentas de lint (`eslint`) na action de CI.
+**Antes de mesclar uma PR**, certifique-se de que seu código passou nas ferramentas de lint (`eslint`) na action de CI.
 
-## 🛠️ Dicas
+### 🛠️ Dicas
 
-- Rode `npm run lint` e `npm run format` antes de commitar.
+Rode `npm run lint` e `npm run format` antes de commitar.
