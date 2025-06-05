@@ -27,7 +27,7 @@ npm run dev
 
 ### ⚠️ Mantenha as regras de Lint e Formatação
 
-Para garantir a consistência e a qualidade do código neste projeto, **antes de mesclar uma PR**, certifique-se de que seu código passou nas ferramentas de lint (`eslint`) durante a execução da action de CI.
+Para garantir a consistência e a qualidade do código neste projeto, **antes de mesclar uma PR**, certifique-se de que seu código passou nas ferramentas de lint e formatação (`eslint` e `prettier`) durante a execução da action de CI.
 
 ### 🛠️ Dicas
 
