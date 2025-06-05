@@ -25,7 +25,7 @@ npm install
 npm run dev
 ```
 
-## ⚠️ Mantenha as Regras de Lint e Formatação
+### ⚠️ Mantenha as Regras de Lint e Formatação
 
 Para garantir a consistência e a qualidade do código neste projeto:
 
