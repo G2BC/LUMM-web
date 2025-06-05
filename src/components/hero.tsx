@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <div className="w-full bg-[#010103] h-[90svh] md:max-h-[800px] lg:max-h-[700px]">
       <section className="container mx-auto w-full h-full flex  flex-col lg:flex-row justify-between items-center px-6 overflow-hidden">
-        <div className="flex-1 w-full flex justify-center flex-col px-2 pt-12">
+        <div className="flex-1 w-full flex justify-center flex-col px-2 lg:pt-0 pt-12">
           <h1 className="text-white text-[32px] lg:text-[48px] font-black">
             Bem-vindo <br />
             ao{" "}
