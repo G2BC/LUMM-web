@@ -19,7 +19,7 @@ cd LUMM-web
 npm install
 ```
 
-### 5️⃣ Rodar em desenvolvimento
+### 3️⃣ Rodar em desenvolvimento
 
 ```bash
 npm run dev
