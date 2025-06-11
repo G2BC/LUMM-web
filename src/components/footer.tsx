@@ -22,7 +22,7 @@ export function Footer() {
 
   return (
     <footer className="flex flex-col w-full mt-auto">
-      <div className="flex-1 px-4  bg-[#040604] flex items-center min-h-[200px]">
+      <div className="flex-1 px-4  bg-[#0A100B] flex items-center min-h-[200px]">
         <div className="py-6 container mx-auto px-2 flex flex-row-reverse md:flex-row md:items-center justify-end md:justify-between">
           <div className="hidden md:flex">
             <LummLogo />
@@ -52,7 +52,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="w-full px-4 h-[45px] bg-[#070B07] flex items-center">
+      <div className="w-full px-4 h-[45px] bg-[#0D140E] flex items-center">
         <span className="container mx-auto text-white font-medium text-sm">
           Copyright © {new Date().getFullYear()} Luminescent Mushrooms
         </span>
