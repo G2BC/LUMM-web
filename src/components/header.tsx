@@ -1,10 +1,10 @@
-import { Menu } from "lucide-react";
 import { LummLogo } from "./logo";
 import { HeaderNav } from "./header-nav";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router";
 import LanguageSwitcher from "./languege-switcher";
 import { useTranslation } from "react-i18next";
+import { HeaderMenuNav } from "./header-menu-nav";
 
 export function Header() {
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ export function Header() {
           </Button>
           <LanguageSwitcher />
         </div>
-        <div className="lg:hidden">
-          <Menu className="text-[#00C000] w-8 h-8 cursor-pointer" />
+        <div className="lg:hidden flex items-center">
+          <HeaderMenuNav />
         </div>
       </div>
     </header>

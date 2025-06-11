@@ -42,7 +42,7 @@ export default function LanguageSwitcher() {
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full p-0 h-10 w-10 overflow-hidden"
+          className="rounded-full p-0 h-8 w-8 overflow-hidden"
         >
           <Button
             variant="ghost"
