@@ -1,0 +1,17 @@
+{
+    "translation": {
+        "home": {
+            "hero": {
+                "title": {
+                    "first_block": "Welcome",
+                    "second_block": "to"
+                },
+                "description": {
+                    "first_block": "A project dedicated to the world of bioluminescent",
+                    "second_block": "mushrooms"
+                },
+                "cta": "Explore"
+            }
+        }
+    }
+}

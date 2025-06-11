@@ -1,0 +1,17 @@
+{
+    "translation": {
+        "home": {
+            "hero": {
+                "title": {
+                    "first_block": "Bem-vindo",
+                    "second_block": "ao"
+                },
+                "description": {
+                    "first_block": "Um projeto dedicado ao universo dos cogumelos",
+                    "second_block": "bioluminescentes"
+                },
+                "cta": "Explorar"
+            }
+        }
+    }
+}

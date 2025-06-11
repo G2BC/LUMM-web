@@ -3,6 +3,7 @@ import { LummLogo } from "./logo";
 import { HeaderNav } from "./header-nav";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router";
+import LanguageSwitcher from "./languege-switcher";
 
 export function Header() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ export function Header() {
           <Button onClick={() => navigate("/cadastro")} className=" t">
             Cadastre-se
           </Button>
+          <LanguageSwitcher />
         </div>
         <div className="lg:hidden">
           <Menu className="text-[#00C000] w-8 h-8 cursor-pointer" />
