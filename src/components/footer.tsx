@@ -1,24 +1,26 @@
 import { Link, useNavigate } from "react-router";
 import { LummLogo } from "./logo";
 import { Button } from "./ui/button";
+import { useTranslation } from "react-i18next";
 
 const links = [
   {
     path: "/sobre",
-    label: "Sobre o projeto",
+    label: "footer.links.about",
   },
   {
     path: "/colaboradores",
-    label: "Colaboradores",
+    label: "footer.links.contributors",
   },
   {
     path: "/contato",
-    label: "Entre em contato",
+    label: "footer.links.contact",
   },
 ];
 
 export function Footer() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <footer className="flex flex-col w-full mt-auto">
@@ -29,13 +31,15 @@ export function Footer() {
           </div>
           <div className="flex md:items-center gap-6 shrink flex-col-reverse md:flex-row">
             <div className="md:text-end text-white">
-              <h2 className="font-bold mb-2">Junte-se a nós:</h2>
+              <h2 className="font-bold mb-2">
+                {t("footer.join_us_section.title")}
+              </h2>
               <h3 className="font-normal mb-5">
-                Explore conosco o universo
-                <br /> dos cogumelos bioluminescentes
+                {t("footer.join_us_section.subtitle")}
+                <br /> {t("footer.join_us_section.subtitle_end")}
               </h3>
               <Button onClick={() => navigate("/cadastro")} className="h-10">
-                Cadastre-se
+                {t("footer.join_us_section.cta")}
               </Button>
             </div>
             <div className="h-full border-l w-[1px] border-l-white hidden md:flex min-h-[140px]" />
@@ -45,7 +49,7 @@ export function Footer() {
                   className=" text-white font-semibold hover:underline"
                   to={path}
                 >
-                  {label}
+                  {t(label)}
                 </Link>
               ))}
             </div>

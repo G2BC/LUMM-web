@@ -10,6 +10,19 @@
                 "register": "Cadastre-se"
             }
         },
+        "footer": {
+            "join_us_section": {
+                "title": "Junte-se a nós:",
+                "subtitle": "Explore conosco o universo",
+                "subtitle_end": "dos cogumelos bioluminescentes",
+                "cta": "Cadastre-se"
+            },
+            "links": {
+                "about": "Sobre o projeto",
+                "contributors": "Colaboradores",
+                "contact": "Entre em contato"
+            }
+        },
         "home": {
             "hero": {
                 "title": {

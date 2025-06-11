@@ -10,6 +10,19 @@
                 "register": "Sign up"
             }
         },
+        "footer": {
+            "join_us_section": {
+                "title": "Join us:",
+                "subtitle": "Explore with us the universe",
+                "subtitle_end": "of bioluminescent mushrooms",
+                "cta": "Sign up"
+            },
+            "links": {
+                "about": "About the project",
+                "contributors": "Contributors",
+                "contact": "Contact us"
+            }
+        },
         "home": {
             "hero": {
                 "title": {

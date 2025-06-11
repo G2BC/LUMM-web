@@ -2,8 +2,10 @@ import heroDesktop from "@/assets/hero_desktop.png";
 import heroMobile from "@/assets/hero_mobile.png";
 import { Button } from "./ui/button";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 export function Hero() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   return (
@@ -22,7 +24,10 @@ export function Hero() {
             <br className="lg:hidden" />{" "}
             {t("home.hero.description.second_block")}
           </h2>
-          <Button className="h-12 lg:max-w-[220px] max-w-[145px] mt-8">
+          <Button
+            onClick={() => navigate("/explorar")}
+            className="h-12 lg:max-w-[220px] max-w-[145px] mt-8"
+          >
             {t("home.hero.cta")}
           </Button>
         </div>
