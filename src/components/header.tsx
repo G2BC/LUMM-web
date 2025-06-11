@@ -8,7 +8,7 @@ export function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className="h-20 w-full bg-[#0D140E] flex items-center">
+    <header className="h-20 w-full bg-[#040604] flex items-center min-h-[80px]">
       <div className="container mx-auto px-4 flex items-center justify-between h-full">
         <div className="flex h-full items-center gap-16">
           <Link to="/">

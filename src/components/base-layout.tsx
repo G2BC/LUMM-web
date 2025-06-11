@@ -2,13 +2,17 @@ import { Suspense } from "react";
 import { Header } from "./header";
 import { Outlet } from "react-router";
 import { FullScreenLoader } from "./full-screen-loader";
+import { Footer } from "./footer";
 
 export function BaseLayout() {
   return (
     <Suspense fallback={<FullScreenLoader />}>
-      <main>
+      <main className="flex flex-col h-full min-h-screen overflow-x-hidden">
         <Header />
-        <Outlet />
+        <div className="flex-1">
+          <Outlet />
+        </div>
+        <Footer />
       </main>
     </Suspense>
   );

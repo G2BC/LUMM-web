@@ -4,8 +4,8 @@ import { Button } from "./ui/button";
 
 export function Hero() {
   return (
-    <div className="w-full bg-[#010103] h-[90svh] md:max-h-[800px] lg:max-h-[700px]">
-      <section className="container mx-auto w-full h-full flex  flex-col lg:flex-row justify-between items-center px-6 overflow-hidden">
+    <div className="w-full bg-[#010103] h-[100svh] max-h-[800px] lg:max-h-[900px]">
+      <section className="container mx-auto w-full h-full flex  flex-col lg:flex-row justify-between items-center px-4 overflow-hidden">
         <div className="flex-1 w-full flex justify-center flex-col px-2 lg:pt-0 pt-12">
           <h1 className="text-white text-[32px] lg:text-[48px] font-black">
             Bem-vindo <br />
@@ -15,8 +15,8 @@ export function Hero() {
             </span>
           </h1>
           <h2 className="text-white text-[22px] lg:text-[28px] font-bold mt-4">
-            Um projeto dedicado ao universo dos cogumelos <br />{" "}
-            bioluminescentes
+            Um projeto dedicado ao universo dos cogumelos{" "}
+            <br className="lg:hidden" /> bioluminescentes
           </h2>
           <Button className="h-12 lg:max-w-[220px] max-w-[145px] mt-8">
             Explorar
