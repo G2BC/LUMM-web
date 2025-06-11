@@ -4,9 +4,11 @@ import { HeaderNav } from "./header-nav";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router";
 import LanguageSwitcher from "./languege-switcher";
+import { useTranslation } from "react-i18next";
 
 export function Header() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <header className="h-20 w-full bg-[#0A100B] flex items-center min-h-[85px]">
@@ -19,10 +21,10 @@ export function Header() {
         </div>
         <div className="hidden lg:flex items-center gap-6">
           <Button onClick={() => navigate("/login")} variant="outline">
-            Entrar
+            {t("header.ctas.login")}
           </Button>
           <Button onClick={() => navigate("/cadastro")} className=" t">
-            Cadastre-se
+            {t("header.ctas.register")}
           </Button>
           <LanguageSwitcher />
         </div>

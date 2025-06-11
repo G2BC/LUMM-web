@@ -1,5 +1,15 @@
 {
     "translation": {
+        "header": {
+            "home": "Início",
+            "explore": "Explorar",
+            "about": "Sobre",
+            "publications": "Publicações",
+            "ctas": {
+                "login": "Entrar",
+                "register": "Cadastre-se"
+            }
+        },
         "home": {
             "hero": {
                 "title": {
