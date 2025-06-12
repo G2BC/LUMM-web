@@ -9,7 +9,7 @@ export function Hero() {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full bg-[#010103] h-[100svh] max-h-[800px] lg:max-h-[900px]">
+    <div className="w-full bg-[#010103] h-[100vh] max-h-[800px] lg:max-h-[900px]">
       <section className="container mx-auto w-full h-full flex  flex-col lg:flex-row justify-between items-center px-4 overflow-hidden">
         <div className="flex-1 w-full flex justify-center flex-col px-2 lg:pt-0 pt-12">
           <h1 className="text-white text-[32px] lg:text-[48px] font-black">
