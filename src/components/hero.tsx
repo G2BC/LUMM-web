@@ -10,7 +10,7 @@ export function Hero() {
 
   return (
     <div className="w-full bg-[#030003] h-[100vh] max-h-[800px] lg:max-h-[900px]">
-      <section className="container mx-auto w-full h-full flex  flex-col lg:flex-row justify-between items-center px-4 overflow-hidden">
+      <section className="container mx-auto w-full h-full flex  flex-col lg:flex-row justify-between items-center px-4 lg:px-0 overflow-hidden">
         <div className="flex-1 w-full flex justify-center flex-col px-2 lg:pt-0 pt-12">
           <h1 className="text-white text-[32px] lg:text-[48px] font-black">
             {t("home.hero.title.first_block")} <br />
