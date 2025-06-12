@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import LanguageSwitcher from "./languege-switcher";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -30,10 +30,7 @@ export function HeaderMenuNav() {
           <Menu className="text-[#00C000] min-w-8 w-8 min-h-8 h-8 cursor-pointer" />
         </Button>
       </SheetTrigger>
-      <SheetContent
-        closeButtonClassName="text-primary"
-        className="bg-[#0A100B] border-transparent"
-      >
+      <SheetContent closeButtonClassName="text-primary" className="bg-[#0A100B] border-transparent">
         <SheetHeader>
           <SheetTitle>
             <LanguageSwitcher />

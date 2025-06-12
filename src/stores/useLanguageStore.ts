@@ -7,7 +7,7 @@ type Language = "en" | "pt";
 
 interface LanguageStore {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (_lang: Language) => void;
 }
 
 export const useLanguageStore = create<LanguageStore>()(

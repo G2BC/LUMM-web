@@ -43,11 +43,7 @@ export function HeaderNav({ mobile = false }: { mobile?: boolean }) {
             mobile && "max-h-[40px]"
           )}
         >
-          <span
-            className={clsx("text-white font-bold ", !mobile && "leading-0")}
-          >
-            {t(label)}
-          </span>
+          <span className={clsx("text-white font-bold ", !mobile && "leading-0")}>{t(label)}</span>
         </Link>
       ))}
     </div>

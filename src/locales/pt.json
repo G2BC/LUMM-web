@@ -1,40 +1,40 @@
 {
-    "translation": {
-        "header": {
-            "home": "Início",
-            "explore": "Explorar",
-            "about": "Sobre",
-            "publications": "Publicações",
-            "ctas": {
-                "login": "Entrar",
-                "register": "Cadastre-se"
-            }
+  "translation": {
+    "header": {
+      "home": "Início",
+      "explore": "Explorar",
+      "about": "Sobre",
+      "publications": "Publicações",
+      "ctas": {
+        "login": "Entrar",
+        "register": "Cadastre-se"
+      }
+    },
+    "footer": {
+      "join_us_section": {
+        "title": "Junte-se a nós:",
+        "subtitle": "Explore conosco o universo",
+        "subtitle_end": "dos cogumelos bioluminescentes",
+        "cta": "Cadastre-se"
+      },
+      "links": {
+        "about": "Sobre o projeto",
+        "contributors": "Colaboradores",
+        "contact": "Entre em contato"
+      }
+    },
+    "home": {
+      "hero": {
+        "title": {
+          "first_block": "Bem-vindo",
+          "second_block": "ao"
         },
-        "footer": {
-            "join_us_section": {
-                "title": "Junte-se a nós:",
-                "subtitle": "Explore conosco o universo",
-                "subtitle_end": "dos cogumelos bioluminescentes",
-                "cta": "Cadastre-se"
-            },
-            "links": {
-                "about": "Sobre o projeto",
-                "contributors": "Colaboradores",
-                "contact": "Entre em contato"
-            }
+        "description": {
+          "first_block": "Um projeto dedicado ao universo dos cogumelos",
+          "second_block": "bioluminescentes"
         },
-        "home": {
-            "hero": {
-                "title": {
-                    "first_block": "Bem-vindo",
-                    "second_block": "ao"
-                },
-                "description": {
-                    "first_block": "Um projeto dedicado ao universo dos cogumelos",
-                    "second_block": "bioluminescentes"
-                },
-                "cta": "Explorar"
-            }
-        }
+        "cta": "Explorar"
+      }
     }
+  }
 }

@@ -31,9 +31,7 @@ export function Footer() {
           </div>
           <div className="flex md:items-center gap-6 shrink flex-col-reverse md:flex-row">
             <div className="md:text-end text-white">
-              <h2 className="font-bold mb-2">
-                {t("footer.join_us_section.title")}
-              </h2>
+              <h2 className="font-bold mb-2">{t("footer.join_us_section.title")}</h2>
               <h3 className="font-normal mb-5">
                 {t("footer.join_us_section.subtitle")}
                 <br /> {t("footer.join_us_section.subtitle_end")}
@@ -45,10 +43,7 @@ export function Footer() {
             <div className="h-full border-l w-[1px] border-l-white hidden md:flex min-h-[140px]" />
             <div className="flex flex-col gap-2">
               {links.map(({ label, path }) => (
-                <Link
-                  className=" text-white font-semibold hover:underline"
-                  to={path}
-                >
+                <Link className=" text-white font-semibold hover:underline" to={path}>
                   {t(label)}
                 </Link>
               ))}

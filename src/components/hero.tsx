@@ -20,8 +20,7 @@ export function Hero() {
             </span>
           </h1>
           <h2 className="text-white text-[22px] lg:text-[28px] font-bold mt-4">
-            {t("home.hero.description.first_block")}{" "}
-            <br className="lg:hidden" />{" "}
+            {t("home.hero.description.first_block")} <br className="lg:hidden" />{" "}
             {t("home.hero.description.second_block")}
           </h2>
           <Button
@@ -32,12 +31,7 @@ export function Hero() {
           </Button>
         </div>
         <div className="flex-1 self-end select-none">
-          <img
-            draggable="false"
-            src={heroDesktop}
-            alt="LUMM Banner"
-            className="hidden md:block"
-          />
+          <img draggable="false" src={heroDesktop} alt="LUMM Banner" className="hidden md:block" />
           <img src={heroMobile} alt="LUMM Banner" className="md:hidden" />
         </div>
       </section>

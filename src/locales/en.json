@@ -1,40 +1,40 @@
 {
-    "translation": {
-        "header": {
-            "home": "Home",
-            "explore": "Explore",
-            "about": "About",
-            "publications": "Publications",
-            "ctas": {
-                "login": "Login",
-                "register": "Sign up"
-            }
+  "translation": {
+    "header": {
+      "home": "Home",
+      "explore": "Explore",
+      "about": "About",
+      "publications": "Publications",
+      "ctas": {
+        "login": "Login",
+        "register": "Sign up"
+      }
+    },
+    "footer": {
+      "join_us_section": {
+        "title": "Join us:",
+        "subtitle": "Explore with us the universe",
+        "subtitle_end": "of bioluminescent mushrooms",
+        "cta": "Sign up"
+      },
+      "links": {
+        "about": "About the project",
+        "contributors": "Contributors",
+        "contact": "Contact us"
+      }
+    },
+    "home": {
+      "hero": {
+        "title": {
+          "first_block": "Welcome",
+          "second_block": "to"
         },
-        "footer": {
-            "join_us_section": {
-                "title": "Join us:",
-                "subtitle": "Explore with us the universe",
-                "subtitle_end": "of bioluminescent mushrooms",
-                "cta": "Sign up"
-            },
-            "links": {
-                "about": "About the project",
-                "contributors": "Contributors",
-                "contact": "Contact us"
-            }
+        "description": {
+          "first_block": "A project dedicated to the world of bioluminescent",
+          "second_block": "mushrooms"
         },
-        "home": {
-            "hero": {
-                "title": {
-                    "first_block": "Welcome",
-                    "second_block": "to"
-                },
-                "description": {
-                    "first_block": "A project dedicated to the world of bioluminescent",
-                    "second_block": "mushrooms"
-                },
-                "cta": "Explore"
-            }
-        }
+        "cta": "Explore"
+      }
     }
+  }
 }

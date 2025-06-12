@@ -3,16 +3,13 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import prettierPlugin from "eslint-plugin-prettier";
+import reactPlugin from "eslint-plugin-react";
 
 export default tseslint.config(
-  { ignores: ["dist", "node_modules", "components/ui"] },
+  { ignores: ["dist", "node_modules", "src/components/ui"] },
   {
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-      eslintPluginPrettierRecommended,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: 2020,
@@ -21,28 +18,20 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      prettier: prettierPlugin,
+      react: reactPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
-        { allowConstantExport: true },
-      ],
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "prefer-const": "error",
       "no-console": "error",
-      "prettier/prettier": [
-        "error",
-        {
-          semi: true,
-          singleQuote: false,
-          tabWidth: 2,
-          trailingComma: "es5",
-          printWidth: 100,
-          bracketSpacing: true,
-          arrowParens: "always",
-          endOfLine: "lf",
-        },
-      ],
+      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "no-debugger": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+      "react/jsx-boolean-value": ["warn", "never"],
+      "react/self-closing-comp": "warn",
+      "react/jsx-pascal-case": "warn",
     },
   }
 );

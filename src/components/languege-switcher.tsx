@@ -33,17 +33,12 @@ const languages = [
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguageStore();
 
-  const currentLanguage =
-    languages.find((lang) => lang.code === language) || languages[0];
+  const currentLanguage = languages.find((lang) => lang.code === language) || languages[0];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full p-0 h-8 w-8 overflow-hidden"
-        >
+        <Button variant="ghost" size="icon" className="rounded-full p-0 h-8 w-8 overflow-hidden">
           <Button
             variant="ghost"
             size="icon"
@@ -80,12 +75,7 @@ export default function LanguageSwitcher() {
               </div>
               <span className="font-medium">{l.name}</span>
             </div>
-            <Check
-              className={cn(
-                "h-4 w-4",
-                l.code === language ? "opacity-100" : "opacity-0"
-              )}
-            />
+            <Check className={cn("h-4 w-4", l.code === language ? "opacity-100" : "opacity-0")} />
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
