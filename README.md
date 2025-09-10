@@ -1,4 +1,5 @@
 ![Licença MIT](https://img.shields.io/badge/Licença-MIT-yellow.svg)
+
 # LUMM-web
 
 ## Requisitos
@@ -32,7 +33,7 @@ Para garantir a consistência e a qualidade do código neste projeto, **antes de
 
 ### 🛠️ Dicas
 
-Rode `npm run lint` e `npm run format` antes de commitar.
+Rode `npm run lint:fix` e `npm run prettier:format` antes de commitar.
 
 ## 📄 Licença
 
