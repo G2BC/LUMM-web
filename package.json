@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint . --fix",
+    "lint:fix": "eslint . --fix",
+    "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --write",
+    "prettier:check": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --check",
     "dev-preview": "echo $run_number.lumm.surge.sh > dist/CNAME && surge dist",
     "prepare": "husky install"
   },
