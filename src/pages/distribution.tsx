@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import distributionEn from "@/assets/distribution_en.webp";
 import distributionPt from "@/assets/distribution_pt.webp";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 export default function DistributionPage() {
   const [loaded, setLoaded] = useState(false);
@@ -18,8 +19,9 @@ export default function DistributionPage() {
       <div className="py-10 overflow-x-auto mb-10 scrollbar-hide">
         <div className="min-w-max md:min-w-0">
           {!loaded && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-              <div className="h-8 w-8 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center bg-[#0A100B]">
+              <Loader2 className="w-8 h-8 text-[#00C000] animate-spin mb-4" />
+              <p className="text-[#00C000] font-semibold">Carregando...</p>
             </div>
           )}
 
