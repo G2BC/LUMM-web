@@ -33,11 +33,11 @@ export function HeaderMenuNav() {
       <SheetContent closeButtonClassName="text-primary" className="bg-[#0A100B] border-transparent">
         <SheetHeader>
           <SheetTitle>
-            <LanguageSwitcher />
+            <LanguageSwitcher onClick={handleClose} />
           </SheetTitle>
         </SheetHeader>
         <div className="flex-1 flex gap-6 px-4">
-          <HeaderNav mobile />
+          <HeaderNav mobile onClick={handleClose} />
         </div>
         <SheetFooter>
           <Button

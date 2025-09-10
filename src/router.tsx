@@ -8,12 +8,14 @@ const AboutPage = React.lazy(() => import("./pages/about"));
 const PublicationsPage = React.lazy(() => import("./pages/publications"));
 const LoginPage = React.lazy(() => import("./pages/login"));
 const RegisterPage = React.lazy(() => import("./pages/register"));
+const DistributionPage = React.lazy(() => import("./pages/distribution"));
 
 function Router() {
   return (
     <Routes>
       <Route element={<BaseLayout />}>
         <Route index path="/" element={<HomePage />} />
+        <Route path="/distribuicao" element={<DistributionPage />} />
         <Route path="/explorar" element={<ExplorePage />} />
         <Route path="/sobre" element={<AboutPage />} />
         <Route path="/publicacoes" element={<PublicationsPage />} />

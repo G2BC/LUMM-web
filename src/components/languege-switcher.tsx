@@ -30,7 +30,7 @@ const languages = [
   },
 ];
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({ onClick = () => {} }: { onClick?: VoidFunction }) {
   const { language, setLanguage } = useLanguageStore();
 
   const currentLanguage = languages.find((lang) => lang.code === language) || languages[0];
@@ -60,7 +60,10 @@ export default function LanguageSwitcher() {
         {languages.map((l) => (
           <DropdownMenuItem
             key={l.code}
-            onClick={() => setLanguage(l.code as "pt" | "en")}
+            onClick={() => {
+              setLanguage(l.code as "pt" | "en");
+              onClick();
+            }}
             className="flex items-center justify-between cursor-pointer py-3"
           >
             <div className="flex items-center gap-3">

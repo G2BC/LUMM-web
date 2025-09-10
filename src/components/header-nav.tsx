@@ -8,6 +8,10 @@ const links = [
     label: "header.home",
   },
   {
+    path: "/distribuicao",
+    label: "header.distribution",
+  },
+  {
     path: "/explorar",
     label: "header.explore",
   },
@@ -21,7 +25,13 @@ const links = [
   },
 ];
 
-export function HeaderNav({ mobile = false }: { mobile?: boolean }) {
+export function HeaderNav({
+  mobile = false,
+  onClick = () => {},
+}: {
+  mobile?: boolean;
+  onClick?: VoidFunction;
+}) {
   const { pathname } = useLocation();
   const { t } = useTranslation();
 
@@ -42,6 +52,7 @@ export function HeaderNav({ mobile = false }: { mobile?: boolean }) {
             pathname === path && "!border-b-[#00C000]",
             mobile && "max-h-[40px]"
           )}
+          onClick={onClick}
         >
           <span className={clsx("text-white font-bold ", !mobile && "leading-0")}>{t(label)}</span>
         </Link>

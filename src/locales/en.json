@@ -2,6 +2,7 @@
   "translation": {
     "header": {
       "home": "Home",
+      "distribution": "Distribution",
       "explore": "Explore",
       "about": "About",
       "publications": "Publications",
@@ -35,6 +36,9 @@
         },
         "cta": "Explore"
       }
+    },
+    "distribution": {
+      "title": "Distribution of species (2022)"
     }
   }
 }
