@@ -12,7 +12,7 @@
     "format": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --write",
     "prettier:check": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --check",
     "dev-preview": "echo $run_number.lumm.surge.sh > dist/CNAME && surge dist",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
