@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --fix",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --write",
+    "prettier:format": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --write",
     "prettier:check": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --check",
     "dev-preview": "echo $run_number.lumm.surge.sh > dist/CNAME && surge dist",
     "prepare": "husky"
@@ -55,8 +55,8 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx,jsx,json,md}": [
-      "eslint . --fix",
-      "prettier --write"
+      "npm run lint:fix",
+      "npm run prettier:format"
     ]
   }
 }
