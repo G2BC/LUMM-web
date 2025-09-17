@@ -59,14 +59,16 @@ export default function ExplorePage() {
               )}
             </div>
           </div>
-          <div className="mb-10 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-            <p className="font-semibold text-[16px] col-span-2">
-              {dados?.total
-                ? `${dados?.total} espécie(s) encontrada(s)`
-                : "Nenhuma espécie encontrada"}{" "}
-              {fetchedSearch ? `para "${fetchedSearch}"` : ""}
-            </p>
-          </div>
+          {!loading && (
+            <div className="mb-10 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
+              <p className="font-semibold text-[16px] col-span-2">
+                {dados?.total
+                  ? `${dados?.total} espécie(s) encontrada(s)`
+                  : "Nenhuma espécie encontrada"}{" "}
+                {fetchedSearch ? `para "${fetchedSearch}"` : ""}
+              </p>
+            </div>
+          )}
         </>
       )}
       {!loading ? (
