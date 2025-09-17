@@ -27,5 +27,11 @@ jobs:
         run: npm run build
 
       - name: 🚀 Deploy to Surge
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          run_number: ${{ github.run_number }}
         run: |
-          SURGE_LOGIN=${{ secrets.SURGE_LOGIN }} SURGE_TOKEN=${{ secrets.SURGE_TOKEN }} run_number=${{ github.run_number }} npm run dev-preview
+          npm run dev-preview

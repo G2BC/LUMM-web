@@ -19,10 +19,10 @@ const links = [
     path: "/sobre",
     label: "header.about",
   },
-  {
-    path: "/publicacoes",
-    label: "header.publications",
-  },
+  // {
+  //   path: "/publicacoes",
+  //   label: "header.publications",
+  // },
 ];
 
 export function HeaderNav({
