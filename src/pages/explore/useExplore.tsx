@@ -72,7 +72,6 @@ export function useExplore() {
     setSearch("");
     setSearchParams({ page: "1" });
     setPage(1);
-    getSpecies({ search: "", page: 1 });
   };
 
   const changePage = (newPage: number) => {
@@ -85,7 +84,6 @@ export function useExplore() {
     if (search.trim()) params.search = search.trim();
     params.page = newPage.toString();
     setSearchParams(params);
-    getSpecies({ search, page: newPage });
   };
 
   useEffect(() => {

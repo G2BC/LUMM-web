@@ -31,7 +31,7 @@ export default function ExplorePage() {
     "absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 tr transition-colors cursor-pointer";
   const classNameIconsColor = !loading && search ? "text-[#0A100B]" : "text-gray-500";
 
-  const pageUnavailable = dados?.pages && page > dados?.pages;
+  const pageUnavailable = Boolean(dados?.pages && page > dados?.pages);
 
   return (
     <section className="container mx-auto my-10 px-4">
@@ -90,7 +90,7 @@ export default function ExplorePage() {
             </div>
           )}
 
-          {!pageUnavailable && dados?.page && (
+          {Boolean(!pageUnavailable && dados?.items?.length) && (
             <Pagination className="mt-10">
               <PaginationContent>
                 <PaginationItem className="cursor-pointer select-none">
