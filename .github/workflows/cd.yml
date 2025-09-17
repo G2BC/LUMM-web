@@ -20,6 +20,11 @@ jobs:
           node-version-file: ".nvmrc"
           cache: "npm"
 
+      - name: 📝 Create .env.production for Vite # Não recomendado para PROD
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" >> .env
+
       - name: 📦 Install dependencies
         run: npm ci
 
@@ -30,8 +35,6 @@ jobs:
         env:
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
           run_number: ${{ github.run_number }}
         run: |
           npm run dev-preview

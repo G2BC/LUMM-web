@@ -88,7 +88,7 @@ export default function ExplorePage() {
             </div>
           )}
 
-          {!pageUnavailable && (
+          {!pageUnavailable && dados?.page && (
             <Pagination className="mt-10">
               <PaginationContent>
                 <PaginationItem className="cursor-pointer select-none">
