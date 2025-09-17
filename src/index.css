@@ -53,11 +53,13 @@
 
 * {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 @theme inline {
@@ -136,6 +138,7 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
