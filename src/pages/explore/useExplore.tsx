@@ -48,7 +48,6 @@ export function useExplore() {
     nextParams.page = "1";
     setSearchParams(nextParams);
     setPage(1);
-    getSpecies({ search: q, page: 1 });
   };
 
   const handleSearch = (
