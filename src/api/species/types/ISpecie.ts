@@ -12,4 +12,5 @@ export interface SpeciePhoto {
   original_url?: string;
   photo_id: number;
   lumm: boolean | null;
+  featured: boolean | null;
 }

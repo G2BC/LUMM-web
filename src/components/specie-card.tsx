@@ -10,12 +10,15 @@ import type { ISpecie } from "@/api/species/types/ISpecie";
 import photoDefault from "@/assets/specie-card-default.webp";
 
 export function SpecieCard(props: ISpecie) {
-  const photoWithLumm = props.photos?.find((p) => p.lumm === true);
+  const photoFeatured = props.photos?.find((p) => p.featured === true);
+  const photoLumm = props.photos?.find((p) => p.lumm === true);
   const firstPhoto = props.photos?.[0];
 
   const photo =
-    photoWithLumm?.medium_url ??
-    photoWithLumm?.original_url ??
+    photoFeatured?.medium_url ??
+    photoFeatured?.original_url ??
+    photoLumm?.medium_url ??
+    photoLumm?.original_url ??
     firstPhoto?.medium_url ??
     firstPhoto?.original_url ??
     photoDefault;
