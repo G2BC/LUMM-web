@@ -1,5 +1,8 @@
 {
   "translation": {
+    "search": "Buscar",
+    "loading": "Carregando...",
+    "no_results": "Sem resultados",
     "header": {
       "home": "Início",
       "distribution": "Distribuição",
@@ -39,6 +42,17 @@
     },
     "distribution": {
       "title": "Distribuição das espécies (2022)"
+    },
+    "explore": {
+      "input_placeholder": "Pesquise por espécie",
+      "result_label": "espécie(s) encontrada(s)",
+      "result_label_empty": "Nenhuma espécie encontrada",
+      "resulta_label_connection": "para",
+      "page_unavailable": "A página solicitada não está disponível.",
+      "page_unavailable_text": "Utilize o botão abaixo para recomeçar a consulta.",
+      "page_unavailable_btn": "Recomeçar",
+      "select_lineage": "Selecione uma linhagem",
+      "select_country": "Selecione uma localidade"
     }
   }
 }

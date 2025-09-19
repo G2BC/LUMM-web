@@ -9,6 +9,12 @@ export function useExplore() {
   const pageParam = parseInt(searchParams.get("page") ?? "1", 10) || 1;
   const [page, setPage] = useState<number>(pageParam);
 
+  const lineageParam = searchParams.get("lineage") ?? "";
+  const [lineage, setLineage] = useState<string>(lineageParam);
+
+  const countryParam = searchParams.get("country") ?? "";
+  const [country, setCountry] = useState<string>(countryParam);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>(searchParam);
   const [fetchedSearch, setFetchedSearch] = useState<string>(searchParam);
@@ -85,11 +91,40 @@ export function useExplore() {
     setSearchParams(params);
   };
 
+  const changeLineage = (newLineage: string) => {
+    if (lineage === newLineage) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setLineage(newLineage);
+    const params: Record<string, string> = {};
+    if (lineage.trim()) params.lineage = lineage.trim();
+    params.lineage = newLineage.toString();
+    setSearchParams(params);
+  };
+
+  const changeCountry = (newCountry: string) => {
+    if (country === newCountry) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    setCountry(newCountry);
+    const params: Record<string, string> = {};
+    if (country.trim()) params.country = country.trim();
+    params.country = newCountry.toString();
+    setSearchParams(params);
+  };
+
   useEffect(() => {
     setSearch(searchParam);
     setPage(pageParam);
-    getSpecies({ search: searchParam, page: pageParam });
-  }, [searchParam, pageParam]);
+    getSpecies({
+      search: searchParam,
+      lineage: lineageParam,
+      country: countryParam,
+      page: pageParam,
+    });
+  }, [searchParam, pageParam, lineageParam, countryParam]);
 
   return {
     dados,
@@ -101,5 +136,9 @@ export function useExplore() {
     handleClearInput,
     page,
     changePage,
+    changeLineage,
+    lineage,
+    country,
+    changeCountry,
   };
 }

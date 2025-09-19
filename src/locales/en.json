@@ -1,5 +1,8 @@
 {
   "translation": {
+    "search": "Search",
+    "loading": "Loading...",
+    "no_results": "No results",
     "header": {
       "home": "Home",
       "distribution": "Distribution",
@@ -39,6 +42,17 @@
     },
     "distribution": {
       "title": "Distribution of species (2022)"
+    },
+    "explore": {
+      "input_placeholder": "Search by species",
+      "result_label": "species found",
+      "result_label_empty": "No species found",
+      "resulta_label_connection": "for",
+      "page_unavailable": "The requested page is not available.",
+      "page_unavailable_text": "Use the button below to restart the search.",
+      "page_unavailable_btn": "Restart",
+      "select_lineage": "Select a lineage",
+      "select_country": "Select a country"
     }
   }
 }

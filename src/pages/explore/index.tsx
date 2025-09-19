@@ -13,6 +13,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
+import { ComboboxAsync } from "@/components/combobox-async";
+import { selectLineage, selectSpeciesCountry } from "@/api/species";
 
 export default function ExplorePage() {
   const {
@@ -25,7 +28,12 @@ export default function ExplorePage() {
     handleClearInput,
     page,
     changePage,
+    changeLineage,
+    lineage,
+    country,
+    changeCountry,
   } = useExplore();
+  const { t } = useTranslation();
 
   const baseClassNameIcons =
     "absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 tr transition-colors cursor-pointer";
@@ -38,13 +46,13 @@ export default function ExplorePage() {
       {!pageUnavailable && (
         <>
           <div className="mt-10 mb-6 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-            <div className="relative col-span-2">
+            <div className="relative col-span-2 max-md:col-span-1">
               <Input
                 value={search}
                 onChange={(e) => onChangeSearch(e.target.value)}
                 onKeyDown={handleSearch}
                 className="h-10 pr-10"
-                placeholder="Pesquise por espécie ou linhagem"
+                placeholder={t("explore.input_placeholder")}
               />
               {search && fetchedSearch === search ? (
                 <X
@@ -58,14 +66,30 @@ export default function ExplorePage() {
                 />
               )}
             </div>
+            <div className="col-span-1/2">
+              <ComboboxAsync
+                placeholder={t("explore.select_lineage")}
+                api={(search) => selectLineage(search)}
+                onSelect={(value) => changeLineage(value)}
+                value={lineage}
+              />
+            </div>
+            <div className="col-span-1/2">
+              <ComboboxAsync
+                placeholder={t("explore.select_country")}
+                api={(search) => selectSpeciesCountry(search)}
+                onSelect={(value) => changeCountry(value)}
+                value={country}
+              />
+            </div>
           </div>
           {!loading && (
             <div className="mb-10 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-              <p className="font-semibold text-[16px] col-span-2">
+              <p className="font-semibold text-[16px] col-span-2 max-md:col-span-1">
                 {dados?.total
-                  ? `${dados?.total} espécie(s) encontrada(s)`
-                  : "Nenhuma espécie encontrada"}{" "}
-                {fetchedSearch ? `para "${fetchedSearch}"` : ""}
+                  ? `${dados?.total} ${t("explore.result_label")}`
+                  : t("explore.result_label_empty")}{" "}
+                {fetchedSearch ? `${t("explore.resulta_label_connection")} "${fetchedSearch}"` : ""}
               </p>
             </div>
           )}
@@ -81,11 +105,11 @@ export default function ExplorePage() {
             <div className="w-full flex flex-col justify-center items-center gap-10 mt-10">
               <FileWarning className="w-12 h-12 text-gray-600" />
               <p className="text-center font-bold leading-[30px] text-[18px]">
-                A página solicitada não está disponível. <br />
-                Utilize o botão abaixo para recomeçar a consulta.
+                {t("explore.page_unavailable")} <br />
+                {t("explore.page_unavailable_text")}
               </p>
               <Button className="cursor-pointer h-[40px]" onClick={() => changePage(1)}>
-                Recomeçar
+                {t("explore.page_unavailable_btn")}
               </Button>
             </div>
           )}
