@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import type { ISelect } from "@/api/types/ISelect";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import { translateCountryName } from "@/utils/translateCountryName";
 
 interface ComboboxAsyncProps {
   api: (_search?: string, _signal?: AbortController["signal"]) => Promise<ISelect[]>;
@@ -32,7 +33,9 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(true);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const language = i18n.language;
 
   React.useEffect(() => {
     const ctrl = new AbortController();
@@ -42,7 +45,13 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
       props
         .api("", ctrl.signal)
         .then((res) => {
-          if (Array.isArray(res)) setOptions(res);
+          if (Array.isArray(res))
+            setOptions(
+              res.map(({ label, value }) => ({
+                label: language == "pt" ? translateCountryName(label, "en", "pt") : label,
+                value,
+              }))
+            );
         })
         .finally(() => setLoading(false));
       return () => ctrl.abort();
@@ -53,7 +62,13 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
       props
         .api(search, ctrl.signal)
         .then((res) => {
-          if (Array.isArray(res)) setOptions(res);
+          if (Array.isArray(res))
+            setOptions(
+              res.map(({ label, value }) => ({
+                label: language == "pt" ? translateCountryName(label, "en", "pt") : label,
+                value,
+              }))
+            );
         })
         .finally(() => setLoading(false));
     }, 1000);
@@ -93,10 +108,10 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
           <CommandList>
             <CommandEmpty>{t("no_results")}</CommandEmpty>
             <CommandGroup>
-              {options.map((framework) => (
+              {options.map((option) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={option.value}
+                  value={option.value}
                   onSelect={(currentValue) => {
                     const valueToState = currentValue === value ? "" : currentValue;
                     setValue(valueToState);
@@ -109,10 +124,10 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
                   <CheckIcon
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {framework.label}
+                  {option.label}
                 </CommandItem>
               ))}
             </CommandGroup>
