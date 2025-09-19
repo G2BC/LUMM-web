@@ -9,6 +9,7 @@ const PublicationsPage = React.lazy(() => import("./pages/publications"));
 const LoginPage = React.lazy(() => import("./pages/login"));
 const RegisterPage = React.lazy(() => import("./pages/register"));
 const DistributionPage = React.lazy(() => import("./pages/distribution"));
+const SpeciesPage = React.lazy(() => import("./pages/species"));
 
 function Router() {
   return (
@@ -21,6 +22,8 @@ function Router() {
         <Route path="/publicacoes" element={<PublicationsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro" element={<RegisterPage />} />
+        <Route path="/especie/:species" element={<SpeciesPage />} />
+        <Route path="/especie/:species" element={<SpeciesPage />} />
       </Route>
     </Routes>
   );

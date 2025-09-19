@@ -9,9 +9,11 @@ import {
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import photoDefault from "@/assets/specie-card-default.webp";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 export function SpecieCard(props: ISpecie) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const photoFeatured = props.photos?.find((p) => p.featured === true);
   const photoLumm = props.photos?.find((p) => p.lumm === true);
   const firstPhoto = props.photos?.[0];
@@ -28,7 +30,7 @@ export function SpecieCard(props: ISpecie) {
   return (
     <Card
       className="p-0 overflow-hidden w-[280px] h-[350px] cursor-pointer transition-transform transform hover:scale-[1.01]"
-      onClick={() => alert(`Cliquei em: ${props.id}`)}
+      onClick={() => navigate(`/especie/${props.id}`)}
     >
       <CardContent className="p-0 h-full flex flex-col">
         <CardHeader className="p-0 w-full max-h-[250px] overflow-hidden">
