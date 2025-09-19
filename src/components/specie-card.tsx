@@ -8,8 +8,10 @@ import {
 } from "@/components/ui/card";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import photoDefault from "@/assets/specie-card-default.webp";
+import { useTranslation } from "react-i18next";
 
 export function SpecieCard(props: ISpecie) {
+  const { t } = useTranslation();
   const photoFeatured = props.photos?.find((p) => p.featured === true);
   const photoLumm = props.photos?.find((p) => p.lumm === true);
   const firstPhoto = props.photos?.[0];
@@ -34,7 +36,9 @@ export function SpecieCard(props: ISpecie) {
         </CardHeader>
         <CardFooter className="p-4 flex-1 flex flex-col gap-1 items-start">
           <CardTitle className="font-bold leading-[22px] italic">{props.scientific_name}</CardTitle>
-          <CardDescription className="font-light text-sm">{props.lineage}</CardDescription>
+          <CardDescription className="font-light text-sm">
+            {t("lineage")}: {props.lineage}
+          </CardDescription>
         </CardFooter>
       </CardContent>
     </Card>

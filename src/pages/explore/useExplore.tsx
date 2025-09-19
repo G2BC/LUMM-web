@@ -1,24 +1,54 @@
 import { searchEspecies, type ISearchEspecies, type SearchEspeciesProps } from "@/api/species";
-import React, { useEffect, useRef, useState } from "react";
+import { paramsToObject } from "@/utils/paramsToObject";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 export function useExplore() {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const searchParam = searchParams.get("search") ?? "";
-
-  const pageParam = parseInt(searchParams.get("page") ?? "1", 10) || 1;
-  const [page, setPage] = useState<number>(pageParam);
-
   const lineageParam = searchParams.get("lineage") ?? "";
-  const [lineage, setLineage] = useState<string>(lineageParam);
-
   const countryParam = searchParams.get("country") ?? "";
+  const pageParam = useMemo(
+    () => parseInt(searchParams.get("page") ?? "1", 10) || 1,
+    [searchParams]
+  );
+
+  const [page, setPage] = useState<number>(pageParam);
+  const [lineage, setLineage] = useState<string>(lineageParam);
   const [country, setCountry] = useState<string>(countryParam);
+  const [search, setSearch] = useState<string>(searchParam);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [search, setSearch] = useState<string>(searchParam);
   const [fetchedSearch, setFetchedSearch] = useState<string>(searchParam);
   const [dados, setDados] = useState<ISearchEspecies | null>(null);
+
+  const upsertFilterParams = (
+    patch: Partial<{ search: string; lineage: string; country: string; page: number | string }>,
+    opts?: { resetPage?: boolean; replace?: boolean }
+  ) => {
+    const curr = paramsToObject(searchParams);
+    const next: Record<string, string> = { ...curr };
+
+    const setOrDelete = (key: "search" | "lineage" | "country", val?: string) => {
+      const v = (val ?? "").trim();
+      if (v) next[key] = v;
+      else delete next[key];
+    };
+
+    if ("search" in patch) setOrDelete("search", String(patch.search ?? ""));
+    if ("lineage" in patch) setOrDelete("lineage", String(patch.lineage ?? ""));
+    if ("country" in patch) setOrDelete("country", String(patch.country ?? ""));
+
+    if (opts?.resetPage) next.page = "1";
+    if ("page" in patch && patch.page != null) next.page = String(patch.page);
+
+    const nextQS = new URLSearchParams(next);
+
+    if (nextQS.toString() !== searchParams.toString()) {
+      setSearchParams(nextQS, { replace: opts?.replace ?? true });
+    }
+  };
 
   const abortRef = useRef<AbortController | null>(null);
 
@@ -43,16 +73,11 @@ export function useExplore() {
     }
   };
 
-  const onChangeSearch = (value: string) => {
-    setSearch(value);
-  };
+  const onChangeSearch = (value: string) => setSearch(value);
 
   const submitSearch = (raw?: string) => {
     const q = (raw ?? search).trim();
-    const nextParams: Record<string, string> = {};
-    if (q) nextParams.search = q;
-    nextParams.page = "1";
-    setSearchParams(nextParams);
+    upsertFilterParams({ search: q }, { resetPage: true });
     setPage(1);
   };
 
@@ -75,7 +100,7 @@ export function useExplore() {
 
   const handleClearInput = () => {
     setSearch("");
-    setSearchParams({ page: "1" });
+    upsertFilterParams({ search: "" }, { resetPage: true });
     setPage(1);
   };
 
@@ -85,10 +110,7 @@ export function useExplore() {
       return;
     }
     setPage(newPage);
-    const params: Record<string, string> = {};
-    if (search.trim()) params.search = search.trim();
-    params.page = newPage.toString();
-    setSearchParams(params);
+    upsertFilterParams({ page: newPage });
   };
 
   const changeLineage = (newLineage: string) => {
@@ -97,10 +119,8 @@ export function useExplore() {
       return;
     }
     setLineage(newLineage);
-    const params: Record<string, string> = {};
-    if (lineage.trim()) params.lineage = lineage.trim();
-    params.lineage = newLineage.toString();
-    setSearchParams(params);
+    upsertFilterParams({ lineage: newLineage }, { resetPage: true });
+    setPage(1);
   };
 
   const changeCountry = (newCountry: string) => {
@@ -109,14 +129,14 @@ export function useExplore() {
       return;
     }
     setCountry(newCountry);
-    const params: Record<string, string> = {};
-    if (country.trim()) params.country = country.trim();
-    params.country = newCountry.toString();
-    setSearchParams(params);
+    upsertFilterParams({ country: newCountry }, { resetPage: true });
+    setPage(1);
   };
 
   useEffect(() => {
     setSearch(searchParam);
+    setLineage(lineageParam);
+    setCountry(countryParam);
     setPage(pageParam);
     getSpecies({
       search: searchParam,
@@ -128,17 +148,17 @@ export function useExplore() {
 
   return {
     dados,
-    search,
-    onChangeSearch,
-    handleSearch,
     loading,
     fetchedSearch,
-    handleClearInput,
-    page,
-    changePage,
-    changeLineage,
+    search,
     lineage,
     country,
+    page,
+    onChangeSearch,
+    handleSearch,
+    handleClearInput,
+    changePage,
+    changeLineage,
     changeCountry,
   };
 }
