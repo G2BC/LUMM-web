@@ -39,7 +39,7 @@ export function HeaderMenuNav() {
         <div className="flex-1 flex gap-6 px-4">
           <HeaderNav mobile onClick={handleClose} />
         </div>
-        <SheetFooter>
+        <SheetFooter className="hidden">
           <Button
             onClick={() => {
               navigate("/login");
