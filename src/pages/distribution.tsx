@@ -28,6 +28,7 @@ export default function DistributionPage() {
           <img
             src={src}
             alt={alt}
+            loading="eager"
             onLoad={() => setLoaded(true)}
             className={`transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
           />
