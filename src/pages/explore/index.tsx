@@ -150,7 +150,7 @@ export default function ExplorePage() {
         </>
       ) : (
         <div className="w-full h-full flex justify-center items-center">
-          <Loader2 className="w-10 h-10 text-[#0A100B] animate-spin mb-4" />
+          <Loader2 className="w-10 h-10 text-white animate-spin mb-4" />
         </div>
       )}
     </section>
