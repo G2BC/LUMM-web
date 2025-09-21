@@ -37,7 +37,7 @@ export default function ExplorePage() {
 
   const baseClassNameIcons =
     "absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 tr transition-colors cursor-pointer";
-  const classNameIconsColor = !loading && search ? "text-[#0A100B]" : "text-gray-500";
+  const classNameIconsColor = !loading && search ? "text-white" : "text-white opacity-50";
 
   const pageUnavailable = Boolean(dados?.pages && page > dados?.pages);
 
@@ -51,7 +51,7 @@ export default function ExplorePage() {
                 value={search}
                 onChange={(e) => onChangeSearch(e.target.value)}
                 onKeyDown={handleSearch}
-                className="h-10 pr-10"
+                className="h-10 pr-10 placeholder:text-white placeholder:opacity-50 border-white focus-visible:ring-white text-white"
                 placeholder={t("explore.input_placeholder")}
               />
               {search && fetchedSearch === search ? (
@@ -85,7 +85,7 @@ export default function ExplorePage() {
           </div>
           {!loading && (
             <div className="mb-10 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-              <p className="font-semibold text-[16px] col-span-2 max-md:col-span-1">
+              <p className="font-semibold text-[16px] col-span-2 max-md:col-span-1 text-white">
                 {dados?.total
                   ? `${dados?.total} ${t("explore.result_label")}`
                   : t("explore.result_label_empty")}{" "}

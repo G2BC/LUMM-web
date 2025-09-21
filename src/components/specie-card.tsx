@@ -29,7 +29,7 @@ export function SpecieCard(props: ISpecie) {
 
   return (
     <Card
-      className="p-0 overflow-hidden w-[280px] h-[350px] cursor-pointer transition-transform transform hover:scale-[1.01]"
+      className="p-0 border-0 overflow-hidden w-[280px] h-[350px] cursor-pointer shadow-md"
       onClick={() => navigate(`/especie/${props.id}`)}
     >
       <CardContent className="p-0 h-full flex flex-col">

@@ -88,10 +88,8 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
           role="combobox"
           aria-expanded={open}
           className={clsx(
-            "w-full h-[40px] justify-between border-input hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
-            !value
-              ? "text-muted-foreground hover:text-muted-foreground"
-              : "text-foreground hover:text-foreground"
+            "w-full h-[40px] justify-between border-white hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
+            !value ? "text-[#FFFFFF80] hover:text-[#FFFFFF80]" : "text-white hover:text-white"
           )}
         >
           {loading
@@ -99,7 +97,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
             : value
               ? options.find((framework) => framework.value === value)?.label
               : (props.placeholder ?? "Selecione")}
-          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">

@@ -32,11 +32,11 @@ export function Footer() {
           <div className="flex md:items-center gap-6 shrink flex-col-reverse md:flex-row">
             <div className="md:text-end text-white">
               <h2 className="font-bold mb-2">{t("footer.join_us_section.title")}</h2>
-              <h3 className="font-normal mb-5">
+              <h3 className="font-normal">
                 {t("footer.join_us_section.subtitle")}
                 <br /> {t("footer.join_us_section.subtitle_end")}
               </h3>
-              <Button onClick={() => navigate("/cadastro")} className="h-10">
+              <Button onClick={() => navigate("/cadastro")} className="h-10 hidden">
                 {t("footer.join_us_section.cta")}
               </Button>
             </div>

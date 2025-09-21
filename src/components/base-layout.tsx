@@ -9,7 +9,7 @@ export function BaseLayout() {
     <Suspense fallback={<FullScreenLoader />}>
       <main className="flex flex-col h-full min-h-screen overflow-x-hidden">
         <Header />
-        <div className="flex-1">
+        <div className="flex-1 bg-[#0D140E]">
           <Outlet />
         </div>
         <Footer />

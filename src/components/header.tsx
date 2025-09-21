@@ -20,10 +20,10 @@ export function Header() {
           <HeaderNav />
         </div>
         <div className="hidden lg:flex items-center gap-6">
-          <Button onClick={() => navigate("/login")} variant="outline">
+          <Button className="hidden" onClick={() => navigate("/login")} variant="outline">
             {t("header.ctas.login")}
           </Button>
-          <Button onClick={() => navigate("/cadastro")} className=" t">
+          <Button className="hidden" onClick={() => navigate("/cadastro")}>
             {t("header.ctas.register")}
           </Button>
           <LanguageSwitcher />
