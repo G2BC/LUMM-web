@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { type EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import { SlideThumb } from "./slide-thumbs";
 
 type PropType = {
-  slides: [];
+  slides: string[];
   options?: EmblaOptionsType;
 };
 
@@ -56,12 +55,20 @@ const Slide: React.FC<PropType> = (props) => {
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container">
             {slides.map((photo, index) => (
-              <SlideThumb
+              <div
                 key={index}
-                onClick={() => onThumbClick(index)}
-                selected={index === selectedIndex}
-                photo={photo}
-              />
+                className={"embla-thumbs__slide".concat(
+                  index === selectedIndex ? " embla-thumbs__slide--selected" : ""
+                )}
+              >
+                <button
+                  onClick={() => onThumbClick(index)}
+                  type="button"
+                  className="embla-thumbs__slide__number overflow-hidden"
+                >
+                  <img src={photo} className="h-[80px] w-[80px] object-cover object-center" />
+                </button>
+              </div>
             ))}
           </div>
         </div>

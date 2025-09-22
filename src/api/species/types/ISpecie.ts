@@ -2,6 +2,7 @@ export interface ISpecie {
   id: number;
   lineage: string;
   photos: SpeciePhoto[];
+  family: string;
   scientific_name: string;
 }
 
