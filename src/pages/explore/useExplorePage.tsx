@@ -3,7 +3,7 @@ import { paramsToObject } from "@/utils/paramsToObject";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-export function useExplore() {
+export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchParam = searchParams.get("search") ?? "";

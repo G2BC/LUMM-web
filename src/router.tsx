@@ -23,7 +23,6 @@ function Router() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro" element={<RegisterPage />} />
         <Route path="/especie/:species" element={<SpeciesPage />} />
-        <Route path="/especie/:species" element={<SpeciesPage />} />
       </Route>
     </Routes>
   );

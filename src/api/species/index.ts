@@ -23,7 +23,7 @@ export const searchEspecies = async ({
   per_page,
   signal,
 }: SearchEspeciesProps): Promise<ISearchEspecies> => {
-  const resposta: AxiosResponse<ISearchEspecies> = await API.get("/species", {
+  const resposta: AxiosResponse<ISearchEspecies> = await API.get("/species/list", {
     params: { search, lineage, country, page, per_page },
     signal,
   });
@@ -45,6 +45,12 @@ export const selectSpeciesCountry = async (search?: string, signal?: AbortContro
     params: { search },
     signal,
   });
+
+  return resposta.data;
+};
+
+export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
+  const resposta: AxiosResponse<ISpecie> = await API.get(`/species/${species}`);
 
   return resposta.data;
 };

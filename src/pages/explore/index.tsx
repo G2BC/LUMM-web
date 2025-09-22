@@ -1,6 +1,6 @@
 import React from "react";
 import { SpecieCard } from "@/components/specie-card";
-import { useExplore } from "./useExplore";
+import { useExplorePage } from "./useExplorePage";
 import { Input } from "@/components/ui/input";
 import { FileWarning, Loader2, Search, X } from "lucide-react";
 import clsx from "clsx";
@@ -32,7 +32,7 @@ export default function ExplorePage() {
     lineage,
     country,
     changeCountry,
-  } = useExplore();
+  } = useExplorePage();
   const { t } = useTranslation();
 
   const baseClassNameIcons =
