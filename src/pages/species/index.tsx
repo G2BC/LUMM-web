@@ -1,9 +1,19 @@
 import Slide from "@/components/slide";
 import "@/assets/css/slide.css";
 import { useSpeciesPage } from "./useSpeciesPage";
+import { Loader2 } from "lucide-react";
 
 export default function SpeciesPage() {
-  const { dados } = useSpeciesPage();
+  const { dados, loading } = useSpeciesPage();
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex flex-col justify-center items-center container mx-auto px-4 my-10">
+        <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+        <p className="text-[#00C000] font-semibold">Carregando...</p>
+      </div>
+    );
+  }
 
   const photos = dados?.photos
     ?.map((photo) => photo?.medium_url ?? photo?.original_url)

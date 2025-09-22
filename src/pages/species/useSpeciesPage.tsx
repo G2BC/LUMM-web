@@ -7,10 +7,12 @@ import { useNavigate, useParams } from "react-router";
 export function useSpeciesPage() {
   const params = useParams<{ species: string }>();
   const [dados, setDados] = useState<ISpecie | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const getSpecies = async () => {
     try {
+      setLoading(true);
       const res = await fetchSpecies(params.species);
 
       if (!res)
@@ -28,6 +30,8 @@ export function useSpeciesPage() {
         text: "Tente novamente em alguns instantes.",
         didClose: () => navigate("/explorar"),
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,5 +41,5 @@ export function useSpeciesPage() {
     }
   }, [params.species]);
 
-  return { dados };
+  return { dados, loading };
 }

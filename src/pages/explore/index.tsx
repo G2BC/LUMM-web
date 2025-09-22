@@ -151,6 +151,7 @@ export default function ExplorePage() {
       ) : (
         <div className="w-full h-full flex justify-center items-center">
           <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+          <p className="text-[#00C000] font-semibold">Carregando...</p>
         </div>
       )}
     </section>
