@@ -32,7 +32,7 @@ export const searchEspecies = async ({
 };
 
 export const selectLineage = async (search?: string, signal?: AbortController["signal"]) => {
-  const resposta: AxiosResponse<ISelect[]> = await API.get("/species/select/lineage", {
+  const resposta: AxiosResponse<ISelect[]> = await API.get("/species/lineage/select", {
     params: { search },
     signal,
   });
@@ -41,7 +41,7 @@ export const selectLineage = async (search?: string, signal?: AbortController["s
 };
 
 export const selectSpeciesCountry = async (search?: string, signal?: AbortController["signal"]) => {
-  const resposta: AxiosResponse<ISelect[]> = await API.get("/species/select/country", {
+  const resposta: AxiosResponse<ISelect[]> = await API.get("/species/country/select", {
     params: { search },
     signal,
   });
