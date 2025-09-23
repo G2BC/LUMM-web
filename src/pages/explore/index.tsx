@@ -103,8 +103,8 @@ export default function ExplorePage() {
 
           {pageUnavailable && (
             <div className="w-full flex flex-col justify-center items-center gap-10 mt-10">
-              <FileWarning className="w-12 h-12 text-gray-600" />
-              <p className="text-center font-bold leading-[30px] text-[18px]">
+              <FileWarning className="w-12 h-12 text-white" />
+              <p className="text-center font-bold leading-[30px] text-[18px] text-white">
                 {t("explore.page_unavailable")} <br />
                 {t("explore.page_unavailable_text")}
               </p>
