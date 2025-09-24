@@ -37,8 +37,7 @@ export default function SpeciesPage() {
           <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] mb-8 italic">
             {dados?.scientific_name}
           </h1>
-          <h2>Linhagem: {dados?.lineage}</h2>
-          <h3>Família: {dados?.family}</h3>
+          <h2>Linhagem bioluminescente: {dados?.lineage}</h2>
         </div>
 
         {!!photos?.length && <Slide slides={photos as string[]} />}
