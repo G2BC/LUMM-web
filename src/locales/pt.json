@@ -54,6 +54,9 @@
       "page_unavailable_btn": "Recomeçar",
       "select_lineage": "Selecione uma linhagem",
       "select_country": "Selecione uma localidade"
+    },
+    "contact_page": {
+      "title": "Entre em contato"
     }
   }
 }
