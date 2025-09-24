@@ -38,9 +38,12 @@ export default function ContatoPage() {
   return (
     <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 my-10 gap-16">
       <div className="text-white">
-        <h1 className="text-5xl font-bold leading-[52px] mb-8">{t("contact_page.title")}</h1>
+        <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] mb-8">
+          {t("contact_page.title")}
+        </h1>
         <h2 className="text-[18px]">
-          Preencha o formulário e contate-nos. Assim que possível retornaremos sua mensagem.
+          Preencha o formulário para entrar em contato conosco. <br /> Entraremos em contato
+          posteriormente.
         </h2>
       </div>
       <Form {...form}>
