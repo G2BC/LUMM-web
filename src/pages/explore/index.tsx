@@ -1,5 +1,5 @@
 import React from "react";
-import { SpecieCard } from "@/components/specie-card";
+import { SpecieCard } from "@/pages/explore/components/specie-card";
 import { useExplorePage } from "./useExplorePage";
 import { Input } from "@/components/ui/input";
 import { FileWarning, Loader2, Search, X } from "lucide-react";

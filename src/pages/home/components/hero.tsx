@@ -1,6 +1,6 @@
 import heroDesktop from "@/assets/hero_desktop.png";
 import heroMobile from "@/assets/hero_mobile.png";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 

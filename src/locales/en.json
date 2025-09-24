@@ -54,6 +54,9 @@
       "page_unavailable_btn": "Restart",
       "select_lineage": "Select a lineage",
       "select_country": "Select a country"
+    },
+    "contact_page": {
+      "title": "Contact us"
     }
   }
 }
