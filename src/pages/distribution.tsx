@@ -15,7 +15,9 @@ export default function DistributionPage() {
 
   return (
     <section className="container mx-auto pt-10 px-4">
-      <h1 className="font-bold text-[22px] sm:text-[28px] text-white">{t("distribution.title")}</h1>
+      <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] text-white">
+        {t("distribution.title")}
+      </h1>
       <div className="py-10 overflow-x-auto mb-10 scrollbar-hide">
         <div className="min-w-max md:min-w-0">
           {!loaded && (
