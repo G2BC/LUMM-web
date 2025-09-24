@@ -20,23 +20,19 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { contactFormSchema } from "./schemas";
+import { useContactPage } from "./useContactPage";
 
 export default function ContatoPage() {
+  const { loading, sendMail } = useContactPage();
   const { t } = useTranslation();
 
-  const formSchema = z.object({
-    name: z.string({ error: "Digite seu nome" }),
-    email: z.string({ error: "Digite seu e-mail" }),
-    subject: z.string({ error: "Selecione um assunto" }),
-    message: z.string({ error: "Digite sua mensagem" }),
+  const form = useForm<z.infer<typeof contactFormSchema>>({
+    resolver: zodResolver(contactFormSchema),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    return values;
+  function onSubmit(values: z.infer<typeof contactFormSchema>) {
+    sendMail(values);
   }
 
   return (
@@ -54,9 +50,9 @@ export default function ContatoPage() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome completo</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input placeholder="Seu nome e sobrenome" type="" {...field} />
+                  <Input placeholder="Seu nome" type="" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -86,12 +82,10 @@ export default function ContatoPage() {
 
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Qual o assunto do contato?" />
+                    <SelectValue placeholder="Selecione o assunto" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
+                    <SelectItem value="outros">Outros</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -107,15 +101,15 @@ export default function ContatoPage() {
               <FormItem>
                 <FormLabel>Mensagem</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Sua mensagem para nós" id="message" />
+                  <Textarea {...field} placeholder="Sua mensagem" id="message" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button className="w-[140px]" type="submit">
-            Enviar
+          <Button disabled={loading} className="w-[140px]" type="submit">
+            {loading ? "Enviando..." : "Enviar"}
           </Button>
         </form>
       </Form>
