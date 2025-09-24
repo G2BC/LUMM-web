@@ -3,6 +3,9 @@ import { paramsToObject } from "@/utils/paramsToObject";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
+const scrollTopSmooth = () =>
+  requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -106,31 +109,32 @@ export function useExplorePage() {
 
   const changePage = (newPage: number) => {
     if (page === newPage) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollTopSmooth();
       return;
     }
     setPage(newPage);
     upsertFilterParams({ page: newPage });
+    scrollTopSmooth();
   };
 
   const changeLineage = (newLineage: string) => {
     if (lineage === newLineage) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
     setLineage(newLineage);
     upsertFilterParams({ lineage: newLineage }, { resetPage: true });
     setPage(1);
+    scrollTopSmooth();
   };
 
   const changeCountry = (newCountry: string) => {
     if (country === newCountry) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
     setCountry(newCountry);
     upsertFilterParams({ country: newCountry }, { resetPage: true });
     setPage(1);
+    scrollTopSmooth();
   };
 
   useEffect(() => {

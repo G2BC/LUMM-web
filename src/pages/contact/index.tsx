@@ -42,7 +42,7 @@ export default function ContatoPage() {
           {t("contact_page.title")}
         </h1>
         <h2 className="text-[18px]">
-          Preencha o formulário para entrar em contato conosco. <br /> Entraremos em contato
+          Preencha o formulário para entrar em contato conosco. <br /> Retornaremos o contato
           posteriormente.
         </h2>
       </div>
