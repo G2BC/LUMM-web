@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 const scrollTopSmooth = () =>
-  requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
