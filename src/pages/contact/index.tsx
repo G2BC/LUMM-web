@@ -50,9 +50,9 @@ export default function ContatoPage() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome completo</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input placeholder="Seu nome e sobrenome" type="" {...field} />
+                  <Input placeholder="Seu nome" type="" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -82,12 +82,10 @@ export default function ContatoPage() {
 
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Qual o assunto do contato?" />
+                    <SelectValue placeholder="Selecione o assunto" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
+                    <SelectItem value="outros">Outros</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -103,7 +101,7 @@ export default function ContatoPage() {
               <FormItem>
                 <FormLabel>Mensagem</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Sua mensagem para nós" id="message" />
+                  <Textarea {...field} placeholder="Sua mensagem" id="message" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
