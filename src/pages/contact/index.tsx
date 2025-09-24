@@ -20,23 +20,19 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { contactFormSchema } from "./schemas";
+import { useContactPage } from "./useContactPage";
 
 export default function ContatoPage() {
+  const { loading, sendMail } = useContactPage();
   const { t } = useTranslation();
 
-  const formSchema = z.object({
-    name: z.string({ error: "Digite seu nome" }),
-    email: z.string({ error: "Digite seu e-mail" }),
-    subject: z.string({ error: "Selecione um assunto" }),
-    message: z.string({ error: "Digite sua mensagem" }),
+  const form = useForm<z.infer<typeof contactFormSchema>>({
+    resolver: zodResolver(contactFormSchema),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    return values;
+  function onSubmit(values: z.infer<typeof contactFormSchema>) {
+    sendMail(values);
   }
 
   return (
@@ -114,8 +110,8 @@ export default function ContatoPage() {
             )}
           />
 
-          <Button className="w-[140px]" type="submit">
-            Enviar
+          <Button disabled={loading} className="w-[140px]" type="submit">
+            {loading ? "Enviando..." : "Enviar"}
           </Button>
         </form>
       </Form>
