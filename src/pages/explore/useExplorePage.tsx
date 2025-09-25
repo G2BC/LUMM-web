@@ -3,9 +3,6 @@ import { paramsToObject } from "@/utils/paramsToObject";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-const scrollTopSmooth = () =>
-  requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
-
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -109,12 +106,11 @@ export function useExplorePage() {
 
   const changePage = (newPage: number) => {
     if (page === newPage) {
-      scrollTopSmooth();
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
     setPage(newPage);
     upsertFilterParams({ page: newPage });
-    scrollTopSmooth();
   };
 
   const changeLineage = (newLineage: string) => {
@@ -124,7 +120,6 @@ export function useExplorePage() {
     setLineage(newLineage);
     upsertFilterParams({ lineage: newLineage }, { resetPage: true });
     setPage(1);
-    scrollTopSmooth();
   };
 
   const changeCountry = (newCountry: string) => {
@@ -134,7 +129,6 @@ export function useExplorePage() {
     setCountry(newCountry);
     upsertFilterParams({ country: newCountry }, { resetPage: true });
     setPage(1);
-    scrollTopSmooth();
   };
 
   useEffect(() => {
