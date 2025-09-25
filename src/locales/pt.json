@@ -57,6 +57,9 @@
     },
     "contact_page": {
       "title": "Entre em contato"
+    },
+    "species_page": {
+      "bioluminescent_lineage": "Linhagem bioluminescente"
     }
   }
 }

@@ -1,9 +1,18 @@
+interface Taxonomy {
+  authors: string;
+  classification: string;
+  gender: string | null;
+  synonyms: string;
+  years_of_effective_publication: string;
+}
+
 export interface ISpecie {
   id: number;
   lineage: string;
   photos: SpeciePhoto[];
   family: string;
   scientific_name: string;
+  taxonomy: Taxonomy;
 }
 
 export interface SpeciePhoto {
