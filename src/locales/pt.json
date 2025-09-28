@@ -79,6 +79,18 @@
         "species": "Espécie",
         "authors": "Autores",
         "year_of_publication": "Ano da publicação"
+      },
+      "lumm": {
+        "section_title": "Partes luminescentes",
+        "mycelium": "Micélio",
+        "basidiome": "Basidioma",
+        "stipe": "Estipe",
+        "pileus": "Píleo",
+        "lamellae": "Lamelas",
+        "spores": "Esporos",
+        "yes": "Sim",
+        "no": "Não",
+        "unknown": "Desconhecido"
       }
     }
   }

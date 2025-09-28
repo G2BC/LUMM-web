@@ -15,6 +15,12 @@ export interface ISpecie {
   taxonomy: Taxonomy;
   mycobank_type: string | null;
   mycobank_index_fungorum_id: string | null;
+  lum_mycelium: boolean | null;
+  lum_basidiome: boolean | null;
+  lum_stipe: boolean | null;
+  lum_pileus: boolean | null;
+  lum_lamellae: boolean | null;
+  lum_spores: boolean | null;
 }
 
 export interface SpeciePhoto {

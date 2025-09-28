@@ -55,3 +55,9 @@ export const taxonomyLabels = [
   "species_page.taxonomy.family",
   "species_page.taxonomy.genus",
 ];
+
+export function formatLuminescence(value: boolean | null | undefined): string {
+  if (value === true) return "species_page.lumm.yes";
+  if (value === false) return "species_page.lumm.no";
+  return "species_page.lumm.unknown";
+}

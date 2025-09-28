@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import defaultPhoto from "@/assets/specie-card-default.webp";
-import { parseClassification, sortPhotos, taxonomyLabels } from "./utils";
+import { formatLuminescence, parseClassification, sortPhotos, taxonomyLabels } from "./utils";
 
 export default function SpeciesPage() {
   const { dados, loading } = useSpeciesPage();
@@ -64,7 +64,41 @@ export default function SpeciesPage() {
 
               <TabsContent value="about">
                 <Card>
-                  <CardContent className="space-y-4">{t("species_page.no_about")}</CardContent>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <p className="mb-2 underline">{t("species_page.lumm.section_title")}:</p>
+                      <div className="space-y-4">
+                        <p>
+                          ➔ {t("species_page.lumm.mycelium")}:{" "}
+                          {t(formatLuminescence(dados?.lum_mycelium))}
+                        </p>
+                        <p>
+                          ➔ {t("species_page.lumm.basidiome")}:{" "}
+                          {t(formatLuminescence(dados?.lum_basidiome))}
+                        </p>
+                        <div className="space-y-4 pl-4">
+                          <p>
+                            ➔ {t("species_page.lumm.stipe")}:{" "}
+                            {t(formatLuminescence(dados?.lum_stipe))}
+                          </p>
+
+                          <p>
+                            ➔ {t("species_page.lumm.pileus")}:{" "}
+                            {t(formatLuminescence(dados?.lum_pileus))}
+                          </p>
+
+                          <p>
+                            ➔ {t("species_page.lumm.lamellae")}:{" "}
+                            {t(formatLuminescence(dados?.lum_lamellae))}
+                          </p>
+                        </div>
+                        <p>
+                          ➔ {t("species_page.lumm.spores")}:{" "}
+                          {t(formatLuminescence(dados?.lum_spores))}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
                 </Card>
               </TabsContent>
 
