@@ -153,7 +153,7 @@ export default function ExplorePage() {
       ) : (
         <div className="w-full h-full flex flex-col justify-center items-center my-10">
           <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-          <p className="text-[#00C000] font-semibold">Carregando...</p>
+          <p className="text-[#00C000] font-semibold">{t("common.loading")}...</p>
         </div>
       )}
     </section>

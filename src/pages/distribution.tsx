@@ -23,7 +23,7 @@ export default function DistributionPage() {
           {!loaded && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0A100B]">
               <Loader2 className="w-8 h-8 text-[#00C000] animate-spin mb-4" />
-              <p className="text-[#00C000] font-semibold">Carregando...</p>
+              <p className="text-[#00C000] font-semibold">{t("common.loading")}...</p>
             </div>
           )}
 
