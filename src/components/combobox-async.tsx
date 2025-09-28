@@ -37,41 +37,33 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
 
   const language = i18n.language;
 
+  const getLabel = React.useCallback(
+    (label?: string) =>
+      !label ? "" : language === "pt" ? translateCountryName(label, "en", "pt") : label,
+    [language]
+  );
+
   React.useEffect(() => {
     const ctrl = new AbortController();
 
-    if (!search.trim()) {
+    const fetcher = async (query: string) => {
       setLoading(true);
-      props
-        .api("", ctrl.signal)
-        .then((res) => {
-          if (Array.isArray(res))
-            setOptions(
-              res.map(({ label, value }) => ({
-                label: language == "pt" ? translateCountryName(label, "en", "pt") : label,
-                value,
-              }))
-            );
-        })
-        .finally(() => setLoading(false));
+      try {
+        const res = await props.api(query, ctrl.signal);
+        if (Array.isArray(res)) {
+          setOptions(res);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!search.trim()) {
+      fetcher("");
       return () => ctrl.abort();
     }
 
-    const timer = setTimeout(() => {
-      setLoading(true);
-      props
-        .api(search, ctrl.signal)
-        .then((res) => {
-          if (Array.isArray(res))
-            setOptions(
-              res.map(({ label, value }) => ({
-                label: language == "pt" ? translateCountryName(label, "en", "pt") : label,
-                value,
-              }))
-            );
-        })
-        .finally(() => setLoading(false));
-    }, 1000);
+    const timer = setTimeout(() => fetcher(search), 1000);
 
     return () => {
       clearTimeout(timer);
@@ -79,6 +71,8 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
+
+  const selected = options.find((o) => o.value === value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -96,7 +90,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
           {loading
             ? t("common.loading")
             : value
-              ? options.find((framework) => framework.value === value)?.label
+              ? getLabel(selected?.label)
               : (props.placeholder ?? "Selecione")}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>
@@ -126,7 +120,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
                       value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {option.label}
+                  {getLabel(option.label)}
                 </CommandItem>
               ))}
             </CommandGroup>
