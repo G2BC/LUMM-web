@@ -56,14 +56,16 @@ export default function SpeciesPage() {
 
   return (
     <div className="container mx-auto px-4 my-10 text-white">
-      <Button
-        variant="link"
-        className="mb-6 text-base font-bold !px-0"
-        onClick={() => navigate(-1)}
-      >
-        <ChevronLeft className="w-4 h-4" />
-        {t("common.back")}
-      </Button>
+      {window.history.length > 2 && (
+        <Button
+          variant="link"
+          className="mb-6 text-base font-bold !px-0"
+          onClick={() => navigate(-1)}
+        >
+          <ChevronLeft className="w-4 h-4" />
+          {t("common.back")}
+        </Button>
+      )}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
         <div className="text-white max-xl:order-1">
           <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic">
