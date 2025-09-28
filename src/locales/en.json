@@ -63,7 +63,22 @@
       "select_country": "Select a country"
     },
     "contact_page": {
-      "title": "Contact us"
+      "title": "Contact us",
+      "contact_heading_line1": "Fill out the form to get in touch with us.",
+      "contact_heading_line2": "We’ll get back to you soon.",
+      "input_name_label": "Name",
+      "input_name_placeholder": "Your name",
+      "input_email_label": "Email",
+      "input_email_placeholder": "Your email",
+      "input_subject_label": "Subject",
+      "input_subject_placeholder": "Enter the subject",
+      "input_message_label": "Message",
+      "input_message_placeholder": "Your message",
+      "button_send": "Send",
+      "button_sending": "Sending...",
+      "subject_technical": "Technical questions",
+      "subject_collaboration": "Collaborations",
+      "subject_other": "Other"
     },
     "species_page": {
       "bioluminescent_lineage": "Bioluminescent lineage",

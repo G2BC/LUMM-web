@@ -42,8 +42,7 @@ export default function ContatoPage() {
           {t("contact_page.title")}
         </h1>
         <h2 className="text-[18px]">
-          Preencha o formulário para entrar em contato conosco. <br /> Retornaremos o contato
-          posteriormente.
+          {t("contact_page.contact_heading_line1")} <br /> {t("contact_page.contact_heading_line2")}
         </h2>
       </div>
       <Form {...form}>
@@ -53,9 +52,13 @@ export default function ContatoPage() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome</FormLabel>
+                <FormLabel>{t("contact_page.input_name_label")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Seu nome" type="" {...field} />
+                  <Input
+                    placeholder={t("contact_page.input_name_placeholder")}
+                    type=""
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,9 +70,13 @@ export default function ContatoPage() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel>{t("contact_page.input_email_label")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="Seu e-mail" type="email" {...field} />
+                  <Input
+                    placeholder={t("contact_page.input_email_placeholder")}
+                    type="email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -81,14 +88,18 @@ export default function ContatoPage() {
             name="subject"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Assunto</FormLabel>
+                <FormLabel>{t("contact_page.input_subject_label")}</FormLabel>
 
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione o assunto" />
+                    <SelectValue placeholder={t("contact_page.input_subject_placeholder")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="outros">Outros</SelectItem>
+                    <SelectItem value="technical">{t("contact_page.subject_technical")}</SelectItem>
+                    <SelectItem value="collaboration">
+                      {t("contact_page.subject_collaboration")}
+                    </SelectItem>
+                    <SelectItem value="other">{t("contact_page.subject_other")}</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -102,9 +113,14 @@ export default function ContatoPage() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Mensagem</FormLabel>
+                <FormLabel>{t("contact_page.input_message_label")}</FormLabel>
                 <FormControl>
-                  <Textarea {...field} placeholder="Sua mensagem" id="message" />
+                  <Textarea
+                    {...field}
+                    className="min-h-[140px] resize-none"
+                    placeholder={t("contact_page.input_message_placeholder")}
+                    id="message"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -112,7 +128,7 @@ export default function ContatoPage() {
           />
 
           <Button disabled={loading} className="w-[140px]" type="submit">
-            {loading ? "Enviando..." : "Enviar"}
+            {loading ? t("contact_page.button_sending") : t("contact_page.button_send")}
           </Button>
         </form>
       </Form>
