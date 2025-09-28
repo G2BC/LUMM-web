@@ -86,16 +86,7 @@ export default function SpeciesPage() {
                             ➔ {t("species_page.lumm.pileus")}:{" "}
                             {t(formatLuminescence(dados?.lum_pileus))}
                           </p>
-
-                          <p>
-                            ➔ {t("species_page.lumm.lamellae")}:{" "}
-                            {t(formatLuminescence(dados?.lum_lamellae))}
-                          </p>
                         </div>
-                        <p>
-                          ➔ {t("species_page.lumm.spores")}:{" "}
-                          {t(formatLuminescence(dados?.lum_spores))}
-                        </p>
                       </div>
                     </div>
                   </CardContent>
