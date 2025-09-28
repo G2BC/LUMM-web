@@ -20,6 +20,7 @@
   padding-left: var(--slide-spacing);
 }
 .embla__slide__number {
+  position: relative;
   overflow: hidden;
   box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
   border-radius: 12px;
@@ -85,5 +86,5 @@
   width: 80px;
 }
 .embla-thumbs__slide--selected .embla-thumbs__slide__number {
-  color: var(--text-body);
+  border: 2px solid var(--primary);
 }

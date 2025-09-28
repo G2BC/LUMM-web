@@ -1,9 +1,16 @@
 {
   "translation": {
-    "search": "Search",
-    "loading": "Loading...",
-    "lineage": "Lineage",
-    "no_results": "No results",
+    "common": {
+      "unavailable": "Unavailable",
+      "search": "Search",
+      "back": "Back",
+      "loading": "Loading...",
+      "lineage": "Lineage",
+      "no_results": "No results",
+      "taxonomy": "Taxonomy",
+      "about": "About",
+      "external_links": "External links"
+    },
     "header": {
       "home": "Home",
       "distribution": "Distribution",
@@ -59,7 +66,20 @@
       "title": "Contact us"
     },
     "species_page": {
-      "bioluminescent_lineage": "Bioluminescent lineage"
+      "bioluminescent_lineage": "Bioluminescent lineage",
+      "no_about": "We will soon provide the description of this mushroom.",
+      "classification": "Classification",
+      "taxonomy": {
+        "kingdom": "Kingdom",
+        "phylum": "Phylum",
+        "class": "Class",
+        "order": "Order",
+        "family": "Family",
+        "genus": "Genus",
+        "species": "Species",
+        "authors": "Authors",
+        "year_of_publication": "Year of publication"
+      }
     }
   }
 }

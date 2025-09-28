@@ -3,7 +3,7 @@ import { type EmblaOptionsType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
 
 type PropType = {
-  slides: string[];
+  slides: { photo?: string; attribution?: string }[];
   options?: EmblaOptionsType;
 };
 
@@ -41,35 +41,46 @@ const Slide: React.FC<PropType> = (props) => {
     <div className="embla">
       <div className="embla__viewport" ref={emblaMainRef}>
         <div className="embla__container">
-          {slides.map((slide, index) => (
-            <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">
-                <img className="h-full w-full object-cover object-center" src={slide} />
+          {slides.map((slide, index) => {
+            if (!slide.photo) return null;
+            return (
+              <div className="embla__slide" key={index}>
+                <div className="embla__slide__number relative">
+                  <img className="h-full w-full object-cover object-center" src={slide.photo} />
+                  {slide.attribution && (
+                    <span className="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded">
+                      {slide.attribution}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       <div className="embla-thumbs">
         <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
           <div className="embla-thumbs__container">
-            {slides.map((photo, index) => (
-              <div
-                key={index}
-                className={"embla-thumbs__slide".concat(
-                  index === selectedIndex ? " embla-thumbs__slide--selected" : ""
-                )}
-              >
-                <button
-                  onClick={() => onThumbClick(index)}
-                  type="button"
-                  className="embla-thumbs__slide__number overflow-hidden"
+            {slides.map(({ photo }, index) => {
+              if (!photo) return null;
+              return (
+                <div
+                  key={index}
+                  className={"embla-thumbs__slide".concat(
+                    index === selectedIndex ? " embla-thumbs__slide--selected" : ""
+                  )}
                 >
-                  <img src={photo} className="h-[80px] w-[80px] object-cover object-center" />
-                </button>
-              </div>
-            ))}
+                  <button
+                    onClick={() => onThumbClick(index)}
+                    type="button"
+                    className="embla-thumbs__slide__number overflow-hidden"
+                  >
+                    <img src={photo} className="h-[80px] w-[80px] object-cover object-center" />
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

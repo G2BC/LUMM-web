@@ -13,6 +13,8 @@ export interface ISpecie {
   family: string;
   scientific_name: string;
   taxonomy: Taxonomy;
+  mycobank_type: string | null;
+  mycobank_index_fungorum_id: string | null;
 }
 
 export interface SpeciePhoto {

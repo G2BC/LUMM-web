@@ -39,7 +39,7 @@ export function SpecieCard(props: ISpecie) {
         <CardFooter className="p-4 flex-1 flex flex-col gap-1 items-start">
           <CardTitle className="font-bold leading-[22px] italic">{props.scientific_name}</CardTitle>
           <CardDescription className="font-light text-sm">
-            {t("lineage")}: {props.lineage}
+            {t("common.lineage")}: {props.lineage}
           </CardDescription>
         </CardFooter>
       </CardContent>

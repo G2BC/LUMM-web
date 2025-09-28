@@ -77,6 +77,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
       clearTimeout(timer);
       ctrl.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   return (
@@ -93,7 +94,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
           )}
         >
           {loading
-            ? t("loading")
+            ? t("common.loading")
             : value
               ? options.find((framework) => framework.value === value)?.label
               : (props.placeholder ?? "Selecione")}
@@ -102,9 +103,9 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput value={search} onValueChange={setSearch} placeholder={t("search")} />
+          <CommandInput value={search} onValueChange={setSearch} placeholder={t("common.search")} />
           <CommandList>
-            <CommandEmpty>{t("no_results")}</CommandEmpty>
+            <CommandEmpty>{t("common.no_results")}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem

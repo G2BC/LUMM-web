@@ -39,6 +39,7 @@ export function useSpeciesPage() {
     if (params.species) {
       getSpecies();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.species]);
 
   return { dados, loading };

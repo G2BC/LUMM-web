@@ -52,7 +52,7 @@ export default function ExplorePage() {
                 onChange={(e) => onChangeSearch(e.target.value)}
                 onKeyDown={handleSearch}
                 className="h-10 pr-10 placeholder:text-white placeholder:opacity-50 border-white focus-visible:ring-white text-white"
-                placeholder={t("explore.input_placeholder")}
+                placeholder={t("explore_page.input_placeholder")}
               />
               {search && fetchedSearch === search ? (
                 <X
@@ -68,7 +68,7 @@ export default function ExplorePage() {
             </div>
             <div className="col-span-1/2">
               <ComboboxAsync
-                placeholder={t("explore.select_lineage")}
+                placeholder={t("explore_page.select_lineage")}
                 api={(search) => selectLineage(search)}
                 onSelect={(value) => changeLineage(value)}
                 value={lineage}
@@ -76,7 +76,7 @@ export default function ExplorePage() {
             </div>
             <div className="col-span-1/2">
               <ComboboxAsync
-                placeholder={t("explore.select_country")}
+                placeholder={t("explore_page.select_country")}
                 api={(search) => selectSpeciesCountry(search)}
                 onSelect={(value) => changeCountry(value)}
                 value={country}
@@ -87,9 +87,11 @@ export default function ExplorePage() {
             <div className="mb-10 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
               <p className="font-semibold text-[16px] col-span-2 max-md:col-span-1 text-white">
                 {dados?.total
-                  ? `${dados?.total} ${t("explore.result_label")}`
-                  : t("explore.result_label_empty")}{" "}
-                {fetchedSearch ? `${t("explore.resulta_label_connection")} "${fetchedSearch}"` : ""}
+                  ? `${dados?.total} ${t("explore_page.result_label")}`
+                  : t("explore_page.result_label_empty")}{" "}
+                {fetchedSearch
+                  ? `${t("explore_page.resulta_label_connection")} "${fetchedSearch}"`
+                  : ""}
               </p>
             </div>
           )}
@@ -105,11 +107,11 @@ export default function ExplorePage() {
             <div className="w-full flex flex-col justify-center items-center gap-10 mt-10">
               <FileWarning className="w-12 h-12 text-white" />
               <p className="text-center font-bold leading-[30px] text-[18px] text-white">
-                {t("explore.page_unavailable")} <br />
-                {t("explore.page_unavailable_text")}
+                {t("explore_page.page_unavailable")} <br />
+                {t("explore_page.page_unavailable_text")}
               </p>
               <Button className="cursor-pointer h-[40px]" onClick={() => changePage(1)}>
-                {t("explore.page_unavailable_btn")}
+                {t("explore_page.page_unavailable_btn")}
               </Button>
             </div>
           )}

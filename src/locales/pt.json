@@ -1,9 +1,16 @@
 {
   "translation": {
-    "search": "Buscar",
-    "loading": "Carregando...",
-    "no_results": "Sem resultados",
-    "lineage": "Linhagem",
+    "common": {
+      "unavailable": "Indisponível",
+      "search": "Buscar",
+      "back": "Voltar",
+      "loading": "Carregando...",
+      "lineage": "Linhagem",
+      "no_results": "Sem resultados",
+      "taxonomy": "Taxonomia",
+      "about": "Sobre",
+      "external_links": "Links externos"
+    },
     "header": {
       "home": "Início",
       "distribution": "Distribuição",
@@ -44,7 +51,7 @@
     "distribution": {
       "title": "Distribuição das espécies (2022)"
     },
-    "explore": {
+    "explore_page": {
       "input_placeholder": "Pesquise por espécie",
       "result_label": "espécie(s) encontrada(s)",
       "result_label_empty": "Nenhuma espécie encontrada",
@@ -59,7 +66,20 @@
       "title": "Entre em contato"
     },
     "species_page": {
-      "bioluminescent_lineage": "Linhagem bioluminescente"
+      "bioluminescent_lineage": "Linhagem bioluminescente",
+      "no_about": "Em breve traremos a descrição deste cogumelo.",
+      "classification": "Classificação",
+      "taxonomy": {
+        "kingdom": "Reino",
+        "phylum": "Filo",
+        "class": "Classe",
+        "order": "Ordem",
+        "family": "Família",
+        "genus": "Gênero",
+        "species": "Espécie",
+        "authors": "Autores",
+        "year_of_publication": "Ano da publicação"
+      }
     }
   }
 }

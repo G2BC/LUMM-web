@@ -1,5 +1,5 @@
 import Slide from "@/pages/species/components/slide";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { ChevronLeft, Link, Loader2 } from "lucide-react";
 import "@/assets/css/slide.css";
 import { useSpeciesPage } from "./useSpeciesPage";
 import { useNavigate } from "react-router";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
+import defaultPhoto from "@/assets/specie-card-default.webp";
 
 function parseClassification(classification?: string) {
   if (!classification) return [];
@@ -19,7 +20,14 @@ function parseClassification(classification?: string) {
   return [...new Set(mains)];
 }
 
-const taxonomyStruct = ["Reino", "Filo", "Classe", "Ordem", "Família", "Gênero"];
+const taxonomyStruct = [
+  "species_page.taxonomy.kingdom",
+  "species_page.taxonomy.phylum",
+  "species_page.taxonomy.class",
+  "species_page.taxonomy.order",
+  "species_page.taxonomy.family",
+  "species_page.taxonomy.genus",
+];
 
 export default function SpeciesPage() {
   const { dados, loading } = useSpeciesPage();
@@ -30,14 +38,21 @@ export default function SpeciesPage() {
     return (
       <div className="w-full h-full flex flex-col justify-center items-center container mx-auto px-4 my-10">
         <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-        <p className="text-[#00C000] font-semibold">Carregando...</p>
+        <p className="text-[#00C000] font-semibold">{t("common.loading")}</p>
       </div>
     );
   }
 
   const photos = dados?.photos
-    ?.map((photo) => photo.medium_url ?? photo.original_url)
+    ?.map((photo) => ({
+      photo: photo.medium_url ?? photo.original_url,
+      attribution: photo.attribution,
+    }))
     ?.filter(Boolean);
+
+  if (photos && Array.isArray(photos) && !photos.length) {
+    photos?.push({ photo: defaultPhoto, attribution: "" });
+  }
 
   return (
     <div className="container mx-auto px-4 my-10 text-white">
@@ -47,7 +62,7 @@ export default function SpeciesPage() {
         onClick={() => navigate(-1)}
       >
         <ChevronLeft className="w-4 h-4" />
-        Voltar
+        {t("common.back")}
       </Button>
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
         <div className="text-white max-xl:order-1">
@@ -59,57 +74,113 @@ export default function SpeciesPage() {
             <Tabs defaultValue="about">
               <TabsList>
                 <TabsTrigger className="data-[state=active]:bg-primary" value="about">
-                  Sobre
+                  {t("common.about")}
                 </TabsTrigger>
                 <TabsTrigger className="data-[state=active]:bg-primary" value="taxonomy">
-                  Taxonomia
+                  {t("common.taxonomy")}
                 </TabsTrigger>
                 <TabsTrigger className="data-[state=active]:bg-primary" value="links">
-                  Links
+                  {t("common.external_links")}
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="about">
                 <Card>
-                  <CardContent className="space-y-4">
-                    <p>
-                      ➔ {t("species_page.bioluminescent_lineage")}: {dados?.lineage}
-                    </p>
-                    <p>➔ Autores: {dados?.taxonomy?.authors}</p>
-                    <p>➔ Ano da publicação: {dados?.taxonomy?.years_of_effective_publication}</p>
-                  </CardContent>
+                  <CardContent className="space-y-4">{t("species_page.no_about")}</CardContent>
                 </Card>
               </TabsContent>
 
               <TabsContent value="taxonomy">
                 <Card>
-                  <CardContent className="space-y-4">
-                    {parseClassification(dados?.taxonomy?.classification)?.map((item, index) => {
-                      const label = taxonomyStruct[index];
+                  <CardContent className="space-y-6">
+                    <div>
+                      <p className="mb-2 underline">{t("species_page.classification")}:</p>
+                      <div className="space-y-4 pl-4">
+                        {parseClassification(dados?.taxonomy?.classification)?.map(
+                          (item, index) => {
+                            const label = taxonomyStruct[index];
 
-                      return (
+                            if (!label || !item) return null;
+
+                            return (
+                              <p>
+                                ➔ {t(label)}: {item}
+                              </p>
+                            );
+                          }
+                        )}
                         <p>
-                          ➔ {label}: {item}
+                          ➔ {t("species_page.taxonomy.species")}:{" "}
+                          {(dados?.scientific_name?.trim().split(/\s+/).pop() || "").trim()}
                         </p>
-                      );
-                    })}
-                    <p>
-                      ➔ Espécie: {(dados?.scientific_name?.trim().split(/\s+/).pop() || "").trim()}
-                    </p>
+                      </div>
+                    </div>
+
+                    {!!dados?.lineage && (
+                      <div>
+                        <p className="mb-2 underline">
+                          {t("species_page.bioluminescent_lineage")}:
+                        </p>
+                        <p className="pl-4">➔ {dados?.lineage}</p>
+                      </div>
+                    )}
+
+                    {!!dados?.taxonomy?.authors && (
+                      <div>
+                        <p className="mb-2 underline">{t("species_page.taxonomy.authors")}:</p>
+                        <p className="pl-4">➔ {dados?.taxonomy?.authors}</p>
+                      </div>
+                    )}
+
+                    {!!dados?.taxonomy?.years_of_effective_publication && (
+                      <div>
+                        <p className="mb-2 underline">
+                          {t("species_page.taxonomy.year_of_publication")}:
+                        </p>
+                        <p className="pl-4">➔ {dados?.taxonomy?.years_of_effective_publication}</p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
 
               <TabsContent value="links">
                 <Card>
-                  <CardContent className="space-y-4" />
+                  <CardContent className="space-y-4">
+                    {dados?.mycobank_index_fungorum_id ? (
+                      <a
+                        className="hover:underline flex items-center gap-2"
+                        href={`https://www.mycobank.org/MB/${dados.mycobank_index_fungorum_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Link className="w-4 h-4" /> Mycobank
+                      </a>
+                    ) : dados?.mycobank_type ? (
+                      <>
+                        <a
+                          className="hover:underline flex items-center gap-2"
+                          href={`https://www.mycobank.org/details/${dados.mycobank_type}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Link className="w-4 h-4" /> Mycobank
+                        </a>
+                      </>
+                    ) : (
+                      <p className="flex items-center gap-2 pointer-events-none text-muted-foreground">
+                        <Link className="w-4 h-4" /> Mycobank (
+                        {t("common.unavailable")?.toLowerCase()})
+                      </p>
+                    )}
+                  </CardContent>
                 </Card>
               </TabsContent>
             </Tabs>
           </div>
         </div>
 
-        {!!photos?.length && <Slide slides={photos as string[]} />}
+        {!!photos?.length && <Slide slides={photos} />}
       </div>
     </div>
   );
