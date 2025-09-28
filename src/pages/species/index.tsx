@@ -8,26 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
 import defaultPhoto from "@/assets/specie-card-default.webp";
-
-function parseClassification(classification?: string) {
-  if (!classification) return [];
-
-  const parts = classification.split(",").map((p) => p.trim());
-  const mains = parts.filter((_, i) => i % 2 === 0);
-  const last = parts[parts.length - 1];
-  if (mains[mains.length - 1] !== last) mains.push(last);
-
-  return [...new Set(mains)];
-}
-
-const taxonomyStruct = [
-  "species_page.taxonomy.kingdom",
-  "species_page.taxonomy.phylum",
-  "species_page.taxonomy.class",
-  "species_page.taxonomy.order",
-  "species_page.taxonomy.family",
-  "species_page.taxonomy.genus",
-];
+import { parseClassification, sortPhotos, taxonomyLabels } from "./utils";
 
 export default function SpeciesPage() {
   const { dados, loading } = useSpeciesPage();
@@ -43,12 +24,7 @@ export default function SpeciesPage() {
     );
   }
 
-  const photos = dados?.photos
-    ?.map((photo) => ({
-      photo: photo.medium_url ?? photo.original_url,
-      attribution: photo.attribution,
-    }))
-    ?.filter(Boolean);
+  const photos = sortPhotos(dados?.photos ?? []);
 
   if (photos && Array.isArray(photos) && !photos.length) {
     photos?.push({ photo: defaultPhoto, attribution: "" });
@@ -100,7 +76,7 @@ export default function SpeciesPage() {
                       <div className="space-y-4 pl-4">
                         {parseClassification(dados?.taxonomy?.classification)?.map(
                           (item, index) => {
-                            const label = taxonomyStruct[index];
+                            const label = taxonomyLabels[index];
 
                             if (!label || !item) return null;
 
