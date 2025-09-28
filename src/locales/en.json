@@ -51,7 +51,7 @@
     "distribution": {
       "title": "Distribution of species (2022)"
     },
-    "explore": {
+    "explore_page": {
       "input_placeholder": "Search by species",
       "result_label": "species found",
       "result_label_empty": "No species found",
