@@ -49,7 +49,7 @@ export default function CollaboratorsPage() {
                             </button>
                           </DialogTrigger>
                           <DialogContent className="max-w-[400px]">
-                            <DialogHeader>
+                            <DialogHeader className="justify-start">
                               <Avatar className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] mx-auto">
                                 <AvatarImage
                                   src={c.avatar}
