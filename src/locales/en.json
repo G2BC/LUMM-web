@@ -9,7 +9,9 @@
       "no_results": "No results",
       "taxonomy": "Taxonomy",
       "about": "About",
-      "external_links": "External links"
+      "external_links": "External links",
+      "source": "Source",
+      "view_more": "View more"
     },
     "header": {
       "home": "Home",
@@ -107,6 +109,9 @@
         "no": "No",
         "unknown": "Unknown"
       }
+    },
+    "collaborators_page": {
+      "title": "Our contributors"
     }
   }
 }

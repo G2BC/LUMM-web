@@ -9,7 +9,9 @@
       "no_results": "Sem resultados",
       "taxonomy": "Taxonomia",
       "about": "Sobre",
-      "external_links": "Links externos"
+      "external_links": "Links externos",
+      "source": "Fonte",
+      "view_more": "Ver mais"
     },
     "header": {
       "home": "Início",
@@ -107,6 +109,9 @@
         "no": "Não",
         "unknown": "Desconhecido"
       }
+    },
+    "collaborators_page": {
+      "title": "Nossos colaboradores"
     }
   }
 }
