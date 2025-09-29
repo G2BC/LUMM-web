@@ -32,20 +32,21 @@ export default function DistributionPage() {
             alt={alt}
             loading="eager"
             onLoad={() => setLoaded(true)}
-            className={`transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
+            className={`transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"} max-sm:h-[60vh]`}
           />
+
+          <p className="text-white mt-4 text-right font-bold">
+            {t("common.source")}:{" "}
+            <a
+              className="hover:underline font-normal"
+              href="https://doi.org/10.3390/jof11010019"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://doi.org/10.3390/jof11010019
+            </a>
+          </p>
         </div>
-        <p className="text-white mt-4 text-right font-bold">
-          {t("common.source")}:{" "}
-          <a
-            className="hover:underline font-normal"
-            href="https://doi.org/10.3390/jof11010019"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://doi.org/10.3390/jof11010019
-          </a>
-        </p>
       </div>
     </section>
   );
