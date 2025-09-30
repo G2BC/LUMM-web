@@ -15,6 +15,7 @@ import ALenz from "@/assets/contributors/A_Lenz.jpeg";
 import EJunior from "@/assets/contributors/E_Junior.jpg";
 import DMendel from "@/assets/contributors/D_Mendel.jpeg";
 import CStevani from "@/assets/contributors/C_Stevani.jpeg";
+import JArthur from "@/assets/contributors/J_Arthur.jpeg";
 
 export const contributors = [
   {
@@ -118,6 +119,36 @@ export const contributors = [
       {
         icon: <Github className="w-5 h-5" />,
         href: "https://github.com/ernestosjunior",
+        title: "GitHub",
+      },
+    ],
+  },
+  {
+    avatar: JArthur,
+    name: "J. Arthur Valente Lima",
+    bio: {
+      pt: "Graduando em Sistemas de Informação pela Universidade do Estado da Bahia (UNEB). Atua na área de desenvolvimento web no LUMM, um projeto que integra o Grupo de Pesquisa G2BC, onde também é voluntário. Sua participação envolve a aplicação de conhecimentos tecnológicos na criação e manutenção de soluções web para um ambiente de pesquisa.",
+      en: "Graduating in Information Systems from the State University of Bahia (UNEB). Works in the area of web development at LUMM, a project that is part of the G2BC Research Group, where they also volunteer. Their involvement includes applying technological knowledge to the creation and maintenance of web solutions for a research environment.",
+    },
+    links: [
+      {
+        icon: <Mail className="w-5 h-5" />,
+        href: "mailto:joaoarthurvalentelima2@gmail.com",
+        title: "Email",
+      },
+      // {
+      //   icon: <Link className="w-5 h-5" />,
+      //   href: "https://lattes.cnpq.br/0556706706006912",
+      //   title: "Lattes",
+      // },
+      // {
+      //   icon: <LiaOrcid className="w-6 h-6" />,
+      //   href: "https://orcid.org/0009-0002-6069-932X",
+      //   title: "ORCID",
+      // },
+      {
+        icon: <Github className="w-5 h-5" />,
+        href: "https://github.com/ArthXD",
         title: "GitHub",
       },
     ],

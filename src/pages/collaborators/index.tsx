@@ -57,7 +57,7 @@ export default function CollaboratorsPage() {
                                   {c.name.split(" ").at(-1)?.charAt(0).toUpperCase()}
                                 </AvatarFallback>
                               </Avatar>
-                              <DialogTitle className="mt-6">{c.name}</DialogTitle>
+                              <DialogTitle className="mt-6 text-left">{c.name}</DialogTitle>
                             </DialogHeader>
                             {bio}
                           </DialogContent>
