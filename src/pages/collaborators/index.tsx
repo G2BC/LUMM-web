@@ -28,7 +28,7 @@ export default function CollaboratorsPage() {
               <CardContent>
                 <div className="flex items-center flex-col justify-between gap-6">
                   <Avatar className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px]">
-                    <AvatarImage src={c.avatar} className="object-cover object-center" />
+                    <AvatarImage src={c.avatar} className="object-cover object-top" />
                     <AvatarFallback className="font-bold">
                       {c.name.split(" ").at(0)?.charAt(0).toUpperCase()}
                       {c.name.split(" ").at(-1)?.charAt(0).toUpperCase()}
@@ -48,13 +48,10 @@ export default function CollaboratorsPage() {
                               {t("common.view_more")}
                             </button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-[400px]">
+                          <DialogContent className="max-w-[400px] max-h-[90svh]">
                             <DialogHeader className="justify-start">
                               <Avatar className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] mx-auto">
-                                <AvatarImage
-                                  src={c.avatar}
-                                  className="object-cover object-center"
-                                />
+                                <AvatarImage src={c.avatar} className="object-cover object-top" />
                                 <AvatarFallback className="font-bold">
                                   {c.name.split(" ").at(0)?.charAt(0).toUpperCase()}
                                   {c.name.split(" ").at(-1)?.charAt(0).toUpperCase()}
