@@ -48,7 +48,7 @@ const Slide: React.FC<PropType> = (props) => {
                 <div className="embla__slide__number relative">
                   <img className="h-full w-full object-cover object-center" src={slide.photo} />
                   {!!slide.attribution && (
-                    <span className="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded">
+                    <span className="absolute bottom-2 right-2 ml-2 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded">
                       {slide.attribution}
                     </span>
                   )}
