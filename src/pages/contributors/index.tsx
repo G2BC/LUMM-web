@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export default function CollaboratorsPage() {
+export default function ContributorsPage() {
   const { t, i18n } = useTranslation();
 
   const language = i18n.language as "pt" | "en";

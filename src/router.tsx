@@ -11,7 +11,7 @@ const RegisterPage = React.lazy(() => import("./pages/register"));
 const DistributionPage = React.lazy(() => import("./pages/distribution"));
 const SpeciesPage = React.lazy(() => import("./pages/species"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
-const CollaboratorsPage = React.lazy(() => import("./pages/collaborators"));
+const ContributorsPage = React.lazy(() => import("./pages/contributors"));
 
 function Router() {
   return (
@@ -26,7 +26,7 @@ function Router() {
         <Route path="/cadastro" element={<RegisterPage />} />
         <Route path="/especie/:species" element={<SpeciesPage />} />
         <Route path="/contato" element={<ContactPage />} />
-        <Route path="/colaboradores" element={<CollaboratorsPage />} />
+        <Route path="/colaboradores" element={<ContributorsPage />} />
       </Route>
     </Routes>
   );
