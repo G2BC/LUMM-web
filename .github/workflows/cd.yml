@@ -30,11 +30,12 @@ jobs:
 
       - name: 🏗️ Build project
         run: npm run build
-
-      - name: 🚀 Deploy to Surge
-        env:
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-          run_number: ${{ github.run_number }}
-        run: |
-          npm run dev-preview
+        
+      # Surge unavailable
+      # - name: 🚀 Deploy to Surge
+      #   env:
+      #     SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+      #     SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+      #     run_number: ${{ github.run_number }}
+      #   run: |
+      #     npm run dev-preview
