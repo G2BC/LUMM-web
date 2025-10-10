@@ -80,7 +80,10 @@ jobs:
 
       - name: Trivy Image (table)
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/lumm-web:latest || true
+          if ! docker pull ghcr.io/${{ github.repository_owner }}/lumm-web:latest; then
+            echo "Image not found in registry, building locally..."
+            docker build -t ghcr.io/${{ github.repository_owner }}/lumm-web:latest .
+          fi
           trivy image ghcr.io/${{ github.repository_owner }}/lumm-web:latest --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed -f table -o artifacts/trivy-image.txt || true
 
       - name: Trivy Image (json)
@@ -89,8 +92,6 @@ jobs:
 
       - name: EPV metrics
         run: |
-          echo -n > artifacts/epv.txt
-          echo -n > artifacts/epv-total.txt
           jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' artifacts/trivy-image.json > artifacts/epv.txt || echo 0 > artifacts/epv.txt
           jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM" or .Severity=="HIGH" or .Severity=="CRITICAL")] | length' artifacts/trivy-image.json > artifacts/epv-total.txt || echo 0 > artifacts/epv-total.txt
           if [ ! -f artifacts/epv.csv ]; then echo 'date,commit,epv_high,epv_total' > artifacts/epv.csv; fi
