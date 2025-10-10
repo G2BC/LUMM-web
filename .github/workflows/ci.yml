@@ -33,9 +33,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Normalize repository owner
-        run: echo "REPO_OWNER=$(echo '${{ env.REPO_OWNER }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build & Push image (main only)
         uses: docker/build-push-action@v6
@@ -44,8 +41,8 @@ jobs:
           file: ./Dockerfile
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           tags: |
-            ghcr.io/${{ env.REPO_OWNER }}/lumm-web:${{ github.sha }}
-            ghcr.io/${{ env.REPO_OWNER }}/lumm-web:latest
+            ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:${{ github.sha }}
+            ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
             VITE_API_KEY=${{ secrets.VITE_API_KEY }}
@@ -83,15 +80,15 @@ jobs:
 
       - name: Trivy Image (table)
         run: |
-          if ! docker pull ghcr.io/${{ env.REPO_OWNER }}/lumm-web:latest; then
+          if ! docker pull ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest; then
             echo "Image not found in registry, building locally..."
-            docker build -t ghcr.io/${{ env.REPO_OWNER }}/lumm-web:latest .
+            docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest .
           fi
-          trivy image ghcr.io/${{ env.REPO_OWNER }}/lumm-web:latest --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed -f table -o artifacts/trivy-image.txt || true
+          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed -f table -o artifacts/trivy-image.txt || true
 
       - name: Trivy Image (json)
         run: |
-          trivy image ghcr.io/${{ env.REPO_OWNER }}/lumm-web:latest -f json -o artifacts/trivy-image.json || echo '{}' > artifacts/trivy-image.json
+          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest -f json -o artifacts/trivy-image.json || echo '{}' > artifacts/trivy-image.json
 
       - name: EPV metrics
         run: |
@@ -115,7 +112,7 @@ jobs:
 
       - name: Start test web (published to 8080)
         run: |
-          docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ env.REPO_OWNER }}/lumm-web:latest
+          docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
           # wait for container to respond
           for i in {1..30}; do
             if curl -fsS http://localhost:8080 >/dev/null; then echo "UP"; break; fi
