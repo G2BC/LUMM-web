@@ -4,5 +4,4 @@ services:
     image: ghcr.io/g2bc/lumm-web:latest
     ports:
       - "8080:80"
-    environment:
     restart: unless-stopped

@@ -113,7 +113,7 @@ jobs:
       - name: Start test web (published to 8080)
         run: |
           docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ github.repository_owner }}/lumm-web:latest
-          # aguarda o container responder
+          # wait for container to respond
           for i in {1..30}; do
             if curl -fsS http://localhost:8080 >/dev/null; then echo "UP"; break; fi
             sleep 2
@@ -131,7 +131,7 @@ jobs:
       - name: Collect ZAP reports
         run: |
           mkdir -p artifacts
-          # a action já gera zap_report.html e md no workspace
+          # the action already generates zap_report.html and md in workspace
           mv zap_report.html artifacts/zap-baseline.html || true
           mv zap_report.md artifacts/zap-baseline.md || true
 
