@@ -1,14 +1,3 @@
-/*
-    Use translations:
-        Badge:
-        Roles:
-    
-    Use icons:
-      Mail
-      Github
-      Link
-*/
-
 import { Github, Link, Mail } from "lucide-react";
 import { LiaOrcid } from "react-icons/lia";
 import ALenz from "@/assets/contributors/A_Lenz.jpeg";
@@ -20,10 +9,10 @@ import JArthur from "@/assets/contributors/J_Arthur.jpeg";
 export const contributors = [
   {
     avatar: ALenz,
-    name: "Alexandre R. Lenz",
+    name: "Alexandre Rafael Lenz",
     bio: {
-      pt: "Doutor em Biotecnologia pela Universidade de Caxias do Sul (Caxias do Sul, RS, Brasil), com período de doutorado sanduíche na Universidad Nacional Autónoma de México (UNAM), Yucatán (2020). É Professor Adjunto de Sistemas de Informação no Campus I da Universidade do Estado da Bahia (UNEB) e Professor Colaborador do Programa de Pós-Graduação em Ciências Farmacêuticas (PPGFARMA), do Departamento de Ciências da Vida, Campus I, da UNEB. Líder do Grupo de Pesquisa em Bioinformática e Biologia Computacional (G2BC — @g2bc.uneb), na linha de bioinformática de fungos. Possui experiência em bioinformática, com ênfase em genômica e regulação gênica de fungos, atuando principalmente nos seguintes temas: (i) montagem e anotação de genomas; (ii) análises filogenéticas e evolutivas; (iii) construção de redes regulatórias gênicas; (iv) prospecção de moléculas bioativas a partir de fungos ascomicetos e basidiomicetos; e (v) micoturismo.",
-      en: "PhD in Biotechnology (University of Caxias do Sul, Caxias do Sul, RS, Brazil) with a Doctoral Exchange Program at the Universidad Nacional Autónoma de México, Yucatán (2020). He is Adjunct Professor in Information Systems at Campus I of the State University of Bahia, and Collaborating Professor in the Postgraduate Program in Pharmaceutical Sciences (PPGFARMA), in the Department of Life Sciences of Campus I of the State University of Bahia. Leader of the Bioinformatics and Computational Biology Research Group (G2BC - @g2bc.uneb): Fungal bioinformatics research line. He has experience in the area of bioinformatics, with an emphasis on genomics and gene regulation of fungi, working mainly on the following topics: (i) assembly and annotation of genomes; (ii) phylogenetic and evolutionary analyses; (iii) construction of gene regulatory networks; iv) prospecting for bioactive molecules from ascomycete and basidiomycete fungi and v) mycotourism.",
+      pt: "Possui graduação em Ciência da Computação pela Universidade Luterana do Brasil (2007), Mestrado em Informática pela Universidade Federal do Paraná (2009), Doutorado em Biotecnologia pela Universidade de Caxias do Sul realizando Intercâmbio Sanduíche na Universidad Nacional Autónoma de México, Unidad Académica IIMAS, Mérida, Yucatán, México (2020). Atualmente é Professor Adjunto do Colegiado de Bacharelado em Sistemas de Informação do Campus I da Universidade do Estado da Bahia. Professor Permanente no Programa de Pós-Graduação em Ciências Farmacêuticas (PPGFARMA), no Departamento de Ciências da Vida do Campus I da Universidade do Estado da Bahia. Fundador do Grupo de Pesquisa em Bioinformática e Biologia Computacional da UNEB (G2BC), atua na linha de pesquisa em bioinformática fúngica. Tem experiência na área de Bioinformática, com ênfase em Genômica e Regulação Gênica de Fungos, atuando principalmente nos seguintes temas: (i) montagem e anotação de genomas; (ii) Análises filogenéticas e evolutivas; (iii) construção de redes de regulação de genes e iv) prospecção de compostos naturais em cogumelos. Descreveu uma espécie nova de fungo filamentoso para o gênero Penicillium, com base em materiais do Brasil e da Coreia do Sul. Está envolvido em projetos de taxonomia, filogenia, análises evolutivas e prospecção de compostos bioativos de fungos ascomicetos e basidiomicetos.",
+      en: "He holds a Bachelor's degree in Computer Science from the Lutheran University of Brazil (2007), a Master's degree in Informatics from the Federal University of Paraná (2009), and a Ph.D. in Biotechnology from the University of Caxias do Sul, with a Sandwich Exchange at the National Autonomous University of Mexico, Academic Unit IIMAS, Mérida, Yucatán, Mexico (2020). He is currently an Adjunct Professor at the Bachelor’s Degree Program in Information Systems, Campus I, State University of Bahia. He is a Permanent Professor in the Graduate Program in Pharmaceutical Sciences (PPGFARMA) at the Department of Life Sciences, Campus I, State University of Bahia. Founder of the Bioinformatics and Computational Biology Research Group at UNEB (G2BC), he works in the research line of fungal bioinformatics. He has experience in Bioinformatics, with an emphasis on Fungal Genomics and Gene Regulation, mainly working on the following topics: (i) genome assembly and annotation; (ii) phylogenetic and evolutionary analyses; (iii) construction of gene regulatory networks; and (iv) bioprospecting of natural compounds in mushrooms. He described a new species of filamentous fungus for the genus Penicillium, based on materials from Brazil and South Korea. He is involved in projects on taxonomy, phylogeny, evolutionary analyses, and bioprospecting of bioactive compounds from ascomycete and basidiomycete fungi.",
     },
     links: [
       {
@@ -40,6 +29,11 @@ export const contributors = [
         icon: <LiaOrcid className="w-6 h-6" />,
         href: "https://orcid.org/0000-0001-6699-2899",
         title: "ORCID",
+      },
+      {
+        icon: <Github className="w-5 h-5" />,
+        href: "https://github.com/G2BC",
+        title: "GitHub",
       },
     ],
   },
