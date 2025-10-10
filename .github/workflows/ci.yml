@@ -116,13 +116,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Ensure image for DAST
+        run: |
+          if ! docker pull ghcr.io/${{ secrets.DOCKER_REPO_OWNER }}/lumm-web:latest; then
+            echo "Image not found or unauthorized. Building locally..."
+            docker build -t ghcr.io/${{ secrets.DOCKER_REPO_OWNER }}/lumm-web:latest .
+          fi
 
       - name: Start test web (published to 8080)
         run: |
-          docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
-          # wait for container to respond
+          docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ secrets.DOCKER_REPO_OWNER }}/lumm-web:latest
           for i in {1..30}; do
-            if curl -fsS http://localhost:8080 >/dev/null; then echo "UP"; break; fi
+            if curl -fsS http://localhost:8080 >/dev/null; then echo "App is up"; break; fi
             sleep 2
           done
 
@@ -132,18 +138,16 @@ jobs:
           target: 'http://localhost:8080'
           cmd_options: '-I'
           allow_issue_writing: false
-          format: 'long'
         continue-on-error: true
 
       - name: Collect ZAP reports
         run: |
           mkdir -p artifacts
-          # the action already generates zap_report.html and md in workspace
           mv zap_report.html artifacts/zap-baseline.html || true
           mv zap_report.md artifacts/zap-baseline.md || true
 
       - name: Upload DAST artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dast-baseline
+          name: dast-zap-report
           path: artifacts/*
