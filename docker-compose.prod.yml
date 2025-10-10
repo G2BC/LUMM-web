@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  web:
+    image: ghcr.io/g2bc/lumm-web:latest
+    ports:
+      - "8080:80"
+    restart: unless-stopped
