@@ -119,14 +119,14 @@ jobs:
       
       - name: Ensure image for DAST
         run: |
-          if ! docker pull ghcr.io/${{ secrets.DOCKER_REPO_OWNER }}/lumm-web:latest; then
+          if ! docker pull ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest; then
             echo "Image not found or unauthorized. Building locally..."
-            docker build -t ghcr.io/${{ secrets.DOCKER_REPO_OWNER }}/lumm-web:latest .
+            docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest .
           fi
 
       - name: Start test web (published to 8080)
         run: |
-          docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ secrets.DOCKER_REPO_OWNER }}/lumm-web:latest
+          docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
           for i in {1..30}; do
             if curl -fsS http://localhost:8080 >/dev/null; then echo "App is up"; break; fi
             sleep 2
