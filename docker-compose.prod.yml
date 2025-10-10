@@ -4,11 +4,11 @@ services:
     build:
       context: .
       target: prod
-      args:
-        VITE_API_URL: ${VITE_API_URL:?required var}
-        VITE_API_KEY: ${VITE_API_KEY:?required var}
-    image: lumm-web:prod
+      env_file:
+        - .env
+    image: ghcr.io/g2bc/lumm:latest
     ports:
-      - "8080:80"
+      - "8080:8080"
     environment:
       - NODE_ENV=production
+    restart: unless-stopped
