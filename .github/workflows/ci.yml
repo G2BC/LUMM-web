@@ -130,7 +130,7 @@ jobs:
       - name: Collect ZAP reports
         run: |
           mkdir -p artifacts
-          # a action já gera zap_report.html e md no workspace
+          # the action already generates zap_report.html and md in workspace
           mv zap_report.html artifacts/zap-baseline.html || true
           mv zap_report.md artifacts/zap-baseline.md || true
 
