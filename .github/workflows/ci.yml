@@ -110,6 +110,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Start test web (published to 8080)
         run: |
           docker run -d --name lumm-web -p 8080:80 ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
