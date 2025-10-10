@@ -1,14 +1,9 @@
 version: "3.9"
 services:
   web:
-    build:
-      context: .
-      target: prod
-      env_file:
-        - .env
-    image: ghcr.io/g2bc/lumm:latest
+    image: ghcr.io/g2bc/lumm-web:latest
     ports:
-      - "8080:8080"
+      - "8080:80"
     environment:
       - NODE_ENV=production
     restart: unless-stopped

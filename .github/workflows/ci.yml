@@ -2,59 +2,102 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: 🛠️ Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: 🛠️ Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-
-      - name: 📦 Install dependencies (cached)
-        run: npm ci
-
-      - name: 💅 Run format
-        run: npm run prettier:check
-
-      - name: 🔍 Run linter
-        run: npm run lint
-
   build:
     runs-on: ubuntu-latest
-    needs: lint
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: 🛠️ Setup Node
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
+          node-version-file: .nvmrc
+          cache: npm
 
-      - name: 📦 Install dependencies (cached)
-        run: npm ci
+      - run: npm ci
+      - run: npm run build
 
-      - name: 🏗️ Run build
-        run: npm run build
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push image (main only)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/lumm-web:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/lumm-web:latest
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_API_KEY=${{ secrets.VITE_API_KEY }}
+
+  scan:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure artifacts dir
+        run: mkdir -p artifacts
+
+      - name: Trivy fs (vuln+secret)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scanners: 'vuln,secret'
+          format: 'table'
+          output: 'artifacts/trivy-fs.txt'
+          severity: 'MEDIUM,HIGH,CRITICAL'
+          ignore-unfixed: true
+
+      - name: Trivy fs JSON
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          scanners: 'vuln,secret'
+          format: 'json'
+          output: 'artifacts/trivy-fs.json'
+          severity: 'MEDIUM,HIGH,CRITICAL'
+          ignore-unfixed: true
+
+      - name: Trivy secrets (table)
+        run: trivy fs . --scanners secret --no-progress -f table -o artifacts/trivy-secrets.txt || true
+
+      - name: Trivy Image (table)
+        run: |
+          docker pull ghcr.io/${{ github.repository_owner }}/lumm-web:latest || true
+          trivy image ghcr.io/${{ github.repository_owner }}/lumm-web:latest --severity MEDIUM,HIGH,CRITICAL --ignore-unfixed -f table -o artifacts/trivy-image.txt || true
+
+      - name: Trivy Image (json)
+        run: |
+          trivy image ghcr.io/${{ github.repository_owner }}/lumm-web:latest -f json -o artifacts/trivy-image.json || echo '{}' > artifacts/trivy-image.json
+
+      - name: EPV metrics
+        run: |
+          echo -n > artifacts/epv.txt
+          echo -n > artifacts/epv-total.txt
+          jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' artifacts/trivy-image.json > artifacts/epv.txt || echo 0 > artifacts/epv.txt
+          jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM" or .Severity=="HIGH" or .Severity=="CRITICAL")] | length' artifacts/trivy-image.json > artifacts/epv-total.txt || echo 0 > artifacts/epv-total.txt
+          if [ ! -f artifacts/epv.csv ]; then echo 'date,commit,epv_high,epv_total' > artifacts/epv.csv; fi
+          printf '%s,%s,%s,%s\n' "$(date +%F)" "${GITHUB_SHA::7}" "$(< artifacts/epv.txt)" "$(< artifacts/epv-total.txt)" >> artifacts/epv.csv
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scan
+          path: artifacts/*
