@@ -1,0 +1,10 @@
+node_modules
+dist
+.vscode
+.git
+.gitignore
+.env
+*.log
+*.pem
+*.key
+*.crt
