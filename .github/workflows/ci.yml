@@ -126,7 +126,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: security-scan
+          name: web-security-scan
           path: artifacts/*
 
   dast:
@@ -180,5 +180,5 @@ jobs:
       - name: Upload DAST artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dast
+          name: web-dast
           path: artifacts/*
