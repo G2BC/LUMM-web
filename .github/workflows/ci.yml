@@ -55,28 +55,25 @@ jobs:
       - name: Ensure artifacts dir
         run: mkdir -p artifacts
 
-      - name: Trivy fs (vuln+secret+misconfig)
+      - name: Trivy fs (table)
         uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret,misconfig'
+          scanners: 'vuln,secret'
           format: 'table'
           output: 'artifacts/trivy-fs.txt'
           severity: 'MEDIUM,HIGH,CRITICAL'
           ignore-unfixed: true
 
-      - name: Trivy fs JSON
+      - name: Trivy fs (json)
         uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret,misconfig'
+          scanners: 'vuln,secret'
           format: 'json'
           output: 'artifacts/trivy-fs.json'
           severity: 'MEDIUM,HIGH,CRITICAL'
           ignore-unfixed: true
-
-      - name: Trivy secrets (table)
-        run: trivy fs . --scanners secret --no-progress -f table -o artifacts/trivy-secrets.txt || true
 
       - name: Trivy Image (table)
         run: |
@@ -90,6 +87,22 @@ jobs:
         run: |
           trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest -f json -o artifacts/trivy-image.json || echo '{}' > artifacts/trivy-image.json
 
+      - name: Trivy config (table)
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'config'
+          format: 'table'
+          output: 'artifacts/trivy-config.txt'
+          ignore-unfixed: true
+
+      - name: Trivy config (JSON)
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'config'
+          format: 'json'
+          output: 'artifacts/trivy-config.json'
+          ignore-unfixed: true
+
       - name: EPV metrics
         run: |
           jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' artifacts/trivy-image.json > artifacts/epv.txt || echo 0 > artifacts/epv.txt
@@ -101,6 +114,18 @@ jobs:
         run: |
           pip install matplotlib pandas seaborn
           python3 scripts/plot_epv.py
+
+      - name: Add EPV summary to GitHub Actions
+        run: |
+          echo "## 🛡️ Vulnerabilidades (EPV)" >> $GITHUB_STEP_SUMMARY
+          echo "<style> .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .grid img { width: 100%; border-radius: 6px; } </style>" >> $GITHUB_STEP_SUMMARY
+          echo "<div class='grid'>" >> $GITHUB_STEP_SUMMARY
+
+          for img in epv_por_categoria.png epv_total_completo.png epv_por_severidade.png epv_categoria_severidade.png; do
+            echo "<img src='./artifacts/$img' alt='$img' />" >> $GITHUB_STEP_SUMMARY
+          done
+
+          echo "</div>" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
