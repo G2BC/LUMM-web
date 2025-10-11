@@ -167,17 +167,17 @@ jobs:
           target: 'http://localhost:8080'
           cmd_options: '-I'
           allow_issue_writing: false
-          artifact_name: 'zap_scan'
+          artifact_name: 'dast'
         continue-on-error: true
 
-      - name: Collect ZAP reports
+      - name: Collect DAST reports
         run: |
           mkdir -p artifacts
-          mv zap_report.html artifacts/zap-baseline.html || true
-          mv zap_report.md artifacts/zap-baseline.md || true
+          mv zap_report.html artifacts/dast-baseline.html || true
+          mv zap_report.md artifacts/dast-baseline.md || true
 
       - name: Upload DAST artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: zap_scan
+          name: dast
           path: artifacts/*
