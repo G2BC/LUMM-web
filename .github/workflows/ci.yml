@@ -55,11 +55,11 @@ jobs:
       - name: Ensure artifacts dir
         run: mkdir -p artifacts
 
-      - name: Trivy fs (vuln+secret)
+      - name: Trivy fs (vuln+secret+config)
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret'
+          scanners: 'vuln,secret,config'
           format: 'table'
           output: 'artifacts/trivy-fs.txt'
           severity: 'MEDIUM,HIGH,CRITICAL'
@@ -69,20 +69,11 @@ jobs:
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret'
+          scanners: 'vuln,secret,config'
           format: 'json'
           output: 'artifacts/trivy-fs.json'
           severity: 'MEDIUM,HIGH,CRITICAL'
           ignore-unfixed: true
-
-      - name: Trivy config scan (Dockerfile, Compose)
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: 'config'
-          scanners: 'misconfig'
-          format: 'json'
-          output: 'artifacts/trivy-config.json'
-          severity: 'MEDIUM,HIGH,CRITICAL'
 
       - name: Trivy secrets (table)
         run: trivy fs . --scanners secret --no-progress -f table -o artifacts/trivy-secrets.txt || true
@@ -105,6 +96,11 @@ jobs:
           jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM" or .Severity=="HIGH" or .Severity=="CRITICAL")] | length' artifacts/trivy-image.json > artifacts/epv-total.txt || echo 0 > artifacts/epv-total.txt
           if [ ! -f artifacts/epv.csv ]; then echo 'date,commit,epv_high,epv_total' > artifacts/epv.csv; fi
           printf '%s,%s,%s,%s\n' "$(date +%F)" "${GITHUB_SHA::7}" "$(< artifacts/epv.txt)" "$(< artifacts/epv-total.txt)" >> artifacts/epv.csv
+
+      - name: Generate EPV graph
+        run: |
+          pip install matplotlib pandas seaborn
+          python3 scripts/plot_epv.py
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

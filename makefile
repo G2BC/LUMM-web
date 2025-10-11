@@ -51,5 +51,8 @@ epv-csv: epv-high-risk epv-total
 	@if [ ! -f $(ART)/epv.csv ]; then echo 'date,commit,epv_high,epv_total' > $(ART)/epv.csv; fi
 	@printf '%s,%s,%s,%s\n' '$(DATE)' '$(GIT_SHA)' "$$(cat $(ART)/epv.txt)" "$$(cat $(ART)/epv-total.txt)" >> $(ART)/epv.csv
 
+plot-epv:
+	@python3 scripts/plot_epv.py
+
 .PHONY: ensure-artifacts run-dev run-prod scan-fs scan-image-local scan-image-remote \
-	epv-high-risk epv-total epv-csv misconfig-count misconfig-csv
+	epv-high-risk epv-total epv-csv misconfig-count misconfig-csv plot-epv
