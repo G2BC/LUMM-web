@@ -138,6 +138,7 @@ jobs:
           target: 'http://localhost:8080'
           cmd_options: '-I'
           allow_issue_writing: false
+          artifact_name: 'zap-scan'
         continue-on-error: true
 
       - name: Collect ZAP reports
@@ -149,5 +150,5 @@ jobs:
       - name: Upload DAST artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dast-zap-report
+          name: zap-scan
           path: artifacts/*
