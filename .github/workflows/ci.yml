@@ -124,31 +124,6 @@ jobs:
           pip install matplotlib pandas seaborn
           python3 scripts/plot_epv.py
 
-      - name: Commit reports to repo
-        if: github.ref == 'refs/heads/main'
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
-          git add reports/*.png || true
-          git commit -m "feat: add EPV reports" || echo "No changes to commit"
-          git push || echo "Nothing to push"
-
-      - name: Add EPV summary to GitHub Actions
-        run: |
-          echo "## 🛡️ Vulnerabilidades (EPV)" >> $GITHUB_STEP_SUMMARY
-          echo "<style> .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .grid img { width: 100%; border-radius: 6px; } </style>" >> $GITHUB_STEP_SUMMARY
-          echo "<div class='grid'>" >> $GITHUB_STEP_SUMMARY
-
-          for img in reports/epv_*.png; do
-            b64=$(base64 -w 0 "$img")
-            echo "<img src='data:image/png;base64,$b64' alt='$img' />" >> $GITHUB_STEP_SUMMARY
-          done
-
-          echo "</div>" >> $GITHUB_STEP_SUMMARY
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
