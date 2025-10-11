@@ -31,6 +31,14 @@ scan-image-remote: ensure-artifacts
 	  --no-progress -f table -o $(ART)/trivy-image.txt || true
 	trivy image $(IMAGE):latest --no-progress -f json -o $(ART)/trivy-image.json || echo '{}' > $(ART)/trivy-image.json
 
+misconfig-count: ensure-artifacts
+	jq '[.Results[].Misconfigurations[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' \
+	  $(ART)/trivy-config.json > $(ART)/misconfig-count.txt || echo 0 > $(ART)/misconfig-count.txt
+
+misconfig-csv: misconfig-count
+	@if [ ! -f $(ART)/misconfig.csv ]; then echo 'date,commit,misconfigs' > $(ART)/misconfig.csv; fi
+	@printf '%s,%s,%s\n' '$(DATE)' '$(GIT_SHA)' "$$(cat $(ART)/misconfig-count.txt)" >> $(ART)/misconfig.csv
+
 epv-high-risk: ensure-artifacts
 	jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' \
 	  $(ART)/trivy-image.json > $(ART)/epv.txt || echo 0 > $(ART)/epv.txt
@@ -43,4 +51,5 @@ epv-csv: epv-high-risk epv-total
 	@if [ ! -f $(ART)/epv.csv ]; then echo 'date,commit,epv_high,epv_total' > $(ART)/epv.csv; fi
 	@printf '%s,%s,%s,%s\n' '$(DATE)' '$(GIT_SHA)' "$$(cat $(ART)/epv.txt)" "$$(cat $(ART)/epv-total.txt)" >> $(ART)/epv.csv
 
-.PHONY: ensure-artifacts run-dev run-prod scan-fs scan-image-local scan-image-remote epv-high-risk epv-total epv-csv
+.PHONY: ensure-artifacts run-dev run-prod scan-fs scan-image-local scan-image-remote \
+	epv-high-risk epv-total epv-csv misconfig-count misconfig-csv

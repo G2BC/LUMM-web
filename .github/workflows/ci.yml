@@ -75,6 +75,15 @@ jobs:
           severity: 'MEDIUM,HIGH,CRITICAL'
           ignore-unfixed: true
 
+      - name: Trivy config scan (Dockerfile, Compose)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'config'
+          scanners: 'misconfig'
+          format: 'json'
+          output: 'artifacts/trivy-config.json'
+          severity: 'MEDIUM,HIGH,CRITICAL'
+
       - name: Trivy secrets (table)
         run: trivy fs . --scanners secret --no-progress -f table -o artifacts/trivy-secrets.txt || true
 
