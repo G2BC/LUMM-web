@@ -128,8 +128,9 @@ jobs:
           echo "<style> .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .grid img { width: 100%; border-radius: 6px; } </style>" >> $GITHUB_STEP_SUMMARY
           echo "<div class='grid'>" >> $GITHUB_STEP_SUMMARY
 
-          for img in epv_por_categoria.png epv_total_completo.png epv_por_severidade.png epv_categoria_severidade.png; do
-            echo "<img src='./artifacts/$img' alt='$img' />" >> $GITHUB_STEP_SUMMARY
+          for img in reports/epv_*.png; do
+            b64=$(base64 -w 0 "$img")
+            echo "<img src='data:image/png;base64,$b64' alt='$img' />" >> $GITHUB_STEP_SUMMARY
           done
 
           echo "</div>" >> $GITHUB_STEP_SUMMARY
