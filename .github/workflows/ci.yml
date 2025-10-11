@@ -55,11 +55,11 @@ jobs:
       - name: Ensure artifacts dir
         run: mkdir -p artifacts
 
-      - name: Trivy fs (vuln+secret+config)
+      - name: Trivy fs (vuln+secret+misconfig)
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret,config'
+          scanners: 'vuln,secret,misconfig'
           format: 'table'
           output: 'artifacts/trivy-fs.txt'
           severity: 'MEDIUM,HIGH,CRITICAL'
@@ -69,7 +69,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
-          scanners: 'vuln,secret,config'
+          scanners: 'vuln,secret,misconfig'
           format: 'json'
           output: 'artifacts/trivy-fs.json'
           severity: 'MEDIUM,HIGH,CRITICAL'

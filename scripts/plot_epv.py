@@ -17,10 +17,9 @@ def count_vulns(trivy_json, severities=None):
             for v in res.get("Vulnerabilities") or []:
                 if severities is None or v.get("Severity") in severities:
                     total += 1
-    if "Misconfigurations" in trivy_json:
-        for m in trivy_json["Misconfigurations"]:
-            if severities is None or m.get("Severity") in severities:
-                total += 1
+            for m in res.get("Misconfigurations") or []:
+                if severities is None or m.get("Severity") in severities:
+                    total += 1
     return total
 
 def load_json_or_empty(path):
@@ -33,15 +32,14 @@ img = load_json_or_empty(path_image)
 fs = load_json_or_empty(path_fs)
 cfg = load_json_or_empty(path_config)
 
-count_image = count_vulns(img, severities=["MEDIUM","HIGH","CRITICAL"])
-count_fs = count_vulns(fs, severities=["MEDIUM","HIGH","CRITICAL"])
-count_cfg = count_vulns(cfg, severities=["MEDIUM","HIGH","CRITICAL"])
+count_image = count_vulns(img, severities=["MEDIUM", "HIGH", "CRITICAL"])
+count_fs = count_vulns(fs, severities=["MEDIUM", "HIGH", "CRITICAL"])
+count_cfg = count_vulns(cfg, severities=["MEDIUM", "HIGH", "CRITICAL"])
 
 df = pd.DataFrame({
     "categoria": ["imagem", "fs", "config"],
     "contagem": [count_image, count_fs, count_cfg]
 })
-
 plt.figure(figsize=(8, 5))
 sns.barplot(data=df, x="categoria", y="contagem")
 plt.title("Contagem de vulnerabilidades por categoria")
@@ -56,7 +54,6 @@ df2 = pd.DataFrame({
     "tipo": ["imagem", "fs", "config", "total"],
     "contagem": [count_image, count_fs, count_cfg, total]
 })
-
 plt.figure(figsize=(8, 5))
 sns.barplot(data=df2, x="tipo", y="contagem")
 plt.title("Vulnerabilidades totais + por categoria")
