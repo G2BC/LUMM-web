@@ -126,9 +126,12 @@ jobs:
 
       - name: Commit reports to repo
         if: github.ref == 'refs/heads/main'
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
           git add reports/*.png || true
           git commit -m "feat: add EPV reports" || echo "No changes to commit"
           git push || echo "Nothing to push"
