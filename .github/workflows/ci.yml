@@ -5,8 +5,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  patch-ignore:
-    - reports/** 
+  paths-ignore:
+    - 'reports/**'
 
 permissions:
   contents: read
