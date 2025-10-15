@@ -1,0 +1,19 @@
+name: Teste do Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: Exibir hostname
+        run: hostname
+
+      - name: Mostrar usuário
+        run: whoami
+
+      - name: Mostrar data e kernel
+        run: |
+          date
+          uname -a
