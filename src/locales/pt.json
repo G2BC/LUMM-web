@@ -112,6 +112,22 @@
     },
     "collaborators_page": {
       "title": "Nossos colaboradores"
+    },
+    "about_page": {
+      "title": "Sobre",
+      "paragraph1": "O LUMM (Luminescent Mushroom Database) é um repositório científico dedicado à coleta, organização e disseminação de informações sobre fungos bioluminescentes — organismos capazes de produzir luz natural por meio de reações bioquímicas.",
+      "paragraph2": "Todos os fungos bioluminescentes conhecidos pertencem ao filo Basidiomycota e à ordem Agaricales. Eles emitem luz verde em comprimentos de onda entre 520–530 nm, seguindo geralmente um ritmo circadiano, que permite o brilho contínuo ao longo do dia e da noite.",
+      "paragraph3": "Nos últimos 15 anos, o número de espécies conhecidas de fungos bioluminescentes mais do que dobrou, passando de 64 para 132 espécies. Essas espécies estão agrupadas em cinco linhagens evolutivas principais dentro de Agaricales:",
+      "lineages_list": "- Omphalotaceae (18 espécies)\n- Physalacriaceae (14 espécies)\n- Mycenaceae (96 espécies)\n- Linhagem Lucentipes (3 espécies)\n- Cyphellopsidaceae (1 espécie)",
+      "paragraph4": "Esses fungos estão distribuídos em diversas regiões do planeta, sendo mais abundantes em florestas subtropicais úmidas, com alta diversidade vegetal, especialmente no Japão, América do Sul, América do Norte e Sudeste Asiático.",
+      "paragraph5": "O banco de dados LUMM reúne informações sobre taxonomia, morfologia, ecologia, distribuição geográfica, além de dados genômicos e transcriptômicos de espécies sequenciadas. A plataforma apoia pesquisas em evolução, ecologia e biologia sintética de fungos, funcionando como uma base central para análises comparativas e filogenéticas.",
+      "paragraph6": "Estudos recentes, como os de Kotlobay et al. (2023), elucidaram a base bioquímica e genética da bioluminescência fúngica. O fenômeno resulta de um Ciclo do Ácido Cafeico (CAC), no qual o metabólito 3-hidroxihispidina atua como luciferina fúngica. O processo envolve quatro enzimas principais, incluindo a luciferase (luz), codificada por um conjunto gênico conservado encontrado em todos os fungos bioluminescentes.",
+      "paragraph7": "Esse agrupamento gênico provavelmente evoluiu uma única vez no início da história dos Agaricales, com eventos posteriores de duplicação gênica que originaram novas variantes funcionais. O gene da luciferase, por sua vez, representa uma nova família de proteínas, sem homólogos conhecidos em outros organismos.",
+      "paragraph8": "Ao integrar dados ecológicos, genéticos e bioquímicos, o LUMM constitui uma ferramenta essencial para compreender como e por que alguns cogumelos emitem luz no escuro, além de oferecer pistas sobre a evolução desse fenômeno único na natureza.",
+      "references": "Referências",
+      "reference1": "Perry, B. A., Desjardin, D. E., & Stevani, C. V. (2024). Diversity, Distribution, and Evolution of Bioluminescent Fungi. Journal of Fungi, 11(1), 19. ",
+      "reference2": "Kotlobay, A. A., Sarkisyan, K. S., Mokrushina, Y. A., Marcet-Houben, M., Serebrovskaya, E. O., Markina, N. M., ... & Yampolsky, I. V. (2018). Genetically encodable bioluminescent system from fungi. Proceedings of the National Academy of Sciences, 115(50), 12728-12732.",
+      "partners": "Nossos Parceiros"
     }
   }
 }
