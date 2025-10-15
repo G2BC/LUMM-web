@@ -112,6 +112,22 @@
     },
     "collaborators_page": {
       "title": "Our contributors"
+    },
+    "about_page": {
+      "title": "About",
+      "paragraph1": "The LUMM (Luminescent Mushroom Database) is a scientific repository dedicated to collecting, organizing, and sharing information about bioluminescent fungi—organisms capable of producing natural light through biochemical reactions.",
+      "paragraph2": "All known bioluminescent fungi are Basidiomycetes belonging to the Agaricales order. They emit green light with wavelengths between 520–530 nm, often following a circadian rhythm that allows them to glow continuously throughout the day and night.",
+      "paragraph3": "Over the last 15 years, the number of known bioluminescent fungal species has more than doubled, increasing from 64 to 132 species. These species are grouped into five main evolutionary lineages within the Agaricales:",
+      "lineages_list": "- Omphalotaceae (18 species)\n- Physalacriaceae (14 species)\n- Mycenaceae (96 species)\n- Linhagem Lucentipes (3 species)\n- Cyphellopsidaceae (1 species)",
+      "paragraph4": "Bioluminescent fungi are distributed worldwide, with the highest diversity found in subtropical forests rich in plant life, particularly in regions such as Japan, South America, North America, and Southeast Asia.",
+      "paragraph5": "The LUMM database integrates data on taxonomy, morphology, ecology, geographic distribution, and genomic and transcriptomic information from sequenced species. This platform supports researchers studying fungal evolution, ecology, and synthetic biology, providing a centralized source for comparative and phylogenetic analyses.",
+      "paragraph6": "Recent studies, such as those by Kotlobay et al. (2023), have uncovered the biochemical and genetic basis of fungal bioluminescence. The light emission results from a Caffeic Acid Cycle (CAC), where the metabolite 3-hydroxyhispidin acts as the fungal luciferin. The process involves four main enzymes, including luciferase (luz), encoded by a conserved gene cluster found in all bioluminescent fungi.",
+      "paragraph7": "This cluster likely evolved once early in the history of the Agaricales, with later gene duplication events generating new functional variants. The luciferase gene itself represents a novel protein family, with no known homologs in other organisms.",
+      "paragraph8": "By compiling ecological, genetic, and biochemical data, LUMM serves as a valuable tool for understanding how and why certain mushrooms glow in the dark—and how this remarkable trait evolved in nature.",
+      "references": "References",
+      "reference1": "Perry, B. A., Desjardin, D. E., & Stevani, C. V. (2024). Diversity, Distribution, and Evolution of Bioluminescent Fungi. Journal of Fungi, 11(1), 19. ",
+      "reference2": "Kotlobay, A. A., Sarkisyan, K. S., Mokrushina, Y. A., Marcet-Houben, M., Serebrovskaya, E. O., Markina, N. M., ... & Yampolsky, I. V. (2018). Genetically encodable bioluminescent system from fungi. Proceedings of the National Academy of Sciences, 115(50), 12728-12732.",
+      "partners": "Our Partners"
     }
   }
 }
