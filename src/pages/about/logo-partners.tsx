@@ -63,7 +63,7 @@ const LogoPartners: React.FC<LogoPartnersProps> = ({ title }) => {
         {title}
       </h2>
       <ScrollArea className="w-full rounded-md whitespace-nowrap border-0">
-        <div className="flex w-max space-x-10 p-4">
+        <div className="flex w-max space-x-10 pb-8">
           {institutions.map((inst) => (
             <a
               key={inst.id}
@@ -80,7 +80,7 @@ const LogoPartners: React.FC<LogoPartnersProps> = ({ title }) => {
             </a>
           ))}
         </div>
-        <ScrollBar orientation="horizontal" className="opacity-0" />
+        <ScrollBar orientation="horizontal" className="opacity-50" />
       </ScrollArea>
     </div>
   );

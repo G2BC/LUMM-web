@@ -11,7 +11,7 @@ export default function AboutPage() {
         {t("about_page.title")}
       </h1>
 
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="mx-auto space-y-6">
         <p className="text-lg leading-relaxed">{t("about_page.paragraph1")}</p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph2")}</p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph3")}</p>
@@ -37,7 +37,7 @@ export default function AboutPage() {
       <h3 className="mt-12 text-[34px] xl:text-[30px] font-semibold leading-[38px] xl:leading-[54px] mb-12">
         {t("about_page.references")}
       </h3>
-      <ul className="max-w-6xl mx-auto space-y-6">
+      <ul className="mx-auto space-y-6">
         <li className="list-none">
           <p className="text-lg leading-relaxed">{t("about_page.reference1")}</p>
           <a
