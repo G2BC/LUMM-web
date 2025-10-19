@@ -75,7 +75,7 @@ const LogoPartners: React.FC<LogoPartnersProps> = ({ title }) => {
               <img
                 src={inst.logoSrc}
                 alt={inst.alt}
-                className="h-30 w-auto object-contain transition-opacity duration-300 hover:opacity-80"
+                className="h-20 w-auto object-contain transition-opacity duration-300 hover:opacity-80"
               />
             </a>
           ))}
