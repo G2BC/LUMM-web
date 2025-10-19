@@ -10,8 +10,8 @@ import {
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguageStore } from "@/stores/useLanguageStore";
-import flagBrasil from "@/assets/flag_brasil.webp";
-import flagEUA from "@/assets/flag_united_states.webp";
+import flagBrasil from "@/assets/flags/brasil.webp";
+import flagEUA from "@/assets/flags/united_states.webp";
 
 const languages = [
   {

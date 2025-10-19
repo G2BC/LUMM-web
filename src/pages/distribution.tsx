@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import distributionEn from "@/assets/distribution_en.png";
-import distributionPt from "@/assets/distribution_pt.png";
+import distributionEn from "@/assets/distribution/en.png";
+import distributionPt from "@/assets/distribution/pt.png";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 

@@ -16,42 +16,36 @@ interface Institution {
 const institutions: Institution[] = [
   {
     id: 1,
-    // Certifique-se que o caminho está correto
     logoSrc: logoG2BC,
     alt: "Logo G2BC - Grupo de Pesquisa em Bioinformática e Biologia Computacional da UNEB",
     url: "https://g2bc.uneb.br/",
   },
   {
     id: 2,
-    // Certifique-se que o caminho está correto
     logoSrc: logoLBF,
     alt: "Logo LBF - Laboratório de Bioluminescência de Fungos",
     url: "https://www.stevanilab.com",
   },
   {
     id: 3,
-    // Certifique-se que o caminho está correto
     logoSrc: logoUNESP,
     alt: "Logo UNESP - Universidade Estadual Paulista",
     url: "https://www2.unesp.br/",
   },
   {
     id: 4,
-    // Certifique-se que o caminho está correto
     logoSrc: logoUNEB,
     alt: "Logo UNEB - Universidade do Estado da Bahia",
     url: "https://portal.uneb.br/",
   },
   {
     id: 5,
-    // Certifique-se que o caminho está correto
     logoSrc: logoUSP,
     alt: "Logo USP - Universidade de São Paulo",
     url: "https://www5.usp.br/",
   },
   {
     id: 6,
-    // Certifique-se que o caminho está correto
     logoSrc: logoFUNSYNBIO,
     alt: "Logo FunSynBio - Fungal Synthetic Biology Group",
     url: "https://www.instagram.com/funsynbio/",
@@ -65,7 +59,6 @@ interface LogoPartnersProps {
 const LogoPartners: React.FC<LogoPartnersProps> = ({ title }) => {
   return (
     <div className="py-12">
-      {/* Título Centralizado do Carrossel */}
       <h2 className="mt-12 text-[34px] xl:text-[30px] font-semibold leading-[38px] xl:leading-[54px] mb-12">
         {title}
       </h2>
