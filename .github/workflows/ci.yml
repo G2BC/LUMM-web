@@ -47,6 +47,8 @@ jobs:
           build-args: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
             VITE_API_KEY=${{ secrets.VITE_API_KEY }}
+            VITE_ROBOTS=${{ secrets.VITE_ROBOTS }}
+            VITE_SITE_URL=${{ secrets.VITE_SITE_URL }}
 
   scan:
     runs-on: ubuntu-latest
