@@ -63,7 +63,7 @@ const LogoPartners: React.FC<LogoPartnersProps> = ({ title }) => {
         {title}
       </h2>
       <ScrollArea className="w-full rounded-md whitespace-nowrap border-0">
-        <div className="flex w-max space-x-10 pb-8">
+        <div className="flex w-full justify-between items-center space-x-10 pb-8">
           {institutions.map((inst) => (
             <a
               key={inst.id}
