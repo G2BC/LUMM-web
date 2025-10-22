@@ -1,0 +1,22 @@
+{
+  "theme_color": "#0a100b",
+  "background_color": "#0a100b",
+  "icons": [
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "lumm512.png",
+      "type": "image/png"
+    },
+    { "purpose": "any", "sizes": "512x512", "src": "lumm512_rounded.png", "type": "image/png" }
+  ],
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "pt-BR",
+  "name": "LUMM - Luminescent Mushrooms",
+  "short_name": "LUMM",
+  "start_url": "/",
+  "scope": "/",
+  "description": "Banco de dados científico sobre fungos luminescentes."
+}
