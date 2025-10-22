@@ -1,6 +1,9 @@
 import React from "react";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { BaseLayout } from "./components/base-layout";
+import { DEFAULT_LOCALE } from "./lib/lang";
+import LanguageGuard from "./components/language-guard";
+import { useLanguageStore } from "./stores/useLanguageStore";
 
 const HomePage = React.lazy(() => import("./pages/home"));
 const ExplorePage = React.lazy(() => import("./pages/explore"));
@@ -14,19 +17,26 @@ const ContactPage = React.lazy(() => import("./pages/contact"));
 const ContributorsPage = React.lazy(() => import("./pages/contributors"));
 
 function Router() {
+  const { language } = useLanguageStore();
+  const initialLang = language ?? DEFAULT_LOCALE;
+
   return (
     <Routes>
-      <Route element={<BaseLayout />}>
-        <Route index path="/" element={<HomePage />} />
-        <Route path="/distribuicao" element={<DistributionPage />} />
-        <Route path="/explorar" element={<ExplorePage />} />
-        <Route path="/sobre" element={<AboutPage />} />
-        <Route path="/publicacoes" element={<PublicationsPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/cadastro" element={<RegisterPage />} />
-        <Route path="/especie/:species" element={<SpeciesPage />} />
-        <Route path="/contato" element={<ContactPage />} />
-        <Route path="/colaboradores" element={<ContributorsPage />} />
+      <Route path="/" element={<Navigate to={`/${initialLang}`} replace />} />
+
+      <Route path="/:lang" element={<LanguageGuard />}>
+        <Route element={<BaseLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="distribuicao" element={<DistributionPage />} />
+          <Route path="explorar" element={<ExplorePage />} />
+          <Route path="sobre" element={<AboutPage />} />
+          <Route path="publicacoes" element={<PublicationsPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="cadastro" element={<RegisterPage />} />
+          <Route path="especie/:species" element={<SpeciesPage />} />
+          <Route path="contato" element={<ContactPage />} />
+          <Route path="colaboradores" element={<ContributorsPage />} />
+        </Route>
       </Route>
     </Routes>
   );

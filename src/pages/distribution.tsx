@@ -10,8 +10,8 @@ export default function DistributionPage() {
 
   const language = i18n.language;
 
-  const src = language === "en" ? distributionEn : distributionPt;
-  const alt = language === "en" ? "Distribution of species" : "Distribuição das espécies";
+  const src = language === "pt" ? distributionPt : distributionEn;
+  const alt = language === "pt" ? "Distribuição das espécies" : "Distribution of species";
 
   return (
     <section className="container mx-auto pt-10 px-4">

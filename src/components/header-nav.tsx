@@ -1,28 +1,13 @@
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router";
+import { NavLink, useParams } from "react-router";
+import { DEFAULT_LOCALE } from "@/lib/lang";
 
 const links = [
-  {
-    path: "/",
-    label: "header.home",
-  },
-  {
-    path: "/distribuicao",
-    label: "header.distribution",
-  },
-  {
-    path: "/explorar",
-    label: "header.explore",
-  },
-  {
-    path: "/sobre",
-    label: "header.about",
-  },
-  // {
-  //   path: "/publicacoes",
-  //   label: "header.publications",
-  // },
+  { path: "/", label: "header.home" },
+  { path: "/distribuicao", label: "header.distribution" },
+  { path: "/explorar", label: "header.explore" },
+  { path: "/sobre", label: "header.about" },
 ];
 
 export function HeaderNav({
@@ -32,8 +17,11 @@ export function HeaderNav({
   mobile?: boolean;
   onClick?: VoidFunction;
 }) {
-  const { pathname } = useLocation();
+  const { lang } = useParams();
   const { t } = useTranslation();
+
+  const buildPath = (p: string) =>
+    p === "/" ? `/${lang ?? DEFAULT_LOCALE}` : `/${lang ?? DEFAULT_LOCALE}${p}`;
 
   return (
     <div
@@ -44,18 +32,21 @@ export function HeaderNav({
       )}
     >
       {links.map(({ path, label }, index) => (
-        <Link
-          to={path}
-          key={`header-nav-link-${index}`}
-          className={clsx(
-            "h-full flex items-center border-b-solid border-b-[4px] border-b-transparent transition-colors duration-500",
-            pathname === path && "!border-b-[#00C000]",
-            mobile && "max-h-[40px]"
-          )}
+        <NavLink
+          key={index}
+          to={buildPath(path)}
+          end={path === "/"}
+          className={({ isActive }) =>
+            clsx(
+              "h-full flex items-center border-b-[4px] border-b-transparent transition-colors duration-500",
+              isActive && "!border-b-[#00C000]",
+              mobile && "max-h-[40px]"
+            )
+          }
           onClick={onClick}
         >
           <span className={clsx("text-white font-bold ", !mobile && "leading-0")}>{t(label)}</span>
-        </Link>
+        </NavLink>
       ))}
     </div>
   );

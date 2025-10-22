@@ -1,0 +1,133 @@
+{
+  "translation": {
+    "common": {
+      "unavailable": "Indisponible",
+      "search": "Rechercher",
+      "back": "Retour",
+      "loading": "Chargement...",
+      "lineage": "Lignée évolutive",
+      "no_results": "Aucun résultat",
+      "taxonomy": "Taxonomie",
+      "about": "À propos",
+      "external_links": "Liens externes",
+      "source": "Source",
+      "view_more": "Voir plus"
+    },
+    "header": {
+      "home": "Accueil",
+      "distribution": "Distribution",
+      "explore": "Explorer",
+      "about": "À propos",
+      "publications": "Publications",
+      "ctas": {
+        "login": "Connexion",
+        "register": "S’inscrire"
+      }
+    },
+    "footer": {
+      "join_us_section": {
+        "title": "Rejoignez-nous :",
+        "subtitle": "Explorez avec nous l’univers",
+        "subtitle_end": "des champignons bioluminescents",
+        "cta": "S’inscrire"
+      },
+      "links": {
+        "about": "À propos du projet",
+        "contributors": "Contributeurs",
+        "contact": "Contactez-nous"
+      }
+    },
+    "home": {
+      "hero": {
+        "title": {
+          "first_block": "Bienvenue",
+          "second_block": "à"
+        },
+        "description": {
+          "first_block": "Un projet dédié à l’univers des champignons",
+          "second_block": "bioluminescents"
+        },
+        "cta": "Explorer"
+      }
+    },
+    "distribution": {
+      "title": "Distribution des espèces (2022)"
+    },
+    "explore_page": {
+      "input_placeholder": "Rechercher par espèce",
+      "result_label": "espèce(s) trouvée(s)",
+      "result_label_empty": "Aucune espèce trouvée",
+      "resulta_label_connection": "pour",
+      "page_unavailable": "La page demandée n’est pas disponible.",
+      "page_unavailable_text": "Utilisez le bouton ci-dessous pour recommencer la recherche.",
+      "page_unavailable_btn": "Recommencer",
+      "select_lineage": "Sélectionnez une lignée",
+      "select_country": "Sélectionnez une localité"
+    },
+    "contact_page": {
+      "title": "Contactez-nous",
+      "contact_heading_line1": "Remplissez le formulaire pour nous contacter.",
+      "contact_heading_line2": "Nous vous répondrons bientôt.",
+      "input_name_label": "Nom",
+      "input_name_placeholder": "Votre nom",
+      "input_email_label": "E-mail",
+      "input_email_placeholder": "Votre e-mail",
+      "input_subject_label": "Sujet",
+      "input_subject_placeholder": "Saisissez le sujet",
+      "input_message_label": "Message",
+      "input_message_placeholder": "Votre message",
+      "button_send": "Envoyer",
+      "button_sending": "Envoi...",
+      "subject_technical": "Questions techniques",
+      "subject_collaboration": "Collaborations",
+      "subject_other": "Autres"
+    },
+    "species_page": {
+      "bioluminescent_lineage": "Lignée bioluminescente",
+      "no_about": "Nous publierons bientôt la description de ce champignon.",
+      "classification": "Classification",
+      "taxonomy": {
+        "kingdom": "Règne",
+        "phylum": "Phylum",
+        "class": "Classe",
+        "order": "Ordre",
+        "family": "Famille",
+        "genus": "Genre",
+        "species": "Espèce",
+        "authors": "Auteurs",
+        "year_of_publication": "Année de publication"
+      },
+      "lumm": {
+        "section_title": "Parties luminescentes",
+        "mycelium": "Mycélium",
+        "basidiome": "Basidiome",
+        "stipe": "Stipe",
+        "pileus": "Pileus",
+        "lamellae": "Lamelles",
+        "spores": "Spores",
+        "yes": "Oui",
+        "no": "Non",
+        "unknown": "Inconnu"
+      }
+    },
+    "collaborators_page": {
+      "title": "Nos collaborateurs"
+    },
+    "about_page": {
+      "title": "À propos",
+      "paragraph1": "Le LUMM (Luminescent Mushroom Database) est un référentiel scientifique dédié à la collecte, à l’organisation et à la diffusion d’informations sur les champignons bioluminescents — des organismes capables de produire une lumière naturelle grâce à des réactions biochimiques.",
+      "paragraph2": "Tous les champignons bioluminescents connus appartiennent au phylum Basidiomycota et à l’ordre Agaricales. Ils émettent une lumière verte d’une longueur d’onde comprise entre 520 et 530 nm, suivant généralement un rythme circadien qui leur permet de briller en continu jour et nuit.",
+      "paragraph3": "Au cours des 15 dernières années, le nombre d’espèces de champignons bioluminescents connues a plus que doublé, passant de 64 à 132. Ces espèces sont regroupées en cinq principales lignées évolutives au sein des Agaricales :",
+      "lineages_list": "- Omphalotaceae (18 espèces)\n- Physalacriaceae (14 espèces)\n- Mycenaceae (96 espèces)\n- Lignée Lucentipes (3 espèces)\n- Cyphellopsidaceae (1 espèce)",
+      "paragraph4": "Ces champignons sont présents dans diverses régions du monde, principalement dans les forêts subtropicales humides riches en végétation, notamment au Japon, en Amérique du Sud, en Amérique du Nord et en Asie du Sud-Est.",
+      "paragraph5": "La base de données LUMM regroupe des informations sur la taxonomie, la morphologie, l’écologie, la distribution géographique, ainsi que des données génomiques et transcriptomiques d’espèces séquencées. La plateforme soutient la recherche sur l’évolution, l’écologie et la biologie synthétique des champignons, en fournissant une base centrale pour les analyses comparatives et phylogénétiques.",
+      "paragraph6": "Des études récentes, telles que celles de Kotlobay et al. (2023), ont élucidé la base biochimique et génétique de la bioluminescence fongique. Le phénomène résulte d’un cycle de l’acide caféique (CAC), dans lequel le métabolite 3-hydroxyhispidine agit comme la luciférine fongique. Le processus implique quatre enzymes principales, dont la luciférase (luz), codée par un groupe de gènes conservé présent chez tous les champignons bioluminescents.",
+      "paragraph7": "Ce groupe de gènes a probablement évolué une seule fois au début de l’histoire des Agaricales, avec des duplications ultérieures ayant généré de nouvelles variantes fonctionnelles. Le gène de la luciférase représente une nouvelle famille de protéines, sans homologues connus chez d’autres organismes.",
+      "paragraph8": "En intégrant des données écologiques, génétiques et biochimiques, LUMM constitue un outil essentiel pour comprendre comment et pourquoi certains champignons émettent de la lumière dans l’obscurité, tout en offrant des pistes sur l’évolution de ce phénomène fascinant dans la nature.",
+      "references": "Références",
+      "reference1": "Perry, B. A., Desjardin, D. E., & Stevani, C. V. (2024). Diversity, Distribution, and Evolution of Bioluminescent Fungi. Journal of Fungi, 11(1), 19.",
+      "reference2": "Kotlobay, A. A., Sarkisyan, K. S., Mokrushina, Y. A., Marcet-Houben, M., Serebrovskaya, E. O., Markina, N. M., ... & Yampolsky, I. V. (2018). Genetically encodable bioluminescent system from fungi. Proceedings of the National Academy of Sciences, 115(50), 12728-12732.",
+      "partners": "Institutions"
+    }
+  }
+}
