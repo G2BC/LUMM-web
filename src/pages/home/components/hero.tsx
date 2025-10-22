@@ -31,8 +31,21 @@ export function Hero() {
           </Button>
         </div>
         <div className="flex-1 self-end select-none">
-          <img draggable="false" src={heroDesktop} alt="LUMM Banner" className="hidden md:block" />
-          <img src={heroMobile} alt="LUMM Banner" className="md:hidden" />
+          <img
+            loading="eager"
+            fetchPriority="high"
+            draggable="false"
+            src={heroDesktop}
+            alt="LUMM Banner"
+            className="hidden md:block"
+          />
+          <img
+            loading="eager"
+            fetchPriority="high"
+            src={heroMobile}
+            alt="LUMM Banner"
+            className="md:hidden"
+          />
         </div>
       </section>
     </div>
