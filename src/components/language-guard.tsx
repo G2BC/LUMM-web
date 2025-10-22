@@ -22,6 +22,8 @@ export default function LanguageGuard() {
     }
 
     if (i18n.language !== current) setLanguage(current);
+
+    document.documentElement.lang = current;
   }, [lang, pathname, search, hash, nav, setLanguage, storedLang]);
 
   return <Outlet />;
