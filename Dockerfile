@@ -20,6 +20,7 @@ CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
 
 # BUILD
 FROM base AS build
+ENV NODE_ENV=production
 
 ARG VITE_API_URL
 ARG VITE_API_KEY
