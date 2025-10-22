@@ -35,6 +35,11 @@ export default defineConfig(({ mode }) => {
                 disallow: "/",
               },
         ],
+        i18n: {
+          languages: ["pt", "en", "es", "fr"],
+          defaultLanguage: "pt",
+          strategy: "prefix",
+        },
       }),
       VitePWA({
         registerType: "autoUpdate",
