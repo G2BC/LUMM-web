@@ -18,6 +18,7 @@ import type { ISelect } from "@/api/types/ISelect";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { translateCountryName } from "@/utils/translateCountryName";
+import { SUPPORTED_LOCALES, type Locale } from "@/lib/lang";
 
 interface ComboboxAsyncProps {
   api: (_search?: string, _signal?: AbortController["signal"]) => Promise<ISelect[]>;
@@ -35,11 +36,20 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
 
   const { t, i18n } = useTranslation();
 
-  const language = i18n.language;
+  const language = i18n.language as Locale;
 
   const getLabel = React.useCallback(
-    (label?: string) =>
-      !label ? "" : language === "pt" ? translateCountryName(label, "en", "pt") : label,
+    (label?: string) => {
+      if (!label) return "";
+
+      const targetLang = SUPPORTED_LOCALES.includes(language) ? (language as string) : "en";
+
+      try {
+        return translateCountryName(label, "en", targetLang) ?? label;
+      } catch {
+        return label;
+      }
+    },
     [language]
   );
 
