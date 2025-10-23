@@ -63,7 +63,6 @@ jobs:
 
       - name: Trivy fs
         run: |
-          mkdir -p artifacts
           trivy fs . \
             --scanners vuln,secret \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
@@ -78,6 +77,8 @@ jobs:
 
       - name: Trivy image
         run: |
+          docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci .
+        
           trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             --ignore-unfixed \
@@ -90,7 +91,6 @@ jobs:
 
       - name: Trivy config
         run: |
-          mkdir -p artifacts
           trivy config . \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             -f table -o artifacts/trivy-config.txt || true
@@ -101,7 +101,6 @@ jobs:
 
       - name: Calculate EPV
         run: |
-          mkdir -p artifacts
 
           Ci=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-image.json)
           Hi=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-image.json)
