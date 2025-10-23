@@ -99,12 +99,3 @@ jobs:
         with:
           name: web-dast
           path: artifacts/*
-
-  release:
-    runs-on: ubuntu-latest
-    needs: dast
-    steps:
-      - uses: googleapis/release-please-action@v4
-        with:
-          manifest-file: .release-please-manifest.json
-          config-file: release-please-config.json
