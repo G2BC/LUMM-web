@@ -1,4 +1,4 @@
-name: Lançar nova release
+name: Nova release
 
 on:
   release:
