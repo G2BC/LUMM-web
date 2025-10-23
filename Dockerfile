@@ -43,7 +43,9 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -fsS http://127.0.0.1/robots.txt || exit 1
+RUN apk add --no-cache curl
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD curl -fsS http://localhost:80/pt || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
