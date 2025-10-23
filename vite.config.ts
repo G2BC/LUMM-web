@@ -65,10 +65,15 @@ export default defineConfig(({ mode }) => {
             { purpose: "any", sizes: "512x512", src: "lumm512_rounded.png", type: "image/png" },
           ],
         },
+        includeAssets: ["sitemap.xml", "robots.txt", "manifest.webmanifest", "favicon.ico"],
         workbox: {
           globPatterns: ["**/*.{js,css,html,svg,png,webp,woff2}"],
           navigateFallback: "/index.html",
-          navigateFallbackDenylist: [/^\/api(\/|$)/, /^\/openapi\.json$/],
+          navigateFallbackDenylist: [
+            /^\/(sitemap\.xml|robots\.txt|manifest\.webmanifest)$/i,
+            /^\/(pt|en|es|fr)\/(sitemap\.xml|robots\.txt|manifest\.webmanifest)$/i,
+          ],
+
           runtimeCaching: [
             {
               urlPattern: ({ request }) => request.destination === "image",
