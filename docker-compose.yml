@@ -5,6 +5,5 @@ services:
     ports:
       - "4001:80"
     restart: unless-stopped
-    read_only: true
     security_opt:
       - no-new-privileges:true
