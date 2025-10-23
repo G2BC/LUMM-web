@@ -78,18 +78,12 @@ jobs:
 
       - name: Trivy image
         run: |
-          if ! docker pull ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest; then
-            docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest .
-          fi
-
-          # Table format
-          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest \
+          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             --ignore-unfixed \
             -f table -o artifacts/trivy-image.txt || true
 
-          # JSON format
-          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest \
+          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             --ignore-unfixed \
             -f json -o artifacts/trivy-image.json || echo '{}' > artifacts/trivy-image.json
