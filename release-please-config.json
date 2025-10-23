@@ -1,9 +1,10 @@
 {
-  "release-type": "node",
   "include-component-in-tag": false,
   "packages": {
     ".": {
-      "package-name": "."
+      "release-type": "node",
+      "component": "lumm-web",
+      "package-name": "lumm-web"
     }
   }
 }
