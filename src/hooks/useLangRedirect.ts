@@ -1,3 +1,4 @@
+import { DEFAULT_LOCALE } from "@/lib/lang";
 import { useNavigate, useParams } from "react-router";
 
 export function useLangRedirect() {
@@ -5,7 +6,7 @@ export function useLangRedirect() {
   const { lang } = useParams();
 
   return (to: string, replace = false) => {
-    const prefix = `/${lang ?? "pt"}`;
+    const prefix = `/${lang ?? DEFAULT_LOCALE}`;
     const path = to.startsWith("/") ? to : `/${to}`;
     navigate(`${prefix}${path}`, { replace });
   };

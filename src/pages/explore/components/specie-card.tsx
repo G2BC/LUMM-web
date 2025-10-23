@@ -9,11 +9,14 @@ import {
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import photoDefault from "@/assets/specie-card-default.webp";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { DEFAULT_LOCALE } from "@/lib/lang";
 
 export function SpecieCard(props: ISpecie) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { lang } = useParams();
+
   const photoFeatured = props.photos?.find((p) => p.featured === true);
   const photoLumm = props.photos?.find((p) => p.lumm === true);
   const firstPhoto = props.photos?.[0];
@@ -27,10 +30,14 @@ export function SpecieCard(props: ISpecie) {
     firstPhoto?.original_url ??
     photoDefault;
 
+  const handleClick = () => {
+    navigate(`/${lang ?? DEFAULT_LOCALE}/especie/${props.id}`);
+  };
+
   return (
     <Card
       className="p-0 border-0 overflow-hidden w-[280px] h-[350px] cursor-pointer shadow-md"
-      onClick={() => navigate(`/especie/${props.id}`)}
+      onClick={handleClick}
     >
       <CardContent className="p-0 h-full flex flex-col">
         <CardHeader className="p-0 w-full max-h-[250px] overflow-hidden">

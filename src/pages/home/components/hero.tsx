@@ -1,12 +1,14 @@
 import heroDesktop from "@/assets/home/hero_desktop.webp";
 import heroMobile from "@/assets/home/hero_mobile.webp";
 import { Button } from "@/components/ui/button";
+import { DEFAULT_LOCALE } from "@/lib/lang";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export function Hero() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { lang } = useParams();
 
   return (
     <div className="w-full bg-[#030003] h-[100vh] max-h-[800px] lg:max-h-[900px]">
@@ -24,7 +26,7 @@ export function Hero() {
             {t("home.hero.description.second_block")}
           </h2>
           <Button
-            onClick={() => navigate("/explorar")}
+            onClick={() => navigate(`/${lang ?? DEFAULT_LOCALE}/explorar`)}
             className="h-12 lg:max-w-[220px] max-w-[145px] mt-8"
           >
             {t("home.hero.cta")}

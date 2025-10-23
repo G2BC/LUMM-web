@@ -1,6 +1,7 @@
 import { fetchSpecies } from "@/api/species";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { Alert } from "@/components/alert";
+import { DEFAULT_LOCALE } from "@/lib/lang";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
@@ -9,6 +10,7 @@ export function useSpeciesPage() {
   const [dados, setDados] = useState<ISpecie | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { lang } = useParams();
 
   const getSpecies = async () => {
     try {
@@ -28,7 +30,7 @@ export function useSpeciesPage() {
         title: "Erro",
         icon: "error",
         text: "Tente novamente em alguns instantes.",
-        didClose: () => navigate("/explorar"),
+        didClose: () => navigate(`/${lang ?? DEFAULT_LOCALE}/explorar`),
       });
     } finally {
       setLoading(false);
