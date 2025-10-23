@@ -95,7 +95,7 @@ export default defineConfig(({ mode }) => {
 
             {
               urlPattern: ({ url, request }) =>
-                url.pathname.startsWith("/api/") &&
+                url.hostname === "api.lumm.uneb.br" &&
                 request.method === "GET" &&
                 !/^\/api\/(auth)(\/|$)/.test(url.pathname),
               handler: "NetworkFirst",
@@ -106,13 +106,6 @@ export default defineConfig(({ mode }) => {
                 expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 },
               },
             },
-
-            // 4) (opcional) API de outra origem
-            // {
-            //   urlPattern: /^https:\/\/api\.lumm\.uneb\.br\/v1\/.*/i,
-            //   handler: "NetworkFirst",
-            //   options: { cacheName: "api-xorigin" }
-            // }
           ],
         },
       }),
