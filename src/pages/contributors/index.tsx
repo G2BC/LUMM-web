@@ -22,7 +22,7 @@ export default function ContributorsPage() {
       </h1>
       <div className="py-10 grid grid-cols-[repeat(auto-fill,320px)] gap-6 max-sm:justify-center">
         {contributors.map((c) => {
-          const bio = c.bio[language] || c.bio.pt;
+          const bio = c.bio[language] || c.bio.en;
           return (
             <Card key={c.name} className="max-w-[320px]">
               <CardContent>
