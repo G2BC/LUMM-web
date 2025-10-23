@@ -19,9 +19,6 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
-      - run: npm run build
-
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -66,7 +63,6 @@ jobs:
 
       - name: Trivy fs
         run: |
-          mkdir -p artifacts
           trivy fs . \
             --scanners vuln,secret \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
@@ -81,25 +77,20 @@ jobs:
 
       - name: Trivy image
         run: |
-          if ! docker pull ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest; then
-            docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest .
-          fi
-
-          # Table format
-          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest \
+          docker build -t ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci .
+        
+          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             --ignore-unfixed \
             -f table -o artifacts/trivy-image.txt || true
 
-          # JSON format
-          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest \
+          trivy image ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:ci \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             --ignore-unfixed \
             -f json -o artifacts/trivy-image.json || echo '{}' > artifacts/trivy-image.json
 
       - name: Trivy config
         run: |
-          mkdir -p artifacts
           trivy config . \
             --severity LOW,MEDIUM,HIGH,CRITICAL \
             -f table -o artifacts/trivy-config.txt || true
@@ -110,12 +101,26 @@ jobs:
 
       - name: Calculate EPV
         run: |
-          mkdir -p artifacts
 
-          C=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-image.json)
-          H=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-image.json)
-          M=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-image.json)
-          L=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-image.json)
+          Ci=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-image.json)
+          Hi=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-image.json)
+          Mi=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-image.json)
+          Li=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-image.json)
+
+          Cf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-fs.json)
+          Hf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-fs.json)
+          Mf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-fs.json)
+          Lf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-fs.json)
+
+          Cc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-config.json)
+          Hc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-config.json)
+          Mc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-config.json)
+          Lc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-config.json)
+
+          C=$((Ci + Cf + Cc))
+          H=$((Hi + Hf + Hc))
+          M=$((Mi + Mf + Mc))
+          L=$((Li + Lf + Lc))
 
           echo "Detected failures - CRITICAL: $C, HIGH: $H, MEDIUM: $M, LOW: $L"
 
@@ -140,28 +145,47 @@ jobs:
           echo "🔎 EPV detected: $EPV (threshold: $EPV_THRESHOLD)"
           RESULT=$(echo "$EPV >= $EPV_THRESHOLD" | bc)
 
-          C=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-image.json)
-          H=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-image.json)
-          M=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-image.json)
-          L=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-image.json)
+          Ci=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-image.json)
+          Hi=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-image.json)
+          Mi=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-image.json)
+          Li=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-image.json)
 
-          echo "### 🔐 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          Cf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-fs.json)
+          Hf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-fs.json)
+          Mf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-fs.json)
+          Lf=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-fs.json)
+
+          Cc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="CRITICAL")] | length' artifacts/trivy-config.json)
+          Hc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH")] | length' artifacts/trivy-config.json)
+          Mc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="MEDIUM")] | length' artifacts/trivy-config.json)
+          Lc=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="LOW")] | length' artifacts/trivy-config.json)
+
+          C=$((Ci + Cf + Cc))
+          H=$((Hi + Hf + Hc))
+          M=$((Mi + Mf + Mc))
+          L=$((Li + Lf + Lc))
+
+          echo "### 🔐 Resumo da verificação de segurança" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Severity  | Count |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|-------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 🟥 CRITICAL |   $C   |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🟧 HIGH     |   $H   |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🟨 MEDIUM   |   $M   |" >> $GITHUB_STEP_SUMMARY
-          echo "| 🟦 LOW      |   $L   |" >> $GITHUB_STEP_SUMMARY
+          echo "| Severidade | Contagem |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟥 CRÍTICA  |   $C   |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟧 ALTA     |   $H   |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟨 MÉDIA    |   $M   |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🟦 BAIXA    |   $L   |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **EPV**: \`$EPV\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Threshold**: \`$EPV_THRESHOLD\`" >> $GITHUB_STEP_SUMMARY
 
           if [ "$RESULT" -eq 1 ]; then
-            echo "- ❌ **Rejected**: EPV >= threshold" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ **Reprovado**: EPV >= threshold" >> $GITHUB_STEP_SUMMARY
             exit 1
           else
-            echo "- ✅ **Approved**: EPV below threshold" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ **Aprovado**: EPV abaixo do threshold" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            echo "- ℹ️ Esta é uma solicitação de pull — a imagem foi criada, mas não enviada." >> $GITHUB_STEP_SUMMARY
           fi
         env:
           EPV_THRESHOLD: ${{ vars.EPV_THRESHOLD || 5 }}
