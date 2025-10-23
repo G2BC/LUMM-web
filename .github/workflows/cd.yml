@@ -74,7 +74,7 @@ jobs:
 
       - name: Start container
         run: |
-          docker run -d --name api -p 8000:8000 ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
+          docker run -d --name web -p 8000:8000 ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
           for i in {1..30}; do
             if curl -fsS http://localhost:8000 >/dev/null; then echo "Up"; break; fi
             sleep 2
