@@ -1,9 +1,6 @@
 # BASE
 FROM node:20 AS base
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
-  && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
 COPY package*.json .
@@ -47,6 +44,6 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD curl -fsSL http://127.0.0.1/robots.txt > /dev/null || exit 1
+  CMD wget -qO- http://127.0.0.1/robots.txt > /dev/null || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
