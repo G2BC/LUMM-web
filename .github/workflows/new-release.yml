@@ -36,34 +36,14 @@ jobs:
       - name: Update image and restart container
         working-directory: ${{ env.APP_DIR }}
         run: |
-          docker compose pull "$SERVICE"
-          docker compose up -d --no-deps "$SERVICE"
+          docker compose up -d --no-deps --pull always --wait --wait-timeout 120 "$SERVICE"
 
-      - name: Wait for container health
+      - name: Show logs on failure
+        if: failure()
         working-directory: ${{ env.APP_DIR }}
         run: |
-          set -e
-          CID=$(docker compose -f docker-compose.yml ps -q "$SERVICE")
-          if [ -z "$CID" ]; then
-            echo "❌ Could not find container for service: $SERVICE"
-            docker compose -f docker-compose.yml ps
-            exit 1
-          fi
-
-          echo "⏳ Waiting for $SERVICE to become healthy..."
-          for i in {1..60}; do
-            STATUS=$(docker inspect --format='{{.State.Health.Status}}' "$CID" 2>/dev/null || echo "none")
-            echo "Status: $STATUS"
-            if [ "$STATUS" = "healthy" ]; then
-              echo "✅ $SERVICE is healthy."
-              exit 0
-            fi
-            sleep 2
-          done
-
-          echo "❌ $SERVICE did not become healthy after 120s."
-          docker logs "$CID" || true
-          exit 1
+          docker compose ps
+          docker compose logs --tail=200 "$SERVICE" || true
 
       - name: Clean up old images
         run: docker image prune -f
