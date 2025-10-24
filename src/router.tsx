@@ -15,6 +15,7 @@ const DistributionPage = React.lazy(() => import("./pages/distribution"));
 const SpeciesPage = React.lazy(() => import("./pages/species"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
 const ContributorsPage = React.lazy(() => import("./pages/contributors"));
+const NotFoundPage = React.lazy(() => import("./pages/404"));
 
 function Router() {
   const { language } = useLanguageStore();
@@ -36,8 +37,11 @@ function Router() {
           <Route path="especie/:species" element={<SpeciesPage />} />
           <Route path="contato" element={<ContactPage />} />
           <Route path="colaboradores" element={<ContributorsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
