@@ -23,16 +23,25 @@ import { useTranslation } from "react-i18next";
 import { contactFormSchema } from "./schemas";
 import { useContactPage } from "./useContactPage";
 
+const formInitialValues = {
+  name: "",
+  email: "",
+  subject: undefined,
+  message: "",
+};
+
 export default function ContatoPage() {
   const { loading, sendMail } = useContactPage();
   const { t } = useTranslation();
 
   const form = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: formInitialValues,
   });
 
   function onSubmit(values: z.infer<typeof contactFormSchema>) {
     sendMail(values);
+    form.reset(formInitialValues);
   }
 
   return (
@@ -95,11 +104,13 @@ export default function ContatoPage() {
                     <SelectValue placeholder={t("contact_page.input_subject_placeholder")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="technical">{t("contact_page.subject_technical")}</SelectItem>
-                    <SelectItem value="collaboration">
+                    <SelectItem value="Assuntos técnicos">
+                      {t("contact_page.subject_technical")}
+                    </SelectItem>
+                    <SelectItem value="Colaborações">
                       {t("contact_page.subject_collaboration")}
                     </SelectItem>
-                    <SelectItem value="other">{t("contact_page.subject_other")}</SelectItem>
+                    <SelectItem value="Outros">{t("contact_page.subject_other")}</SelectItem>
                   </SelectContent>
                 </Select>
 

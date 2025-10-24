@@ -13,6 +13,8 @@ export const sendContact = async (
     email: values.email,
     subject: values.subject,
     message: values.message,
+    to:
+      values.subject === "Assuntos técnicos" ? "ernesto.sjunior@hotmail.com" : "stevani@iq.usp.br",
   });
 
   return resposta.data;
