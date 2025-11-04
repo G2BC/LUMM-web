@@ -2,8 +2,8 @@ name: DAST
 
 on:
   workflow_run:
-    workflows: [ "Lançar nova release" ]
-    types: [ completed ]
+    workflows: ["Lançar nova release"]
+    types: [completed]
   schedule:
     - cron: "0 3 */14 * *"
   workflow_dispatch:
@@ -15,7 +15,6 @@ permissions:
 jobs:
   dast:
     runs-on: ubuntu-latest
-    needs: deploy
     steps:
       - uses: actions/checkout@v4
 
