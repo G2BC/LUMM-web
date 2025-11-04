@@ -1,5 +1,5 @@
 # BASE
-FROM node:20 AS base
+FROM node:22-alpine AS base
 
 WORKDIR /app
 
@@ -43,7 +43,7 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl=8.14.1-r2
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl -fsS http://localhost:80/pt || exit 1
