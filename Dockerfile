@@ -35,7 +35,7 @@ ENV VITE_SITE_URL=${VITE_SITE_URL}
 RUN npm run build
 
 # PROD
-FROM nginx:1.27-alpine AS prod
+FROM nginx:1.28-alpine AS prod
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
