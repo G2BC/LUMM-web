@@ -82,6 +82,30 @@
       "subject_collaboration": "Colaboraciones",
       "subject_other": "Otros"
     },
+    "register_page": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Explora y colabora sobre especies bioluminiscentes con LUMM",
+      "name_label": "Nombre completo",
+      "name_placeholder": "Ingresa tu nombre",
+      "email_label": "Correo electrónico",
+      "email_placeholder": "tu@email.com",
+      "password_label": "Contraseña",
+      "password_placeholder": "Crea una contraseña",
+      "confirm_password_label": "Confirmar contraseña",
+      "confirm_password_placeholder": "Repite tu contraseña",
+      "submit": "Registrarse",
+      "login_prompt": "¿Ya tienes una cuenta?",
+      "login_cta": "Iniciar sesión",
+      "validation": {
+        "name_required": "Ingresa tu nombre",
+        "email_required": "Ingresa tu correo electrónico",
+        "email_invalid": "Ingresa un correo electrónico válido",
+        "password_required": "Ingresa una contraseña",
+        "password_min": "La contraseña debe tener al menos 6 caracteres",
+        "confirm_password_required": "Confirma tu contraseña",
+        "passwords_must_match": "Las contraseñas deben coincidir"
+      }
+    },
     "species_page": {
       "bioluminescent_lineage": "Línea bioluminiscente",
       "no_about": "Pronto traeremos la descripción de este hongo.",

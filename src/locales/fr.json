@@ -82,6 +82,30 @@
       "subject_collaboration": "Collaborations",
       "subject_other": "Autres"
     },
+    "register_page": {
+      "title": "Créez votre compte",
+      "subtitle": "Explorez et collaborez sur les espèces bioluminescentes avec LUMM",
+      "name_label": "Nom complet",
+      "name_placeholder": "Saisissez votre nom",
+      "email_label": "E-mail",
+      "email_placeholder": "vous@email.com",
+      "password_label": "Mot de passe",
+      "password_placeholder": "Créez un mot de passe",
+      "confirm_password_label": "Confirmez le mot de passe",
+      "confirm_password_placeholder": "Répétez votre mot de passe",
+      "submit": "S’inscrire",
+      "login_prompt": "Vous avez déjà un compte ?",
+      "login_cta": "Se connecter",
+      "validation": {
+        "name_required": "Veuillez saisir votre nom",
+        "email_required": "Veuillez saisir votre e-mail",
+        "email_invalid": "Saisissez une adresse e-mail valide",
+        "password_required": "Veuillez saisir un mot de passe",
+        "password_min": "Le mot de passe doit comporter au moins 6 caractères",
+        "confirm_password_required": "Veuillez confirmer votre mot de passe",
+        "passwords_must_match": "Les mots de passe doivent correspondre"
+      }
+    },
     "species_page": {
       "bioluminescent_lineage": "Lignée bioluminescente",
       "no_about": "Nous publierons bientôt la description de ce champignon.",
