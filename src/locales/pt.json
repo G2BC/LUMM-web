@@ -106,6 +106,23 @@
         "passwords_must_match": "As senhas precisam ser iguais"
       }
     },
+    "login_page": {
+      "title": "Bem-vindo de volta",
+      "subtitle": "Acesse sua conta para continuar explorando com o LUMM",
+      "email_label": "E-mail",
+      "email_placeholder": "voce@email.com",
+      "password_label": "Senha",
+      "password_placeholder": "Digite sua senha",
+      "submit": "Entrar",
+      "register_prompt": "Ainda não tem conta?",
+      "register_cta": "Cadastre-se",
+      "validation": {
+        "email_required": "Informe seu e-mail",
+        "email_invalid": "Digite um e-mail válido",
+        "password_required": "Informe sua senha",
+        "password_min": "A senha deve ter pelo menos 6 caracteres"
+      }
+    },
     "species_page": {
       "bioluminescent_lineage": "Linhagem bioluminescente",
       "no_about": "Em breve traremos a descrição deste cogumelo.",

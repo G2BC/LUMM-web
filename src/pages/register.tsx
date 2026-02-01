@@ -1,3 +1,4 @@
+import heroDesktop from "@/assets/home/hero_desktop.webp";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -65,14 +66,11 @@ export default function RegisterPage() {
     <div className="grid min-h-full w-full lg:grid-cols-2">
       <div className="relative hidden h-full w-full overflow-hidden bg-black lg:block">
         <img
-          src="https://inaturalist-open-data.s3.amazonaws.com/photos/108633584/medium.jpg"
+          src={heroDesktop}
           alt="Bioluminescent mushrooms"
           className="h-full w-full object-cover"
           loading="lazy"
         />
-        <span className="absolute bottom-2 right-2 ml-2 text-white text-[10px] px-1.5 py-0.5 rounded z-10">
-          (c) Thomas Fuhrmann, some rights reserved (CC BY-NC), uploaded by Thomas Fuhrmann
-        </span>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0D140E] via-transparent" />
       </div>
 

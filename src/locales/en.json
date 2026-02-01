@@ -106,6 +106,23 @@
         "passwords_must_match": "Passwords must match"
       }
     },
+    "login_page": {
+      "title": "Welcome back",
+      "subtitle": "Access your account to continue exploring with LUMM",
+      "email_label": "Email",
+      "email_placeholder": "you@example.com",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password",
+      "submit": "Log in",
+      "register_prompt": "Don't have an account?",
+      "register_cta": "Sign up",
+      "validation": {
+        "email_required": "Please enter your email",
+        "email_invalid": "Enter a valid email address",
+        "password_required": "Please enter your password",
+        "password_min": "Password must have at least 6 characters"
+      }
+    },
     "species_page": {
       "bioluminescent_lineage": "Bioluminescent lineage",
       "no_about": "We will soon provide the description of this mushroom.",
