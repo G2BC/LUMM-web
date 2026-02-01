@@ -82,6 +82,47 @@
       "subject_collaboration": "Colaborações",
       "subject_other": "Outros"
     },
+    "register_page": {
+      "title": "Crie sua conta",
+      "subtitle": "Explore e colabore sobre espécies bioluminescentes com o LUMM",
+      "name_label": "Nome completo",
+      "name_placeholder": "Digite seu nome",
+      "email_label": "E-mail",
+      "email_placeholder": "voce@email.com",
+      "password_label": "Senha",
+      "password_placeholder": "Crie uma senha",
+      "confirm_password_label": "Confirme a senha",
+      "confirm_password_placeholder": "Repita sua senha",
+      "submit": "Cadastrar",
+      "login_prompt": "Já tem uma conta?",
+      "login_cta": "Entrar",
+      "validation": {
+        "name_required": "Informe seu nome",
+        "email_required": "Informe seu e-mail",
+        "email_invalid": "Digite um e-mail válido",
+        "password_required": "Informe uma senha",
+        "password_min": "A senha deve ter pelo menos 6 caracteres",
+        "confirm_password_required": "Confirme sua senha",
+        "passwords_must_match": "As senhas precisam ser iguais"
+      }
+    },
+    "login_page": {
+      "title": "Bem-vindo de volta",
+      "subtitle": "Acesse sua conta para continuar explorando com o LUMM",
+      "email_label": "E-mail",
+      "email_placeholder": "voce@email.com",
+      "password_label": "Senha",
+      "password_placeholder": "Digite sua senha",
+      "submit": "Entrar",
+      "register_prompt": "Ainda não tem conta?",
+      "register_cta": "Cadastre-se",
+      "validation": {
+        "email_required": "Informe seu e-mail",
+        "email_invalid": "Digite um e-mail válido",
+        "password_required": "Informe sua senha",
+        "password_min": "A senha deve ter pelo menos 6 caracteres"
+      }
+    },
     "species_page": {
       "bioluminescent_lineage": "Linhagem bioluminescente",
       "no_about": "Em breve traremos a descrição deste cogumelo.",

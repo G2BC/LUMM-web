@@ -82,6 +82,47 @@
       "subject_collaboration": "Collaborations",
       "subject_other": "Other"
     },
+    "register_page": {
+      "title": "Create your account",
+      "subtitle": "Explore and collaborate on bioluminescent species with LUMM",
+      "name_label": "Full name",
+      "name_placeholder": "Enter your name",
+      "email_label": "Email",
+      "email_placeholder": "you@example.com",
+      "password_label": "Password",
+      "password_placeholder": "Create a password",
+      "confirm_password_label": "Confirm password",
+      "confirm_password_placeholder": "Repeat your password",
+      "submit": "Sign up",
+      "login_prompt": "Already have an account?",
+      "login_cta": "Log in",
+      "validation": {
+        "name_required": "Please enter your name",
+        "email_required": "Please enter your email",
+        "email_invalid": "Enter a valid email address",
+        "password_required": "Please enter a password",
+        "password_min": "Password must have at least 6 characters",
+        "confirm_password_required": "Please confirm your password",
+        "passwords_must_match": "Passwords must match"
+      }
+    },
+    "login_page": {
+      "title": "Welcome back",
+      "subtitle": "Access your account to continue exploring with LUMM",
+      "email_label": "Email",
+      "email_placeholder": "you@example.com",
+      "password_label": "Password",
+      "password_placeholder": "Enter your password",
+      "submit": "Log in",
+      "register_prompt": "Don't have an account?",
+      "register_cta": "Sign up",
+      "validation": {
+        "email_required": "Please enter your email",
+        "email_invalid": "Enter a valid email address",
+        "password_required": "Please enter your password",
+        "password_min": "Password must have at least 6 characters"
+      }
+    },
     "species_page": {
       "bioluminescent_lineage": "Bioluminescent lineage",
       "no_about": "We will soon provide the description of this mushroom.",
