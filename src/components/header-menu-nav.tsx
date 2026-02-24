@@ -9,15 +9,18 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import LanguageSwitcher from "./languege-switcher";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { HeaderNav } from "./header-nav";
 import { useState } from "react";
+import { DEFAULT_LOCALE } from "@/lib/lang";
 
 export function HeaderMenuNav() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { lang } = useParams();
+  const locale = lang ?? DEFAULT_LOCALE;
 
   function handleClose() {
     setOpen(false);
@@ -42,7 +45,7 @@ export function HeaderMenuNav() {
         <SheetFooter className="hidden">
           <Button
             onClick={() => {
-              navigate("/login");
+              navigate(`/${locale}/login`);
               handleClose();
             }}
             variant="outline"
@@ -51,7 +54,7 @@ export function HeaderMenuNav() {
           </Button>
           <Button
             onClick={() => {
-              navigate("/cadastro");
+              navigate(`/${locale}/cadastro`);
               handleClose();
             }}
             className=" t"

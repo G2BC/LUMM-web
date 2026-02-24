@@ -1,4 +1,6 @@
 import heroDesktop from "@/assets/home/hero_desktop.webp";
+import { getCurrentUser, login } from "@/api/auth";
+import { Alert } from "@/components/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,17 +12,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useEffect, useMemo } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { lang } = useParams();
+  const locale = lang ?? DEFAULT_LOCALE;
+  const setSession = useAuthStore((state) => state.setSession);
+  const setUser = useAuthStore((state) => state.setUser);
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const user = useAuthStore((state) => state.user);
 
   const loginFormSchema = useMemo(
     () =>
@@ -31,7 +40,7 @@ export default function LoginPage() {
           .email(t("login_page.validation.email_invalid")),
         password: z
           .string({ error: t("login_page.validation.password_required") })
-          .min(6, t("login_page.validation.password_min")),
+          .min(8, t("login_page.validation.password_min")),
       }),
     [t]
   );
@@ -44,9 +53,37 @@ export default function LoginPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginFormSchema>) {
-    // eslint-disable-next-line no-console
-    console.log("login submit", values);
+  useEffect(() => {
+    if (accessToken && user) {
+      navigate(`/${locale}/painel`, { replace: true });
+    }
+  }, [accessToken, user, navigate, locale]);
+
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+    try {
+      const tokens = await login(values);
+      setSession({
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+      });
+
+      const user = await getCurrentUser();
+      setUser(user);
+
+      const from = (location.state as { from?: string } | undefined)?.from;
+      const redirectTo = from ?? `/${locale}/painel`;
+
+      await Alert({
+        icon: "success",
+        title: t("login_page.success_title"),
+        text: t("login_page.success_text"),
+        confirmButtonText: "OK",
+      });
+
+      navigate(redirectTo, { replace: true });
+    } catch {
+      // O interceptor global já exibe o erro para o usuário.
+    }
   }
 
   return (
@@ -108,8 +145,8 @@ export default function LoginPage() {
                 )}
               />
 
-              <Button type="submit" className="w-full">
-                {t("login_page.submit")}
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? t("common.loading") : t("login_page.submit")}
               </Button>
 
               <p className="text-center text-sm text-white/70">
@@ -117,7 +154,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   className="font-semibold text-primary underline-offset-4 hover:underline"
-                  onClick={() => navigate(`/${lang ?? DEFAULT_LOCALE}/cadastro`)}
+                  onClick={() => navigate(`/${locale}/cadastro`)}
                 >
                   {t("login_page.register_cta")}
                 </button>

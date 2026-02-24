@@ -1,14 +1,22 @@
 import { LummLogo } from "./logo";
 import { HeaderNav } from "./header-nav";
 import { Button } from "./ui/button";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import LanguageSwitcher from "./languege-switcher";
 import { useTranslation } from "react-i18next";
 import { HeaderMenuNav } from "./header-menu-nav";
+import { DEFAULT_LOCALE } from "@/lib/lang";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { LayoutDashboard, Lock } from "lucide-react";
 
 export function Header() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { lang } = useParams();
+  const locale = lang ?? DEFAULT_LOCALE;
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const user = useAuthStore((state) => state.user);
+  const showPanelButton = Boolean(accessToken && user);
 
   return (
     <header className="h-20 w-full bg-[#0A100B] flex items-center min-h-[85px]">
@@ -20,11 +28,21 @@ export function Header() {
           <HeaderNav />
         </div>
         <div className="hidden lg:flex items-center gap-6">
-          <Button className="hidden" onClick={() => navigate("/login")} variant="outline">
-            {t("header.ctas.login")}
-          </Button>
-          <Button className="hidden" onClick={() => navigate("/cadastro")}>
-            {t("header.ctas.register")}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-primary hover:text-white hover:bg-primary"
+            title={showPanelButton ? t("header.ctas.panel") : t("header.ctas.login")}
+            onClick={() => navigate(showPanelButton ? `/${locale}/painel` : `/${locale}/login`)}
+          >
+            {showPanelButton ? (
+              <LayoutDashboard className="h-5 w-5" />
+            ) : (
+              <Lock className="h-5 w-5" />
+            )}
+            <span className="sr-only">
+              {showPanelButton ? t("header.ctas.panel") : t("header.ctas.login")}
+            </span>
           </Button>
           <LanguageSwitcher />
         </div>

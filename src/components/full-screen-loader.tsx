@@ -1,12 +1,29 @@
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
 
-export function FullScreenLoader() {
+type FullScreenLoaderProps = {
+  variant?: "dark" | "light";
+};
+
+export function FullScreenLoader({ variant = "dark" }: FullScreenLoaderProps) {
   const { t } = useTranslation();
   return (
-    <div className="fixed inset-0 bg-[#0A100B] flex flex-col items-center justify-center z-50">
-      <Loader2 className="w-8 h-8 text-[#00C000] animate-spin mb-4" />
-      <p className="text-[#00C000] font-semibold">{t("common.loading")}</p>
+    <div
+      className={cn(
+        "fixed inset-0 flex flex-col items-center justify-center z-50",
+        variant === "dark" ? "bg-[#0A100B]" : "bg-white"
+      )}
+    >
+      <Loader2
+        className={cn(
+          "w-8 h-8 animate-spin mb-4",
+          variant === "dark" ? "text-[#00C000]" : "text-[#118A2A]"
+        )}
+      />
+      <p className={cn("font-semibold", variant === "dark" ? "text-[#00C000]" : "text-slate-700")}>
+        {t("common.loading")}
+      </p>
     </div>
   );
 }

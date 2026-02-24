@@ -4,6 +4,7 @@ import { BaseLayout } from "./components/base-layout";
 import { DEFAULT_LOCALE } from "./lib/lang";
 import LanguageGuard from "./components/language-guard";
 import { useLanguageStore } from "./stores/useLanguageStore";
+import { AuthGuard } from "./components/auth-guard";
 
 const HomePage = React.lazy(() => import("./pages/home"));
 const ExplorePage = React.lazy(() => import("./pages/explore"));
@@ -15,6 +16,7 @@ const DistributionPage = React.lazy(() => import("./pages/distribution"));
 const SpeciesPage = React.lazy(() => import("./pages/species"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
 const ContributorsPage = React.lazy(() => import("./pages/contributors"));
+const InternalPanelPage = React.lazy(() => import("./pages/internal-panel"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 
 function Router() {
@@ -24,8 +26,13 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to={`/${initialLang}`} replace />} />
+      <Route path="/painel" element={<Navigate to={`/${initialLang}/painel`} replace />} />
 
       <Route path="/:lang" element={<LanguageGuard />}>
+        <Route element={<AuthGuard />}>
+          <Route path="painel" element={<InternalPanelPage />} />
+        </Route>
+
         <Route element={<BaseLayout />}>
           <Route index element={<HomePage />} />
           <Route path="distribuicao" element={<DistributionPage />} />

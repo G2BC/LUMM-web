@@ -12,16 +12,12 @@ import { cn } from "@/lib/utils";
 import { useLanguageStore } from "@/stores/useLanguageStore";
 import flagBR from "@/assets/flags/brasil.webp";
 import flagEUA from "@/assets/flags/united_states.webp";
-import flagES from "@/assets/flags/spain.webp";
-import flagFR from "@/assets/flags/france.webp";
 import { useCallback, useMemo } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
 const languages = [
   { code: "pt", name: "Português", flagImg: flagBR },
   { code: "en", name: "English", flagImg: flagEUA },
-  { code: "es", name: "Español", flagImg: flagES },
-  { code: "fr", name: "Français", flagImg: flagFR },
 ] as const;
 
 type LangCode = (typeof languages)[number]["code"];
@@ -30,9 +26,7 @@ function stripLeadingLang(pathname: string) {
   const normalized = ("/" + pathname).replace(/\/{2,}/g, "/");
   const [, first, ...rest] = normalized.split("/");
 
-  const withoutLang = ["pt", "en", "es", "fr"].includes(first ?? "")
-    ? "/" + rest.join("/")
-    : normalized;
+  const withoutLang = ["pt", "en"].includes(first ?? "") ? "/" + rest.join("/") : normalized;
 
   const trimmed = withoutLang.replace(/\/+$/g, "");
   return trimmed === "" ? "/" : trimmed;
@@ -68,13 +62,13 @@ export default function LanguageSwitcher({ onClick = () => {} }: { onClick?: Voi
         <Button
           variant="ghost"
           size="icon"
-          className="rounded-full p-0 h-10 w-10 overflow-hidden border-2 border-gray-200 hover:border-gray-300 transition-colors"
+          className="rounded-full p-0 h-8 w-8 overflow-hidden border-2 border-gray-200 hover:border-gray-300 transition-colors"
         >
           <img
             src={currentLang.flagImg}
             alt={`${currentLang.name} flag`}
-            width={40}
-            height={40}
+            width={32}
+            height={32}
             className="h-full w-full object-cover"
           />
         </Button>

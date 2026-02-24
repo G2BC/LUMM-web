@@ -97,12 +97,20 @@ function showAlert(err: AxiosError<ApiErrorPayload>) {
   return showOnce({ title: "Erro", icon: "error", text: extractMessage(err) });
 }
 
-API.interceptors.response.use(
-  (res) => res,
-  (error: AxiosError<ApiErrorPayload>) => {
-    if (typeof window !== "undefined") {
-      showAlert(error);
+let registered = false;
+
+export function registerErrorInterceptor() {
+  if (registered) return;
+
+  API.interceptors.response.use(
+    (res) => res,
+    (error: AxiosError<ApiErrorPayload>) => {
+      if (typeof window !== "undefined") {
+        showAlert(error);
+      }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
+
+  registered = true;
+}
