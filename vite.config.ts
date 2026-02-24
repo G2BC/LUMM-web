@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
               },
         ],
         i18n: {
-          languages: ["pt", "en", "es", "fr"],
+          languages: ["pt", "en"],
           defaultLanguage: "pt",
           strategy: "prefix",
         },
@@ -71,7 +71,7 @@ export default defineConfig(({ mode }) => {
           navigateFallback: "/index.html",
           navigateFallbackDenylist: [
             /^\/(sitemap\.xml|robots\.txt|manifest\.webmanifest)$/i,
-            /^\/(pt|en|es|fr)\/(sitemap\.xml|robots\.txt|manifest\.webmanifest)$/i,
+            /^\/(pt|en)\/(sitemap\.xml|robots\.txt|manifest\.webmanifest)$/i,
           ],
 
           runtimeCaching: [

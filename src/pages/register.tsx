@@ -1,4 +1,6 @@
 import heroDesktop from "@/assets/home/hero_desktop.webp";
+import { getCurrentUser, login, registerUser } from "@/api/auth";
+import { Alert } from "@/components/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,17 +12,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function RegisterPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { lang } = useParams();
+  const locale = lang ?? DEFAULT_LOCALE;
+  const setSession = useAuthStore((state) => state.setSession);
+  const setUser = useAuthStore((state) => state.setUser);
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const user = useAuthStore((state) => state.user);
 
   const registerFormSchema = useMemo(
     () =>
@@ -29,13 +37,20 @@ export default function RegisterPage() {
           name: z
             .string({ error: t("register_page.validation.name_required") })
             .min(1, t("register_page.validation.name_required")),
+          institution: z
+            .string()
+            .max(150, t("register_page.validation.institution_max"))
+            .optional(),
           email: z
             .string({ error: t("register_page.validation.email_required") })
             .min(1, t("register_page.validation.email_required"))
             .email(t("register_page.validation.email_invalid")),
           password: z
             .string({ error: t("register_page.validation.password_required") })
-            .min(6, t("register_page.validation.password_min")),
+            .min(8, t("register_page.validation.password_min"))
+            .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+/, {
+              message: t("register_page.validation.password_rules"),
+            }),
           confirmPassword: z
             .string({ error: t("register_page.validation.confirm_password_required") })
             .min(1, t("register_page.validation.confirm_password_required")),
@@ -51,15 +66,52 @@ export default function RegisterPage() {
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       name: "",
+      institution: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    // eslint-disable-next-line no-console
-    console.log("register submit", values);
+  useEffect(() => {
+    if (accessToken && user) {
+      navigate(`/${locale}/painel`, { replace: true });
+    }
+  }, [accessToken, user, navigate, locale]);
+
+  async function onSubmit(values: z.infer<typeof registerFormSchema>) {
+    try {
+      await registerUser({
+        name: values.name,
+        institution: values.institution?.trim() || undefined,
+        email: values.email,
+        password: values.password,
+      });
+
+      const tokens = await login({
+        email: values.email,
+        password: values.password,
+      });
+
+      setSession({
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+      });
+
+      const user = await getCurrentUser();
+      setUser(user);
+
+      await Alert({
+        icon: "success",
+        title: t("register_page.success_title"),
+        text: t("register_page.success_text"),
+        confirmButtonText: "OK",
+      });
+
+      navigate(`/${locale}/painel`, { replace: true });
+    } catch {
+      // O interceptor global já exibe o erro para o usuário.
+    }
   }
 
   return (
@@ -120,6 +172,24 @@ export default function RegisterPage() {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="institution"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("register_page.institution_label")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        autoComplete="organization"
+                        placeholder={t("register_page.institution_placeholder")}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <div className="grid gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
@@ -159,8 +229,8 @@ export default function RegisterPage() {
                 />
               </div>
 
-              <Button type="submit" className="w-full">
-                {t("register_page.submit")}
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? t("common.loading") : t("register_page.submit")}
               </Button>
 
               <p className="text-center text-sm text-white/70">
@@ -168,7 +238,7 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   className="font-semibold text-primary underline-offset-4 hover:underline"
-                  onClick={() => navigate(`/${lang ?? DEFAULT_LOCALE}/login`)}
+                  onClick={() => navigate(`/${locale}/login`)}
                 >
                   {t("register_page.login_cta")}
                 </button>

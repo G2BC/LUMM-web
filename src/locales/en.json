@@ -21,7 +21,8 @@
       "publications": "Publications",
       "ctas": {
         "login": "Login",
-        "register": "Sign up"
+        "register": "Sign up",
+        "panel": "Panel"
       }
     },
     "footer": {
@@ -96,15 +97,21 @@
       "submit": "Sign up",
       "login_prompt": "Already have an account?",
       "login_cta": "Log in",
+      "success_title": "Account created",
+      "success_text": "Your account is ready and authenticated.",
       "validation": {
         "name_required": "Please enter your name",
         "email_required": "Please enter your email",
         "email_invalid": "Enter a valid email address",
         "password_required": "Please enter a password",
-        "password_min": "Password must have at least 6 characters",
+        "password_min": "Password must have at least 8 characters",
+        "password_rules": "Use at least 1 uppercase, 1 lowercase, and 1 number",
         "confirm_password_required": "Please confirm your password",
-        "passwords_must_match": "Passwords must match"
-      }
+        "passwords_must_match": "Passwords must match",
+        "institution_max": "Institution must have at most 150 characters"
+      },
+      "institution_label": "Institution",
+      "institution_placeholder": "e.g. University X"
     },
     "login_page": {
       "title": "Welcome back",
@@ -116,11 +123,13 @@
       "submit": "Log in",
       "register_prompt": "Don't have an account?",
       "register_cta": "Sign up",
+      "success_title": "Login successful",
+      "success_text": "You are now authenticated.",
       "validation": {
         "email_required": "Please enter your email",
         "email_invalid": "Enter a valid email address",
         "password_required": "Please enter your password",
-        "password_min": "Password must have at least 6 characters"
+        "password_min": "Password must have at least 8 characters"
       }
     },
     "species_page": {
@@ -175,6 +184,25 @@
       "text": "This page doesn’t exist or was removed!",
       "suggestion": "We suggest you back to home",
       "button": "Back to homepage"
+    },
+    "panel_page": {
+      "back_to_site": "Back to site",
+      "logout": "Logout",
+      "title": "Panel",
+      "subtitle": "Authenticated session with protected LUMM-server routes.",
+      "profile": "Profile",
+      "role_admin": "Administrator",
+      "role_user": "User",
+      "name": "Name",
+      "email": "Email",
+      "users_title": "Registered users",
+      "users_subtitle": "List protected by JWT token + administrator claim.",
+      "loading_users": "Loading users...",
+      "col_name": "Name",
+      "col_email": "Email",
+      "col_role": "Role",
+      "col_role_admin_short": "Admin",
+      "col_role_user_short": "User"
     }
   }
 }

@@ -21,7 +21,8 @@
       "publications": "Publicações",
       "ctas": {
         "login": "Entrar",
-        "register": "Cadastre-se"
+        "register": "Cadastre-se",
+        "panel": "Painel"
       }
     },
     "footer": {
@@ -96,15 +97,21 @@
       "submit": "Cadastrar",
       "login_prompt": "Já tem uma conta?",
       "login_cta": "Entrar",
+      "success_title": "Conta criada",
+      "success_text": "Seu acesso foi liberado com sucesso.",
       "validation": {
         "name_required": "Informe seu nome",
         "email_required": "Informe seu e-mail",
         "email_invalid": "Digite um e-mail válido",
         "password_required": "Informe uma senha",
-        "password_min": "A senha deve ter pelo menos 6 caracteres",
+        "password_min": "A senha deve ter pelo menos 8 caracteres",
+        "password_rules": "Use ao menos 1 letra maiúscula, 1 minúscula e 1 número",
         "confirm_password_required": "Confirme sua senha",
-        "passwords_must_match": "As senhas precisam ser iguais"
-      }
+        "passwords_must_match": "As senhas precisam ser iguais",
+        "institution_max": "A instituição deve ter no máximo 150 caracteres"
+      },
+      "institution_label": "Instituição",
+      "institution_placeholder": "Ex.: Universidade X"
     },
     "login_page": {
       "title": "Bem-vindo de volta",
@@ -116,11 +123,13 @@
       "submit": "Entrar",
       "register_prompt": "Ainda não tem conta?",
       "register_cta": "Cadastre-se",
+      "success_title": "Login realizado",
+      "success_text": "Você foi autenticado com sucesso.",
       "validation": {
         "email_required": "Informe seu e-mail",
         "email_invalid": "Digite um e-mail válido",
         "password_required": "Informe sua senha",
-        "password_min": "A senha deve ter pelo menos 6 caracteres"
+        "password_min": "A senha deve ter pelo menos 8 caracteres"
       }
     },
     "species_page": {
@@ -175,6 +184,25 @@
       "text": "Esta página não existe ou foi removida!",
       "suggestion": "Sugerimos que você volte à página inicial",
       "button": "Voltar à página inicial"
+    },
+    "panel_page": {
+      "back_to_site": "Voltar ao site",
+      "logout": "Logout",
+      "title": "Painel",
+      "subtitle": "Sessão autenticada com as rotas protegidas do LUMM-server.",
+      "profile": "Perfil",
+      "role_admin": "Administrador",
+      "role_user": "Usuário",
+      "name": "Nome",
+      "email": "E-mail",
+      "users_title": "Usuários cadastrados",
+      "users_subtitle": "Lista protegida por token JWT + claim de administrador.",
+      "loading_users": "Carregando usuários...",
+      "col_name": "Nome",
+      "col_email": "E-mail",
+      "col_role": "Perfil",
+      "col_role_admin_short": "Admin",
+      "col_role_user_short": "User"
     }
   }
 }
