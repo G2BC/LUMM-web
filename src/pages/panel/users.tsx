@@ -6,14 +6,17 @@ import { UsersPagination } from "@/pages/panel/components/users-pagination";
 import { UsersStats } from "@/pages/panel/components/users-stats";
 import { UsersTable } from "@/pages/panel/components/users-table";
 import { usePanelUsers } from "@/pages/panel/hooks/use-panel-users";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useTranslation } from "react-i18next";
 
 export default function PanelUsersPage() {
   const { t } = useTranslation();
+  const loggedUserId = useAuthStore((state) => state.user?.id);
   const {
     users,
     isLoadingUsers,
     updatingUserId,
+    updatingAdminRoleUserId,
     resettingUserId,
     search,
     statusFilter,
@@ -23,11 +26,16 @@ export default function PanelUsersPage() {
     handleStatusFilterChange,
     handlePageChange,
     handleToggleUserActive,
+    handleToggleUserAdminRole,
     handleAdminResetPassword,
   } = usePanelUsers();
 
   function renderUserActions(item: AuthUser, mobile = false) {
-    const isBusy = updatingUserId === item.id || resettingUserId === item.id;
+    const isBusy =
+      updatingUserId === item.id ||
+      updatingAdminRoleUserId === item.id ||
+      resettingUserId === item.id;
+    const isCurrentLoggedUser = Boolean(loggedUserId && item.id === loggedUserId);
 
     return (
       <UserActionsMenu
@@ -36,9 +44,14 @@ export default function PanelUsersPage() {
         actionsLabel={t("panel_page.col_actions")}
         activateLabel={t("panel_page.action_activate")}
         deactivateLabel={t("panel_page.action_deactivate")}
+        makeAdminLabel={t("panel_page.action_make_admin")}
+        removeAdminLabel={t("panel_page.action_remove_admin")}
         resetPasswordLabel={t("panel_page.action_reset_password")}
+        disableActiveToggle={isCurrentLoggedUser}
+        disableAdminRoleToggle={isCurrentLoggedUser}
         item={item}
         onToggleActive={(target) => void handleToggleUserActive(target)}
+        onToggleAdminRole={(target) => void handleToggleUserAdminRole(target)}
         onResetPassword={(target) => void handleAdminResetPassword(target)}
       />
     );
