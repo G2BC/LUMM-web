@@ -5,18 +5,22 @@ import { Navigate, Outlet, useLocation, useParams } from "react-router";
 
 type AuthGuardProps = {
   requireAdmin?: boolean;
+  requireUser?: boolean;
 };
 
-export function AuthGuard({ requireAdmin = false }: AuthGuardProps) {
+export function AuthGuard({ requireAdmin = false, requireUser = true }: AuthGuardProps) {
   const location = useLocation();
   const { lang } = useParams();
 
   const initialized = useAuthStore((state) => state.initialized);
   const user = useAuthStore((state) => state.user);
   const accessToken = useAuthStore((state) => state.accessToken);
+  const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
 
   const locale = lang ?? DEFAULT_LOCALE;
-  const isAuthenticated = Boolean(accessToken && user);
+  const changePasswordPath = `/${locale}/trocar-senha`;
+  const isChangePasswordRoute = location.pathname === changePasswordPath;
+  const isAuthenticated = Boolean(accessToken && (requireUser ? user : true));
 
   if (!initialized) {
     return <RouteAwareLoader />;
@@ -32,6 +36,14 @@ export function AuthGuard({ requireAdmin = false }: AuthGuardProps) {
         }}
       />
     );
+  }
+
+  if (mustChangePassword && !isChangePasswordRoute) {
+    return <Navigate to={changePasswordPath} replace />;
+  }
+
+  if (!mustChangePassword && isChangePasswordRoute) {
+    return <Navigate to={`/${locale}/painel`} replace />;
   }
 
   if (requireAdmin && !user?.is_admin) {

@@ -3,8 +3,9 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 type SessionPayload = {
-  accessToken: string;
+  accessToken?: string;
   refreshToken?: string | null;
+  mustChangePassword?: boolean;
   user?: AuthUser | null;
 };
 
@@ -12,6 +13,7 @@ type AuthState = {
   initialized: boolean;
   accessToken: string | null;
   refreshToken: string | null;
+  mustChangePassword: boolean;
   user: AuthUser | null;
   setInitialized: (_initialized: boolean) => void;
   setSession: (_payload: SessionPayload) => void;
@@ -25,19 +27,22 @@ export const useAuthStore = create<AuthState>()(
       initialized: false,
       accessToken: null,
       refreshToken: null,
+      mustChangePassword: false,
       user: null,
       setInitialized: (initialized) => set({ initialized }),
-      setSession: ({ accessToken, refreshToken, user }) =>
+      setSession: ({ accessToken, refreshToken, mustChangePassword, user }) =>
         set((state) => ({
-          accessToken,
+          accessToken: accessToken ?? state.accessToken,
           refreshToken: refreshToken ?? state.refreshToken,
+          mustChangePassword: mustChangePassword ?? state.mustChangePassword,
           user: user ?? state.user,
         })),
-      setUser: (user) => set({ user }),
+      setUser: (user) => set({ user, mustChangePassword: user?.must_change_password ?? false }),
       clearSession: () =>
         set({
           accessToken: null,
           refreshToken: null,
+          mustChangePassword: false,
           user: null,
         }),
     }),
@@ -47,6 +52,7 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
+        mustChangePassword: state.mustChangePassword,
         user: state.user,
       }),
     }

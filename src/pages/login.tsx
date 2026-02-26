@@ -16,20 +16,20 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
   const { lang } = useParams();
   const locale = lang ?? DEFAULT_LOCALE;
   const setSession = useAuthStore((state) => state.setSession);
   const setUser = useAuthStore((state) => state.setUser);
   const accessToken = useAuthStore((state) => state.accessToken);
   const user = useAuthStore((state) => state.user);
+  const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
 
   const loginFormSchema = useMemo(
     () =>
@@ -54,10 +54,15 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
+    if (accessToken && mustChangePassword) {
+      navigate(`/${locale}/trocar-senha`, { replace: true });
+      return;
+    }
+
     if (accessToken && user) {
       navigate(`/${locale}/painel`, { replace: true });
     }
-  }, [accessToken, user, navigate, locale]);
+  }, [accessToken, user, mustChangePassword, navigate, locale]);
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     try {
@@ -65,20 +70,25 @@ export default function LoginPage() {
       setSession({
         accessToken: tokens.access_token,
         refreshToken: tokens.refresh_token,
+        mustChangePassword: tokens.must_change_password ?? false,
       });
 
-      const user = await getCurrentUser();
-      setUser(user);
+      if (tokens.must_change_password) {
+        await Alert({
+          icon: "info",
+          title: t("login_page.must_change_password_title"),
+          text: t("login_page.must_change_password_text"),
+          confirmButtonText: "OK",
+        });
 
-      const from = (location.state as { from?: string } | undefined)?.from;
-      const redirectTo = from ?? `/${locale}/painel`;
+        navigate(`/${locale}/trocar-senha`, { replace: true });
+        return;
+      }
 
-      await Alert({
-        icon: "success",
-        title: t("login_page.success_title"),
-        text: t("login_page.success_text"),
-        confirmButtonText: "OK",
-      });
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+
+      const redirectTo = `/${locale}/painel`;
 
       navigate(redirectTo, { replace: true });
     } catch {
