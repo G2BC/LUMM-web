@@ -16,7 +16,8 @@ export function Header() {
   const locale = lang ?? DEFAULT_LOCALE;
   const accessToken = useAuthStore((state) => state.accessToken);
   const user = useAuthStore((state) => state.user);
-  const showPanelButton = Boolean(accessToken && user);
+  const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
+  const showPanelButton = Boolean(accessToken && (user || mustChangePassword));
 
   return (
     <header className="h-20 w-full bg-[#0A100B] flex items-center min-h-[85px]">
@@ -33,7 +34,15 @@ export function Header() {
             size="icon"
             className="text-primary hover:text-white hover:bg-primary"
             title={showPanelButton ? t("header.ctas.panel") : t("header.ctas.login")}
-            onClick={() => navigate(showPanelButton ? `/${locale}/painel` : `/${locale}/login`)}
+            onClick={() =>
+              navigate(
+                showPanelButton
+                  ? mustChangePassword
+                    ? `/${locale}/trocar-senha`
+                    : `/${locale}/painel`
+                  : `/${locale}/login`
+              )
+            }
           >
             {showPanelButton ? (
               <LayoutDashboard className="h-5 w-5" />

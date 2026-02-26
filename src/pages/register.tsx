@@ -1,5 +1,5 @@
 import heroDesktop from "@/assets/home/hero_desktop.webp";
-import { getCurrentUser, login, registerUser } from "@/api/auth";
+import { registerUser } from "@/api/auth";
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,10 +25,9 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { lang } = useParams();
   const locale = lang ?? DEFAULT_LOCALE;
-  const setSession = useAuthStore((state) => state.setSession);
-  const setUser = useAuthStore((state) => state.setUser);
   const accessToken = useAuthStore((state) => state.accessToken);
   const user = useAuthStore((state) => state.user);
+  const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
 
   const registerFormSchema = useMemo(
     () =>
@@ -74,10 +73,15 @@ export default function RegisterPage() {
   });
 
   useEffect(() => {
+    if (accessToken && mustChangePassword) {
+      navigate(`/${locale}/trocar-senha`, { replace: true });
+      return;
+    }
+
     if (accessToken && user) {
       navigate(`/${locale}/painel`, { replace: true });
     }
-  }, [accessToken, user, navigate, locale]);
+  }, [accessToken, user, mustChangePassword, navigate, locale]);
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     try {
@@ -88,27 +92,14 @@ export default function RegisterPage() {
         password: values.password,
       });
 
-      const tokens = await login({
-        email: values.email,
-        password: values.password,
-      });
-
-      setSession({
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
-      });
-
-      const user = await getCurrentUser();
-      setUser(user);
-
       await Alert({
         icon: "success",
-        title: t("register_page.success_title"),
-        text: t("register_page.success_text"),
+        title: t("register_page.success_pending_title"),
+        text: t("register_page.success_pending_text"),
         confirmButtonText: "OK",
       });
 
-      navigate(`/${locale}/painel`, { replace: true });
+      navigate(`/${locale}/login`, { replace: true });
     } catch {
       // O interceptor global já exibe o erro para o usuário.
     }

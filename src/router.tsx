@@ -12,11 +12,14 @@ const AboutPage = React.lazy(() => import("./pages/about"));
 const PublicationsPage = React.lazy(() => import("./pages/publications"));
 const LoginPage = React.lazy(() => import("./pages/login"));
 const RegisterPage = React.lazy(() => import("./pages/register"));
+const ChangePasswordPage = React.lazy(() => import("./pages/change-password"));
 const DistributionPage = React.lazy(() => import("./pages/distribution"));
 const SpeciesPage = React.lazy(() => import("./pages/species"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
 const ContributorsPage = React.lazy(() => import("./pages/contributors"));
-const InternalPanelPage = React.lazy(() => import("./pages/internal-panel"));
+const InternalPanelPage = React.lazy(() => import("./pages/panel"));
+const PanelOverviewPage = React.lazy(() => import("./pages/panel/overview"));
+const PanelUsersPage = React.lazy(() => import("./pages/panel/users"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 
 function Router() {
@@ -27,10 +30,19 @@ function Router() {
     <Routes>
       <Route path="/" element={<Navigate to={`/${initialLang}`} replace />} />
       <Route path="/painel" element={<Navigate to={`/${initialLang}/painel`} replace />} />
+      <Route
+        path="/trocar-senha"
+        element={<Navigate to={`/${initialLang}/trocar-senha`} replace />}
+      />
 
       <Route path="/:lang" element={<LanguageGuard />}>
-        <Route element={<AuthGuard />}>
-          <Route path="painel" element={<InternalPanelPage />} />
+        <Route path="painel" element={<AuthGuard />}>
+          <Route element={<InternalPanelPage />}>
+            <Route index element={<PanelOverviewPage />} />
+            <Route element={<AuthGuard requireAdmin />}>
+              <Route path="usuarios" element={<PanelUsersPage />} />
+            </Route>
+          </Route>
         </Route>
 
         <Route element={<BaseLayout />}>
@@ -41,6 +53,9 @@ function Router() {
           <Route path="publicacoes" element={<PublicationsPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="cadastro" element={<RegisterPage />} />
+          <Route path="trocar-senha" element={<AuthGuard requireUser={false} />}>
+            <Route index element={<ChangePasswordPage />} />
+          </Route>
           <Route path="especie/:species" element={<SpeciesPage />} />
           <Route path="contato" element={<ContactPage />} />
           <Route path="colaboradores" element={<ContributorsPage />} />

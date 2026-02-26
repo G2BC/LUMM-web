@@ -1,6 +1,7 @@
 import type { AxiosError } from "axios";
 import { API } from ".";
 import { Alert } from "@/components/alert";
+import { shouldSilenceApiErrors } from "@/api/error-silencer";
 
 type ApiErrorPayload = {
   message?: string;
@@ -41,6 +42,8 @@ function showOnce(opts: {
 
 function showAlert(err: AxiosError<ApiErrorPayload>) {
   const status = err.response?.status;
+  const requestUrl = err.config?.url ?? "";
+  const isLoginRequest = requestUrl.includes("/auth/login");
 
   if (!status) {
     if (err.code === "ECONNABORTED") {
@@ -59,6 +62,14 @@ function showAlert(err: AxiosError<ApiErrorPayload>) {
   }
 
   if (status === 401) {
+    if (isLoginRequest) {
+      return showOnce({
+        title: "Credenciais inválidas",
+        icon: "warning",
+        text: extractMessage(err),
+      });
+    }
+
     return showOnce({
       title: "Sessão expirada",
       icon: "warning",
@@ -105,6 +116,10 @@ export function registerErrorInterceptor() {
   API.interceptors.response.use(
     (res) => res,
     (error: AxiosError<ApiErrorPayload>) => {
+      if (shouldSilenceApiErrors()) {
+        return Promise.reject(error);
+      }
+
       if (typeof window !== "undefined") {
         showAlert(error);
       }
