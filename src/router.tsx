@@ -15,11 +15,13 @@ const RegisterPage = React.lazy(() => import("./pages/register"));
 const ChangePasswordPage = React.lazy(() => import("./pages/change-password"));
 const DistributionPage = React.lazy(() => import("./pages/distribution"));
 const SpeciesPage = React.lazy(() => import("./pages/species"));
+const SpeciesRequestPage = React.lazy(() => import("./pages/species-request"));
 const ContactPage = React.lazy(() => import("./pages/contact"));
 const ContributorsPage = React.lazy(() => import("./pages/contributors"));
 const InternalPanelPage = React.lazy(() => import("./pages/panel"));
 const PanelOverviewPage = React.lazy(() => import("./pages/panel/overview"));
 const PanelUsersPage = React.lazy(() => import("./pages/panel/users"));
+const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-requests"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 
 function Router() {
@@ -42,6 +44,9 @@ function Router() {
             <Route element={<AuthGuard requireAdmin />}>
               <Route path="usuarios" element={<PanelUsersPage />} />
             </Route>
+            <Route element={<AuthGuard requireCurator />}>
+              <Route path="solicitacoes" element={<PanelSpeciesRequestsPage />} />
+            </Route>
           </Route>
         </Route>
 
@@ -57,6 +62,7 @@ function Router() {
             <Route index element={<ChangePasswordPage />} />
           </Route>
           <Route path="especie/:species" element={<SpeciesPage />} />
+          <Route path="especie/:species/solicitar-atualizacao" element={<SpeciesRequestPage />} />
           <Route path="contato" element={<ContactPage />} />
           <Route path="colaboradores" element={<ContributorsPage />} />
           <Route path="*" element={<NotFoundPage />} />

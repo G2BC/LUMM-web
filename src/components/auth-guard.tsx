@@ -5,10 +5,15 @@ import { Navigate, Outlet, useLocation, useParams } from "react-router";
 
 type AuthGuardProps = {
   requireAdmin?: boolean;
+  requireCurator?: boolean;
   requireUser?: boolean;
 };
 
-export function AuthGuard({ requireAdmin = false, requireUser = true }: AuthGuardProps) {
+export function AuthGuard({
+  requireAdmin = false,
+  requireCurator = false,
+  requireUser = true,
+}: AuthGuardProps) {
   const location = useLocation();
   const { lang } = useParams();
 
@@ -46,8 +51,18 @@ export function AuthGuard({ requireAdmin = false, requireUser = true }: AuthGuar
     return <Navigate to={`/${locale}/painel`} replace />;
   }
 
-  if (requireAdmin && !user?.is_admin) {
+  const role = (user?.role ?? "").toLowerCase();
+  const isAdmin = Boolean(user?.is_admin || role === "admin");
+
+  if (requireAdmin && !isAdmin) {
     return <Navigate to={`/${locale}`} replace />;
+  }
+
+  if (requireCurator) {
+    const isCurator = Boolean(user?.is_curator || isAdmin || role === "curator");
+    if (!isCurator) {
+      return <Navigate to={`/${locale}`} replace />;
+    }
   }
 
   return <Outlet />;

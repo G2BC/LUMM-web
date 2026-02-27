@@ -1,4 +1,4 @@
-import type { AxiosError } from "axios";
+import axios, { type AxiosError } from "axios";
 import { API } from ".";
 import { Alert } from "@/components/alert";
 import { shouldSilenceApiErrors } from "@/api/error-silencer";
@@ -41,6 +41,10 @@ function showOnce(opts: {
 }
 
 function showAlert(err: AxiosError<ApiErrorPayload>) {
+  if (axios.isCancel(err) || err.code === "ERR_CANCELED") {
+    return;
+  }
+
   const status = err.response?.status;
   const requestUrl = err.config?.url ?? "";
   const isLoginRequest = requestUrl.includes("/auth/login");

@@ -4,7 +4,45 @@ type PhotoKind = "f" | "l" | "n";
 
 export const getKind = (p: SpeciePhoto): PhotoKind => (p.featured ? "f" : p.lumm ? "l" : "n");
 
-export const getPhotoUrl = (p: SpeciePhoto) => p.medium_url ?? p.original_url ?? "";
+const normalizePublicStorageBase = (value?: string) => {
+  const raw = (value || "").trim();
+  if (!raw) return "";
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  return withProtocol.replace(/\/+$/, "");
+};
+
+const fromMinioUriToPublicUrl = (value?: string) => {
+  const raw = (value || "").trim();
+  if (!raw) return "";
+  if (!raw.startsWith("minio://")) return raw;
+
+  const withoutProtocol = raw.slice("minio://".length);
+  const separatorIndex = withoutProtocol.indexOf("/");
+  if (separatorIndex <= 0) return "";
+
+  const bucketName = withoutProtocol.slice(0, separatorIndex).trim();
+  const objectKey = withoutProtocol.slice(separatorIndex + 1).trim();
+  if (!bucketName || !objectKey) return "";
+
+  const base = normalizePublicStorageBase(import.meta.env.VITE_PUBLIC_STORAGE_BASE_URL);
+  if (!base) return "";
+
+  if (base.endsWith(`/${bucketName}`)) {
+    return `${base}/${objectKey}`;
+  }
+
+  return `${base}/${bucketName}/${objectKey}`;
+};
+
+export const getPhotoUrl = (p: SpeciePhoto) => {
+  const medium = fromMinioUriToPublicUrl(p.medium_url);
+  if (medium) return medium;
+
+  const original = fromMinioUriToPublicUrl(p.original_url);
+  if (original) return original;
+
+  return "";
+};
 
 export function sortPhotos(photos: SpeciePhoto[]) {
   const buckets: Record<PhotoKind, SpeciePhoto[]> = {
