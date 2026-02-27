@@ -172,9 +172,6 @@ export default function PanelSpeciesRequestsPage() {
 
   const getFieldLabel = (field: string) => {
     const knownFieldLabelByKey: Record<string, string> = {
-      type_country: t("panel_requests.field_type_country"),
-      lineage: t("panel_requests.field_lineage"),
-      family: t("panel_requests.field_family"),
       references_raw: t("panel_requests.field_references_raw"),
       scientific_name: t("panel_requests.field_scientific_name"),
       lum_mycelium: t("panel_requests.field_lum_mycelium"),

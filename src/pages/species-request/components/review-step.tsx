@@ -15,11 +15,13 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
   }).map((option) => {
     const action = values.luminescent_parts[option.id];
     const actionLabel =
-      action === "remove"
-        ? t("species_request.lum_action_remove")
-        : t("species_request.lum_action_add");
+      action === "remove" ? t("species_page.lumm.no") : t("species_page.lumm.yes");
     return `${t(option.labelKey)} (${actionLabel})`;
   });
+  const hasLuminescentParts = selectedLuminescentParts.length > 0;
+  const hasReferences = Boolean(values.references_raw?.trim());
+  const hasRequestNote = Boolean(values.request_note?.trim());
+  const hasSpeciesSectionData = hasLuminescentParts || hasReferences || hasRequestNote;
 
   return (
     <section className="space-y-4 text-sm">
@@ -36,15 +38,19 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
         <p className="text-xs uppercase tracking-wide text-white/60">
           {t("species_request.review_species")}
         </p>
-        <p>{values.type_country || "-"}</p>
-        <p>{values.lineage || "-"}</p>
-        <p>{values.family || "-"}</p>
-        <p>
-          {t("species_request.luminescent_parts")}:{" "}
-          {selectedLuminescentParts.length ? selectedLuminescentParts.join(", ") : "-"}
-        </p>
-        <p>{values.references_raw || "-"}</p>
-        <p>{values.request_note || "-"}</p>
+        {hasSpeciesSectionData ? (
+          <>
+            {hasLuminescentParts ? (
+              <p>
+                {t("species_request.luminescent_parts")}: {selectedLuminescentParts.join(", ")}
+              </p>
+            ) : null}
+            {hasReferences ? <p>{values.references_raw}</p> : null}
+            {hasRequestNote ? <p>{values.request_note}</p> : null}
+          </>
+        ) : (
+          <p>-</p>
+        )}
       </div>
 
       <div className="space-y-2 border-t border-white/10 pt-4">

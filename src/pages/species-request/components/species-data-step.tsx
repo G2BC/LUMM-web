@@ -1,5 +1,3 @@
-import { selectSpeciesFamily, selectLineage, selectSpeciesCountry } from "@/api/species";
-import { ComboboxAsync } from "@/components/combobox-async";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { LUMINESCENT_PART_OPTIONS } from "@/pages/species-request/constants";
@@ -17,63 +15,6 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
 
   return (
     <section className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-3">
-        <FormField
-          control={form.control}
-          name="type_country"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("species_request.type_country")}</FormLabel>
-              <FormControl>
-                <ComboboxAsync
-                  placeholder={t("species_request.type_country")}
-                  api={(search, signal) => selectSpeciesCountry(search, signal)}
-                  onSelect={(value) => field.onChange(value)}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lineage"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("species_request.lineage")}</FormLabel>
-              <FormControl>
-                <ComboboxAsync
-                  placeholder={t("species_request.lineage")}
-                  api={(search, signal) => selectLineage(search, signal)}
-                  onSelect={(value) => field.onChange(value)}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="family"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("species_request.family")}</FormLabel>
-              <FormControl>
-                <ComboboxAsync
-                  placeholder={t("species_request.family")}
-                  api={(search, signal) => selectSpeciesFamily(search, signal)}
-                  onSelect={(value) => field.onChange(value)}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
       <FormField
         control={form.control}
         name="luminescent_parts"
@@ -143,7 +84,7 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
                                   : "border-emerald-500/80 text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
                               }
                             >
-                              {t("species_request.lum_action_add")}
+                              {t("species_page.lumm.yes")}
                             </Button>
                             <Button
                               type="button"
@@ -156,7 +97,7 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
                                   : "border-red-500/80 text-red-400 hover:bg-red-500/10 hover:text-red-300"
                               }
                             >
-                              {t("species_request.lum_action_remove")}
+                              {t("species_page.lumm.no")}
                             </Button>
                           </div>
                         ) : null}
