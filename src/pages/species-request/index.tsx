@@ -16,7 +16,7 @@ import { StepProgress } from "@/pages/species-request/components/step-progress";
 import { LUMINESCENT_PART_OPTIONS, SPECIES_REQUEST_STEPS } from "@/pages/species-request/constants";
 import { usePhotoUploadState } from "@/pages/species-request/hooks/use-photo-upload-state";
 import type { SpeciesRequestFormValues } from "@/pages/species-request/types";
-import { getFileKey } from "@/pages/species-request/utils";
+import { getFileKey, normalizeUploadUrlProtocol } from "@/pages/species-request/utils";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight, Loader2, Upload } from "lucide-react";
@@ -204,7 +204,7 @@ export default function SpeciesRequestPage() {
         }
         formData.append("file", file);
 
-        const uploadResponse = await fetch(signed.upload_url, {
+        const uploadResponse = await fetch(normalizeUploadUrlProtocol(signed.upload_url), {
           method: "POST",
           body: formData,
         });
