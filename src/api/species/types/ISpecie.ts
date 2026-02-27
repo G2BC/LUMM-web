@@ -26,6 +26,7 @@ export interface ISpecie {
 export interface SpeciePhoto {
   attribution: string;
   license_code: string;
+  rights_holder?: string | null;
   medium_url?: string;
   original_url?: string;
   photo_id: number;

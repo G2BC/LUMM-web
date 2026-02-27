@@ -14,9 +14,14 @@ type UserActionsMenuProps = {
   actionsLabel: string;
   activateLabel: string;
   deactivateLabel: string;
+  makeAdminLabel: string;
+  removeAdminLabel: string;
   resetPasswordLabel: string;
+  disableActiveToggle?: boolean;
+  disableAdminRoleToggle?: boolean;
   item: AuthUser;
   onToggleActive: (_item: AuthUser) => void;
+  onToggleAdminRole: (_item: AuthUser) => void;
   onResetPassword: (_item: AuthUser) => void;
 };
 
@@ -26,9 +31,14 @@ export function UserActionsMenu({
   actionsLabel,
   activateLabel,
   deactivateLabel,
+  makeAdminLabel,
+  removeAdminLabel,
   resetPasswordLabel,
+  disableActiveToggle = false,
+  disableAdminRoleToggle = false,
   item,
   onToggleActive,
+  onToggleAdminRole,
   onResetPassword,
 }: UserActionsMenuProps) {
   return (
@@ -50,6 +60,7 @@ export function UserActionsMenu({
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem
             onClick={() => onToggleActive(item)}
+            disabled={disableActiveToggle}
             className={
               item.is_active
                 ? "text-rose-700 focus:text-rose-800"
@@ -57,6 +68,12 @@ export function UserActionsMenu({
             }
           >
             {item.is_active ? deactivateLabel : activateLabel}
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onToggleAdminRole(item)}
+            disabled={disableAdminRoleToggle}
+          >
+            {item.is_admin ? removeAdminLabel : makeAdminLabel}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => onResetPassword(item)}>
             {resetPasswordLabel}

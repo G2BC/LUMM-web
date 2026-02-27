@@ -1,6 +1,13 @@
-import { adminResetPassword, approveUser, deactivateUser, listUsers } from "@/api/auth";
+import {
+  adminResetPassword,
+  approveUser,
+  deactivateUser,
+  listUsers,
+  updateUserAdminRole,
+} from "@/api/auth";
 import { Alert } from "@/components/alert";
 import { confirmAction } from "@/components/confirm-action";
+import { useAuthStore } from "@/stores/useAuthStore";
 import type { AuthUser } from "@/api/auth/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,9 +17,11 @@ const USERS_PER_PAGE = 20;
 
 export function usePanelUsers() {
   const { t } = useTranslation();
+  const currentUserId = useAuthStore((state) => state.user?.id);
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
+  const [updatingAdminRoleUserId, setUpdatingAdminRoleUserId] = useState<string | null>(null);
   const [resettingUserId, setResettingUserId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -103,6 +112,8 @@ export function usePanelUsers() {
   );
 
   async function handleToggleUserActive(user: AuthUser) {
+    if (currentUserId && user.id === currentUserId) return;
+
     const isDeactivateAction = user.is_active;
     const isConfirmed = await confirmAction({
       title: t("panel_page.confirm_action_title"),
@@ -172,6 +183,35 @@ export function usePanelUsers() {
     }
   }
 
+  async function handleToggleUserAdminRole(user: AuthUser) {
+    if (currentUserId && user.id === currentUserId) return;
+
+    const isDemoteAction = user.is_admin;
+    const isConfirmed = await confirmAction({
+      title: t("panel_page.confirm_action_title"),
+      text: isDemoteAction
+        ? t("panel_page.confirm_remove_admin_text")
+        : t("panel_page.confirm_make_admin_text"),
+      confirmButtonText: t("panel_page.confirm_action_yes"),
+      cancelButtonText: t("panel_page.confirm_action_no"),
+    });
+
+    if (!isConfirmed) return;
+
+    setUpdatingAdminRoleUserId(user.id);
+
+    try {
+      const updatedUser = await updateUserAdminRole(user.id, !user.is_admin);
+      setUsers((prev) =>
+        prev.map((item) =>
+          item.id === user.id ? { ...item, is_admin: updatedUser.is_admin } : item
+        )
+      );
+    } finally {
+      setUpdatingAdminRoleUserId(null);
+    }
+  }
+
   function handleSearchChange(value: string) {
     setSearch(value);
     setCurrentPage(1);
@@ -190,6 +230,7 @@ export function usePanelUsers() {
     users,
     isLoadingUsers,
     updatingUserId,
+    updatingAdminRoleUserId,
     resettingUserId,
     search,
     statusFilter,
@@ -199,6 +240,7 @@ export function usePanelUsers() {
     handleStatusFilterChange,
     handlePageChange,
     handleToggleUserActive,
+    handleToggleUserAdminRole,
     handleAdminResetPassword,
   };
 }

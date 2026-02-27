@@ -1,5 +1,5 @@
 import Slide from "@/pages/species/components/slide";
-import { ChevronLeft, Link, Loader2 } from "lucide-react";
+import { ChevronLeft, Link, Loader2, PencilLine } from "lucide-react";
 import "@/assets/css/slide.css";
 import { useSpeciesPage } from "./useSpeciesPage";
 import { useNavigate } from "react-router";
@@ -7,13 +7,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router";
 import defaultPhoto from "@/assets/specie-card-default.webp";
 import { formatLuminescence, parseClassification, sortPhotos, taxonomyLabels } from "./utils";
+import { DEFAULT_LOCALE } from "@/lib/lang";
 
 export default function SpeciesPage() {
   const { dados, loading } = useSpeciesPage();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { lang } = useParams();
 
   if (loading) {
     return (
@@ -195,6 +198,22 @@ export default function SpeciesPage() {
               </TabsContent>
             </Tabs>
           </div>
+
+          <section className="mt-6 rounded-lg border border-white/15 bg-black/25 p-4 xl:max-w-[90%]">
+            <p className="text-sm font-semibold text-white">{t("species_page.contribute_title")}</p>
+            <p className="mt-1 text-sm text-white/70">{t("species_page.contribute_text")}</p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-3 h-9 w-fit rounded-md border-primary/60 bg-primary/10 px-3 text-sm font-semibold text-primary hover:bg-primary/20 hover:text-primary"
+              onClick={() =>
+                navigate(`/${lang ?? DEFAULT_LOCALE}/especie/${dados?.id}/solicitar-atualizacao`)
+              }
+            >
+              <PencilLine className="h-4 w-4" />
+              {t("species_page.request_update_cta")}
+            </Button>
+          </section>
         </div>
 
         {!!photos?.length && <Slide slides={photos} />}

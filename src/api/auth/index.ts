@@ -78,3 +78,8 @@ export const adminResetPassword = async (id: string): Promise<AdminResetPassword
   const response = await API.post<AdminResetPasswordResponse>(`/users/${id}/reset-password`);
   return response.data;
 };
+
+export const updateUserAdminRole = async (id: string, isAdmin: boolean): Promise<AuthUser> => {
+  const response = await API.patch<AuthUser>(`/users/${id}/admin`, { is_admin: isAdmin });
+  return response.data;
+};

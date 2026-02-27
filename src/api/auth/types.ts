@@ -10,6 +10,8 @@ export type AuthUser = {
   institution?: string | null;
   email: string;
   is_admin: boolean;
+  role?: "researcher" | "curator" | "admin";
+  is_curator?: boolean;
   is_active: boolean;
   must_change_password: boolean;
   created_at: string;

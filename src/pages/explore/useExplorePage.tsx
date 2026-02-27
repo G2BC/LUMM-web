@@ -1,5 +1,6 @@
 import { searchEspecies, type ISearchEspecies, type SearchEspeciesProps } from "@/api/species";
 import { paramsToObject } from "@/utils/paramsToObject";
+import axios from "axios";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
@@ -62,12 +63,13 @@ export function useExplorePage() {
       const res = await searchEspecies({ ...params, signal: controller.signal });
       setDados(res);
       setFetchedSearch(params.search?.trim() ?? "");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      if ("name" in err && err?.name !== "AbortError") {
-        setDados({ items: [], total: 0, page: null, per_page: null, pages: null });
-        setFetchedSearch(params.search?.trim() ?? "");
+    } catch (err: unknown) {
+      if (axios.isCancel(err)) {
+        return;
       }
+
+      setDados({ items: [], total: 0, page: null, per_page: null, pages: null });
+      setFetchedSearch(params.search?.trim() ?? "");
     } finally {
       setLoading(false);
     }
