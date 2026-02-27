@@ -19,3 +19,18 @@ export function formatFileSize(size: number) {
   if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
+
+export function normalizeUploadUrlProtocol(url: string) {
+  const raw = url.trim();
+  if (!raw) return raw;
+  if (typeof window === "undefined") return raw;
+
+  const isSecurePage = window.location.protocol === "https:";
+  if (!isSecurePage) return raw;
+
+  if (/^http:\/\//i.test(raw)) {
+    return raw.replace(/^http:\/\//i, "https://");
+  }
+
+  return raw;
+}
