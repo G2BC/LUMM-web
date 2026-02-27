@@ -8,9 +8,6 @@ export type SpeciesRequestFormValues = {
   requester_email: string;
   requester_institution?: string;
   request_note?: string;
-  type_country?: string;
-  lineage?: string;
-  family?: string;
   references_raw?: string;
   luminescent_parts: LuminescentPartsForm;
 };

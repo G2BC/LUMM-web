@@ -18,6 +18,7 @@ import { usePhotoUploadState } from "@/pages/species-request/hooks/use-photo-upl
 import type { SpeciesRequestFormValues } from "@/pages/species-request/types";
 import { getFileKey, normalizeUploadUrlProtocol } from "@/pages/species-request/utils";
 import type { ISpecie } from "@/api/species/types/ISpecie";
+import { optimizeImageForUpload } from "@/pages/species-request/image-upload-optimizer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight, Loader2, Upload } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -43,9 +44,6 @@ export default function SpeciesRequestPage() {
         requester_email: z.string().email(t("species_request.validation.requester_email")),
         requester_institution: z.string().trim().optional(),
         request_note: z.string().trim().optional(),
-        type_country: z.string().trim().optional(),
-        lineage: z.string().trim().optional(),
-        family: z.string().trim().optional(),
         references_raw: z.string().trim().optional(),
         luminescent_parts: z.record(
           z.enum(["mycelium", "basidiome", "stipe", "pileus", "lamellae", "spores"]),
@@ -62,9 +60,6 @@ export default function SpeciesRequestPage() {
       requester_email: "",
       requester_institution: "",
       request_note: "",
-      type_country: "",
-      lineage: "",
-      family: "",
       references_raw: "",
       luminescent_parts: {
         mycelium: "none",
@@ -145,9 +140,6 @@ export default function SpeciesRequestPage() {
 
     const textualProposedData = Object.fromEntries(
       Object.entries({
-        type_country: formValues.type_country,
-        lineage: formValues.lineage,
-        family: formValues.family,
         references_raw: formValues.references_raw,
       }).filter(([, value]) => Boolean(value?.trim()))
     );
@@ -191,10 +183,12 @@ export default function SpeciesRequestPage() {
         const fileKey = getFileKey(file);
         const legal = photoLegalByKey[fileKey];
 
+        const fileToUpload = await optimizeImageForUpload(file);
+
         const signed = await generateSpeciesPhotoUploadUrl({
-          filename: file.name,
-          mime_type: file.type || "application/octet-stream",
-          size_bytes: file.size,
+          filename: fileToUpload.name,
+          mime_type: fileToUpload.type || file.type || "application/octet-stream",
+          size_bytes: fileToUpload.size,
           species_id: speciesData.id,
         });
 
@@ -202,7 +196,7 @@ export default function SpeciesRequestPage() {
         for (const [key, value] of Object.entries(signed.fields)) {
           formData.append(key, value);
         }
-        formData.append("file", file);
+        formData.append("file", fileToUpload);
 
         const uploadResponse = await fetch(normalizeUploadUrlProtocol(signed.upload_url), {
           method: "POST",
@@ -313,9 +307,7 @@ export default function SpeciesRequestPage() {
                 <Button
                   type="button"
                   disabled={form.formState.isSubmitting}
-                  onClick={() =>
-                    void form.handleSubmit((formValues) => void onSubmit(formValues))()
-                  }
+                  onClick={() => void form.handleSubmit(onSubmit)()}
                 >
                   {form.formState.isSubmitting ? (
                     <>
