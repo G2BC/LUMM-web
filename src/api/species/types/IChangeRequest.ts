@@ -85,9 +85,15 @@ export type SpeciesPhotoReviewDecisionPayload = {
   decision: SpeciesReviewDecision;
 };
 
+export type SpeciesProposedDataFieldReviewDecisionPayload = {
+  field: string;
+  decision: SpeciesReviewDecision;
+};
+
 export type SpeciesChangeRequestReviewPayload = {
   decision?: SpeciesReviewDecision;
   proposed_data_decision?: SpeciesReviewDecision;
+  proposed_data_fields?: SpeciesProposedDataFieldReviewDecisionPayload[];
   photos?: SpeciesPhotoReviewDecisionPayload[];
   review_note?: string;
 };
