@@ -1,4 +1,4 @@
-import type { SpeciePhoto } from "@/api/species/types/ISpecie";
+import type { SpeciePhoto, SpeciesCharacteristics } from "@/api/species/types/ISpecie";
 
 type PhotoKind = "f" | "l" | "n";
 
@@ -98,4 +98,26 @@ export function formatLuminescence(value: boolean | null | undefined): string {
   if (value === true) return "species_page.lumm.yes";
   if (value === false) return "species_page.lumm.no";
   return "species_page.lumm.unknown";
+}
+
+type LocalizedCharacteristicKey =
+  | "colors"
+  | "cultivation"
+  | "finding_tips"
+  | "nearby_trees"
+  | "curiosities"
+  | "general_description";
+
+export function getLocalizedCharacteristicValue(
+  characteristics: SpeciesCharacteristics | undefined,
+  key: LocalizedCharacteristicKey,
+  isPtLanguage: boolean
+): string | null {
+  if (!characteristics) return null;
+  const ptKey = `${key}_pt` as keyof SpeciesCharacteristics;
+  const defaultValue = characteristics[key] as string | null | undefined;
+  const ptValue = characteristics[ptKey] as string | null | undefined;
+
+  if (!isPtLanguage) return defaultValue ?? null;
+  return ptValue ?? defaultValue ?? null;
 }

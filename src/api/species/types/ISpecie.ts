@@ -6,21 +6,63 @@ interface Taxonomy {
   years_of_effective_publication: string;
 }
 
+export interface SpeciesLocalizedOption {
+  id: number;
+  label_en: string;
+  label_pt: string;
+}
+
+export interface SpeciesCharacteristics {
+  colors?: string | null;
+  colors_pt?: string | null;
+  conservation_status?: string | null;
+  cultivation?: string | null;
+  cultivation_pt?: string | null;
+  curiosities?: string | null;
+  curiosities_pt?: string | null;
+  edible?: boolean | null;
+  finding_tips?: string | null;
+  finding_tips_pt?: string | null;
+  general_description?: string | null;
+  general_description_pt?: string | null;
+  growth_forms?: SpeciesLocalizedOption[];
+  habitats?: SpeciesLocalizedOption[];
+  lum_mycelium?: boolean | null;
+  lum_basidiome?: boolean | null;
+  lum_stipe?: boolean | null;
+  lum_pileus?: boolean | null;
+  lum_lamellae?: boolean | null;
+  lum_spores?: boolean | null;
+  nearby_trees?: string | null;
+  nearby_trees_pt?: string | null;
+  nutrition_modes?: SpeciesLocalizedOption[];
+  season_end_month?: number | null;
+  season_start_month?: number | null;
+  size_cm?: string | null;
+  species_id?: number;
+  substrates?: SpeciesLocalizedOption[];
+}
+
 export interface ISpecie {
   id: number;
   lineage: string;
+  similar_species?: Array<{
+    id: number | string;
+    name: string;
+  }>;
   photos: SpeciePhoto[];
   family: string;
   scientific_name: string;
-  taxonomy: Taxonomy;
-  mycobank_type: string | null;
-  mycobank_index_fungorum_id: string | null;
-  lum_mycelium: boolean | null;
-  lum_basidiome: boolean | null;
-  lum_stipe: boolean | null;
-  lum_pileus: boolean | null;
-  lum_lamellae: boolean | null;
-  lum_spores: boolean | null;
+  taxonomy?: Taxonomy;
+  species_characteristics?: SpeciesCharacteristics;
+  mycobank_type?: string | null;
+  mycobank_index_fungorum_id?: string | null;
+  lum_mycelium?: boolean | null;
+  lum_basidiome?: boolean | null;
+  lum_stipe?: boolean | null;
+  lum_pileus?: boolean | null;
+  lum_lamellae?: boolean | null;
+  lum_spores?: boolean | null;
 }
 
 export interface SpeciePhoto {

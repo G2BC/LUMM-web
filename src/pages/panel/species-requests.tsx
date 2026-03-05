@@ -92,8 +92,8 @@ export default function PanelSpeciesRequestsPage() {
   const [reviewNotes, setReviewNotes] = useState<Record<string, string>>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [previewPhoto, setPreviewPhoto] = useState<{ src: string; alt: string } | null>(null);
-  const [structuredDecisions, setStructuredDecisions] = useState<
-    Record<string, SpeciesReviewDecision>
+  const [proposedDataFieldDecisions, setProposedDataFieldDecisions] = useState<
+    Record<string, Record<string, SpeciesReviewDecision>>
   >({});
   const [photoDecisions, setPhotoDecisions] = useState<
     Record<string, Record<string, SpeciesReviewDecision>>
@@ -126,13 +126,16 @@ export default function PanelSpeciesRequestsPage() {
             : (response.items[0]?.id ?? null)
         );
 
-        setStructuredDecisions((prev) => {
-          const next: Record<string, SpeciesReviewDecision> = {};
+        setProposedDataFieldDecisions((prev) => {
+          const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
           response.items.forEach((item) => {
             if (item.status !== "pending") return;
-            if (Object.keys(item.proposed_data || {}).length > 0) {
-              next[item.id] = prev[item.id] ?? "approve";
-            }
+            const prevForRequest = prev[item.id] ?? {};
+            const proposedFields = Object.keys(item.proposed_data || {});
+            next[item.id] = {};
+            proposedFields.forEach((field) => {
+              next[item.id][field] = prevForRequest[field] ?? "approve";
+            });
           });
           return next;
         });
@@ -197,11 +200,10 @@ export default function PanelSpeciesRequestsPage() {
     return String(value);
   };
 
-  const getStructuredDecision = (requestId: string) => structuredDecisions[requestId] ?? "approve";
+  const getFieldDecision = (requestId: string, field: string) =>
+    proposedDataFieldDecisions[requestId]?.[field] ?? "approve";
   const getPhotoDecision = (requestId: string, photoId: string) =>
     photoDecisions[requestId]?.[photoId] ?? "approve";
-  const getDecisionLabel = (decision: SpeciesReviewDecision) =>
-    decision === "approve" ? t("panel_requests.approve") : t("panel_requests.reject");
   const getPhotoLicenseLabel = (licenseCode?: string | null) => {
     const normalizedCode = (licenseCode || "").trim();
     if (!normalizedCode) return t("panel_requests.photo_license_missing");
@@ -231,7 +233,7 @@ export default function PanelSpeciesRequestsPage() {
       return next;
     });
 
-    setStructuredDecisions((prev) => {
+    setProposedDataFieldDecisions((prev) => {
       if (!(updated.id in prev)) return prev;
       const next = { ...prev };
       delete next[updated.id];
@@ -283,7 +285,10 @@ export default function PanelSpeciesRequestsPage() {
     };
 
     if (hasStructuredChanges) {
-      payload.proposed_data_decision = getStructuredDecision(item.id);
+      payload.proposed_data_fields = Object.keys(item.proposed_data || {}).map((field) => ({
+        field,
+        decision: getFieldDecision(item.id, field),
+      }));
     }
 
     const confirmed = await confirmAction({
@@ -359,15 +364,17 @@ export default function PanelSpeciesRequestsPage() {
             const isBusy = reviewingId === item.id;
             const isExpanded = expandedId === item.id;
             const hasStructuredChanges = Object.keys(item.proposed_data || {}).length > 0;
-            const structuredDecision = hasStructuredChanges ? getStructuredDecision(item.id) : null;
+            const approvedFieldsCount = Object.keys(item.proposed_data || {}).filter(
+              (field) => getFieldDecision(item.id, field) === "approve"
+            ).length;
+            const rejectedFieldsCount =
+              Object.keys(item.proposed_data || {}).length - approvedFieldsCount;
             const approvedPhotosCount = item.photos.filter(
               (photo) => getPhotoDecision(item.id, photo.id) === "approve"
             ).length;
             const rejectedPhotosCount = item.photos.length - approvedPhotosCount;
-            const approvedItemsCount =
-              approvedPhotosCount + (structuredDecision === "approve" ? 1 : 0);
-            const rejectedItemsCount =
-              rejectedPhotosCount + (structuredDecision === "reject" ? 1 : 0);
+            const approvedItemsCount = approvedPhotosCount + approvedFieldsCount;
+            const rejectedItemsCount = rejectedPhotosCount + rejectedFieldsCount;
             const summaryOutcomeLabel =
               approvedItemsCount > 0 && rejectedItemsCount > 0
                 ? t("panel_requests.status_partial_approved")
@@ -426,17 +433,6 @@ export default function PanelSpeciesRequestsPage() {
                         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                           {t("panel_requests.proposed_data")}
                         </p>
-                        {item.status === "pending" && hasStructuredChanges ? (
-                          <DecisionToggle
-                            value={getStructuredDecision(item.id)}
-                            onChange={(decision) =>
-                              setStructuredDecisions((prev) => ({
-                                ...prev,
-                                [item.id]: decision,
-                              }))
-                            }
-                          />
-                        ) : null}
                       </div>
 
                       {hasStructuredChanges ? (
@@ -446,11 +442,31 @@ export default function PanelSpeciesRequestsPage() {
                               key={field}
                               className="border-b border-slate-200 pb-2 last:border-0 last:pb-0"
                             >
-                              <p className="font-medium text-slate-700">{getFieldLabel(field)}</p>
-                              <p className="text-slate-600">
-                                {renderValue(item.current_data?.[field])} {"→"}{" "}
-                                {renderValue(afterValue)}
-                              </p>
+                              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                  <p className="font-medium text-slate-700">
+                                    {getFieldLabel(field)}
+                                  </p>
+                                  <p className="text-slate-600">
+                                    {renderValue(item.current_data?.[field])} {"→"}{" "}
+                                    {renderValue(afterValue)}
+                                  </p>
+                                </div>
+                                {item.status === "pending" ? (
+                                  <DecisionToggle
+                                    value={getFieldDecision(item.id, field)}
+                                    onChange={(decision) =>
+                                      setProposedDataFieldDecisions((prev) => ({
+                                        ...prev,
+                                        [item.id]: {
+                                          ...(prev[item.id] || {}),
+                                          [field]: decision,
+                                        },
+                                      }))
+                                    }
+                                  />
+                                ) : null}
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -569,8 +585,12 @@ export default function PanelSpeciesRequestsPage() {
                           </p>
                           <p>
                             {t("panel_requests.decision_summary_structured")}:{" "}
-                            {structuredDecision
-                              ? getDecisionLabel(structuredDecision)
+                            {hasStructuredChanges
+                              ? t("panel_requests.decision_summary_fields", {
+                                  approved: approvedFieldsCount,
+                                  rejected: rejectedFieldsCount,
+                                  total: Object.keys(item.proposed_data || {}).length,
+                                })
                               : t("panel_requests.decision_summary_not_applicable")}
                           </p>
                           <p>
@@ -601,18 +621,6 @@ export default function PanelSpeciesRequestsPage() {
                           <Button
                             disabled={isBusy}
                             onClick={() => void handleGranularReview(item)}
-                            className="bg-sky-600 text-white hover:bg-sky-700"
-                          >
-                            {isBusy ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <Check className="h-4 w-4" />
-                            )}
-                            {t("panel_requests.apply_selection")}
-                          </Button>
-                          <Button
-                            disabled={isBusy}
-                            onClick={() => void handleReview(item, "approve")}
                             className="bg-emerald-600 text-white hover:bg-emerald-700"
                           >
                             {isBusy ? (
@@ -620,7 +628,7 @@ export default function PanelSpeciesRequestsPage() {
                             ) : (
                               <Check className="h-4 w-4" />
                             )}
-                            {t("panel_requests.approve_request")}
+                            {t("panel_requests.approve_with_selection")}
                           </Button>
                           <Button
                             disabled={isBusy}
