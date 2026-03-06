@@ -174,6 +174,44 @@
         "colors": "Colors",
         "size_cm": "Size (cm)",
         "conservation_status": "Conservation status",
+        "conservation_status_values": {
+          "NE": {
+            "name": "Not Evaluated",
+            "description": "Species that have not yet been assessed using the IUCN Red List criteria."
+          },
+          "DD": {
+            "name": "Data Deficient",
+            "description": "Species for which there is insufficient information to assess its risk of extinction."
+          },
+          "LC": {
+            "name": "Least Concern",
+            "description": "Species evaluated and found to have a low risk of extinction."
+          },
+          "NT": {
+            "name": "Near Threatened",
+            "description": "Species close to qualifying for a threatened category or likely to become threatened in the near future."
+          },
+          "VU": {
+            "name": "Vulnerable",
+            "description": "Species facing a high risk of extinction in the wild."
+          },
+          "EN": {
+            "name": "Endangered",
+            "description": "Species facing a very high risk of extinction in the wild."
+          },
+          "CR": {
+            "name": "Critically Endangered",
+            "description": "Species facing an extremely high risk of extinction in the wild."
+          },
+          "EW": {
+            "name": "Extinct in the Wild",
+            "description": "Species that survives only in cultivation, captivity, or outside its natural range."
+          },
+          "EX": {
+            "name": "Extinct",
+            "description": "Species for which there is no reasonable doubt that the last individual has died."
+          }
+        },
         "edible": "Edible",
         "no_information": "No information",
         "cultivation": "Cultivation",

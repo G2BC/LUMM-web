@@ -1,12 +1,12 @@
-import CR from "./CR.png";
-import DD from "./DD.png";
-import EN from "./EN.png";
-import EW from "./EW.png";
-import EX from "./EX.png";
-import LC from "./LC.png";
-import NE from "./NE.png";
-import NT from "./NT.png";
-import VU from "./VU.png";
+import NE from "./NE.svg";
+import CR from "./CR.svg";
+import DD from "./DD.svg";
+import EN from "./EN.svg";
+import EW from "./EW.svg";
+import EX from "./EX.svg";
+import LC from "./LC.svg";
+import NT from "./NT.svg";
+import VU from "./VU.svg";
 
 export const IUCN_Red_List_icons = {
   CR,

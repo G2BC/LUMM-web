@@ -46,7 +46,14 @@ const Slide: React.FC<PropType> = (props) => {
             return (
               <div className="embla__slide" key={index}>
                 <div className="embla__slide__number relative">
-                  <img className="h-full w-full object-cover object-center" src={slide.photo} />
+                  <img
+                    className="h-full w-full object-cover object-center"
+                    src={slide.photo}
+                    alt=""
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                  />
                   {!!slide.attribution && (
                     <span className="absolute bottom-2 right-2 ml-2 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded">
                       {slide.attribution}
@@ -76,7 +83,13 @@ const Slide: React.FC<PropType> = (props) => {
                     type="button"
                     className="embla-thumbs__slide__number overflow-hidden"
                   >
-                    <img src={photo} className="h-[80px] w-[80px] object-cover object-center" />
+                    <img
+                      src={photo}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="h-[80px] w-[80px] object-cover object-center"
+                    />
                   </button>
                 </div>
               );

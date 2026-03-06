@@ -121,3 +121,35 @@ export function getLocalizedCharacteristicValue(
   if (!isPtLanguage) return defaultValue ?? null;
   return ptValue ?? defaultValue ?? null;
 }
+
+export function formatLocalizedMonth(language: string, month?: number | null) {
+  if (typeof month !== "number" || month < 1 || month > 12) return null;
+  const monthLabel = new Intl.DateTimeFormat(language, { month: "long" }).format(
+    new Date(2020, month - 1, 1)
+  );
+  return monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1);
+}
+
+export function withNoInformationFallback(
+  value: string | number | null | undefined,
+  noInformationLabel: string
+) {
+  if (typeof value === "string") return value.trim() ? value : noInformationLabel;
+  return value ?? noInformationLabel;
+}
+
+export function getLocalizedOptionLabels(
+  options: Array<{ label_pt: string; label_en: string }> | null | undefined,
+  isPtLanguage: boolean
+) {
+  if (!options?.length) return null;
+  return options
+    .map((item) => (isPtLanguage ? item.label_pt : item.label_en))
+    .filter(Boolean)
+    .join(", ");
+}
+
+export function normalizeConservationStatusCode(value: string | null | undefined) {
+  const raw = (value || "").trim().toUpperCase();
+  return !raw || raw === "NONE" ? "NE" : raw;
+}
