@@ -174,6 +174,44 @@
         "colors": "Cores",
         "size_cm": "Tamanho (cm)",
         "conservation_status": "Status de conservação",
+        "conservation_status_values": {
+          "NE": {
+            "name": "Não Avaliada",
+            "description": "Espécie que ainda não foi avaliada segundo os critérios da Lista Vermelha da IUCN."
+          },
+          "DD": {
+            "name": "Dados Insuficientes",
+            "description": "Espécie com dados insuficientes para avaliar seu risco de extinção."
+          },
+          "LC": {
+            "name": "Pouco Preocupante",
+            "description": "Espécie avaliada com baixo risco de extinção."
+          },
+          "NT": {
+            "name": "Quase Ameaçada",
+            "description": "Espécie próxima de se enquadrar em uma categoria de ameaça ou que pode se tornar ameaçada em breve."
+          },
+          "VU": {
+            "name": "Vulnerável",
+            "description": "Espécie com alto risco de extinção na natureza."
+          },
+          "EN": {
+            "name": "Em Perigo",
+            "description": "Espécie com risco muito alto de extinção na natureza."
+          },
+          "CR": {
+            "name": "Criticamente em Perigo",
+            "description": "Espécie com risco extremamente alto de extinção na natureza."
+          },
+          "EW": {
+            "name": "Extinta na Natureza",
+            "description": "Espécie que sobrevive apenas em cultivo, cativeiro ou fora de sua área natural."
+          },
+          "EX": {
+            "name": "Extinta",
+            "description": "Espécie para a qual não há dúvida razoável de que o último indivíduo morreu."
+          }
+        },
         "edible": "Comestível",
         "no_information": "Sem informação",
         "cultivation": "Cultivo",

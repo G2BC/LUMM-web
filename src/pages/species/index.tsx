@@ -4,14 +4,13 @@ import {
   ChevronLeft,
   ExternalLink,
   FileText,
+  FlaskConical,
   Info,
-  Leaf,
   Lightbulb,
   Link2,
   Loader2,
   PencilLine,
   Search,
-  Sprout,
   Sparkles,
   Users,
 } from "lucide-react";
@@ -23,15 +22,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import defaultPhoto from "@/assets/specie-card-default.webp";
-import { IUCN_Red_List_icons } from "@/assets/IUCN_Red_List_icons";
 import {
+  formatLocalizedMonth,
   getLocalizedCharacteristicValue,
+  getLocalizedOptionLabels,
+  normalizeConservationStatusCode,
   parseClassification,
   sortPhotos,
   taxonomyLabels,
+  withNoInformationFallback,
 } from "./utils";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { SimilarSpecies } from "./components/similarSpecies";
+import { useIucnIcon } from "./hooks/useIucnIcon";
 
 export default function SpeciesPage() {
   const { dados, loading } = useSpeciesPage();
@@ -46,14 +49,6 @@ export default function SpeciesPage() {
       dados?.taxonomy?.authors ||
       dados?.taxonomy?.years_of_effective_publication
   );
-
-  const formatMonth = (month?: number | null) => {
-    if (typeof month !== "number" || month < 1 || month > 12) return null;
-    const monthLabel = new Intl.DateTimeFormat(i18n.language, { month: "long" }).format(
-      new Date(2020, month - 1, 1)
-    );
-    return monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1);
-  };
 
   const lumStatusChipClass = (status: "yes" | "no" | "unknown") => {
     if (status === "yes") return "border-emerald-400/45 bg-emerald-500/15 text-emerald-200";
@@ -74,53 +69,57 @@ export default function SpeciesPage() {
     { label: t("species_page.lumm.spores"), value: characteristics?.lum_spores, level: 2 },
   ];
 
-  const seasonStart = formatMonth(characteristics?.season_start_month);
-  const seasonEnd = formatMonth(characteristics?.season_end_month);
+  const seasonStart = formatLocalizedMonth(i18n.language, characteristics?.season_start_month);
+  const seasonEnd = formatLocalizedMonth(i18n.language, characteristics?.season_end_month);
   const noInformationLabel = t("species_page.fields.no_information");
-  const withFallback = (value: string | number | null | undefined) => {
-    if (typeof value === "string") return value.trim() ? value : noInformationLabel;
-    return value ?? noInformationLabel;
-  };
-  const nutritionModesValue = characteristics?.nutrition_modes?.length
-    ? characteristics.nutrition_modes
-        .map((mode) => (isPtLanguage ? mode.label_pt : mode.label_en))
-        .filter(Boolean)
-        .join(", ")
-    : null;
-  const growthFormsValue = characteristics?.growth_forms?.length
-    ? characteristics.growth_forms
-        .map((item) => (isPtLanguage ? item.label_pt : item.label_en))
-        .filter(Boolean)
-        .join(", ")
-    : null;
-  const substratesValue = characteristics?.substrates?.length
-    ? characteristics.substrates
-        .map((item) => (isPtLanguage ? item.label_pt : item.label_en))
-        .filter(Boolean)
-        .join(", ")
-    : null;
-  const habitatsValue = characteristics?.habitats?.length
-    ? characteristics.habitats
-        .map((habitat) => (isPtLanguage ? habitat.label_pt : habitat.label_en))
-        .filter(Boolean)
-        .join(", ")
-    : null;
-  const conservationStatusIcon =
-    IUCN_Red_List_icons[
-      (characteristics?.conservation_status || "")
-        .trim()
-        .toUpperCase() as keyof typeof IUCN_Red_List_icons
-    ];
+  const nutritionModesValue = getLocalizedOptionLabels(
+    characteristics?.nutrition_modes,
+    isPtLanguage
+  );
+  const growthFormsValue = getLocalizedOptionLabels(characteristics?.growth_forms, isPtLanguage);
+  const substratesValue = getLocalizedOptionLabels(characteristics?.substrates, isPtLanguage);
+  const habitatsValue = getLocalizedOptionLabels(characteristics?.habitats, isPtLanguage);
+  const conservationStatusCode = normalizeConservationStatusCode(
+    characteristics?.conservation_status
+  );
+  const conservationStatusIcon = useIucnIcon(conservationStatusCode);
+  const conservationStatusLabel = t(
+    `species_page.fields.conservation_status_values.${conservationStatusCode}.name`,
+    {
+      defaultValue: t("species_page.fields.conservation_status_values.NE.name"),
+    }
+  );
+  const conservationStatusDescription = t(
+    `species_page.fields.conservation_status_values.${conservationStatusCode}.description`,
+    {
+      defaultValue: t("species_page.fields.conservation_status_values.NE.description"),
+    }
+  );
+  const nearbyTreesValue = withNoInformationFallback(
+    getLocalizedCharacteristicValue(characteristics, "nearby_trees", isPtLanguage),
+    noInformationLabel
+  );
+  const seasonValue =
+    seasonStart && seasonEnd
+      ? `${seasonStart} à ${seasonEnd}`
+      : t("species_page.fields.no_information");
 
   const characteristicRows: Array<{
     label: string;
     value: string | number;
     longText?: boolean;
+    tooltip?: string;
   }> = [
-    { label: t("species_page.fields.size_cm"), value: withFallback(characteristics?.size_cm) },
+    {
+      label: t("species_page.fields.size_cm"),
+      value: withNoInformationFallback(characteristics?.size_cm, noInformationLabel),
+    },
     {
       label: t("species_page.fields.colors"),
-      value: withFallback(getLocalizedCharacteristicValue(characteristics, "colors", isPtLanguage)),
+      value: withNoInformationFallback(
+        getLocalizedCharacteristicValue(characteristics, "colors", isPtLanguage),
+        noInformationLabel
+      ),
       longText: true,
     },
     {
@@ -134,45 +133,33 @@ export default function SpeciesPage() {
     },
     {
       label: t("species_page.fields.growth_forms"),
-      value: withFallback(growthFormsValue),
+      value: withNoInformationFallback(growthFormsValue, noInformationLabel),
     },
     {
       label: t("species_page.fields.nutrition_modes"),
-      value: withFallback(nutritionModesValue),
+      value: withNoInformationFallback(nutritionModesValue, noInformationLabel),
     },
     {
       label: t("species_page.fields.substrates"),
-      value: withFallback(substratesValue),
+      value: withNoInformationFallback(substratesValue, noInformationLabel),
     },
     {
       label: t("species_page.fields.habitats"),
-      value: withFallback(habitatsValue),
-    },
-    {
-      label: t("species_page.fields.nearby_trees"),
-      value: withFallback(
-        getLocalizedCharacteristicValue(characteristics, "nearby_trees", isPtLanguage)
-      ),
-      longText: true,
-    },
-    {
-      label: t("species_page.fields.season"),
-      value:
-        seasonStart && seasonEnd
-          ? `${seasonStart} à ${seasonEnd}`
-          : t("species_page.fields.no_information"),
+      value: withNoInformationFallback(habitatsValue, noInformationLabel),
     },
     {
       label: t("species_page.fields.conservation_status"),
-      value: withFallback(characteristics?.conservation_status),
+      value: conservationStatusLabel,
+      tooltip: conservationStatusDescription,
     },
   ];
 
   const detailedCharacteristicCards: Array<{
     key: "cultivation" | "finding_tips" | "curiosities" | "general_description";
     label: string;
-    value: string;
-    icon: "sprout" | "search" | "lightbulb" | "file_text";
+    value: string | number;
+    icon: "flask" | "search" | "lightbulb" | "file_text";
+    details?: Array<{ label: string; value: string | number }>;
   }> = [
     {
       key: "cultivation",
@@ -180,7 +167,7 @@ export default function SpeciesPage() {
       value:
         getLocalizedCharacteristicValue(characteristics, "cultivation", isPtLanguage) ||
         t("species_page.fields.no_information"),
-      icon: "sprout",
+      icon: "flask",
     },
     {
       key: "finding_tips",
@@ -189,6 +176,10 @@ export default function SpeciesPage() {
         getLocalizedCharacteristicValue(characteristics, "finding_tips", isPtLanguage) ||
         t("species_page.fields.no_information"),
       icon: "search",
+      details: [
+        { label: t("species_page.fields.nearby_trees"), value: nearbyTreesValue },
+        { label: t("species_page.fields.season"), value: seasonValue },
+      ],
     },
     {
       key: "curiosities",
@@ -212,20 +203,23 @@ export default function SpeciesPage() {
     .map((item, index) => {
       const label = taxonomyLabels[index];
       if (!label || !item) return null;
-      return { label: t(label), value: item };
+      return { label: t(label), value: item, level: index };
     })
-    .filter((item): item is { label: string; value: string } => Boolean(item))
+    .filter((item): item is { label: string; value: string; level: number } => Boolean(item))
     .concat({
       label: t("species_page.taxonomy.species"),
       value: (dados?.scientific_name?.trim().split(/\s+/).pop() || "").trim(),
+      level: taxonomyLabels.length,
     })
     .concat({
       label: t("species_page.taxonomy.authors"),
       value: dados?.taxonomy?.authors || "",
+      level: 0,
     })
     .concat({
       label: t("species_page.taxonomy.year_of_publication"),
       value: dados?.taxonomy?.years_of_effective_publication || "",
+      level: 0,
     });
 
   const sectionCardClass = "rounded-2xl border border-white/15 bg-white/[0.02] backdrop-blur-[1px]";
@@ -266,17 +260,19 @@ export default function SpeciesPage() {
       <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-8">
         <div className="text-white max-xl:order-1">
           <header className="xl:max-w-[95%]">
-            <div className="flex items-center gap-3 xl:gap-4">
+            <div className="flex items-center gap-5 xl:gap-6">
               <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic tracking-tight">
                 {dados?.scientific_name}
               </h1>
               {conservationStatusIcon ? (
-                <img
-                  src={conservationStatusIcon}
-                  alt={characteristics?.conservation_status || "IUCN"}
-                  title={characteristics?.conservation_status || "IUCN"}
-                  className="h-9 w-9 xl:h-11 xl:w-11 shrink-0"
-                />
+                <span title={conservationStatusDescription} className="inline-flex">
+                  <img
+                    src={conservationStatusIcon}
+                    alt={conservationStatusCode}
+                    title={conservationStatusCode}
+                    className="h-12 w-12 xl:h-16 xl:w-16 shrink-0"
+                  />
+                </span>
               ) : null}
             </div>
           </header>
@@ -340,7 +336,7 @@ export default function SpeciesPage() {
               <CardContent className={sectionCardContentClass}>
                 <div className={sectionTitleWrapClass}>
                   <span className={sectionIconWrapClass}>
-                    <Leaf className="h-4 w-4" />
+                    <Info className="h-4 w-4" />
                   </span>
                   <p className={sectionTitleClass}>{t("species_page.sections.characteristics")}</p>
                 </div>
@@ -360,15 +356,26 @@ export default function SpeciesPage() {
                             }`}
                           >
                             <p className={rowLabelClass}>{row.label}</p>
-                            <p
-                              className={`${rowValueClass} ${
-                                useLongTextLayout
-                                  ? "text-left leading-relaxed text-white/88"
-                                  : "max-w-[55%] break-words text-right"
+                            <div
+                              className={`flex items-center gap-1.5 ${
+                                useLongTextLayout ? "justify-start" : "max-w-[55%] justify-end"
                               }`}
                             >
-                              {row.value}
-                            </p>
+                              <p
+                                className={`${rowValueClass} ${
+                                  useLongTextLayout
+                                    ? "text-left leading-relaxed text-white/88"
+                                    : "break-words text-right"
+                                }`}
+                              >
+                                {row.value}
+                              </p>
+                              {row.tooltip ? (
+                                <span title={row.tooltip} className="inline-flex">
+                                  <Info className="h-3.5 w-3.5 text-white/50" />
+                                </span>
+                              ) : null}
+                            </div>
                           </div>
                         );
                       })()
@@ -385,8 +392,8 @@ export default function SpeciesPage() {
                 <CardContent className={sectionCardContentClass}>
                   <div className={sectionTitleWrapClass}>
                     <span className={sectionIconWrapClass}>
-                      {item.icon === "sprout" ? (
-                        <Sprout className="h-4 w-4" />
+                      {item.icon === "flask" ? (
+                        <FlaskConical className="h-4 w-4" />
                       ) : item.icon === "search" ? (
                         <Search className="h-4 w-4" />
                       ) : item.icon === "lightbulb" ? (
@@ -402,6 +409,33 @@ export default function SpeciesPage() {
                   <p className="text-[0.98rem] leading-relaxed text-white/88 whitespace-pre-line">
                     {item.value}
                   </p>
+                  {item.details?.length ? (
+                    <div className="mt-3 space-y-2 border-t border-white/10 pt-3">
+                      {item.details.map((detail) => {
+                        const useStackedLayout =
+                          typeof detail.value === "string" && detail.value.length > 48;
+                        return (
+                          <div
+                            key={detail.label}
+                            className={
+                              useStackedLayout
+                                ? "space-y-1"
+                                : "flex items-start justify-between gap-4"
+                            }
+                          >
+                            <p className={rowLabelClass}>{detail.label}</p>
+                            <p
+                              className={`text-[0.98rem] font-medium text-white/90 break-words ${
+                                useStackedLayout ? "text-left" : "max-w-[60%] text-right"
+                              }`}
+                            >
+                              {detail.value}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : null}
                 </CardContent>
               </Card>
             ))}
@@ -423,7 +457,13 @@ export default function SpeciesPage() {
                           key={row.label}
                           className="flex items-center justify-between border-b border-white/10 pb-2 last:border-b-0"
                         >
-                          <p className={rowLabelClass}>{row.label}</p>
+                          <div
+                            className="flex items-center gap-2"
+                            style={{ marginLeft: `${row.level * 12}px` }}
+                          >
+                            {row.level > 0 ? <span className="text-white/45">↳</span> : null}
+                            <p className={rowLabelClass}>{row.label}</p>
+                          </div>
                           <p className={rowValueClass}>{row.value}</p>
                         </div>
                       ))}
