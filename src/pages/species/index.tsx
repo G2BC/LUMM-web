@@ -34,7 +34,7 @@ import {
 } from "./utils";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { SimilarSpecies } from "./components/similarSpecies";
-import { useIucnIcon } from "./hooks/useIucnIcon";
+import { ConservationStatusIcon } from "@/components/conservation-status-icon";
 
 export default function SpeciesPage() {
   const { dados, loading } = useSpeciesPage();
@@ -82,7 +82,6 @@ export default function SpeciesPage() {
   const conservationStatusCode = normalizeConservationStatusCode(
     characteristics?.conservation_status
   );
-  const conservationStatusIcon = useIucnIcon(conservationStatusCode);
   const conservationStatusLabel = t(
     `species_page.fields.conservation_status_values.${conservationStatusCode}.name`,
     {
@@ -203,23 +202,33 @@ export default function SpeciesPage() {
     .map((item, index) => {
       const label = taxonomyLabels[index];
       if (!label || !item) return null;
-      return { label: t(label), value: item, level: index };
+      return {
+        label: t(label),
+        value: item,
+        level: index,
+        italicValue: label === "species_page.taxonomy.genus",
+      };
     })
-    .filter((item): item is { label: string; value: string; level: number } => Boolean(item))
+    .filter((item): item is { label: string; value: string; level: number; italicValue: boolean } =>
+      Boolean(item)
+    )
     .concat({
       label: t("species_page.taxonomy.species"),
       value: (dados?.scientific_name?.trim().split(/\s+/).pop() || "").trim(),
       level: taxonomyLabels.length,
+      italicValue: true,
     })
     .concat({
       label: t("species_page.taxonomy.authors"),
       value: dados?.taxonomy?.authors || "",
       level: 0,
+      italicValue: false,
     })
     .concat({
       label: t("species_page.taxonomy.year_of_publication"),
       value: dados?.taxonomy?.years_of_effective_publication || "",
       level: 0,
+      italicValue: false,
     });
 
   const sectionCardClass = "rounded-2xl border border-white/15 bg-white/[0.02] backdrop-blur-[1px]";
@@ -264,16 +273,10 @@ export default function SpeciesPage() {
               <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic tracking-tight">
                 {dados?.scientific_name}
               </h1>
-              {conservationStatusIcon ? (
-                <span title={conservationStatusDescription} className="inline-flex">
-                  <img
-                    src={conservationStatusIcon}
-                    alt={conservationStatusCode}
-                    title={conservationStatusCode}
-                    className="h-12 w-12 xl:h-16 xl:w-16 shrink-0"
-                  />
-                </span>
-              ) : null}
+              <ConservationStatusIcon
+                code={conservationStatusCode}
+                description={conservationStatusDescription}
+              />
             </div>
           </header>
 
@@ -464,7 +467,9 @@ export default function SpeciesPage() {
                             {row.level > 0 ? <span className="text-white/45">↳</span> : null}
                             <p className={rowLabelClass}>{row.label}</p>
                           </div>
-                          <p className={rowValueClass}>{row.value}</p>
+                          <p className={`${rowValueClass} ${row.italicValue ? "italic" : ""}`}>
+                            {row.value}
+                          </p>
                         </div>
                       ))}
                   </div>

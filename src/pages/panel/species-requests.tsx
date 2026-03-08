@@ -159,6 +159,7 @@ export default function PanelSpeciesRequestsPage() {
   }, [statusFilter]);
 
   const uiLocale = i18n.language?.toLowerCase().startsWith("pt") ? "pt-BR" : "en-US";
+  const isPtLanguage = i18n.language?.toLowerCase().startsWith("pt");
   const formatDateTime = (date: string) => new Date(date).toLocaleString(uiLocale);
   const resolvePhotoPreview = (photo: SpeciesChangeRequest["photos"][number]) => {
     const preview = (photo.preview_url || "").trim();
@@ -192,11 +193,25 @@ export default function PanelSpeciesRequestsPage() {
   };
 
   const renderValue = (value: unknown) => {
+    const getLocalizedLabel = (item: unknown) => {
+      if (!item || typeof item !== "object") return null;
+      if (!("label_pt" in item) || !("label_en" in item)) return null;
+      const labelPt = (item as { label_pt?: unknown }).label_pt;
+      const labelEn = (item as { label_en?: unknown }).label_en;
+      const selectedLabel = isPtLanguage ? labelPt : labelEn;
+      return typeof selectedLabel === "string" && selectedLabel.trim() ? selectedLabel : null;
+    };
+
     if (value === null || value === undefined || value === "") return "—";
-    if (Array.isArray(value)) return value.join(", ");
+    if (Array.isArray(value)) {
+      const labels = value
+        .map((item) => getLocalizedLabel(item) ?? String(item))
+        .filter((item) => item.trim().length > 0);
+      return labels.length ? labels.join(", ") : "—";
+    }
     if (typeof value === "boolean")
       return value ? t("panel_requests.value_true") : t("panel_requests.value_false");
-    if (typeof value === "object") return JSON.stringify(value);
+    if (typeof value === "object") return getLocalizedLabel(value) ?? JSON.stringify(value);
     return String(value);
   };
 

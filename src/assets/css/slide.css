@@ -29,13 +29,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 512px;
+  background: #020504;
+  height: clamp(460px, 62vh, 760px);
   user-select: none;
 }
 
 @media (max-width: 640px) {
   .embla__slide__number {
-    height: 400px;
+    height: clamp(360px, 52vh, 500px);
   }
 }
 

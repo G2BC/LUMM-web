@@ -1,5 +1,7 @@
 import type { SpeciesRequestFormValues } from "@/pages/species-request/types";
 import { LUMINESCENT_PART_OPTIONS } from "@/pages/species-request/constants";
+import { selectSpeciesDomain } from "@/api/species";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type ReviewStepProps = {
@@ -8,7 +10,43 @@ type ReviewStepProps = {
 };
 
 export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [domainLabelsById, setDomainLabelsById] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let active = true;
+    const isPt = i18n.language.toLowerCase().startsWith("pt");
+
+    void Promise.all([
+      selectSpeciesDomain("growth_form"),
+      selectSpeciesDomain("nutrition_mode"),
+      selectSpeciesDomain("substrate"),
+      selectSpeciesDomain("habitat"),
+    ])
+      .then(([growthForms, nutritionModes, substrates, habitats]) => {
+        if (!active) return;
+        const merged = [...growthForms, ...nutritionModes, ...substrates, ...habitats];
+        const next: Record<string, string> = {};
+        for (const option of merged) {
+          next[String(option.value)] = isPt ? option.label_pt : option.label_en;
+        }
+        setDomainLabelsById(next);
+      })
+      .catch(() => {
+        if (!active) return;
+        setDomainLabelsById({});
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [i18n.language]);
+
+  const formatDomainValues = useMemo(
+    () => (ids: Array<string | number>) =>
+      ids.map((id) => domainLabelsById[String(id)] ?? String(id)).join(", "),
+    [domainLabelsById]
+  );
   const selectedLuminescentParts = LUMINESCENT_PART_OPTIONS.filter((option) => {
     const action = values.luminescent_parts[option.id];
     return action === "add" || action === "remove";
@@ -19,9 +57,20 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
     return `${t(option.labelKey)} (${actionLabel})`;
   });
   const hasLuminescentParts = selectedLuminescentParts.length > 0;
+  const hasGrowthForms = values.growth_forms.length > 0;
+  const hasNutritionModes = values.nutrition_modes.length > 0;
+  const hasSubstrates = values.substrates.length > 0;
+  const hasHabitats = values.habitats.length > 0;
   const hasReferences = Boolean(values.references_raw?.trim());
   const hasRequestNote = Boolean(values.request_note?.trim());
-  const hasSpeciesSectionData = hasLuminescentParts || hasReferences || hasRequestNote;
+  const hasSpeciesSectionData =
+    hasLuminescentParts ||
+    hasGrowthForms ||
+    hasNutritionModes ||
+    hasSubstrates ||
+    hasHabitats ||
+    hasReferences ||
+    hasRequestNote;
 
   return (
     <section className="space-y-4 text-sm">
@@ -43,6 +92,26 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
             {hasLuminescentParts ? (
               <p>
                 {t("species_request.luminescent_parts")}: {selectedLuminescentParts.join(", ")}
+              </p>
+            ) : null}
+            {hasGrowthForms ? (
+              <p>
+                {t("species_request.growth_forms")}: {formatDomainValues(values.growth_forms)}
+              </p>
+            ) : null}
+            {hasNutritionModes ? (
+              <p>
+                {t("species_request.nutrition_modes")}: {formatDomainValues(values.nutrition_modes)}
+              </p>
+            ) : null}
+            {hasSubstrates ? (
+              <p>
+                {t("species_request.substrates")}: {formatDomainValues(values.substrates)}
+              </p>
+            ) : null}
+            {hasHabitats ? (
+              <p>
+                {t("species_request.habitats")}: {formatDomainValues(values.habitats)}
               </p>
             ) : null}
             {hasReferences ? <p>{values.references_raw}</p> : null}

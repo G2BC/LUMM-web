@@ -3,6 +3,7 @@ import { API } from "..";
 import type { ISpecie } from "./types/ISpecie";
 import type { IPagination } from "../types/IPagination";
 import type { ISelect } from "../types/ISelect";
+import type { ISelectLocalized } from "../types/ISelectLocalized";
 import type {
   CleanupTmpUploadsResponse,
   SpeciesChangeRequest,
@@ -62,6 +63,21 @@ export const selectSpeciesCountry = async (search?: string, signal?: AbortContro
 export const selectSpeciesFamily = async (search?: string, signal?: AbortController["signal"]) => {
   const resposta: AxiosResponse<ISelect[]> = await API.get("/species/family/select", {
     params: { search },
+    signal,
+  });
+
+  return resposta.data;
+};
+
+export type SpeciesDomainSelectType = "growth_form" | "nutrition_mode" | "substrate" | "habitat";
+
+export const selectSpeciesDomain = async (
+  domain: SpeciesDomainSelectType,
+  search?: string,
+  signal?: AbortController["signal"]
+) => {
+  const resposta: AxiosResponse<ISelectLocalized[]> = await API.get("/species/domains/select", {
+    params: { domain, search },
     signal,
   });
 
