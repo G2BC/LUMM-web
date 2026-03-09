@@ -9,6 +9,10 @@ export type SpeciesRequestFormValues = {
   requester_institution?: string;
   request_note?: string;
   references_raw?: string;
+  growth_forms: number[];
+  nutrition_modes: number[];
+  substrates: number[];
+  habitats: number[];
   luminescent_parts: LuminescentPartsForm;
 };
 

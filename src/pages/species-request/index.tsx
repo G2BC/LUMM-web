@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
+import axios from "axios";
 
 export default function SpeciesRequestPage() {
   const { t } = useTranslation();
@@ -45,6 +46,10 @@ export default function SpeciesRequestPage() {
         requester_institution: z.string().trim().optional(),
         request_note: z.string().trim().optional(),
         references_raw: z.string().trim().optional(),
+        growth_forms: z.array(z.number()).catch([]),
+        nutrition_modes: z.array(z.number()).catch([]),
+        substrates: z.array(z.number()).catch([]),
+        habitats: z.array(z.number()).catch([]),
         luminescent_parts: z.record(
           z.enum(["mycelium", "basidiome", "stipe", "pileus", "lamellae", "spores"]),
           z.enum(["none", "add", "remove"])
@@ -61,6 +66,10 @@ export default function SpeciesRequestPage() {
       requester_institution: "",
       request_note: "",
       references_raw: "",
+      growth_forms: [],
+      nutrition_modes: [],
+      substrates: [],
+      habitats: [],
       luminescent_parts: {
         mycelium: "none",
         basidiome: "none",
@@ -138,10 +147,32 @@ export default function SpeciesRequestPage() {
   async function onSubmit(formValues: SpeciesRequestFormValues) {
     if (!speciesData?.id) return;
 
-    const textualProposedData = Object.fromEntries(
+    const normalizeIds = (value: Array<string | number>) =>
+      Array.from(
+        new Set(
+          value
+            .map((item) => (typeof item === "number" ? item : Number(String(item).trim())))
+            .filter((item) => Number.isFinite(item))
+        )
+      );
+
+    const growthFormIds = normalizeIds(formValues.growth_forms);
+    const nutritionModeIds = normalizeIds(formValues.nutrition_modes);
+    const substrateIds = normalizeIds(formValues.substrates);
+    const habitatIds = normalizeIds(formValues.habitats);
+
+    const structuredProposedData = Object.fromEntries(
       Object.entries({
         references_raw: formValues.references_raw,
-      }).filter(([, value]) => Boolean(value?.trim()))
+        growth_form_ids: growthFormIds,
+        nutrition_mode_ids: nutritionModeIds,
+        substrate_ids: substrateIds,
+        habitat_ids: habitatIds,
+      }).filter(([, value]) => {
+        if (typeof value === "string") return Boolean(value.trim());
+        if (Array.isArray(value)) return value.length > 0;
+        return false;
+      })
     );
     const selectedLuminescentParts = formValues.luminescent_parts;
     const luminescentPartsProposedData = Object.fromEntries(
@@ -153,7 +184,7 @@ export default function SpeciesRequestPage() {
       )
     );
     const proposedData = {
-      ...textualProposedData,
+      ...structuredProposedData,
       ...luminescentPartsProposedData,
     };
 
@@ -236,11 +267,14 @@ export default function SpeciesRequestPage() {
       });
 
       navigate(`/${locale}/especie/${speciesData.id}`, { replace: true });
-    } catch {
+    } catch (error) {
+      const backendMessage = axios.isAxiosError(error)
+        ? (error.response?.data as { message?: string } | undefined)?.message
+        : undefined;
       await Alert({
         icon: "error",
         title: t("species_request.load_error_title"),
-        text: t("species_request.load_error_text"),
+        text: backendMessage || t("species_request.load_error_text"),
       });
     }
   }

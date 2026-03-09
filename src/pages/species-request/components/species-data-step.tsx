@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DomainComboboxAsync } from "@/components/domain-combobox-async";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { LUMINESCENT_PART_OPTIONS } from "@/pages/species-request/constants";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,9 +13,58 @@ type SpeciesDataStepProps = {
 
 export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
   const { t } = useTranslation();
+  const domainFields: Array<{
+    name: "growth_forms" | "nutrition_modes" | "substrates" | "habitats";
+    labelKey: string;
+    domain: "growth_form" | "nutrition_mode" | "substrate" | "habitat";
+  }> = [
+    {
+      name: "growth_forms",
+      labelKey: "species_request.growth_forms",
+      domain: "growth_form",
+    },
+    {
+      name: "nutrition_modes",
+      labelKey: "species_request.nutrition_modes",
+      domain: "nutrition_mode",
+    },
+    {
+      name: "substrates",
+      labelKey: "species_request.substrates",
+      domain: "substrate",
+    },
+    {
+      name: "habitats",
+      labelKey: "species_request.habitats",
+      domain: "habitat",
+    },
+  ];
 
   return (
     <section className="space-y-4">
+      {domainFields.map(({ name, labelKey, domain }) => (
+        <FormField
+          key={name}
+          control={form.control}
+          name={name}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t(labelKey)}</FormLabel>
+              <FormControl>
+                <DomainComboboxAsync
+                  domain={domain}
+                  multiple
+                  value={field.value ?? []}
+                  onSelect={field.onChange}
+                  placeholder={t("species_request.domain_multi_placeholder")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      ))}
+
       <FormField
         control={form.control}
         name="luminescent_parts"

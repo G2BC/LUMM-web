@@ -1,8 +1,10 @@
 import type { AxiosResponse } from "axios";
 import { API } from "..";
+import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type { ISpecie } from "./types/ISpecie";
 import type { IPagination } from "../types/IPagination";
 import type { ISelect } from "../types/ISelect";
+import type { ISelectLocalized } from "../types/ISelectLocalized";
 import type {
   CleanupTmpUploadsResponse,
   SpeciesChangeRequest,
@@ -68,10 +70,35 @@ export const selectSpeciesFamily = async (search?: string, signal?: AbortControl
   return resposta.data;
 };
 
+export type SpeciesDomainSelectType = "growth_form" | "nutrition_mode" | "substrate" | "habitat";
+
+export const selectSpeciesDomain = async (
+  domain: SpeciesDomainSelectType,
+  search?: string,
+  signal?: AbortController["signal"]
+) => {
+  const resposta: AxiosResponse<ISelectLocalized[]> = await API.get("/species/domains/select", {
+    params: { domain, search },
+    signal,
+  });
+
+  return resposta.data;
+};
+
 export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
   const resposta: AxiosResponse<ISpecie> = await API.get(`/species/${species}`);
 
   return resposta.data;
+};
+
+export const fetchSpeciesNcbi = async (
+  species?: string,
+  signal?: AbortController["signal"]
+): Promise<unknown> => {
+  return runWithSilencedApiErrors(async () => {
+    const response: AxiosResponse<unknown> = await API.get(`/species/${species}/ncbi`, { signal });
+    return response.data;
+  });
 };
 
 export const generateSpeciesPhotoUploadUrl = async (

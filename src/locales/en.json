@@ -253,6 +253,20 @@
         "yes": "Yes",
         "no": "No",
         "unknown": "Unknown"
+      },
+      "molecular_info": {
+        "title": "Molecular Information",
+        "database_name": "Database name",
+        "links": "Links",
+        "no_records": "No information"
+      },
+      "bibliography": {
+        "title": "Bibliography",
+        "links": {
+          "pubmed_central_taxid": "PubMed Central (NCBI txid)",
+          "pubmed_scientific_name": "PubMed (Scientific name)",
+          "google_scholar_scientific_name": "Google Scholar (Scientific name)"
+        }
       }
     },
     "species_request": {
@@ -282,6 +296,11 @@
       "lum_part_pileus": "Pileus",
       "lum_part_lamellae": "Lamellae",
       "lum_part_spores": "Spores",
+      "growth_forms": "Growth form",
+      "nutrition_modes": "Nutrition mode",
+      "substrates": "Substrate",
+      "habitats": "Habitat",
+      "domain_multi_placeholder": "Select one or more options",
       "references_raw": "References",
       "references_raw_placeholder": "References or links that support this update.",
       "request_note": "Notes",
@@ -456,6 +475,14 @@
       "field_lum_pileus": "Luminescence in pileus",
       "field_lum_lamellae": "Luminescence in lamellae",
       "field_lum_spores": "Luminescence in spores",
+      "field_growth_forms": "Growth form",
+      "field_nutrition_modes": "Nutrition mode",
+      "field_substrates": "Substrate",
+      "field_habitats": "Habitat",
+      "field_growth_form_ids": "Growth form",
+      "field_nutrition_mode_ids": "Nutrition mode",
+      "field_substrate_ids": "Substrate",
+      "field_habitat_ids": "Habitat",
       "no_structured_changes": "No structured changes. This request may only contain photos.",
       "photos_count": "{{count}} attached photo(s)",
       "review_note_placeholder": "Review note (optional)",
