@@ -1,5 +1,6 @@
 import type { AxiosResponse } from "axios";
 import { API } from "..";
+import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type { ISpecie } from "./types/ISpecie";
 import type { IPagination } from "../types/IPagination";
 import type { ISelect } from "../types/ISelect";
@@ -88,6 +89,16 @@ export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
   const resposta: AxiosResponse<ISpecie> = await API.get(`/species/${species}`);
 
   return resposta.data;
+};
+
+export const fetchSpeciesNcbi = async (
+  species?: string,
+  signal?: AbortController["signal"]
+): Promise<unknown> => {
+  return runWithSilencedApiErrors(async () => {
+    const response: AxiosResponse<unknown> = await API.get(`/species/${species}/ncbi`, { signal });
+    return response.data;
+  });
 };
 
 export const generateSpeciesPhotoUploadUrl = async (

@@ -1,19 +1,5 @@
 import Slide from "@/pages/species/components/slide";
-import {
-  BookOpenText,
-  ChevronLeft,
-  ExternalLink,
-  FileText,
-  FlaskConical,
-  Info,
-  Lightbulb,
-  Link2,
-  Loader2,
-  PencilLine,
-  Search,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { ChevronLeft, Dna, FileText, Info, Loader2, PencilLine } from "lucide-react";
 import "@/assets/css/slide.css";
 import { useSpeciesPage } from "./useSpeciesPage";
 import { useNavigate } from "react-router";
@@ -23,54 +9,39 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import defaultPhoto from "@/assets/specie-card-default.webp";
 import {
+  extractSpeciesBibliographyLinks,
   formatLocalizedMonth,
   getLocalizedCharacteristicValue,
   getLocalizedOptionLabels,
   normalizeConservationStatusCode,
-  parseClassification,
   sortPhotos,
-  taxonomyLabels,
   withNoInformationFallback,
 } from "./utils";
 import { DEFAULT_LOCALE } from "@/lib/lang";
-import { SimilarSpecies } from "./components/similarSpecies";
+import { BibliographyCard } from "./components/bibliographyCard";
 import { ConservationStatusIcon } from "@/components/conservation-status-icon";
+import { CuriositiesCard } from "./components/curiositiesCard";
+import { CultivationCard } from "./components/cultivationCard";
+import { ExternalLinksCard } from "./components/externalLinksCard";
+import { SpeciesRequestCard } from "./components/speciesRequestCard";
+import { TaxonomyCard } from "./components/taxonomyCard";
+import { LumCard } from "./components/lumCard";
+import { FindingTipsCard } from "./components/findingTipsCard";
 
 export default function SpeciesPage() {
-  const { dados, loading } = useSpeciesPage();
+  const { dados, loading, ncbiRecords, ncbiLoading } = useSpeciesPage();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { lang } = useParams();
   const locale = lang ?? DEFAULT_LOCALE;
   const characteristics = dados?.species_characteristics;
   const isPtLanguage = i18n.language.toLowerCase().startsWith("pt");
-  const hasTaxonomyData = Boolean(
-    dados?.taxonomy?.classification ||
-      dados?.taxonomy?.authors ||
-      dados?.taxonomy?.years_of_effective_publication
+
+  const visibleNcbiRecords = ncbiRecords.filter((record) =>
+    typeof record.linksCount === "number" ? record.linksCount > 0 : record.linksLabel !== "0"
   );
+  const bibliographyLinks = extractSpeciesBibliographyLinks(dados);
 
-  const lumStatusChipClass = (status: "yes" | "no" | "unknown") => {
-    if (status === "yes") return "border-emerald-400/45 bg-emerald-500/15 text-emerald-200";
-    if (status === "no") return "border-rose-400/45 bg-rose-500/15 text-rose-200";
-    return "border-white/20 bg-white/5 text-white/70";
-  };
-
-  const lumHierarchyRows: Array<{
-    label: string;
-    value: boolean | null | undefined;
-    level: 0 | 1 | 2;
-  }> = [
-    { label: t("species_page.lumm.mycelium"), value: characteristics?.lum_mycelium, level: 0 },
-    { label: t("species_page.lumm.basidiome"), value: characteristics?.lum_basidiome, level: 0 },
-    { label: t("species_page.lumm.stipe"), value: characteristics?.lum_stipe, level: 1 },
-    { label: t("species_page.lumm.pileus"), value: characteristics?.lum_pileus, level: 1 },
-    { label: t("species_page.lumm.lamellae"), value: characteristics?.lum_lamellae, level: 2 },
-    { label: t("species_page.lumm.spores"), value: characteristics?.lum_spores, level: 2 },
-  ];
-
-  const seasonStart = formatLocalizedMonth(i18n.language, characteristics?.season_start_month);
-  const seasonEnd = formatLocalizedMonth(i18n.language, characteristics?.season_end_month);
   const noInformationLabel = t("species_page.fields.no_information");
   const nutritionModesValue = getLocalizedOptionLabels(
     characteristics?.nutrition_modes,
@@ -94,14 +65,6 @@ export default function SpeciesPage() {
       defaultValue: t("species_page.fields.conservation_status_values.NE.description"),
     }
   );
-  const nearbyTreesValue = withNoInformationFallback(
-    getLocalizedCharacteristicValue(characteristics, "nearby_trees", isPtLanguage),
-    noInformationLabel
-  );
-  const seasonValue =
-    seasonStart && seasonEnd
-      ? `${seasonStart} à ${seasonEnd}`
-      : t("species_page.fields.no_information");
 
   const characteristicRows: Array<{
     label: string;
@@ -151,85 +114,14 @@ export default function SpeciesPage() {
       value: conservationStatusLabel,
       tooltip: conservationStatusDescription,
     },
-  ];
-
-  const detailedCharacteristicCards: Array<{
-    key: "cultivation" | "finding_tips" | "curiosities" | "general_description";
-    label: string;
-    value: string | number;
-    icon: "flask" | "search" | "lightbulb" | "file_text";
-    details?: Array<{ label: string; value: string | number }>;
-  }> = [
     {
-      key: "cultivation",
-      label: t("species_page.fields.cultivation"),
-      value:
-        getLocalizedCharacteristicValue(characteristics, "cultivation", isPtLanguage) ||
-        t("species_page.fields.no_information"),
-      icon: "flask",
-    },
-    {
-      key: "finding_tips",
-      label: t("species_page.fields.finding_tips"),
-      value:
-        getLocalizedCharacteristicValue(characteristics, "finding_tips", isPtLanguage) ||
-        t("species_page.fields.no_information"),
-      icon: "search",
-      details: [
-        { label: t("species_page.fields.nearby_trees"), value: nearbyTreesValue },
-        { label: t("species_page.fields.season"), value: seasonValue },
-      ],
-    },
-    {
-      key: "curiosities",
-      label: t("species_page.fields.curiosities"),
-      value:
-        getLocalizedCharacteristicValue(characteristics, "curiosities", isPtLanguage) ||
-        t("species_page.fields.no_information"),
-      icon: "lightbulb",
-    },
-    {
-      key: "general_description",
       label: t("species_page.fields.general_description"),
       value:
         getLocalizedCharacteristicValue(characteristics, "general_description", isPtLanguage) ||
         t("species_page.fields.no_information"),
-      icon: "file_text",
+      longText: true,
     },
   ];
-
-  const taxonomyRows = parseClassification(dados?.taxonomy?.classification)
-    .map((item, index) => {
-      const label = taxonomyLabels[index];
-      if (!label || !item) return null;
-      return {
-        label: t(label),
-        value: item,
-        level: index,
-        italicValue: label === "species_page.taxonomy.genus",
-      };
-    })
-    .filter((item): item is { label: string; value: string; level: number; italicValue: boolean } =>
-      Boolean(item)
-    )
-    .concat({
-      label: t("species_page.taxonomy.species"),
-      value: (dados?.scientific_name?.trim().split(/\s+/).pop() || "").trim(),
-      level: taxonomyLabels.length,
-      italicValue: true,
-    })
-    .concat({
-      label: t("species_page.taxonomy.authors"),
-      value: dados?.taxonomy?.authors || "",
-      level: 0,
-      italicValue: false,
-    })
-    .concat({
-      label: t("species_page.taxonomy.year_of_publication"),
-      value: dados?.taxonomy?.years_of_effective_publication || "",
-      level: 0,
-      italicValue: false,
-    });
 
   const sectionCardClass = "rounded-2xl border border-white/15 bg-white/[0.02] backdrop-blur-[1px]";
   const sectionCardContentClass = "space-y-3 px-4 py-2";
@@ -281,57 +173,92 @@ export default function SpeciesPage() {
           </header>
 
           <div className="mt-6 space-y-4 xl:max-w-[95%]">
+            <LumCard
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+              characteristics={dados?.species_characteristics}
+            />
+
+            <TaxonomyCard
+              show={Boolean(
+                dados?.taxonomy?.classification ||
+                  dados?.taxonomy?.authors ||
+                  dados?.taxonomy?.years_of_effective_publication
+              )}
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+              rowLabelClass={rowLabelClass}
+              rowValueClass={rowValueClass}
+              species={dados}
+            />
+
             <Card className={sectionCardClass}>
               <CardContent className={sectionCardContentClass}>
                 <div className={sectionTitleWrapClass}>
                   <span className={sectionIconWrapClass}>
-                    <Sparkles className="h-4 w-4" />
+                    <Dna className="h-4 w-4" />
                   </span>
-                  <p className={sectionTitleClass}>{t("species_page.lumm.section_title")}</p>
+                  <p className={sectionTitleClass}>{t("species_page.molecular_info.title")}</p>
                 </div>
-                <div className="space-y-1">
-                  {lumHierarchyRows.map((row) => {
-                    const status =
-                      row.value === true
-                        ? "yes"
-                        : row.value === false
-                          ? "no"
-                          : ("unknown" as const);
-                    return (
-                      <div
-                        key={`${row.level}-${row.label}`}
-                        className="flex items-center justify-between border-b border-white/10 py-2 last:border-b-0"
-                      >
-                        <div
-                          className="flex items-center gap-2"
-                          style={{ marginLeft: `${row.level * 18}px` }}
-                        >
-                          {row.level > 0 ? <span className="text-white/45">↳</span> : null}
-                          <p
-                            className={
-                              row.level === 0
-                                ? "text-base font-semibold text-white/95"
-                                : "text-white/85"
-                            }
+                {ncbiLoading ? (
+                  <div className="rounded-xl border border-white/10 px-3 py-4 text-sm text-white/65">
+                    <div className="inline-flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                      {t("common.loading")}
+                    </div>
+                  </div>
+                ) : visibleNcbiRecords.length ? (
+                  <div className="overflow-hidden rounded-xl border border-white/10">
+                    <table className="w-full table-fixed border-collapse">
+                      <thead>
+                        <tr className="border-b border-white/10 bg-white/[0.03]">
+                          <th className="w-1/2 px-3 py-2 text-left text-sm font-semibold text-white/80">
+                            {t("species_page.molecular_info.database_name")}
+                          </th>
+                          <th className="px-3 py-2 text-left text-sm font-semibold text-white/80">
+                            {t("species_page.molecular_info.links")}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {visibleNcbiRecords.map((record) => (
+                          <tr
+                            key={`${record.databaseName}-${record.linksLabel}`}
+                            className="border-b border-white/10 last:border-b-0"
                           >
-                            {row.label}
-                          </p>
-                        </div>
-                        <span
-                          className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-semibold ${lumStatusChipClass(
-                            status
-                          )}`}
-                        >
-                          {status === "yes"
-                            ? t("species_page.lumm.yes")
-                            : status === "no"
-                              ? t("species_page.lumm.no")
-                              : t("species_page.fields.no_information")}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                            <td className="px-3 py-2 text-[0.98rem] text-white/88">
+                              {record.databaseName}
+                            </td>
+                            <td className="px-3 py-2 text-[0.98rem] font-medium text-white/92">
+                              {record.url ? (
+                                <a
+                                  className="text-primary underline underline-offset-2 hover:opacity-85"
+                                  href={record.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {record.linksLabel}
+                                </a>
+                              ) : (
+                                record.linksLabel
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="text-[0.98rem] text-white/72">
+                    {t("species_page.molecular_info.no_records")}
+                  </p>
+                )}
               </CardContent>
             </Card>
 
@@ -339,7 +266,7 @@ export default function SpeciesPage() {
               <CardContent className={sectionCardContentClass}>
                 <div className={sectionTitleWrapClass}>
                   <span className={sectionIconWrapClass}>
-                    <Info className="h-4 w-4" />
+                    <FileText className="h-4 w-4" />
                   </span>
                   <p className={sectionTitleClass}>{t("species_page.sections.characteristics")}</p>
                 </div>
@@ -348,7 +275,7 @@ export default function SpeciesPage() {
                     {characteristicRows.map((row) =>
                       (() => {
                         const useLongTextLayout =
-                          typeof row.value === "string" && row.value.length > 70;
+                          row.longText || (typeof row.value === "string" && row.value.length > 70);
                         return (
                           <div
                             key={row.label}
@@ -390,157 +317,70 @@ export default function SpeciesPage() {
               </CardContent>
             </Card>
 
-            {detailedCharacteristicCards.map((item) => (
-              <Card key={item.key} className={sectionCardClass}>
-                <CardContent className={sectionCardContentClass}>
-                  <div className={sectionTitleWrapClass}>
-                    <span className={sectionIconWrapClass}>
-                      {item.icon === "flask" ? (
-                        <FlaskConical className="h-4 w-4" />
-                      ) : item.icon === "search" ? (
-                        <Search className="h-4 w-4" />
-                      ) : item.icon === "lightbulb" ? (
-                        <Lightbulb className="h-4 w-4" />
-                      ) : item.icon === "file_text" ? (
-                        <FileText className="h-4 w-4" />
-                      ) : (
-                        <Info className="h-4 w-4" />
-                      )}
-                    </span>
-                    <p className={sectionTitleClass}>{item.label}</p>
-                  </div>
-                  <p className="text-[0.98rem] leading-relaxed text-white/88 whitespace-pre-line">
-                    {item.value}
-                  </p>
-                  {item.details?.length ? (
-                    <div className="mt-3 space-y-2 border-t border-white/10 pt-3">
-                      {item.details.map((detail) => {
-                        const useStackedLayout =
-                          typeof detail.value === "string" && detail.value.length > 48;
-                        return (
-                          <div
-                            key={detail.label}
-                            className={
-                              useStackedLayout
-                                ? "space-y-1"
-                                : "flex items-start justify-between gap-4"
-                            }
-                          >
-                            <p className={rowLabelClass}>{detail.label}</p>
-                            <p
-                              className={`text-[0.98rem] font-medium text-white/90 break-words ${
-                                useStackedLayout ? "text-left" : "max-w-[60%] text-right"
-                              }`}
-                            >
-                              {detail.value}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </CardContent>
-              </Card>
-            ))}
+            <FindingTipsCard
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+              rowLabelClass={rowLabelClass}
+              findingTipsValue={
+                getLocalizedCharacteristicValue(characteristics, "finding_tips", isPtLanguage) ||
+                t("species_page.fields.no_information")
+              }
+              isPtLanguage={isPtLanguage}
+              noInformationLabel={noInformationLabel}
+              seasonStart={formatLocalizedMonth(i18n.language, characteristics?.season_start_month)}
+              seasonEnd={formatLocalizedMonth(i18n.language, characteristics?.season_end_month)}
+              species={dados}
+              locale={locale}
+            />
 
-            {hasTaxonomyData && (
-              <Card className={sectionCardClass}>
-                <CardContent className={sectionCardContentClass}>
-                  <div className={sectionTitleWrapClass}>
-                    <span className={sectionIconWrapClass}>
-                      <BookOpenText className="h-4 w-4" />
-                    </span>
-                    <p className={sectionTitleClass}>{t("common.taxonomy")}</p>
-                  </div>
-                  <div className="space-y-2">
-                    {taxonomyRows
-                      .filter((row) => Boolean(String(row.value || "").trim()))
-                      .map((row) => (
-                        <div
-                          key={row.label}
-                          className="flex items-center justify-between border-b border-white/10 pb-2 last:border-b-0"
-                        >
-                          <div
-                            className="flex items-center gap-2"
-                            style={{ marginLeft: `${row.level * 12}px` }}
-                          >
-                            {row.level > 0 ? <span className="text-white/45">↳</span> : null}
-                            <p className={rowLabelClass}>{row.label}</p>
-                          </div>
-                          <p className={`${rowValueClass} ${row.italicValue ? "italic" : ""}`}>
-                            {row.value}
-                          </p>
-                        </div>
-                      ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <CultivationCard
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+              cultivation={
+                getLocalizedCharacteristicValue(characteristics, "cultivation", isPtLanguage) ||
+                t("species_page.fields.no_information")
+              }
+            />
 
-            <Card className={sectionCardClass}>
-              <CardContent className={sectionCardContentClass}>
-                <div className={sectionTitleWrapClass}>
-                  <span className={sectionIconWrapClass}>
-                    <Users className="h-4 w-4" />
-                  </span>
-                  <p className={sectionTitleClass}>{t("species_page.fields.similar_species")}</p>
-                </div>
-                <div className="text-[0.98rem] leading-relaxed text-white/88">
-                  <SimilarSpecies similarSpecies={dados?.similar_species ?? []} locale={locale} />
-                </div>
-              </CardContent>
-            </Card>
+            <CuriositiesCard
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+              curiosities={
+                getLocalizedCharacteristicValue(characteristics, "curiosities", isPtLanguage) ||
+                t("species_page.fields.no_information")
+              }
+            />
 
-            <Card className={sectionCardClass}>
-              <CardContent className={sectionCardContentClass}>
-                <div className={sectionTitleWrapClass}>
-                  <span className={sectionIconWrapClass}>
-                    <Link2 className="h-4 w-4" />
-                  </span>
-                  <p className={sectionTitleClass}>{t("common.external_links")}</p>
-                </div>
-                {dados?.mycobank_index_fungorum_id ? (
-                  <a
-                    className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
-                    href={`https://www.mycobank.org/MB/${dados.mycobank_index_fungorum_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="h-4 w-4" /> Mycobank
-                  </a>
-                ) : dados?.mycobank_type ? (
-                  <a
-                    className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
-                    href={`https://www.mycobank.org/details/${dados.mycobank_type}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="h-4 w-4" /> Mycobank
-                  </a>
-                ) : (
-                  <p className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Link2 className="h-4 w-4" /> Mycobank ({t("common.unavailable")?.toLowerCase()}
-                    )
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+            <BibliographyCard
+              links={bibliographyLinks}
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+            />
 
-            <section className="xl:hidden rounded-2xl border border-primary/35 bg-gradient-to-r from-primary/15 via-primary/5 to-transparent p-5">
-              <p className="text-sm font-semibold text-white">
-                {t("species_page.contribute_title")}
-              </p>
-              <p className="mt-1 text-sm text-white/75">{t("species_page.contribute_text")}</p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-4 h-9 w-fit rounded-md border-primary/60 bg-primary/10 px-3 text-sm font-semibold text-primary hover:bg-primary/20 hover:text-primary"
-                onClick={() => navigate(`/${locale}/especie/${dados?.id}/solicitar-atualizacao`)}
-              >
-                <PencilLine className="h-4 w-4" />
-                {t("species_page.request_update_cta")}
-              </Button>
-            </section>
+            <ExternalLinksCard
+              sectionCardClass={sectionCardClass}
+              sectionCardContentClass={sectionCardContentClass}
+              sectionTitleWrapClass={sectionTitleWrapClass}
+              sectionIconWrapClass={sectionIconWrapClass}
+              sectionTitleClass={sectionTitleClass}
+              species={dados}
+            />
+
+            <SpeciesRequestCard
+              onClick={() => navigate(`/${locale}/especie/${dados?.id}/solicitar-atualizacao`)}
+            />
           </div>
         </div>
 

@@ -253,6 +253,20 @@
         "yes": "Sim",
         "no": "Não",
         "unknown": "Desconhecido"
+      },
+      "molecular_info": {
+        "title": "Informações Moleculares",
+        "database_name": "Nome da base de dados",
+        "links": "Links",
+        "no_records": "Sem informação"
+      },
+      "bibliography": {
+        "title": "Bibliografia",
+        "links": {
+          "pubmed_central_taxid": "PubMed Central (NCBI txid)",
+          "pubmed_scientific_name": "PubMed (Nome científico)",
+          "google_scholar_scientific_name": "Google Scholar (Nome científico)"
+        }
       }
     },
     "species_request": {

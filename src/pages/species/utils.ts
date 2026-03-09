@@ -1,4 +1,4 @@
-import type { SpeciePhoto, SpeciesCharacteristics } from "@/api/species/types/ISpecie";
+import type { ISpecie, SpeciePhoto, SpeciesCharacteristics } from "@/api/species/types/ISpecie";
 
 type PhotoKind = "f" | "l" | "n";
 
@@ -152,4 +152,226 @@ export function getLocalizedOptionLabels(
 export function normalizeConservationStatusCode(value: string | null | undefined) {
   const raw = (value || "").trim().toUpperCase();
   return !raw || raw === "NONE" ? "NE" : raw;
+}
+
+interface GenericObject {
+  [key: string]: unknown;
+}
+
+export interface BibliographyLink {
+  labelKey: string;
+  url: string;
+  fallbackLabel?: string;
+}
+
+export interface SpeciesNcbiRecord {
+  databaseName: string;
+  linksLabel: string;
+  linksCount: number | null;
+  url: string | null;
+}
+
+const isObject = (value: unknown): value is GenericObject =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const normalizeFieldName = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const pickField = (value: GenericObject, candidates: string[]) => {
+  const normalizedCandidates = candidates.map(normalizeFieldName);
+  for (const [key, fieldValue] of Object.entries(value)) {
+    if (normalizedCandidates.includes(normalizeFieldName(key))) return fieldValue;
+  }
+  return undefined;
+};
+
+const toText = (value: unknown): string | null => {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    return trimmed ? trimmed : null;
+  }
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return null;
+};
+
+const toCount = (value: unknown): number | null => {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value !== "string") return null;
+
+  const digitsOnly = value.replace(/[^0-9]/g, "");
+  if (!digitsOnly) return null;
+
+  const parsed = Number.parseInt(digitsOnly, 10);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const formatCount = (value: unknown) => {
+  const parsed = toCount(value);
+  if (parsed !== null) return { count: parsed, label: parsed.toLocaleString("en-US") };
+
+  const textValue = toText(value);
+  return { count: null, label: textValue || "0" };
+};
+
+const toNcbiRecord = (entry: unknown, keyHint?: string): SpeciesNcbiRecord | null => {
+  if (typeof entry === "string" || typeof entry === "number") {
+    if (!keyHint) return null;
+    const links = formatCount(entry);
+    return {
+      databaseName: keyHint,
+      linksLabel: links.label,
+      linksCount: links.count,
+      url: null,
+    };
+  }
+
+  if (!isObject(entry)) return null;
+
+  const databaseName =
+    toText(pickField(entry, ["database_name", "database", "databaseName", "name", "db"])) ||
+    keyHint ||
+    null;
+  const linksRaw = pickField(entry, [
+    "links",
+    "count",
+    "total",
+    "value",
+    "records",
+    "quantity",
+    "number",
+    "num",
+    "qtd",
+  ]);
+  const links = formatCount(linksRaw);
+  const url = toText(pickField(entry, ["url", "href", "link", "ncbi_url", "ncbi_link"]));
+
+  if (!databaseName) return null;
+  if (linksRaw === undefined && links.count === null && links.label === "0") return null;
+
+  return {
+    databaseName,
+    linksLabel: links.label,
+    linksCount: links.count,
+    url,
+  };
+};
+
+export function normalizeSpeciesNcbiRecords(payload: unknown): SpeciesNcbiRecord[] {
+  const rows: SpeciesNcbiRecord[] = [];
+  const appendRecord = (entry: unknown, keyHint?: string) => {
+    const normalized = toNcbiRecord(entry, keyHint);
+    if (normalized) rows.push(normalized);
+  };
+
+  if (Array.isArray(payload)) {
+    payload.forEach((item) => appendRecord(item));
+    return rows;
+  }
+
+  if (!isObject(payload)) return rows;
+
+  const recordsCandidate = pickField(payload, [
+    "records",
+    "items",
+    "data",
+    "result",
+    "results",
+    "ncbi",
+    "ncbi_records",
+    "ncbiRecords",
+  ]);
+  if (Array.isArray(recordsCandidate)) {
+    recordsCandidate.forEach((item) => appendRecord(item));
+    return rows;
+  }
+
+  if (isObject(recordsCandidate)) {
+    Object.entries(recordsCandidate).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item) => appendRecord(item, key));
+        return;
+      }
+      appendRecord(value, key);
+    });
+    if (rows.length) return rows;
+  }
+
+  Object.entries(payload).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach((item) => appendRecord(item, key));
+      return;
+    }
+    if (isObject(value)) {
+      appendRecord(value, key);
+      if (!rows.length) {
+        Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+          if (Array.isArray(nestedValue)) {
+            nestedValue.forEach((item) => appendRecord(item, nestedKey));
+            return;
+          }
+          appendRecord(nestedValue, nestedKey);
+        });
+      }
+      return;
+    }
+    appendRecord(value, key);
+  });
+
+  return rows;
+}
+
+export function extractSpeciesBibliographyLinks(species: ISpecie | null): BibliographyLink[] {
+  if (!species || !isObject(species)) return [];
+
+  const results: BibliographyLink[] = [];
+
+  const scientificName =
+    typeof species.scientific_name === "string" ? species.scientific_name.trim() : "";
+
+  const buildPubMedTerms = (name: string) => {
+    const parts = name.split(/\s+/).filter(Boolean);
+    const terms: string[] = [];
+
+    for (let index = 0; index < parts.length; index += 1) {
+      const current = parts[index];
+      const next = parts[index + 1];
+
+      if (current.toLowerCase() === "var." && next) {
+        terms.push(`var.+${next}`);
+        index += 1;
+        continue;
+      }
+
+      terms.push(current);
+    }
+
+    return terms;
+  };
+
+  const ncbiTxid = species.ncbi_taxonomy_id;
+  if (ncbiTxid) {
+    results.push({
+      labelKey: "species_page.bibliography.links.pubmed_central_taxid",
+      url: `https://pmc.ncbi.nlm.nih.gov/search/?term=txid${ncbiTxid}[Organism:noexp]&pmfilter_Fulltext=off`,
+    });
+  }
+
+  const pubMedTerms = buildPubMedTerms(scientificName);
+
+  if (pubMedTerms.length) {
+    results.push({
+      labelKey: "species_page.bibliography.links.pubmed_scientific_name",
+      url: `https://pubmed.ncbi.nlm.nih.gov/?cmd=Search&dopt=DocSum&term=${pubMedTerms.join(
+        "+AND+"
+      )}`,
+    });
+  }
+
+  if (scientificName) {
+    results.push({
+      labelKey: "species_page.bibliography.links.google_scholar_scientific_name",
+      url: `https://scholar.google.com/scholar?q=${encodeURIComponent(scientificName)}`,
+    });
+  }
+
+  return results;
 }

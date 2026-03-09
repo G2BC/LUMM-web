@@ -1,13 +1,16 @@
-import { fetchSpecies } from "@/api/species";
+import { fetchSpecies, fetchSpeciesNcbi } from "@/api/species";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { Alert } from "@/components/alert";
 import { DEFAULT_LOCALE } from "@/lib/lang";
+import { normalizeSpeciesNcbiRecords, type SpeciesNcbiRecord } from "@/pages/species/utils";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 export function useSpeciesPage() {
   const params = useParams<{ species: string }>();
   const [dados, setDados] = useState<ISpecie | null>(null);
+  const [ncbiRecords, setNcbiRecords] = useState<SpeciesNcbiRecord[]>([]);
+  const [ncbiLoading, setNcbiLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { lang } = useParams();
@@ -37,12 +40,33 @@ export function useSpeciesPage() {
     }
   };
 
+  const getNcbiRecords = async (signal?: AbortController["signal"]) => {
+    if (!params.species) return;
+
+    try {
+      setNcbiRecords([]);
+      setNcbiLoading(true);
+      const response = await fetchSpeciesNcbi(params.species, signal);
+      setNcbiRecords(normalizeSpeciesNcbiRecords(response));
+    } catch {
+      setNcbiRecords([]);
+    } finally {
+      setNcbiLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (params.species) {
-      getSpecies();
+      const controller = new AbortController();
+      const loadSpeciesPage = async () => {
+        await getSpecies();
+        await getNcbiRecords(controller.signal);
+      };
+      void loadSpeciesPage();
+      return () => controller.abort();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.species]);
 
-  return { dados, loading };
+  return { dados, loading, ncbiRecords, ncbiLoading };
 }
