@@ -256,6 +256,7 @@
       },
       "molecular_info": {
         "title": "Molecular Information",
+        "entrez_records": "Entrez records",
         "database_name": "Database name",
         "links": "Links",
         "no_records": "No information"

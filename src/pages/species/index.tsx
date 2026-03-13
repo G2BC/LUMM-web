@@ -215,6 +215,9 @@ export default function SpeciesPage() {
                   </div>
                 ) : visibleNcbiRecords.length ? (
                   <div className="overflow-hidden rounded-xl border border-white/10">
+                    <div className="border-b border-white/10 bg-white/[0.06] px-3 py-2 text-center text-base font-semibold text-white/90">
+                      {t("species_page.molecular_info.entrez_records")}
+                    </div>
                     <table className="w-full table-fixed border-collapse">
                       <thead>
                         <tr className="border-b border-white/10 bg-white/[0.03]">
