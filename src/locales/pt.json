@@ -256,6 +256,7 @@
       },
       "molecular_info": {
         "title": "Informações Moleculares",
+        "entrez_records": "Registros Entrez",
         "database_name": "Nome da base de dados",
         "links": "Links",
         "no_records": "Sem informação"
