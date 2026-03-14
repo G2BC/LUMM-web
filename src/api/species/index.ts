@@ -96,7 +96,10 @@ export const fetchSpeciesNcbi = async (
   signal?: AbortController["signal"]
 ): Promise<unknown> => {
   return runWithSilencedApiErrors(async () => {
-    const response: AxiosResponse<unknown> = await API.get(`/species/${species}/ncbi`, { signal });
+    const response: AxiosResponse<unknown> = await API.get(`/species/${species}/ncbi`, {
+      signal,
+      timeout: 45_000,
+    });
     return response.data;
   });
 };

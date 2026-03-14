@@ -22,6 +22,51 @@ import { Check, ChevronDown, Clock3, Loader2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+const TRANSLATABLE_FIELD_PAIRS: Record<string, string> = {
+  colors: "colors_pt",
+  cultivation: "cultivation_pt",
+  finding_tips: "finding_tips_pt",
+  nearby_trees: "nearby_trees_pt",
+  curiosities: "curiosities_pt",
+  general_description: "general_description_pt",
+};
+
+const TRANSLATABLE_REVERSE_FIELD_PAIRS = Object.fromEntries(
+  Object.entries(TRANSLATABLE_FIELD_PAIRS).map(([baseField, translatedField]) => [
+    translatedField,
+    baseField,
+  ])
+) as Record<string, string>;
+
+type GroupedProposedEntry = {
+  key: string;
+  fields: string[];
+};
+
+function groupProposedDataEntries(proposedData: Record<string, unknown>): GroupedProposedEntry[] {
+  const grouped: GroupedProposedEntry[] = [];
+  const seen = new Set<string>();
+
+  Object.keys(proposedData || {}).forEach((field) => {
+    if (seen.has(field)) return;
+
+    const pairedField = TRANSLATABLE_FIELD_PAIRS[field] || TRANSLATABLE_REVERSE_FIELD_PAIRS[field];
+    if (pairedField && Object.prototype.hasOwnProperty.call(proposedData, pairedField)) {
+      const baseField = TRANSLATABLE_REVERSE_FIELD_PAIRS[field] ? pairedField : field;
+      const translatedField = TRANSLATABLE_FIELD_PAIRS[baseField];
+      grouped.push({ key: baseField, fields: [baseField, translatedField] });
+      seen.add(baseField);
+      seen.add(translatedField);
+      return;
+    }
+
+    grouped.push({ key: field, fields: [field] });
+    seen.add(field);
+  });
+
+  return grouped;
+}
+
 function StatusBadge({ status }: { status: SpeciesRequestStatus }) {
   const { t } = useTranslation();
   const label =
@@ -191,6 +236,8 @@ export default function PanelSpeciesRequestsPage() {
       t(`panel_requests.field_${field}` as never, { defaultValue: field })
     );
   };
+  const getTranslatableGroupLabel = (field: string) =>
+    getFieldLabel(field).replace(/\s*\((EN|PT)\)\s*$/i, "");
 
   const renderValue = (value: unknown) => {
     const getLocalizedLabel = (item: unknown) => {
@@ -300,10 +347,13 @@ export default function PanelSpeciesRequestsPage() {
     };
 
     if (hasStructuredChanges) {
-      payload.proposed_data_fields = Object.keys(item.proposed_data || {}).map((field) => ({
-        field,
-        decision: getFieldDecision(item.id, field),
-      }));
+      const grouped = groupProposedDataEntries(item.proposed_data || {});
+      payload.proposed_data_fields = grouped.flatMap((entry) =>
+        entry.fields.map((field) => ({
+          field,
+          decision: getFieldDecision(item.id, entry.fields[0]),
+        }))
+      );
     }
 
     const confirmed = await confirmAction({
@@ -379,11 +429,11 @@ export default function PanelSpeciesRequestsPage() {
             const isBusy = reviewingId === item.id;
             const isExpanded = expandedId === item.id;
             const hasStructuredChanges = Object.keys(item.proposed_data || {}).length > 0;
-            const approvedFieldsCount = Object.keys(item.proposed_data || {}).filter(
-              (field) => getFieldDecision(item.id, field) === "approve"
+            const groupedProposedEntries = groupProposedDataEntries(item.proposed_data || {});
+            const approvedFieldsCount = groupedProposedEntries.filter(
+              (entry) => getFieldDecision(item.id, entry.fields[0]) === "approve"
             ).length;
-            const rejectedFieldsCount =
-              Object.keys(item.proposed_data || {}).length - approvedFieldsCount;
+            const rejectedFieldsCount = groupedProposedEntries.length - approvedFieldsCount;
             const approvedPhotosCount = item.photos.filter(
               (photo) => getPhotoDecision(item.id, photo.id) === "approve"
             ).length;
@@ -452,30 +502,41 @@ export default function PanelSpeciesRequestsPage() {
 
                       {hasStructuredChanges ? (
                         <div className="space-y-2 text-sm">
-                          {Object.entries(item.proposed_data).map(([field, afterValue]) => (
+                          {groupedProposedEntries.map((entry) => (
                             <div
-                              key={field}
+                              key={entry.key}
                               className="border-b border-slate-200 pb-2 last:border-0 last:pb-0"
                             >
                               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                   <p className="font-medium text-slate-700">
-                                    {getFieldLabel(field)}
+                                    {entry.fields.length > 1
+                                      ? getTranslatableGroupLabel(entry.fields[0])
+                                      : getFieldLabel(entry.fields[0])}
                                   </p>
-                                  <p className="text-slate-600">
-                                    {renderValue(item.current_data?.[field])} {"→"}{" "}
-                                    {renderValue(afterValue)}
-                                  </p>
+                                  {entry.fields.map((field) => (
+                                    <p key={field} className="text-slate-600">
+                                      <span className="font-medium">
+                                        {entry.fields.length > 1
+                                          ? `${field.endsWith("_pt") ? "PT" : "EN"}:`
+                                          : `${getFieldLabel(field)}:`}
+                                      </span>{" "}
+                                      {renderValue(item.current_data?.[field])} {"→"}{" "}
+                                      {renderValue(item.proposed_data?.[field])}
+                                    </p>
+                                  ))}
                                 </div>
                                 {item.status === "pending" ? (
                                   <DecisionToggle
-                                    value={getFieldDecision(item.id, field)}
+                                    value={getFieldDecision(item.id, entry.fields[0])}
                                     onChange={(decision) =>
                                       setProposedDataFieldDecisions((prev) => ({
                                         ...prev,
                                         [item.id]: {
                                           ...(prev[item.id] || {}),
-                                          [field]: decision,
+                                          ...Object.fromEntries(
+                                            entry.fields.map((field) => [field, decision])
+                                          ),
                                         },
                                       }))
                                     }
@@ -604,7 +665,7 @@ export default function PanelSpeciesRequestsPage() {
                               ? t("panel_requests.decision_summary_fields", {
                                   approved: approvedFieldsCount,
                                   rejected: rejectedFieldsCount,
-                                  total: Object.keys(item.proposed_data || {}).length,
+                                  total: groupedProposedEntries.length,
                                 })
                               : t("panel_requests.decision_summary_not_applicable")}
                           </p>
