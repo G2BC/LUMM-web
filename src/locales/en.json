@@ -258,7 +258,8 @@
         "title": "Molecular Information",
         "entrez_records": "Entrez records",
         "database_name": "Database name",
-        "links": "Links",
+        "direct_links": "Direct links",
+        "subtree_links": "Subtree links",
         "no_records": "No information"
       },
       "bibliography": {
@@ -267,6 +268,29 @@
           "pubmed_central_taxid": "PubMed Central (NCBI txid)",
           "pubmed_scientific_name": "PubMed (Scientific name)",
           "google_scholar_scientific_name": "Google Scholar (Scientific name)"
+        }
+      },
+      "external_links": {
+        "groups": {
+          "general": "General links",
+          "fungal": "Other fungal links",
+          "molecular": "Molecular links"
+        },
+        "links": {
+          "wikipedia": "Wikipedia",
+          "wikispecies": "Wikispecies",
+          "wikimedia": "Wikimedia",
+          "google": "Google",
+          "mycobank_mb": "MycoBank (MB)",
+          "mycobank_type": "MycoBank (Type)",
+          "index_fungorum": "Index fungorum",
+          "catalogue_of_life": "Catalogue of life",
+          "itis": "ITIS",
+          "gbif": "GBIF",
+          "eol": "EOL",
+          "ncbi": "NCBI",
+          "embl_ebi": "EMBL-EBI",
+          "bold_system": "BOLD System"
         }
       }
     },

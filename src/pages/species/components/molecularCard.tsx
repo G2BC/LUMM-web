@@ -23,6 +23,21 @@ export function MolecularCard({
   ncbiRecords,
 }: MolecularCardProps) {
   const { t } = useTranslation();
+  const renderCell = (cell: SpeciesNcbiRecord["directLinks"]) => {
+    const value = cell?.label ?? "0";
+    if (!cell?.url) return value;
+
+    return (
+      <a
+        className="text-primary underline underline-offset-2 hover:opacity-85"
+        href={cell.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {value}
+      </a>
+    );
+  };
 
   return (
     <Card className={sectionCardClass}>
@@ -48,36 +63,31 @@ export function MolecularCard({
             <table className="w-full table-fixed border-collapse">
               <thead>
                 <tr className="border-b border-white/10 bg-white/[0.03]">
-                  <th className="w-1/2 px-3 py-2 text-left text-sm font-semibold text-white/80">
+                  <th className="w-1/2 whitespace-nowrap px-3 py-2 text-left text-xs font-semibold text-white/80">
                     {t("species_page.molecular_info.database_name")}
                   </th>
-                  <th className="px-3 py-2 text-left text-sm font-semibold text-white/80">
-                    {t("species_page.molecular_info.links")}
+                  <th className="whitespace-nowrap px-3 py-2 text-left text-xs font-semibold text-white/80">
+                    {t("species_page.molecular_info.direct_links")}
+                  </th>
+                  <th className="whitespace-nowrap px-3 py-2 text-left text-xs font-semibold text-white/80">
+                    {t("species_page.molecular_info.subtree_links")}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {ncbiRecords.map((record) => (
                   <tr
-                    key={`${record.databaseName}-${record.linksLabel}`}
+                    key={`${record.databaseName}-${record.directLinks?.label ?? "0"}-${record.subtreeLinks?.label ?? "0"}`}
                     className="border-b border-white/10 last:border-b-0"
                   >
                     <td className="px-3 py-2 text-[0.98rem] text-white/88">
                       {record.databaseName}
                     </td>
                     <td className="px-3 py-2 text-[0.98rem] font-medium text-white/92">
-                      {record.url ? (
-                        <a
-                          className="text-primary underline underline-offset-2 hover:opacity-85"
-                          href={record.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {record.linksLabel}
-                        </a>
-                      ) : (
-                        record.linksLabel
-                      )}
+                      {renderCell(record.directLinks)}
+                    </td>
+                    <td className="px-3 py-2 text-[0.98rem] font-medium text-white/92">
+                      {renderCell(record.subtreeLinks)}
                     </td>
                   </tr>
                 ))}

@@ -2,6 +2,7 @@ import type { ISpecie } from "@/api/species/types/ISpecie";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink, Link2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { extractSpeciesExternalLinks } from "../utils";
 
 interface ExternalLinksCardProps {
   sectionCardClass: string;
@@ -20,9 +21,19 @@ export function ExternalLinksCard({
   sectionIconWrapClass,
   sectionTitleClass,
 }: ExternalLinksCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!species) return null;
+
+  const { general, fungal_links, molecular_links } = extractSpeciesExternalLinks(
+    species,
+    i18n.language.toLowerCase().startsWith("pt") ? "pt" : "en"
+  );
+  const sections = [
+    { titleKey: "species_page.external_links.groups.general", links: general },
+    { titleKey: "species_page.external_links.groups.fungal", links: fungal_links },
+    { titleKey: "species_page.external_links.groups.molecular", links: molecular_links },
+  ].filter((section) => section.links.length);
 
   return (
     <Card className={sectionCardClass}>
@@ -33,29 +44,25 @@ export function ExternalLinksCard({
           </span>
           <p className={sectionTitleClass}>{t("common.external_links")}</p>
         </div>
-        {species?.mycobank_index_fungorum_id ? (
-          <a
-            className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
-            href={`https://www.mycobank.org/MB/${species.mycobank_index_fungorum_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLink className="h-4 w-4" /> Mycobank
-          </a>
-        ) : species?.mycobank_type ? (
-          <a
-            className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
-            href={`https://www.mycobank.org/details/${species.mycobank_type}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ExternalLink className="h-4 w-4" /> Mycobank
-          </a>
-        ) : (
-          <p className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Link2 className="h-4 w-4" /> Mycobank ({t("common.unavailable")?.toLowerCase()})
-          </p>
-        )}
+        {sections.map((section) => (
+          <div key={section.titleKey} className="space-y-2">
+            <p className="text-sm font-semibold text-white/90">{t(section.titleKey)}</p>
+            <div className="flex flex-wrap gap-2">
+              {section.links.map((link) => (
+                <a
+                  key={`${section.titleKey}-${link.labelKey}-${link.url}`}
+                  className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  {t(link.labelKey, { defaultValue: link.fallbackLabel || link.labelKey })}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );

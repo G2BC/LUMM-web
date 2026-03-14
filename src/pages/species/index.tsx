@@ -128,11 +128,7 @@ export default function SpeciesPage() {
               sectionTitleWrapClass={sectionTitleWrapClass}
               sectionIconWrapClass={sectionIconWrapClass}
               sectionTitleClass={sectionTitleClass}
-              ncbiRecords={ncbiRecords.filter((record) =>
-                typeof record.linksCount === "number"
-                  ? record.linksCount > 0
-                  : record.linksLabel !== "0"
-              )}
+              ncbiRecords={ncbiRecords}
             />
 
             <CharacteristicsCard

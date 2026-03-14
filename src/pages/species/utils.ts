@@ -166,8 +166,13 @@ export interface BibliographyLink {
 
 export interface SpeciesNcbiRecord {
   databaseName: string;
-  linksLabel: string;
-  linksCount: number | null;
+  directLinks: SpeciesNcbiLinkCell | null;
+  subtreeLinks: SpeciesNcbiLinkCell | null;
+}
+
+export interface SpeciesNcbiLinkCell {
+  label: string;
+  count: number | null;
   url: string | null;
 }
 
@@ -212,15 +217,55 @@ const formatCount = (value: unknown) => {
   return { count: null, label: textValue || "0" };
 };
 
+const toNcbiLinkCell = (entry: unknown): SpeciesNcbiLinkCell | null => {
+  if (typeof entry === "string" || typeof entry === "number") {
+    const links = formatCount(entry);
+    return {
+      label: links.label,
+      count: links.count,
+      url: null,
+    };
+  }
+
+  if (!isObject(entry)) return null;
+
+  const linksRaw = pickField(entry, [
+    "quantity",
+    "links",
+    "count",
+    "total",
+    "value",
+    "records",
+    "number",
+    "num",
+    "qtd",
+  ]);
+  const links = formatCount(linksRaw);
+  const url = toText(pickField(entry, ["url", "href", "link", "ncbi_url", "ncbi_link"]));
+  const hasLinkData = linksRaw !== undefined || url !== null;
+  if (!hasLinkData) return null;
+
+  return {
+    label: links.label,
+    count: links.count,
+    url,
+  };
+};
+
+const hasVisibleCount = (cell: SpeciesNcbiLinkCell | null) => {
+  if (!cell) return false;
+  if (cell.url) return true;
+  if (typeof cell.count === "number") return cell.count > 0;
+  return cell.label !== "0";
+};
+
 const toNcbiRecord = (entry: unknown, keyHint?: string): SpeciesNcbiRecord | null => {
   if (typeof entry === "string" || typeof entry === "number") {
     if (!keyHint) return null;
-    const links = formatCount(entry);
     return {
       databaseName: keyHint,
-      linksLabel: links.label,
-      linksCount: links.count,
-      url: null,
+      directLinks: toNcbiLinkCell(entry),
+      subtreeLinks: null,
     };
   }
 
@@ -230,28 +275,30 @@ const toNcbiRecord = (entry: unknown, keyHint?: string): SpeciesNcbiRecord | nul
     toText(pickField(entry, ["database_name", "database", "databaseName", "name", "db"])) ||
     keyHint ||
     null;
-  const linksRaw = pickField(entry, [
-    "links",
-    "count",
-    "total",
-    "value",
-    "records",
-    "quantity",
-    "number",
-    "num",
-    "qtd",
-  ]);
-  const links = formatCount(linksRaw);
-  const url = toText(pickField(entry, ["url", "href", "link", "ncbi_url", "ncbi_link"]));
-
   if (!databaseName) return null;
-  if (linksRaw === undefined && links.count === null && links.label === "0") return null;
+
+  const directLinksRaw = pickField(entry, [
+    "direct_links",
+    "directLinks",
+    "direct_link",
+    "directLink",
+  ]);
+  const subtreeLinksRaw = pickField(entry, [
+    "subtree_links",
+    "subtreeLinks",
+    "subtree_link",
+    "subtreeLink",
+  ]);
+
+  const directLinks =
+    directLinksRaw !== undefined ? toNcbiLinkCell(directLinksRaw) : toNcbiLinkCell(entry);
+  const subtreeLinks = subtreeLinksRaw !== undefined ? toNcbiLinkCell(subtreeLinksRaw) : null;
+  if (!hasVisibleCount(directLinks) && !hasVisibleCount(subtreeLinks)) return null;
 
   return {
     databaseName,
-    linksLabel: links.label,
-    linksCount: links.count,
-    url,
+    directLinks,
+    subtreeLinks,
   };
 };
 
@@ -300,23 +347,30 @@ export function normalizeSpeciesNcbiRecords(payload: unknown): SpeciesNcbiRecord
       value.forEach((item) => appendRecord(item, key));
       return;
     }
-    if (isObject(value)) {
-      appendRecord(value, key);
-      if (!rows.length) {
-        Object.entries(value).forEach(([nestedKey, nestedValue]) => {
-          if (Array.isArray(nestedValue)) {
-            nestedValue.forEach((item) => appendRecord(item, nestedKey));
-            return;
-          }
-          appendRecord(nestedValue, nestedKey);
-        });
-      }
-      return;
-    }
     appendRecord(value, key);
   });
 
   return rows;
+}
+
+export function buildScientificNameSearchTerms(name: string): string[] {
+  const parts = name.split(/\s+/).filter(Boolean);
+  const terms: string[] = [];
+
+  for (let index = 0; index < parts.length; index += 1) {
+    const current = parts[index];
+    const next = parts[index + 1];
+
+    if (current.toLowerCase() === "var." && next) {
+      terms.push(`var.+${next}`);
+      index += 1;
+      continue;
+    }
+
+    terms.push(current);
+  }
+
+  return terms;
 }
 
 export function extractSpeciesBibliographyLinks(species: ISpecie | null): BibliographyLink[] {
@@ -327,26 +381,6 @@ export function extractSpeciesBibliographyLinks(species: ISpecie | null): Biblio
   const scientificName =
     typeof species.scientific_name === "string" ? species.scientific_name.trim() : "";
 
-  const buildPubMedTerms = (name: string) => {
-    const parts = name.split(/\s+/).filter(Boolean);
-    const terms: string[] = [];
-
-    for (let index = 0; index < parts.length; index += 1) {
-      const current = parts[index];
-      const next = parts[index + 1];
-
-      if (current.toLowerCase() === "var." && next) {
-        terms.push(`var.+${next}`);
-        index += 1;
-        continue;
-      }
-
-      terms.push(current);
-    }
-
-    return terms;
-  };
-
   const ncbiTxid = species.ncbi_taxonomy_id;
   if (ncbiTxid) {
     results.push({
@@ -355,7 +389,7 @@ export function extractSpeciesBibliographyLinks(species: ISpecie | null): Biblio
     });
   }
 
-  const pubMedTerms = buildPubMedTerms(scientificName);
+  const pubMedTerms = buildScientificNameSearchTerms(scientificName);
 
   if (pubMedTerms.length) {
     results.push({
@@ -371,6 +405,116 @@ export function extractSpeciesBibliographyLinks(species: ISpecie | null): Biblio
       labelKey: "species_page.bibliography.links.google_scholar_scientific_name",
       url: `https://scholar.google.com/scholar?q=${encodeURIComponent(scientificName)}`,
     });
+  }
+
+  return results;
+}
+
+export function extractSpeciesExternalLinks(
+  species: ISpecie | null,
+  language: string = "pt"
+): {
+  general: BibliographyLink[];
+  fungal_links: BibliographyLink[];
+  molecular_links: BibliographyLink[];
+} {
+  const results = {
+    general: [] as BibliographyLink[],
+    fungal_links: [] as BibliographyLink[],
+    molecular_links: [] as BibliographyLink[],
+  };
+
+  if (!species || !isObject(species)) return results;
+
+  const scientificName =
+    typeof species.scientific_name === "string" ? species.scientific_name.trim() : "";
+  const encodedScientificName = encodeURIComponent(scientificName);
+
+  if (scientificName) {
+    results.general.push(
+      {
+        url: `https://${language}.wikipedia.org/wiki/${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.wikipedia",
+      },
+      {
+        url: `https://species.wikimedia.org/wiki/${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.wikispecies",
+      },
+      {
+        url: `https://commons.wikimedia.org/w/index.php?search=${encodedScientificName}&title=Special:MediaSearch&go=Go&type=image`,
+        labelKey: "species_page.external_links.links.wikimedia",
+      },
+      {
+        url: `https://www.google.com/search?q=${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.google",
+      }
+    );
+  }
+
+  if (species.mycobank_index_fungorum_id) {
+    results.fungal_links.push({
+      url: `https://www.mycobank.org/MB/${species.mycobank_index_fungorum_id}`,
+      labelKey: "species_page.external_links.links.mycobank_mb",
+    });
+
+    results.fungal_links.push({
+      url: `https://www.indexfungorum.org/names/NamesRecord.asp?RecordID=${species.mycobank_index_fungorum_id}`,
+      labelKey: "species_page.external_links.links.index_fungorum",
+    });
+  }
+
+  if (species.mycobank_type) {
+    results.fungal_links.push({
+      url: `https://www.mycobank.org/details/${species.mycobank_type}`,
+      labelKey: "species_page.external_links.links.mycobank_type",
+    });
+  }
+
+  if (scientificName) {
+    results.fungal_links.push(
+      {
+        url: `https://www.catalogueoflife.org/col/search/all/key/${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.catalogue_of_life",
+      },
+      {
+        url: `https://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=Scientific_Name&search_value=${encodedScientificName}&search_kingdom=Fungal&search_span=exactly_for&categories=All&source=html&search_credRating=All`,
+        labelKey: "species_page.external_links.links.itis",
+      },
+      {
+        url: `https://www.gbif.org/species/search?q=${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.gbif",
+      },
+      {
+        url: `https://eol.org/search?q=${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.eol",
+      }
+    );
+  }
+
+  if (scientificName) {
+    const ncbiTerms = buildScientificNameSearchTerms(scientificName);
+
+    if (ncbiTerms.length) {
+      results.molecular_links.push({
+        url: `https://www.ncbi.nlm.nih.gov/nuccore?cmd=Search&dopt=DocSum&db=nucleotide&term=${ncbiTerms.join(
+          "+AND+"
+        )}`,
+        labelKey: "species_page.external_links.links.ncbi",
+      });
+    }
+  }
+
+  if (scientificName) {
+    results.molecular_links.push(
+      {
+        url: `https://www.ebi.ac.uk/ebisearch/search?db=allebi&sortignorenull=true&query=${encodedScientificName}&size=15&requestFrom=ebi_index`,
+        labelKey: "species_page.external_links.links.embl_ebi",
+      },
+      {
+        url: `https://www.boldsystems.org/index.php/Taxbrowser_Taxonpage?taxon=${encodedScientificName}`,
+        labelKey: "species_page.external_links.links.bold_system",
+      }
+    );
   }
 
   return results;
