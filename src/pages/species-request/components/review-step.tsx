@@ -61,14 +61,28 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
   const hasNutritionModes = values.nutrition_modes.length > 0;
   const hasSubstrates = values.substrates.length > 0;
   const hasHabitats = values.habitats.length > 0;
+  const hasSizeCm = Boolean(values.size_cm?.trim());
+  const hasSeasonRange = Boolean(
+    values.season_start_month?.trim() && values.season_end_month?.trim()
+  );
   const hasReferences = Boolean(values.references_raw?.trim());
   const hasRequestNote = Boolean(values.request_note?.trim());
+  const formatMonth = (value?: string) => {
+    const month = Number(value);
+    if (!Number.isFinite(month) || month < 1 || month > 12) return "";
+    const label = new Intl.DateTimeFormat(i18n.language, { month: "long" }).format(
+      new Date(2020, month - 1, 1)
+    );
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  };
   const hasSpeciesSectionData =
     hasLuminescentParts ||
     hasGrowthForms ||
     hasNutritionModes ||
     hasSubstrates ||
     hasHabitats ||
+    hasSizeCm ||
+    hasSeasonRange ||
     hasReferences ||
     hasRequestNote;
 
@@ -112,6 +126,17 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
             {hasHabitats ? (
               <p>
                 {t("species_request.habitats")}: {formatDomainValues(values.habitats)}
+              </p>
+            ) : null}
+            {hasSizeCm ? (
+              <p>
+                {t("species_request.size_cm")}: {values.size_cm}
+              </p>
+            ) : null}
+            {hasSeasonRange ? (
+              <p>
+                {t("species_request.seasonality")}: {formatMonth(values.season_start_month)}{" "}
+                {t("species_request.season_range_separator")} {formatMonth(values.season_end_month)}
               </p>
             ) : null}
             {hasReferences ? <p>{values.references_raw}</p> : null}

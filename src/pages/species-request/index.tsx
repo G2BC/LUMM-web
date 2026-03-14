@@ -40,21 +40,49 @@ export default function SpeciesRequestPage() {
 
   const schema = useMemo(
     () =>
-      z.object({
-        requester_name: z.string().trim().min(2, t("species_request.validation.requester_name")),
-        requester_email: z.string().email(t("species_request.validation.requester_email")),
-        requester_institution: z.string().trim().optional(),
-        request_note: z.string().trim().optional(),
-        references_raw: z.string().trim().optional(),
-        growth_forms: z.array(z.number()).catch([]),
-        nutrition_modes: z.array(z.number()).catch([]),
-        substrates: z.array(z.number()).catch([]),
-        habitats: z.array(z.number()).catch([]),
-        luminescent_parts: z.record(
-          z.enum(["mycelium", "basidiome", "stipe", "pileus", "lamellae", "spores"]),
-          z.enum(["none", "add", "remove"])
-        ),
-      }),
+      z
+        .object({
+          requester_name: z.string().trim().min(2, t("species_request.validation.requester_name")),
+          requester_email: z.string().email(t("species_request.validation.requester_email")),
+          requester_institution: z.string().trim().optional(),
+          request_note: z.string().trim().optional(),
+          references_raw: z.string().trim().optional(),
+          size_cm: z
+            .string()
+            .trim()
+            .optional()
+            .refine(
+              (value) => !value || (Number.isFinite(Number(value)) && Number(value) > 0),
+              t("species_request.validation.size_cm")
+            ),
+          season_start_month: z.string().trim().optional(),
+          season_end_month: z.string().trim().optional(),
+          growth_forms: z.array(z.number()).catch([]),
+          nutrition_modes: z.array(z.number()).catch([]),
+          substrates: z.array(z.number()).catch([]),
+          habitats: z.array(z.number()).catch([]),
+          luminescent_parts: z.record(
+            z.enum(["mycelium", "basidiome", "stipe", "pileus", "lamellae", "spores"]),
+            z.enum(["none", "add", "remove"])
+          ),
+        })
+        .superRefine((value, context) => {
+          const start = value.season_start_month?.trim();
+          const end = value.season_end_month?.trim();
+
+          if ((start && !end) || (!start && end)) {
+            context.addIssue({
+              code: "custom",
+              path: ["season_start_month"],
+              message: t("species_request.validation.season_range"),
+            });
+            context.addIssue({
+              code: "custom",
+              path: ["season_end_month"],
+              message: t("species_request.validation.season_range"),
+            });
+          }
+        }),
     [t]
   );
 
@@ -66,6 +94,9 @@ export default function SpeciesRequestPage() {
       requester_institution: "",
       request_note: "",
       references_raw: "",
+      size_cm: "",
+      season_start_month: "",
+      season_end_month: "",
       growth_forms: [],
       nutrition_modes: [],
       substrates: [],
@@ -160,16 +191,26 @@ export default function SpeciesRequestPage() {
     const nutritionModeIds = normalizeIds(formValues.nutrition_modes);
     const substrateIds = normalizeIds(formValues.substrates);
     const habitatIds = normalizeIds(formValues.habitats);
+    const seasonStartMonth = formValues.season_start_month
+      ? Number(formValues.season_start_month)
+      : undefined;
+    const seasonEndMonth = formValues.season_end_month
+      ? Number(formValues.season_end_month)
+      : undefined;
 
     const structuredProposedData = Object.fromEntries(
       Object.entries({
         references_raw: formValues.references_raw,
+        size_cm: formValues.size_cm ? Number(formValues.size_cm) : undefined,
+        season_start_month: seasonStartMonth,
+        season_end_month: seasonEndMonth,
         growth_form_ids: growthFormIds,
         nutrition_mode_ids: nutritionModeIds,
         substrate_ids: substrateIds,
         habitat_ids: habitatIds,
       }).filter(([, value]) => {
         if (typeof value === "string") return Boolean(value.trim());
+        if (typeof value === "number") return Number.isFinite(value);
         if (Array.isArray(value)) return value.length > 0;
         return false;
       })

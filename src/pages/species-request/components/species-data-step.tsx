@@ -1,6 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { DomainComboboxAsync } from "@/components/domain-combobox-async";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { LUMINESCENT_PART_OPTIONS } from "@/pages/species-request/constants";
 import { Textarea } from "@/components/ui/textarea";
 import type { SpeciesRequestFormValues } from "@/pages/species-request/types";
@@ -12,7 +20,17 @@ type SpeciesDataStepProps = {
 };
 
 export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const monthOptions = Array.from({ length: 12 }, (_, index) => {
+    const month = index + 1;
+    const label = new Intl.DateTimeFormat(i18n.language, { month: "long" }).format(
+      new Date(2020, index, 1)
+    );
+    return {
+      value: String(month),
+      label: label.charAt(0).toUpperCase() + label.slice(1),
+    };
+  });
   const domainFields: Array<{
     name: "growth_forms" | "nutrition_modes" | "substrates" | "habitats";
     labelKey: string;
@@ -42,28 +60,106 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
 
   return (
     <section className="space-y-4">
-      {domainFields.map(({ name, labelKey, domain }) => (
-        <FormField
-          key={name}
-          control={form.control}
-          name={name}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t(labelKey)}</FormLabel>
-              <FormControl>
-                <DomainComboboxAsync
-                  domain={domain}
-                  multiple
-                  value={field.value ?? []}
-                  onSelect={field.onChange}
-                  placeholder={t("species_request.domain_multi_placeholder")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      ))}
+      <div className="grid gap-4 md:grid-cols-2">
+        {domainFields.map(({ name, labelKey, domain }) => (
+          <FormField
+            key={name}
+            control={form.control}
+            name={name}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t(labelKey)}</FormLabel>
+                <FormControl>
+                  <DomainComboboxAsync
+                    domain={domain}
+                    multiple
+                    value={field.value ?? []}
+                    onSelect={field.onChange}
+                    placeholder={t("species_request.domain_multi_placeholder")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ))}
+      </div>
+
+      <FormField
+        control={form.control}
+        name="size_cm"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.size_cm")}</FormLabel>
+            <FormControl>
+              <Input
+                type="number"
+                min="0"
+                step="0.1"
+                value={field.value ?? ""}
+                onChange={(event) => field.onChange(event.target.value)}
+                placeholder={t("species_request.size_cm_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormItem>
+        <FormLabel>{t("species_request.seasonality")}</FormLabel>
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="season_start_month"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("species_request.season_start_month")}</FormLabel>
+                <FormControl>
+                  <Select value={field.value || ""} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={t("species_request.season_start_placeholder")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {monthOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="season_end_month"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("species_request.season_end_month")}</FormLabel>
+                <FormControl>
+                  <Select value={field.value || ""} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder={t("species_request.season_end_placeholder")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {monthOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </FormItem>
 
       <FormField
         control={form.control}
