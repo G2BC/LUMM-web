@@ -328,7 +328,12 @@
       "references_raw_placeholder": "Referências bibliográficas ou links que apoiam a atualização",
       "request_note": "Observações",
       "request_note_placeholder": "Descreva o contexto da atualização enviada",
-      "steps": {},
+      "steps": {
+        "identity": "Identificação",
+        "species": "Dados da espécie",
+        "photos": "Fotos",
+        "review": "Revisão"
+      },
       "prev_step": "Etapa anterior",
       "next_step": "Próxima etapa",
       "review_identity": "Identificação",
@@ -500,6 +505,7 @@
       "field_general_description_pt": "Descrição geral (PT)",
       "no_structured_changes": "Sem alterações estruturadas. A solicitação pode conter apenas fotos.",
       "photos_count": "{{count}} foto(s) anexada(s)",
+      "photo_preview_unavailable": "Pré-visualização indisponível para estas fotos.",
       "review_note_placeholder": "Nota de revisão (opcional)",
       "approve": "Aprovar",
       "reject": "Rejeitar",
