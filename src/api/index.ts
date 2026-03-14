@@ -7,5 +7,5 @@ export const API = axios.create({
     Accept: "application/json",
     "X-API-Key": import.meta.env.VITE_API_KEY,
   },
-  timeout: 15000,
+  timeout: 30000,
 });
