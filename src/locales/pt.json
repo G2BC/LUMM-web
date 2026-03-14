@@ -167,39 +167,39 @@
         "conservation_status_values": {
           "NE": {
             "name": "Não Avaliada",
-            "description": "Espécie que ainda não foi avaliada segundo os critérios da Lista Vermelha da IUCN."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie ainda não foi avaliada segundo os critérios."
           },
           "DD": {
             "name": "Dados Insuficientes",
-            "description": "Espécie com dados insuficientes para avaliar seu risco de extinção."
+            "description": "Na Lista Vermelha da IUCN, isso significa que não há informação suficiente para avaliar o risco de extinção da espécie."
           },
           "LC": {
             "name": "Pouco Preocupante",
-            "description": "Espécie avaliada com baixo risco de extinção."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie foi avaliada e não é considerada, no momento, sob risco relevante de extinção."
           },
           "NT": {
             "name": "Quase Ameaçada",
-            "description": "Espécie próxima de se enquadrar em uma categoria de ameaça ou que pode se tornar ameaçada em breve."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie ainda não é considerada ameaçada, mas está próxima de entrar em uma categoria de ameaça."
           },
           "VU": {
             "name": "Vulnerável",
-            "description": "Espécie com alto risco de extinção na natureza."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie enfrenta alto risco de extinção na natureza."
           },
           "EN": {
             "name": "Em Perigo",
-            "description": "Espécie com risco muito alto de extinção na natureza."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie enfrenta risco muito alto de extinção na natureza."
           },
           "CR": {
             "name": "Criticamente em Perigo",
-            "description": "Espécie com risco extremamente alto de extinção na natureza."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie enfrenta risco extremamente alto de extinção na natureza."
           },
           "EW": {
             "name": "Extinta na Natureza",
-            "description": "Espécie que sobrevive apenas em cultivo, cativeiro ou fora de sua área natural."
+            "description": "Na Lista Vermelha da IUCN, isso significa que a espécie sobrevive apenas em cativeiro, cultivo ou fora de sua distribuição natural histórica."
           },
           "EX": {
             "name": "Extinta",
-            "description": "Espécie para a qual não há dúvida razoável de que o último indivíduo morreu."
+            "description": "Na Lista Vermelha da IUCN, isso significa que não há dúvida razoável de que o último indivíduo morreu."
           }
         },
         "edible": "Comestível",

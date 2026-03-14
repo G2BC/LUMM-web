@@ -4,6 +4,8 @@ import axios from "axios";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
+const EXPLORE_PER_PAGE = 16;
+
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -143,6 +145,7 @@ export function useExplorePage() {
       lineage: lineageParam,
       country: countryParam,
       page: pageParam,
+      per_page: EXPLORE_PER_PAGE,
     });
   }, [searchParam, pageParam, lineageParam, countryParam]);
 

@@ -55,6 +55,12 @@ export default function SpeciesPage() {
       defaultValue: t("species_page.fields.conservation_status_values.NE.description"),
     }
   );
+  const conservationStatusLabel = t(
+    `species_page.fields.conservation_status_values.${conservationStatusCode}.name`,
+    {
+      defaultValue: t("species_page.fields.conservation_status_values.NE.name"),
+    }
+  );
   const sectionCardClass = "rounded-2xl border border-white/15 bg-white/[0.02] backdrop-blur-[1px]";
   const sectionCardContentClass = "space-y-3 px-4 py-2";
   const sectionTitleWrapClass = "mb-2 flex items-center gap-2.5";
@@ -90,6 +96,7 @@ export default function SpeciesPage() {
               </h1>
               <ConservationStatusIcon
                 code={conservationStatusCode}
+                label={conservationStatusLabel}
                 description={conservationStatusDescription}
               />
             </div>
