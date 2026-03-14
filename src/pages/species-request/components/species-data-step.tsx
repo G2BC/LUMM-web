@@ -87,6 +87,115 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
 
       <FormField
         control={form.control}
+        name="colors"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.colors")}</FormLabel>
+            <FormControl>
+              <Input
+                type="text"
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                placeholder={t("species_request.colors_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="cultivation"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.cultivation")}</FormLabel>
+            <FormControl>
+              <Textarea
+                {...field}
+                value={field.value ?? ""}
+                rows={3}
+                placeholder={t("species_request.cultivation_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="finding_tips"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.finding_tips")}</FormLabel>
+            <FormControl>
+              <Textarea
+                {...field}
+                value={field.value ?? ""}
+                rows={3}
+                placeholder={t("species_request.finding_tips_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="nearby_trees"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.nearby_trees")}</FormLabel>
+            <FormControl>
+              <Textarea
+                {...field}
+                value={field.value ?? ""}
+                rows={2}
+                placeholder={t("species_request.nearby_trees_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="curiosities"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.curiosities")}</FormLabel>
+            <FormControl>
+              <Textarea
+                {...field}
+                value={field.value ?? ""}
+                rows={3}
+                placeholder={t("species_request.curiosities_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="general_description"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>{t("species_request.general_description")}</FormLabel>
+            <FormControl>
+              <Textarea
+                {...field}
+                value={field.value ?? ""}
+                rows={4}
+                placeholder={t("species_request.general_description_placeholder")}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
         name="size_cm"
         render={({ field }) => (
           <FormItem>

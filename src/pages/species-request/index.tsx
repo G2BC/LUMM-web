@@ -29,7 +29,7 @@ import { z } from "zod";
 import axios from "axios";
 
 export default function SpeciesRequestPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { lang, species } = useParams();
 
@@ -47,6 +47,12 @@ export default function SpeciesRequestPage() {
           requester_institution: z.string().trim().optional(),
           request_note: z.string().trim().optional(),
           references_raw: z.string().trim().optional(),
+          colors: z.string().trim().optional(),
+          cultivation: z.string().trim().optional(),
+          finding_tips: z.string().trim().optional(),
+          nearby_trees: z.string().trim().optional(),
+          curiosities: z.string().trim().optional(),
+          general_description: z.string().trim().optional(),
           size_cm: z
             .string()
             .trim()
@@ -94,6 +100,12 @@ export default function SpeciesRequestPage() {
       requester_institution: "",
       request_note: "",
       references_raw: "",
+      colors: "",
+      cultivation: "",
+      finding_tips: "",
+      nearby_trees: "",
+      curiosities: "",
+      general_description: "",
       size_cm: "",
       season_start_month: "",
       season_end_month: "",
@@ -197,10 +209,15 @@ export default function SpeciesRequestPage() {
     const seasonEndMonth = formValues.season_end_month
       ? Number(formValues.season_end_month)
       : undefined;
-
     const structuredProposedData = Object.fromEntries(
       Object.entries({
         references_raw: formValues.references_raw,
+        colors: formValues.colors,
+        cultivation: formValues.cultivation,
+        finding_tips: formValues.finding_tips,
+        nearby_trees: formValues.nearby_trees,
+        curiosities: formValues.curiosities,
+        general_description: formValues.general_description,
         size_cm: formValues.size_cm ? Number(formValues.size_cm) : undefined,
         season_start_month: seasonStartMonth,
         season_end_month: seasonEndMonth,
@@ -296,6 +313,7 @@ export default function SpeciesRequestPage() {
         requester_email: formValues.requester_email,
         requester_institution: formValues.requester_institution || undefined,
         request_note: formValues.request_note || undefined,
+        source_lang: i18n.language.toLowerCase().startsWith("pt") ? "pt" : "en",
         proposed_data: proposedData,
         photos: uploads,
       });

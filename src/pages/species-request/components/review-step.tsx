@@ -61,6 +61,12 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
   const hasNutritionModes = values.nutrition_modes.length > 0;
   const hasSubstrates = values.substrates.length > 0;
   const hasHabitats = values.habitats.length > 0;
+  const hasColors = Boolean(values.colors?.trim());
+  const hasCultivation = Boolean(values.cultivation?.trim());
+  const hasFindingTips = Boolean(values.finding_tips?.trim());
+  const hasNearbyTrees = Boolean(values.nearby_trees?.trim());
+  const hasCuriosities = Boolean(values.curiosities?.trim());
+  const hasGeneralDescription = Boolean(values.general_description?.trim());
   const hasSizeCm = Boolean(values.size_cm?.trim());
   const hasSeasonRange = Boolean(
     values.season_start_month?.trim() && values.season_end_month?.trim()
@@ -81,6 +87,12 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
     hasNutritionModes ||
     hasSubstrates ||
     hasHabitats ||
+    hasColors ||
+    hasCultivation ||
+    hasFindingTips ||
+    hasNearbyTrees ||
+    hasCuriosities ||
+    hasGeneralDescription ||
     hasSizeCm ||
     hasSeasonRange ||
     hasReferences ||
@@ -126,6 +138,36 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
             {hasHabitats ? (
               <p>
                 {t("species_request.habitats")}: {formatDomainValues(values.habitats)}
+              </p>
+            ) : null}
+            {hasColors ? (
+              <p>
+                {t("species_request.colors")}: {values.colors}
+              </p>
+            ) : null}
+            {hasCultivation ? (
+              <p>
+                {t("species_request.cultivation")}: {values.cultivation}
+              </p>
+            ) : null}
+            {hasFindingTips ? (
+              <p>
+                {t("species_request.finding_tips")}: {values.finding_tips}
+              </p>
+            ) : null}
+            {hasNearbyTrees ? (
+              <p>
+                {t("species_request.nearby_trees")}: {values.nearby_trees}
+              </p>
+            ) : null}
+            {hasCuriosities ? (
+              <p>
+                {t("species_request.curiosities")}: {values.curiosities}
+              </p>
+            ) : null}
+            {hasGeneralDescription ? (
+              <p>
+                {t("species_request.general_description")}: {values.general_description}
               </p>
             ) : null}
             {hasSizeCm ? (

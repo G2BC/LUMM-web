@@ -32,6 +32,7 @@ export type SpeciesPhotoRequestPayload = {
 export type SpeciesChangeRequestCreatePayload = {
   species_id: number;
   proposed_data?: Record<string, unknown>;
+  source_lang?: "pt" | "en";
   request_note?: string;
   requester_name?: string;
   requester_email?: string;
