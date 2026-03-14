@@ -328,7 +328,12 @@
       "references_raw_placeholder": "References or links that support this update",
       "request_note": "Notes",
       "request_note_placeholder": "Describe the context of your submission",
-      "steps": {},
+      "steps": {
+        "identity": "Identification",
+        "species": "Species data",
+        "photos": "Photos",
+        "review": "Review"
+      },
       "prev_step": "Previous step",
       "next_step": "Next step",
       "review_identity": "Identification",
@@ -500,6 +505,7 @@
       "field_general_description_pt": "General description (PT)",
       "no_structured_changes": "No structured changes. This request may only contain photos.",
       "photos_count": "{{count}} attached photo(s)",
+      "photo_preview_unavailable": "Preview unavailable for these photos.",
       "review_note_placeholder": "Review note (optional)",
       "approve": "Approve",
       "reject": "Reject",
