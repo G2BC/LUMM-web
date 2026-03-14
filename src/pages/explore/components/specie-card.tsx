@@ -34,6 +34,14 @@ export function SpecieCard(props: ISpecie) {
       defaultValue: t("species_page.fields.conservation_status_values.NE.description"),
     }
   );
+  const conservationStatusLabel = t(
+    `species_page.fields.conservation_status_values.${(conservationStatusCode || "NE")
+      .trim()
+      .toUpperCase()}.name`,
+    {
+      defaultValue: t("species_page.fields.conservation_status_values.NE.name"),
+    }
+  );
 
   const handleClick = () => {
     navigate(`/${lang ?? DEFAULT_LOCALE}/especie/${props.id}`);
@@ -64,6 +72,7 @@ export function SpecieCard(props: ISpecie) {
             </div>
             <ConservationStatusIcon
               code={conservationStatusCode}
+              label={conservationStatusLabel}
               description={conservationStatusDescription}
               className="inline-flex shrink-0"
               imageClassName="h-9 w-9 shrink-0"
