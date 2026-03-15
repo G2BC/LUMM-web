@@ -25,7 +25,7 @@ jobs:
           cmd_options: "-I"
           allow_issue_writing: false
           artifact_name: "dast"
-        continue-on-error: true
+        continue-on-error: ${{ github.event_name == 'schedule' }}
 
       - name: Collect DAST reports
         run: |
