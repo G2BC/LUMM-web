@@ -21,6 +21,7 @@ const ContributorsPage = React.lazy(() => import("./pages/contributors"));
 const InternalPanelPage = React.lazy(() => import("./pages/panel"));
 const PanelOverviewPage = React.lazy(() => import("./pages/panel/overview"));
 const PanelUsersPage = React.lazy(() => import("./pages/panel/users"));
+const PanelSpeciesPage = React.lazy(() => import("./pages/panel/species"));
 const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-requests"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 
@@ -45,6 +46,7 @@ function Router() {
               <Route path="usuarios" element={<PanelUsersPage />} />
             </Route>
             <Route element={<AuthGuard requireCurator />}>
+              <Route path="especies" element={<PanelSpeciesPage />} />
               <Route path="solicitacoes" element={<PanelSpeciesRequestsPage />} />
             </Route>
           </Route>

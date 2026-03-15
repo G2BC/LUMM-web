@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { LummLogo } from "@/components/logo";
+import LanguageSwitcher from "@/components/languege-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +18,7 @@ import { PanelUserMenu } from "@/pages/panel/components/panel-user-menu";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate, useParams, NavLink, Outlet, useLocation, Link } from "react-router";
 import { ArrowLeft, FileCheck2, Users } from "lucide-react";
+import { TbMushroom } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 
 export default function InternalPanelPage() {
@@ -29,6 +31,7 @@ export default function InternalPanelPage() {
   const clearSession = useAuthStore((state) => state.clearSession);
   const isUsersRoute = location.pathname.endsWith("/usuarios");
   const isRequestsRoute = location.pathname.endsWith("/solicitacoes");
+  const isSpeciesRoute = location.pathname.endsWith("/especies");
   const role = (user?.role ?? "").toLowerCase();
   const isAdmin = Boolean(user?.is_admin || role === "admin");
   const canReviewRequests = Boolean(isAdmin || user?.is_curator || role === "curator");
@@ -58,31 +61,50 @@ export default function InternalPanelPage() {
         </SidebarHeader>
 
         <SidebarContent>
-          <SidebarMenu>
-            {canReviewRequests ? (
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isRequestsRoute}>
-                  <NavLink to={`/${locale}/painel/solicitacoes`}>
-                    <FileCheck2 className="h-4 w-4" />
-                    {t("panel_page.nav_requests")}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ) : null}
-            {isAdmin ? (
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isUsersRoute}>
-                  <NavLink to={`/${locale}/painel/usuarios`}>
-                    <Users className="h-4 w-4" />
-                    {t("panel_page.nav_users")}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ) : null}
-            {!hasAnyPanelResource ? (
-              <p className="px-3 text-sm text-slate-500">{t("panel_page.no_resources")}</p>
-            ) : null}
-          </SidebarMenu>
+          {canReviewRequests ? (
+            <div className="mb-4">
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild isActive={isSpeciesRoute}>
+                    <NavLink to={`/${locale}/painel/especies`}>
+                      <TbMushroom className="h-4 w-4" />
+                      {t("panel_page.nav_species")}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild isActive={isRequestsRoute}>
+                    <NavLink to={`/${locale}/painel/solicitacoes`}>
+                      <FileCheck2 className="h-4 w-4" />
+                      {t("panel_page.nav_requests")}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </div>
+          ) : null}
+
+          {isAdmin ? (
+            <div>
+              <p className="px-3 pb-1 text-xs font-semibold text-slate-500">
+                {t("panel_page.group_administration")}
+              </p>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild isActive={isUsersRoute}>
+                    <NavLink to={`/${locale}/painel/usuarios`}>
+                      <Users className="h-4 w-4" />
+                      {t("panel_page.nav_users")}
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </div>
+          ) : null}
+
+          {!hasAnyPanelResource ? (
+            <p className="px-3 text-sm text-slate-500">{t("panel_page.no_resources")}</p>
+          ) : null}
         </SidebarContent>
 
         <SidebarFooter>
@@ -109,6 +131,10 @@ export default function InternalPanelPage() {
               <ArrowLeft className="h-4 w-4" />
               <span className="truncate">{t("panel_page.back_to_site")}</span>
             </Button>
+
+            <div className="ml-auto">
+              <LanguageSwitcher />
+            </div>
           </div>
         </header>
 
