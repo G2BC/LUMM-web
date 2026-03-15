@@ -67,11 +67,12 @@ export interface ISpecie {
 }
 
 export interface SpeciePhoto {
-  attribution: string;
-  license_code: string;
+  attribution?: string | null;
+  license_code?: string | null;
   rights_holder?: string | null;
-  medium_url?: string;
-  original_url?: string;
+  source_url?: string | null;
+  medium_url?: string | null;
+  original_url?: string | null;
   photo_id: number;
   lumm: boolean | null;
   featured: boolean | null;

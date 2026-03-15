@@ -43,7 +43,7 @@ export function UserActionsMenu({
 }: UserActionsMenuProps) {
   return (
     <div className={mobile ? "w-full" : "flex justify-end"}>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"

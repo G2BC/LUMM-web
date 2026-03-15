@@ -22,6 +22,7 @@ const InternalPanelPage = React.lazy(() => import("./pages/panel"));
 const PanelOverviewPage = React.lazy(() => import("./pages/panel/overview"));
 const PanelUsersPage = React.lazy(() => import("./pages/panel/users"));
 const PanelSpeciesPage = React.lazy(() => import("./pages/panel/species"));
+const PanelSpeciesPhotosPage = React.lazy(() => import("./pages/panel/species-photos"));
 const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-requests"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 
@@ -47,6 +48,7 @@ function Router() {
             </Route>
             <Route element={<AuthGuard requireCurator />}>
               <Route path="especies" element={<PanelSpeciesPage />} />
+              <Route path="especies/:species/fotos" element={<PanelSpeciesPhotosPage />} />
               <Route path="solicitacoes" element={<PanelSpeciesRequestsPage />} />
             </Route>
           </Route>
