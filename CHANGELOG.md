@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/G2BC/LUMM-web/compare/v1.13.0...v1.13.1) (2026-03-15)
+
+
+### Bug Fixes
+
+* update photo attribution and rights holder labels in English and Portuguese locales ([1703cd2](https://github.com/G2BC/LUMM-web/commit/1703cd2187b3d5033fec1fa05cb57d54a864de66))
+
 ## [1.13.0](https://github.com/G2BC/LUMM-web/compare/v1.12.0...v1.13.0) (2026-03-15)
 
 
