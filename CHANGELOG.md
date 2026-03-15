@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/G2BC/LUMM-web/compare/v1.10.0...v1.11.0) (2026-03-15)
+
+
+### Features
+
+* add species management page and update navigation ([09b96e7](https://github.com/G2BC/LUMM-web/commit/09b96e7a4e117ec1b61760136f938806d9154651))
+
 ## [1.10.0](https://github.com/G2BC/LUMM-web/compare/v1.9.0...v1.10.0) (2026-03-15)
 
 
