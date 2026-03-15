@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/G2BC/LUMM-web/compare/v1.13.1...v1.13.2) (2026-03-15)
+
+
+### Bug Fixes
+
+* enhance slide and species page layout with responsive width adjustments ([bbfa9d5](https://github.com/G2BC/LUMM-web/commit/bbfa9d5b2df04b85a595c71fc0fc5c1007236680))
+
 ## [1.13.1](https://github.com/G2BC/LUMM-web/compare/v1.13.0...v1.13.1) (2026-03-15)
 
 
