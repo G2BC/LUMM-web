@@ -35,6 +35,7 @@ jobs:
             VITE_API_KEY=${{ secrets.VITE_API_KEY }}
             VITE_ROBOTS=${{ secrets.VITE_ROBOTS }}
             VITE_SITE_URL=${{ secrets.VITE_SITE_URL }}
+            VITE_CLARITY_ID=${{ secrets.VITE_CLARITY_ID }}
 
   scan:
     runs-on: ubuntu-latest
