@@ -112,6 +112,7 @@ export function usePhotoUploadState(t: TFunction) {
           attribution: bulkPhotoLegal.attribution,
           rights_holder: bulkPhotoLegal.rights_holder,
           source_url: bulkPhotoLegal.source_url,
+          lumm: bulkPhotoLegal.lumm,
           declaration_confirmed: bulkPhotoLegal.declaration_confirmed,
         };
       });

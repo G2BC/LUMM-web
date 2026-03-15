@@ -30,6 +30,7 @@ export type PhotoLegalForm = {
   attribution: string;
   rights_holder: string;
   source_url: string;
+  lumm: boolean;
   declaration_confirmed: boolean;
 };
 

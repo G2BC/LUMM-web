@@ -597,7 +597,7 @@ export default function PanelSpeciesPhotosPage() {
               return (
                 <article
                   key={`${photo.photo_id}-${index}`}
-                  className="overflow-hidden rounded-lg border border-slate-200 bg-white"
+                  className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white"
                 >
                   <a href={photoUrl} target="_blank" rel="noopener noreferrer" className="block">
                     <img
@@ -612,7 +612,7 @@ export default function PanelSpeciesPhotosPage() {
                     />
                   </a>
 
-                  <div className="space-y-2 p-3">
+                  <div className="flex flex-1 flex-col space-y-2 p-3">
                     <div className="flex flex-wrap gap-2">
                       {photo.featured ? (
                         <Badge className="rounded-full border border-amber-300 bg-amber-400 px-3 py-1 text-xs font-semibold text-amber-950 shadow-sm">
@@ -643,7 +643,7 @@ export default function PanelSpeciesPhotosPage() {
                       {photo.source_url?.trim() || t("panel_page.species_photos_meta_missing")}
                     </p>
 
-                    <div className="flex gap-2 pt-2">
+                    <div className="mt-auto flex gap-2 pt-2">
                       <Button
                         type="button"
                         variant="outline"

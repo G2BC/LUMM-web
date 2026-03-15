@@ -26,6 +26,7 @@ export type SpeciesPhotoRequestPayload = {
   attribution?: string;
   rights_holder?: string;
   source_url?: string;
+  lumm?: boolean;
   declaration_accepted_at?: string;
 };
 
@@ -52,6 +53,7 @@ export type SpeciesPhotoRequest = {
   attribution?: string | null;
   rights_holder?: string | null;
   source_url?: string | null;
+  lumm?: boolean | null;
   preview_url?: string | null;
   declaration_accepted_at?: string | null;
   status: SpeciesRequestStatus;

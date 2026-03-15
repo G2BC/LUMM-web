@@ -357,6 +357,7 @@
       "photo_source_url": "Source URL",
       "photo_source_url_placeholder": "https://...",
       "photo_source_url_optional": "Optional for original photos not published online.",
+      "photo_mark_lumm": "The mushroom is bioluminescent in this photo",
       "photo_declaration_label": "I declare I have the rights to submit this image and apply the selected license.",
       "submit": "Submit request",
       "success_title": "Request submitted",

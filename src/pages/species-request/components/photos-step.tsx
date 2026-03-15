@@ -179,6 +179,16 @@ export function PhotosStep({
               <input
                 type="checkbox"
                 className="mt-0.5 h-4 w-4 rounded border-white/40 bg-transparent"
+                checked={bulkPhotoLegal.lumm}
+                onChange={(event) => updateBulkPhotoLegal("lumm", event.target.checked)}
+              />
+              <span>{t("species_request.photo_mark_lumm")}</span>
+            </label>
+
+            <label className="flex items-start gap-2 text-xs text-white/85">
+              <input
+                type="checkbox"
+                className="mt-0.5 h-4 w-4 rounded border-white/40 bg-transparent"
                 checked={bulkPhotoLegal.declaration_confirmed}
                 onChange={(event) =>
                   updateBulkPhotoLegal("declaration_confirmed", event.target.checked)
@@ -291,6 +301,16 @@ export function PhotosStep({
                       ) : null}
                     </div>
                   </div>
+
+                  <label className="flex items-start gap-2 text-xs text-white/85">
+                    <input
+                      type="checkbox"
+                      className="mt-0.5 h-4 w-4 rounded border-white/40 bg-transparent"
+                      checked={Boolean(legal?.lumm)}
+                      onChange={(event) => updatePhotoLegal(fileKey, "lumm", event.target.checked)}
+                    />
+                    <span>{t("species_request.photo_mark_lumm")}</span>
+                  </label>
 
                   <label className="flex items-start gap-2 text-xs text-white/85">
                     <input

@@ -69,7 +69,7 @@ export function sortPhotos(photos: SpeciePhoto[]) {
   return result
     .map((p) => ({
       photo: getPhotoUrl(p),
-      attribution: p.attribution ?? undefined,
+      attribution: p.attribution_display ?? p.attribution ?? undefined,
     }))
     .filter((x) => Boolean(x.photo));
 }

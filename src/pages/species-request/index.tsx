@@ -303,6 +303,7 @@ export default function SpeciesRequestPage() {
           attribution: legal?.attribution?.trim(),
           rights_holder: legal?.rights_holder?.trim(),
           source_url: legal?.source_url?.trim() || undefined,
+          lumm: Boolean(legal?.lumm),
           declaration_accepted_at: legal?.declaration_confirmed ? declarationAcceptedAt : undefined,
         });
       }

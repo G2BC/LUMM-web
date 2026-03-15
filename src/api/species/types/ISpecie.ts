@@ -68,6 +68,7 @@ export interface ISpecie {
 
 export interface SpeciePhoto {
   attribution?: string | null;
+  attribution_display?: string | null;
   license_code?: string | null;
   rights_holder?: string | null;
   source_url?: string | null;

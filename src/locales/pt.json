@@ -357,6 +357,7 @@
       "photo_source_url": "URL de origem",
       "photo_source_url_placeholder": "https://...",
       "photo_source_url_optional": "Opcional para fotos próprias sem publicação online.",
+      "photo_mark_lumm": "O fungo está bioluminescente nesta foto",
       "photo_declaration_label": "Declaro que tenho direitos para enviar esta imagem e aplicar a licença selecionada.",
       "submit": "Enviar solicitação",
       "success_title": "Solicitação enviada",
