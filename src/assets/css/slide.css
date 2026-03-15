@@ -1,4 +1,6 @@
 .embla {
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
   margin: auto;
   --slide-height: 19rem;
@@ -6,9 +8,12 @@
   --slide-size: 100%;
 }
 .embla__viewport {
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
 }
 .embla__container {
+  width: 100%;
   display: flex;
   touch-action: pan-y pinch-zoom;
   margin-left: calc(var(--slide-spacing) * -1);
@@ -46,6 +51,8 @@
   margin-top: var(--thumbs-slide-spacing);
 }
 .embla-thumbs__viewport {
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
 }
 .embla-thumbs__container {

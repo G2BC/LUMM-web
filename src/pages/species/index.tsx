@@ -88,7 +88,7 @@ export default function SpeciesPage() {
         </Button>
       )}
       <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-8">
-        <div className="text-white max-xl:order-1">
+        <div className="min-w-0 text-white max-xl:order-1">
           <header className="xl:max-w-[95%]">
             <div className="flex items-center gap-5 xl:gap-6">
               <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic tracking-tight">
@@ -220,7 +220,7 @@ export default function SpeciesPage() {
           </div>
         </div>
 
-        <div className="xl:sticky xl:top-20 xl:self-start">
+        <div className="min-w-0 xl:sticky xl:top-20 xl:self-start">
           {!!photos?.length && <Slide slides={photos} />}
           <section className="mt-6 hidden rounded-2xl border border-primary/35 bg-gradient-to-r from-primary/15 via-primary/5 to-transparent p-5 xl:block">
             <p className="text-sm font-semibold text-white">{t("species_page.contribute_title")}</p>
