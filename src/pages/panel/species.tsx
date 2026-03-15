@@ -3,6 +3,7 @@ import type { ISpecie } from "@/api/species/types/ISpecie";
 import specieCardDefault from "@/assets/specie-card-default.webp";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
+import { SpeciesActionsMenu } from "@/pages/panel/components/species-actions-menu";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -151,7 +152,14 @@ export default function PanelSpeciesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3 pr-3">{item.lineage || "-"}</td>
-                    <td className="px-4 py-3 text-right">-</td>
+                    <td className="px-4 py-3 text-right">
+                      <SpeciesActionsMenu
+                        locale={locale}
+                        speciesId={item.id}
+                        actionsLabel={t("panel_page.col_actions")}
+                        managePhotosLabel={t("panel_page.action_manage_photos")}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -184,7 +192,15 @@ export default function PanelSpeciesPage() {
                 <p className="mt-1 text-sm text-slate-600">
                   {t("panel_page.col_lineage")}: {item.lineage || "-"}
                 </p>
-                <div className="mt-3 text-sm text-slate-600">-</div>
+                <div className="mt-3">
+                  <SpeciesActionsMenu
+                    locale={locale}
+                    speciesId={item.id}
+                    actionsLabel={t("panel_page.col_actions")}
+                    managePhotosLabel={t("panel_page.action_manage_photos")}
+                    mobile
+                  />
+                </div>
               </article>
             ))}
           </div>
