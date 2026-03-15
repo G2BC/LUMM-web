@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/G2BC/LUMM-web/compare/v1.12.0...v1.13.0) (2026-03-15)
+
+
+### Features
+
+* add 'lumm' property to species photo requests and update UI components ([0f6a505](https://github.com/G2BC/LUMM-web/commit/0f6a5055a6a79d1cff8ef7cc7c41136ad1c8d6ea))
+
 ## [1.12.0](https://github.com/G2BC/LUMM-web/compare/v1.11.0...v1.12.0) (2026-03-15)
 
 
