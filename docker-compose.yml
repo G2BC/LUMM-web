@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   web:
-    image: ghcr.io/g2bc/lumm-web:latest
+    image: ${APP_IMAGE:-ghcr.io/g2bc/lumm-web}:${IMAGE_TAG:-latest}
     ports:
       - "4001:80"
     restart: unless-stopped

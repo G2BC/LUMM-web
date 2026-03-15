@@ -15,7 +15,8 @@ jobs:
 
     env:
       APP_DIR: ${{ vars.APP_DIR }}
-      IMAGE: ${{ vars.APP_IMAGE }}
+      APP_IMAGE: ${{ vars.APP_IMAGE }}
+      IMAGE_TAG: ${{ github.event.release.tag_name }}
       SERVICE: web
 
     steps:
@@ -26,16 +27,36 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update repository
+      - name: Checkout release tag on deployment directory
         working-directory: ${{ env.APP_DIR }}
         run: |
           git config --global --add safe.directory "${{ env.APP_DIR }}"
-          git pull --ff-only origin main
+          git fetch --tags origin
+          git checkout -f "${{ env.IMAGE_TAG }}"
+
+      - name: Build and publish release image
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          IMAGE_REPO="${APP_IMAGE:-ghcr.io/g2bc/lumm-web}"
+          docker build \
+            --build-arg VITE_API_URL="${{ secrets.VITE_API_URL }}" \
+            --build-arg VITE_API_KEY="${{ secrets.VITE_API_KEY }}" \
+            --build-arg VITE_ROBOTS="${{ secrets.VITE_ROBOTS }}" \
+            --build-arg VITE_SITE_URL="${{ secrets.VITE_SITE_URL }}" \
+            --build-arg VITE_PUBLIC_STORAGE_BASE_URL="${{ secrets.VITE_PUBLIC_STORAGE_BASE_URL }}" \
+            --build-arg VITE_CLARITY_ID="${{ secrets.VITE_CLARITY_ID }}" \
+            -t "${IMAGE_REPO}:${IMAGE_TAG}" \
+            -t "${IMAGE_REPO}:latest" \
+            .
+          docker push "${IMAGE_REPO}:${IMAGE_TAG}"
+          docker push "${IMAGE_REPO}:latest"
 
       - name: Update image and restart container
         working-directory: ${{ env.APP_DIR }}
         run: |
-          docker compose up -d --no-deps --pull always --wait --wait-timeout 120 "$SERVICE"
+          IMAGE_REPO="${APP_IMAGE:-ghcr.io/g2bc/lumm-web}"
+          APP_IMAGE="${IMAGE_REPO}" IMAGE_TAG="${IMAGE_TAG}" \
+            docker compose up -d --no-deps --pull always --wait --wait-timeout 120 "$SERVICE"
 
       - name: Show logs on failure
         if: failure()
