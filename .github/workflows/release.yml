@@ -3,6 +3,12 @@ name: Nova release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag da release para deploy (ex: v1.8.6)"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -16,7 +22,7 @@ jobs:
     env:
       APP_DIR: ${{ vars.APP_DIR }}
       APP_IMAGE: ${{ vars.APP_IMAGE }}
-      IMAGE_TAG: ${{ github.event.release.tag_name }}
+      IMAGE_TAG: ${{ github.event.inputs.tag || github.event.release.tag_name }}
       SERVICE: web
 
     steps:
