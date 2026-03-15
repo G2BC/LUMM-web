@@ -4,14 +4,14 @@ type PhotoKind = "f" | "l" | "n";
 
 export const getKind = (p: SpeciePhoto): PhotoKind => (p.featured ? "f" : p.lumm ? "l" : "n");
 
-const normalizePublicStorageBase = (value?: string) => {
+const normalizePublicStorageBase = (value?: string | null) => {
   const raw = (value || "").trim();
   if (!raw) return "";
   const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
   return withProtocol.replace(/\/+$/, "");
 };
 
-const fromMinioUriToPublicUrl = (value?: string) => {
+const fromMinioUriToPublicUrl = (value?: string | null) => {
   const raw = (value || "").trim();
   if (!raw) return "";
   if (!raw.startsWith("minio://")) return raw;
@@ -69,7 +69,7 @@ export function sortPhotos(photos: SpeciePhoto[]) {
   return result
     .map((p) => ({
       photo: getPhotoUrl(p),
-      attribution: p.attribution,
+      attribution: p.attribution ?? undefined,
     }))
     .filter((x) => Boolean(x.photo));
 }

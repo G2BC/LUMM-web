@@ -1,10 +1,16 @@
 import type { AxiosResponse } from "axios";
 import { API } from "..";
 import { runWithSilencedApiErrors } from "@/api/error-silencer";
-import type { ISpecie } from "./types/ISpecie";
+import type { ISpecie, SpeciePhoto } from "./types/ISpecie";
 import type { IPagination } from "../types/IPagination";
 import type { ISelect } from "../types/ISelect";
 import type { ISelectLocalized } from "../types/ISelectLocalized";
+import type {
+  CreateSpeciesPhotoPayload,
+  SpeciesDirectPhotoUploadUrlRequest,
+  SpeciesDirectPhotoUploadUrlResponse,
+  UpdateSpeciesPhotoPayload,
+} from "./types/ISpeciesPhotoManagement";
 import type {
   CleanupTmpUploadsResponse,
   SpeciesChangeRequest,
@@ -89,6 +95,44 @@ export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
   const resposta: AxiosResponse<ISpecie> = await API.get(`/species/${species}`);
 
   return resposta.data;
+};
+
+export const generateSpeciesDirectPhotoUploadUrl = async (
+  speciesId: number,
+  payload: SpeciesDirectPhotoUploadUrlRequest
+): Promise<SpeciesDirectPhotoUploadUrlResponse> => {
+  const response = await API.post<SpeciesDirectPhotoUploadUrlResponse>(
+    `/species/${speciesId}/photos/upload-url`,
+    payload
+  );
+  return response.data;
+};
+
+export const createSpeciesPhoto = async (
+  speciesId: number,
+  payload: CreateSpeciesPhotoPayload
+): Promise<SpeciePhoto> => {
+  const response = await API.post<SpeciePhoto>(`/species/${speciesId}/photos`, payload);
+  return response.data;
+};
+
+export const updateSpeciesPhoto = async (
+  speciesId: number,
+  photoId: number | string,
+  payload: UpdateSpeciesPhotoPayload
+): Promise<SpeciePhoto> => {
+  const response = await API.patch<SpeciePhoto>(
+    `/species/${speciesId}/photos/${encodeURIComponent(String(photoId))}`,
+    payload
+  );
+  return response.data;
+};
+
+export const deleteSpeciesPhoto = async (
+  speciesId: number,
+  photoId: number | string
+): Promise<void> => {
+  await API.delete(`/species/${speciesId}/photos/${encodeURIComponent(String(photoId))}`);
 };
 
 export const fetchSpeciesNcbi = async (

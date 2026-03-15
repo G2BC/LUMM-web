@@ -31,7 +31,7 @@ export default function InternalPanelPage() {
   const clearSession = useAuthStore((state) => state.clearSession);
   const isUsersRoute = location.pathname.endsWith("/usuarios");
   const isRequestsRoute = location.pathname.endsWith("/solicitacoes");
-  const isSpeciesRoute = location.pathname.endsWith("/especies");
+  const isSpeciesRoute = /\/painel\/especies(\/|$)/.test(location.pathname);
   const role = (user?.role ?? "").toLowerCase();
   const isAdmin = Boolean(user?.is_admin || role === "admin");
   const canReviewRequests = Boolean(isAdmin || user?.is_curator || role === "curator");
