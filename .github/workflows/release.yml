@@ -61,16 +61,18 @@ jobs:
             if [ -f /tmp/release-meta/tag.txt ]; then
               TAG="$(cat /tmp/release-meta/tag.txt)"
             else
-              SHA="${{ github.event.workflow_run.head_sha }}"
-              TAG="$(git tag --points-at "$SHA" | sort -V | tail -n 1)"
-              if [ -z "$TAG" ]; then
-                TAG="$(git tag --sort=-v:refname | head -n 1)"
-              fi
+              echo "Artifact de tag não encontrado para o run do CD."
+              exit 1
             fi
           fi
 
           if [ -z "$TAG" ]; then
             echo "Nenhuma tag de deploy foi encontrada."
+            exit 1
+          fi
+
+          if ! git rev-parse -q --verify "refs/tags/${TAG}" > /dev/null; then
+            echo "Tag inválida ou inexistente no repositório: ${TAG}"
             exit 1
           fi
 
