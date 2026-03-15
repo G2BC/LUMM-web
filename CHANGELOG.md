@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/G2BC/LUMM-web/compare/v1.9.0...v1.10.0) (2026-03-15)
+
+
+### Features
+
+* add animations to hero section for enhanced visual appeal ([c6ec38e](https://github.com/G2BC/LUMM-web/commit/c6ec38ec1212a52fb531b3de05bf1d294b0b2154))
+
 ## [1.9.0](https://github.com/G2BC/LUMM-web/compare/v1.8.5...v1.9.0) (2026-03-15)
 
 
