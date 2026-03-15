@@ -32,6 +32,18 @@ jobs:
           fi
           echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
 
+      - name: Save release metadata artifact
+        run: |
+          mkdir -p release-meta
+          echo "${{ steps.meta.outputs.tag }}" > release-meta/tag.txt
+
+      - name: Upload release metadata artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-meta
+          path: release-meta/tag.txt
+          if-no-files-found: error
+
       - name: Normalize GHCR owner
         id: image_meta
         run: |

@@ -14,6 +14,7 @@ on:
 permissions:
   contents: read
   packages: read
+  actions: read
 
 jobs:
   deploy:
@@ -41,6 +42,15 @@ jobs:
           git fetch --tags origin
           git fetch --prune origin
 
+      - name: Download release metadata from CD run
+        if: ${{ github.event_name == 'workflow_run' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: release-meta
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/release-meta
+
       - name: Resolve deploy tag
         id: tag
         working-directory: ${{ env.APP_DIR }}
@@ -48,13 +58,22 @@ jobs:
           if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
             TAG="${{ github.event.inputs.tag }}"
           else
-            SHA="${{ github.event.workflow_run.head_sha }}"
-            TAG="$(git tag --points-at "$SHA" | sort -V | tail -n 1)"
-            if [ -z "$TAG" ]; then
-              echo "Nenhuma tag encontrada para o commit do CD: $SHA"
-              exit 1
+            if [ -f /tmp/release-meta/tag.txt ]; then
+              TAG="$(cat /tmp/release-meta/tag.txt)"
+            else
+              SHA="${{ github.event.workflow_run.head_sha }}"
+              TAG="$(git tag --points-at "$SHA" | sort -V | tail -n 1)"
+              if [ -z "$TAG" ]; then
+                TAG="$(git tag --sort=-v:refname | head -n 1)"
+              fi
             fi
           fi
+
+          if [ -z "$TAG" ]; then
+            echo "Nenhuma tag de deploy foi encontrada."
+            exit 1
+          fi
+
           echo "value=${TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout release tag on deployment directory
