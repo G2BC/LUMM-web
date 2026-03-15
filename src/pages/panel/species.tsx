@@ -1,7 +1,6 @@
 import { searchEspecies } from "@/api/species";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import specieCardDefault from "@/assets/specie-card-default.webp";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
@@ -152,11 +151,7 @@ export default function PanelSpeciesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3 pr-3">{item.lineage || "-"}</td>
-                    <td className="px-4 py-3 text-right">
-                      <Button size="sm" variant="outline" disabled>
-                        {t("panel_page.action_coming_soon")}
-                      </Button>
-                    </td>
+                    <td className="px-4 py-3 text-right">-</td>
                   </tr>
                 ))}
               </tbody>
@@ -189,11 +184,7 @@ export default function PanelSpeciesPage() {
                 <p className="mt-1 text-sm text-slate-600">
                   {t("panel_page.col_lineage")}: {item.lineage || "-"}
                 </p>
-                <div className="mt-3">
-                  <Button size="sm" variant="outline" disabled>
-                    {t("panel_page.action_coming_soon")}
-                  </Button>
-                </div>
+                <div className="mt-3 text-sm text-slate-600">-</div>
               </article>
             ))}
           </div>
