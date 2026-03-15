@@ -1,19 +1,39 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag da release para build/push (ex: v1.8.6)"
+        required: true
+        type: string
 
 permissions:
   contents: read
   packages: write
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve release tag
+        id: meta
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            TAG="${{ github.event.release.tag_name }}"
+          fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout release tag
+        run: git checkout -f "${{ steps.meta.outputs.tag }}"
 
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
@@ -32,6 +52,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
+            ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:${{ steps.meta.outputs.tag }}
             ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:${{ github.sha }}
             ghcr.io/${{ secrets.REPOSITORY_OWNER }}/lumm-web:latest
           build-args: |
