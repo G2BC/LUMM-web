@@ -350,9 +350,9 @@
       "photo_license": "Licença",
       "photo_license_placeholder": "Selecione a licença",
       "photo_license_arr": "Todos os direitos reservados",
-      "photo_attribution": "Autor / crédito",
-      "photo_attribution_placeholder": "Ex.: Maria Silva",
-      "photo_rights_holder": "Detentor dos direitos",
+      "photo_attribution": "Enviado por",
+      "photo_attribution_placeholder": "Ex.: Seu nome",
+      "photo_rights_holder": "Titular dos direitos autorais",
       "photo_rights_holder_placeholder": "Ex.: Maria Silva ou Instituição X",
       "photo_source_url": "URL de origem",
       "photo_source_url_placeholder": "https://...",
@@ -370,10 +370,10 @@
         "missing_changes_title": "Nada para enviar",
         "missing_changes_text": "Adicione ao menos um campo atualizado ou uma foto.",
         "photo_metadata_title": "Dados de licença incompletos",
-        "photo_metadata_text": "Revise os campos de licença e direitos nas fotos anexadas.",
+        "photo_metadata_text": "Revise os campos de licença, envio e titularidade nas fotos anexadas.",
         "photo_license_required": "Selecione uma licença.",
-        "photo_attribution_required": "Informe o autor/crédito da foto.",
-        "photo_rights_holder_required": "Informe o detentor dos direitos.",
+        "photo_attribution_required": "Informe quem enviou a foto no LUMM.",
+        "photo_rights_holder_required": "Informe o titular dos direitos autorais.",
         "photo_source_url_invalid": "Informe uma URL válida.",
         "photo_declaration_required": "Confirme a declaração de direitos."
       }
@@ -445,7 +445,7 @@
       "species_photos_meta_missing": "Não informado",
       "species_photos_validation_title": "Revise os dados antes de enviar",
       "species_photos_validation_select_files": "Selecione ao menos uma foto para upload.",
-      "species_photos_validation_metadata": "Preencha atribuição e titular dos direitos para continuar.",
+      "species_photos_validation_metadata": "Preencha quem enviou no LUMM e o titular dos direitos para continuar.",
       "species_photos_validation_source_url": "A URL da fonte é inválida.",
       "species_photos_upload_success_title": "Fotos enviadas com sucesso",
       "species_photos_upload_success_text": "{{count}} foto(s) foram adicionadas à espécie.",
@@ -595,8 +595,8 @@
       "decision_summary_result": "Resultado previsto",
       "photo_license": "Licença",
       "photo_license_missing": "Não informada",
-      "photo_attribution": "Atribuição",
-      "photo_rights_holder": "Titular dos direitos",
+      "photo_attribution": "Enviado por",
+      "photo_rights_holder": "Titular dos direitos autorais",
       "photo_source": "Fonte"
     }
   }

@@ -350,9 +350,9 @@
       "photo_license": "License",
       "photo_license_placeholder": "Select a license",
       "photo_license_arr": "All rights reserved",
-      "photo_attribution": "Author / attribution",
-      "photo_attribution_placeholder": "e.g. Jane Doe",
-      "photo_rights_holder": "Rights holder",
+      "photo_attribution": "Uploaded by",
+      "photo_attribution_placeholder": "e.g. Your name",
+      "photo_rights_holder": "Copyright holder",
       "photo_rights_holder_placeholder": "e.g. Jane Doe or Institution X",
       "photo_source_url": "Source URL",
       "photo_source_url_placeholder": "https://...",
@@ -370,10 +370,10 @@
         "missing_changes_title": "Nothing to submit",
         "missing_changes_text": "Add at least one updated field or one photo.",
         "photo_metadata_title": "Incomplete photo license data",
-        "photo_metadata_text": "Review license and rights fields for attached photos.",
+        "photo_metadata_text": "Review license, uploader and rights holder fields for attached photos.",
         "photo_license_required": "Select a license.",
-        "photo_attribution_required": "Provide photo author/attribution.",
-        "photo_rights_holder_required": "Provide the rights holder.",
+        "photo_attribution_required": "Provide who uploaded this photo on LUMM.",
+        "photo_rights_holder_required": "Provide the copyright holder.",
         "photo_source_url_invalid": "Provide a valid URL.",
         "photo_declaration_required": "Confirm the rights declaration."
       }
@@ -445,7 +445,7 @@
       "species_photos_meta_missing": "Not provided",
       "species_photos_validation_title": "Review the data before uploading",
       "species_photos_validation_select_files": "Select at least one photo to upload.",
-      "species_photos_validation_metadata": "Fill attribution and rights holder to continue.",
+      "species_photos_validation_metadata": "Fill uploaded by (LUMM) and copyright holder to continue.",
       "species_photos_validation_source_url": "The source URL is invalid.",
       "species_photos_upload_success_title": "Photos uploaded successfully",
       "species_photos_upload_success_text": "{{count}} photo(s) were added to this species.",
@@ -595,8 +595,8 @@
       "decision_summary_result": "Expected result",
       "photo_license": "License",
       "photo_license_missing": "Not provided",
-      "photo_attribution": "Attribution",
-      "photo_rights_holder": "Rights holder",
+      "photo_attribution": "Uploaded by",
+      "photo_rights_holder": "Copyright holder",
       "photo_source": "Source"
     }
   }
