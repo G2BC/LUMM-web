@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router";
 import { ScrollToTop } from "./components/scroll-to-top.tsx";
 import { AuthBootstrap } from "./components/auth-bootstrap.tsx";
 import { RouteAwareLoader } from "./components/route-aware-loader.tsx";
+import { RouteAwareThemeColor } from "./components/route-aware-theme-color.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
       <AuthBootstrap>
         <Suspense fallback={<RouteAwareLoader />}>
           <ScrollToTop />
+          <RouteAwareThemeColor />
           <Router />
         </Suspense>
       </AuthBootstrap>
