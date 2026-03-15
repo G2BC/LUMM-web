@@ -1,8 +1,9 @@
 name: Nova release
 
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: ["CD"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       tag:
@@ -12,17 +13,17 @@ on:
 
 permissions:
   contents: read
-  packages: write
+  packages: read
 
 jobs:
   deploy:
     name: Deploy on self-hosted runner
     runs-on: self-hosted
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     env:
       APP_DIR: ${{ vars.APP_DIR }}
       APP_IMAGE: ${{ vars.APP_IMAGE }}
-      IMAGE_TAG: ${{ github.event.inputs.tag || github.event.release.tag_name }}
       SERVICE: web
 
     steps:
@@ -33,35 +34,45 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout release tag on deployment directory
+      - name: Prepare repository
         working-directory: ${{ env.APP_DIR }}
         run: |
           git config --global --add safe.directory "${{ env.APP_DIR }}"
           git fetch --tags origin
-          git checkout -f "${{ env.IMAGE_TAG }}"
+          git fetch --prune origin
 
-      - name: Build and publish release image
+      - name: Resolve deploy tag
+        id: tag
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            SHA="${{ github.event.workflow_run.head_sha }}"
+            TAG="$(git tag --points-at "$SHA" | sort -V | tail -n 1)"
+            if [ -z "$TAG" ]; then
+              echo "Nenhuma tag encontrada para o commit do CD: $SHA"
+              exit 1
+            fi
+          fi
+          echo "value=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout release tag on deployment directory
+        working-directory: ${{ env.APP_DIR }}
+        run: |
+          git checkout -f "${{ steps.tag.outputs.value }}"
+
+      - name: Pull tagged image
         working-directory: ${{ env.APP_DIR }}
         run: |
           IMAGE_REPO="${APP_IMAGE:-ghcr.io/g2bc/lumm-web}"
-          docker build \
-            --build-arg VITE_API_URL="${{ secrets.VITE_API_URL }}" \
-            --build-arg VITE_API_KEY="${{ secrets.VITE_API_KEY }}" \
-            --build-arg VITE_ROBOTS="${{ secrets.VITE_ROBOTS }}" \
-            --build-arg VITE_SITE_URL="${{ secrets.VITE_SITE_URL }}" \
-            --build-arg VITE_PUBLIC_STORAGE_BASE_URL="${{ secrets.VITE_PUBLIC_STORAGE_BASE_URL }}" \
-            --build-arg VITE_CLARITY_ID="${{ secrets.VITE_CLARITY_ID }}" \
-            -t "${IMAGE_REPO}:${IMAGE_TAG}" \
-            -t "${IMAGE_REPO}:latest" \
-            .
-          docker push "${IMAGE_REPO}:${IMAGE_TAG}"
-          docker push "${IMAGE_REPO}:latest"
+          docker pull "${IMAGE_REPO}:${{ steps.tag.outputs.value }}"
 
       - name: Update image and restart container
         working-directory: ${{ env.APP_DIR }}
         run: |
           IMAGE_REPO="${APP_IMAGE:-ghcr.io/g2bc/lumm-web}"
-          APP_IMAGE="${IMAGE_REPO}" IMAGE_TAG="${IMAGE_TAG}" \
+          APP_IMAGE="${IMAGE_REPO}" IMAGE_TAG="${{ steps.tag.outputs.value }}" \
             docker compose up -d --no-deps --pull always --wait --wait-timeout 120 "$SERVICE"
 
       - name: Show logs on failure
