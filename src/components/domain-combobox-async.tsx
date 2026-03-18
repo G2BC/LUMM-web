@@ -22,6 +22,7 @@ import type { ISelectLocalized } from "@/api/types/ISelectLocalized";
 type DomainComboboxBaseProps = {
   domain: SpeciesDomainSelectType;
   placeholder?: string;
+  variant?: "dark" | "light";
 };
 
 type DomainComboboxSingleProps = DomainComboboxBaseProps & {
@@ -55,6 +56,7 @@ export function DomainComboboxAsync(props: DomainComboboxAsyncProps) {
   );
 
   const isPt = i18n.language.toLowerCase().startsWith("pt");
+  const variant = props.variant ?? "dark";
 
   const getLabel = React.useCallback(
     (option?: ISelectLocalized) => {
@@ -129,10 +131,15 @@ export function DomainComboboxAsync(props: DomainComboboxAsyncProps) {
           role="combobox"
           aria-expanded={open}
           className={clsx(
-            "w-full h-[40px] justify-between border-white hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
-            !selectedValues.length
-              ? "text-[#FFFFFF80] hover:text-[#FFFFFF80]"
-              : "text-white hover:text-white"
+            "w-full h-[40px] justify-between hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
+            variant === "light" ? "border-slate-300 bg-white" : "border-white",
+            variant === "light"
+              ? !selectedValues.length
+                ? "text-slate-400 hover:text-slate-400"
+                : "text-slate-900 hover:text-slate-900"
+              : !selectedValues.length
+                ? "text-[#FFFFFF80] hover:text-[#FFFFFF80]"
+                : "text-white hover:text-white"
           )}
         >
           {buttonLabel}
