@@ -64,6 +64,7 @@ export interface ISpecie {
   lum_lamellae?: boolean | null;
   lum_spores?: boolean | null;
   ncbi_taxonomy_id: string | null;
+  iucn_redlist?: string | null;
 }
 
 export interface SpeciePhoto {
