@@ -25,6 +25,7 @@ const PanelSpeciesPage = React.lazy(() => import("./pages/panel/species"));
 const PanelSpeciesPhotosPage = React.lazy(() => import("./pages/panel/species-photos"));
 const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-requests"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
+const PanelSpeciesEditPage = React.lazy(() => import("./pages/panel/species-edit"));
 
 function Router() {
   const { language } = useLanguageStore();
@@ -49,6 +50,11 @@ function Router() {
             <Route element={<AuthGuard requireCurator />}>
               <Route path="especies" element={<PanelSpeciesPage />} />
               <Route path="especies/:species/fotos" element={<PanelSpeciesPhotosPage />} />
+              <Route path="especies/:species/editar" element={<PanelSpeciesEditPage />} />
+              <Route
+                path="especies/:species/detalhes"
+                element={<PanelSpeciesEditPage viewMode />}
+              />
               <Route path="solicitacoes" element={<PanelSpeciesRequestsPage />} />
             </Route>
           </Route>
