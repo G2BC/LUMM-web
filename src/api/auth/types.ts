@@ -11,7 +11,6 @@ export type AuthUser = {
   name: string;
   institution?: string | null;
   email: string;
-  is_admin: boolean;
   role?: AuthUserRole | null;
   is_curator?: boolean;
   is_active: boolean;
