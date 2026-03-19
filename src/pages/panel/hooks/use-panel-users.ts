@@ -3,12 +3,14 @@ import {
   approveUser,
   deactivateUser,
   listUsers,
-  updateUserAdminRole,
+  updateUserRole,
 } from "@/api/auth";
+import type { AuthUser, AuthUserRole } from "@/api/auth/types";
 import { Alert } from "@/components/alert";
 import { confirmAction } from "@/components/confirm-action";
+import { resolveUserRole } from "@/pages/panel/users-utils";
 import { useAuthStore } from "@/stores/useAuthStore";
-import type { AuthUser } from "@/api/auth/types";
+import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +23,7 @@ export function usePanelUsers() {
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
-  const [updatingAdminRoleUserId, setUpdatingAdminRoleUserId] = useState<string | null>(null);
+  const [updatingRoleUserId, setUpdatingRoleUserId] = useState<string | null>(null);
   const [resettingUserId, setResettingUserId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -183,32 +185,50 @@ export function usePanelUsers() {
     }
   }
 
-  async function handleToggleUserAdminRole(user: AuthUser) {
+  async function handleUpdateUserRole(user: AuthUser, nextRole: AuthUserRole) {
     if (currentUserId && user.id === currentUserId) return;
+    if (resolveUserRole(user) === nextRole) return;
 
-    const isDemoteAction = user.is_admin;
+    const roleLabelMap: Record<AuthUserRole, string> = {
+      researcher: t("panel_page.role_researcher"),
+      curator: t("panel_page.role_curator"),
+      admin: t("panel_page.role_admin"),
+    };
+
     const isConfirmed = await confirmAction({
       title: t("panel_page.confirm_action_title"),
-      text: isDemoteAction
-        ? t("panel_page.confirm_remove_admin_text")
-        : t("panel_page.confirm_make_admin_text"),
+      text: t("panel_page.confirm_change_role_text", { role: roleLabelMap[nextRole] }),
       confirmButtonText: t("panel_page.confirm_action_yes"),
       cancelButtonText: t("panel_page.confirm_action_no"),
     });
 
     if (!isConfirmed) return;
 
-    setUpdatingAdminRoleUserId(user.id);
+    setUpdatingRoleUserId(user.id);
 
     try {
-      const updatedUser = await updateUserAdminRole(user.id, !user.is_admin);
+      const updatedUser = await updateUserRole(user.id, nextRole);
       setUsers((prev) =>
         prev.map((item) =>
-          item.id === user.id ? { ...item, is_admin: updatedUser.is_admin } : item
+          item.id === user.id
+            ? {
+                ...item,
+                role: updatedUser.role,
+              }
+            : item
         )
       );
+    } catch (error) {
+      const backendMessage = axios.isAxiosError(error)
+        ? (error.response?.data as { message?: string } | undefined)?.message
+        : undefined;
+      await Alert({
+        icon: "error",
+        title: t("panel_page.update_role_error_title"),
+        text: backendMessage || t("panel_page.update_role_error_text"),
+      });
     } finally {
-      setUpdatingAdminRoleUserId(null);
+      setUpdatingRoleUserId(null);
     }
   }
 
@@ -230,7 +250,7 @@ export function usePanelUsers() {
     users,
     isLoadingUsers,
     updatingUserId,
-    updatingAdminRoleUserId,
+    updatingRoleUserId,
     resettingUserId,
     search,
     statusFilter,
@@ -240,7 +260,7 @@ export function usePanelUsers() {
     handleStatusFilterChange,
     handlePageChange,
     handleToggleUserActive,
-    handleToggleUserAdminRole,
+    handleUpdateUserRole,
     handleAdminResetPassword,
   };
 }

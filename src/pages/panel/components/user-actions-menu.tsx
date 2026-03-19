@@ -1,12 +1,17 @@
-import type { AuthUser } from "@/api/auth/types";
+import type { AuthUser, AuthUserRole } from "@/api/auth/types";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
+import { Check, MoreHorizontal } from "lucide-react";
+import { resolveUserRole } from "@/pages/panel/users-utils";
 
 type UserActionsMenuProps = {
   mobile?: boolean;
@@ -14,14 +19,16 @@ type UserActionsMenuProps = {
   actionsLabel: string;
   activateLabel: string;
   deactivateLabel: string;
-  makeAdminLabel: string;
-  removeAdminLabel: string;
+  updateRoleLabel: string;
+  roleResearcherLabel: string;
+  roleCuratorLabel: string;
+  roleAdminLabel: string;
   resetPasswordLabel: string;
   disableActiveToggle?: boolean;
-  disableAdminRoleToggle?: boolean;
+  disableRoleChange?: boolean;
   item: AuthUser;
   onToggleActive: (_item: AuthUser) => void;
-  onToggleAdminRole: (_item: AuthUser) => void;
+  onUpdateRole: (_item: AuthUser, _role: AuthUserRole) => void;
   onResetPassword: (_item: AuthUser) => void;
 };
 
@@ -31,16 +38,26 @@ export function UserActionsMenu({
   actionsLabel,
   activateLabel,
   deactivateLabel,
-  makeAdminLabel,
-  removeAdminLabel,
+  updateRoleLabel,
+  roleResearcherLabel,
+  roleCuratorLabel,
+  roleAdminLabel,
   resetPasswordLabel,
   disableActiveToggle = false,
-  disableAdminRoleToggle = false,
+  disableRoleChange = false,
   item,
   onToggleActive,
-  onToggleAdminRole,
+  onUpdateRole,
   onResetPassword,
 }: UserActionsMenuProps) {
+  const currentRole = resolveUserRole(item);
+  const roleOptions: Array<{ value: AuthUserRole; label: string }> = [
+    { value: "researcher", label: roleResearcherLabel },
+    { value: "curator", label: roleCuratorLabel },
+    { value: "admin", label: roleAdminLabel },
+  ];
+  const currentRoleLabel = roleOptions.find((option) => option.value === currentRole)?.label ?? "";
+
   return (
     <div className={mobile ? "w-full" : "flex justify-end"}>
       <DropdownMenu modal={false}>
@@ -48,16 +65,16 @@ export function UserActionsMenu({
           <Button
             variant="outline"
             size="sm"
-            className={mobile ? "w-full justify-center gap-2" : ""}
+            className={mobile ? "w-full justify-center gap-2" : "h-9 w-9 p-0"}
             disabled={isBusy}
           >
-            {mobile && actionsLabel}
+            {mobile ? actionsLabel : null}
             <MoreHorizontal className="h-4 w-4" />
             <span className="sr-only">{actionsLabel}</span>
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuItem
             onClick={() => onToggleActive(item)}
             disabled={disableActiveToggle}
@@ -69,12 +86,35 @@ export function UserActionsMenu({
           >
             {item.is_active ? deactivateLabel : activateLabel}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => onToggleAdminRole(item)}
-            disabled={disableAdminRoleToggle}
-          >
-            {item.is_admin ? removeAdminLabel : makeAdminLabel}
-          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger disabled={disableRoleChange} className="gap-2">
+              <span>{updateRoleLabel}</span>
+              <span className="ml-auto text-xs text-slate-500">{currentRoleLabel}</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent className="w-56">
+              {roleOptions.map((option) => {
+                const selected = currentRole === option.value;
+
+                return (
+                  <DropdownMenuItem
+                    key={option.value}
+                    disabled={disableRoleChange || selected}
+                    onClick={() => onUpdateRole(item, option.value)}
+                    className="justify-between"
+                  >
+                    <span>{option.label}</span>
+                    {selected ? <Check className="h-4 w-4 text-emerald-600" /> : null}
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+
+          <DropdownMenuSeparator />
+
           <DropdownMenuItem onClick={() => onResetPassword(item)}>
             {resetPasswordLabel}
           </DropdownMenuItem>

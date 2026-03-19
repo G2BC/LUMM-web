@@ -3,6 +3,7 @@ import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type {
   AdminResetPasswordResponse,
   AuthTokens,
+  AuthUserRole,
   AuthUser,
   ChangePasswordPayload,
   ListUsersParams,
@@ -79,7 +80,7 @@ export const adminResetPassword = async (id: string): Promise<AdminResetPassword
   return response.data;
 };
 
-export const updateUserAdminRole = async (id: string, isAdmin: boolean): Promise<AuthUser> => {
-  const response = await API.patch<AuthUser>(`/users/${id}/admin`, { is_admin: isAdmin });
+export const updateUserRole = async (id: string, role: AuthUserRole): Promise<AuthUser> => {
+  const response = await API.patch<AuthUser>(`/users/${id}/role`, { role });
   return response.data;
 };

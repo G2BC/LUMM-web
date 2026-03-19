@@ -16,7 +16,7 @@ export default function PanelUsersPage() {
     users,
     isLoadingUsers,
     updatingUserId,
-    updatingAdminRoleUserId,
+    updatingRoleUserId,
     resettingUserId,
     search,
     statusFilter,
@@ -26,15 +26,13 @@ export default function PanelUsersPage() {
     handleStatusFilterChange,
     handlePageChange,
     handleToggleUserActive,
-    handleToggleUserAdminRole,
+    handleUpdateUserRole,
     handleAdminResetPassword,
   } = usePanelUsers();
 
   function renderUserActions(item: AuthUser, mobile = false) {
     const isBusy =
-      updatingUserId === item.id ||
-      updatingAdminRoleUserId === item.id ||
-      resettingUserId === item.id;
+      updatingUserId === item.id || updatingRoleUserId === item.id || resettingUserId === item.id;
     const isCurrentLoggedUser = Boolean(loggedUserId && item.id === loggedUserId);
 
     return (
@@ -44,14 +42,16 @@ export default function PanelUsersPage() {
         actionsLabel={t("panel_page.col_actions")}
         activateLabel={t("panel_page.action_activate")}
         deactivateLabel={t("panel_page.action_deactivate")}
-        makeAdminLabel={t("panel_page.action_make_admin")}
-        removeAdminLabel={t("panel_page.action_remove_admin")}
+        updateRoleLabel={t("panel_page.action_update_role")}
+        roleResearcherLabel={t("panel_page.role_researcher")}
+        roleCuratorLabel={t("panel_page.role_curator")}
+        roleAdminLabel={t("panel_page.role_admin")}
         resetPasswordLabel={t("panel_page.action_reset_password")}
         disableActiveToggle={isCurrentLoggedUser}
-        disableAdminRoleToggle={isCurrentLoggedUser}
+        disableRoleChange={isCurrentLoggedUser}
         item={item}
         onToggleActive={(target) => void handleToggleUserActive(target)}
-        onToggleAdminRole={(target) => void handleToggleUserAdminRole(target)}
+        onUpdateRole={(target, role) => void handleUpdateUserRole(target, role)}
         onResetPassword={(target) => void handleAdminResetPassword(target)}
       />
     );
@@ -91,6 +91,7 @@ export default function PanelUsersPage() {
               users={users}
               renderActions={renderUserActions}
               roleAdminLabel={t("panel_page.col_role_admin_short")}
+              roleCuratorLabel={t("panel_page.col_role_curator_short")}
               roleUserLabel={t("panel_page.col_role_user_short")}
               statusActiveLabel={t("panel_page.status_active")}
               statusInactiveLabel={t("panel_page.status_inactive")}
@@ -104,6 +105,7 @@ export default function PanelUsersPage() {
               colStatusLabel={t("panel_page.col_status")}
               colActionsLabel={t("panel_page.col_actions")}
               roleAdminLabel={t("panel_page.col_role_admin_short")}
+              roleCuratorLabel={t("panel_page.col_role_curator_short")}
               roleUserLabel={t("panel_page.col_role_user_short")}
               statusActiveLabel={t("panel_page.status_active")}
               statusInactiveLabel={t("panel_page.status_inactive")}

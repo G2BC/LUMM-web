@@ -4,13 +4,15 @@ export type AuthTokens = {
   must_change_password?: boolean;
 };
 
+export type AuthUserRole = "researcher" | "curator" | "admin";
+
 export type AuthUser = {
   id: string;
   name: string;
   institution?: string | null;
   email: string;
   is_admin: boolean;
-  role?: "researcher" | "curator" | "admin";
+  role?: AuthUserRole | null;
   is_curator?: boolean;
   is_active: boolean;
   must_change_password: boolean;
