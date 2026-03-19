@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.14.0](https://github.com/G2BC/LUMM-web/compare/v1.13.2...v1.14.0) (2026-03-19)
+
+
+### Features
+
+* add optional iucn_redlist property to ISpecie interface ([d5af4b3](https://github.com/G2BC/LUMM-web/commit/d5af4b3c9b1a5c091ea3cb75cf50e4af36e030df))
+* add species edit page routes to the router ([339a5d1](https://github.com/G2BC/LUMM-web/commit/339a5d19291a3302ab570daf16436c3aedb82d32))
+* add variant prop to DomainComboboxAsync for light and dark themes ([436062e](https://github.com/G2BC/LUMM-web/commit/436062e5f5987e9b1538582c0cb7be09f5c556e0))
+* create species combobox async ([cbb181f](https://github.com/G2BC/LUMM-web/commit/cbb181f60da2dc9f74d5772f872adaf30eca6176))
+* enhance header and footer components with dynamic navigation buttons based on user authentication state ([d46f332](https://github.com/G2BC/LUMM-web/commit/d46f33232611082cd5dd72df587539c2fc283160))
+* implement species edit functionality with form validation and API integration ([2c6f6ce](https://github.com/G2BC/LUMM-web/commit/2c6f6cef7e99c1d010875a50ff0edd06bff827d5))
+* refactor user role management with new role types and update UI components ([9181173](https://github.com/G2BC/LUMM-web/commit/918117371f4f9b5511a6651aa3e59e86fb0d657b))
+
+
+### Bug Fixes
+
+* remove duplicated mycobank link ([f20867e](https://github.com/G2BC/LUMM-web/commit/f20867e4e10cdafe81fc03cf602ac4681686cffc))
+* update back navigation link to include query parameters ([77b274d](https://github.com/G2BC/LUMM-web/commit/77b274dd0302557c0ce44800920f40fccf2a14ae))
+
 ## [1.13.2](https://github.com/G2BC/LUMM-web/compare/v1.13.1...v1.13.2) (2026-03-15)
 
 
