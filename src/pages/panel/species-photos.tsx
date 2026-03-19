@@ -36,7 +36,7 @@ import axios from "axios";
 import { ArrowLeft, ExternalLink, Loader2, Pencil, Trash2, Upload, X } from "lucide-react";
 import { useEffect, useState, type ChangeEvent, type DragEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { runWithSilencedApiErrors } from "@/api/error-silencer";
 
 function createDefaultPhotoMetadata(): PhotoMetadataValues {
@@ -68,6 +68,7 @@ function getPhotoDisplayUrl(photo: SpeciePhoto) {
 export default function PanelSpeciesPhotosPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { lang, species } = useParams();
 
   const locale = lang ?? DEFAULT_LOCALE;
@@ -442,6 +443,7 @@ export default function PanelSpeciesPhotosPage() {
 
   const photos = speciesData?.photos ?? [];
   const speciesTitle = speciesData?.scientific_name || `#${species || ""}`;
+  const backToSpeciesListPath = `/${locale}/painel/especies${location.search}`;
 
   return (
     <section className="space-y-6 text-slate-900">
@@ -454,7 +456,7 @@ export default function PanelSpeciesPhotosPage() {
         </div>
         <div className="flex flex-col gap-2 md:flex-row md:flex-wrap md:items-center md:justify-end">
           <Button variant="outline" className="w-full md:w-auto" asChild>
-            <Link to={`/${locale}/painel/especies`}>
+            <Link to={backToSpeciesListPath}>
               <ArrowLeft className="h-4 w-4" />
               {t("panel_page.species_photos_back")}
             </Link>
