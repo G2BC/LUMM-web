@@ -12,6 +12,18 @@ export interface SpeciesLocalizedOption {
   label_pt: string;
 }
 
+export interface SpeciesSimpleOption {
+  id: number;
+  label?: string;
+  name?: string;
+}
+
+export interface SpeciesTopLevelSimpleOption {
+  id: number | string;
+  name: string;
+  label?: string;
+}
+
 export interface SpeciesCharacteristics {
   colors?: string | null;
   colors_pt?: string | null;
@@ -38,6 +50,7 @@ export interface SpeciesCharacteristics {
   nutrition_modes?: SpeciesLocalizedOption[];
   season_end_month?: number | null;
   season_start_month?: number | null;
+  similar_species?: SpeciesSimpleOption[];
   size_cm?: string | null;
   species_id?: number;
   substrates?: SpeciesLocalizedOption[];
@@ -46,10 +59,7 @@ export interface SpeciesCharacteristics {
 export interface ISpecie {
   id: number;
   lineage: string;
-  similar_species?: Array<{
-    id: number | string;
-    name: string;
-  }>;
+  similar_species?: SpeciesTopLevelSimpleOption[];
   photos: SpeciePhoto[];
   family: string;
   scientific_name: string;

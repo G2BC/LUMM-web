@@ -5,11 +5,18 @@ import { Input } from "@/components/ui/input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { SpeciesActionsMenu } from "@/pages/panel/components/species-actions-menu";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
-import { useEffect, useState } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
 
 const SPECIES_PER_PAGE = 20;
+
+function parsePageParam(value: string | null) {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 1) return 1;
+  return parsed;
+}
 
 function getSpeciesThumb(species: ISpecie) {
   const featuredPhoto = species.photos?.find((photo) => photo.featured);
@@ -20,16 +27,44 @@ function getSpeciesThumb(species: ISpecie) {
 export default function PanelSpeciesPage() {
   const { t } = useTranslation();
   const { lang } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const user = useAuthStore((state) => state.user);
   const locale = lang ?? DEFAULT_LOCALE;
+  const role = (user?.role ?? "").toLowerCase();
+  const canManageSpecies = Boolean(
+    user?.is_admin || user?.is_curator || role === "admin" || role === "curator"
+  );
 
   const [items, setItems] = useState<ISpecie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => parsePageParam(searchParams.get("page")));
   const [pages, setPages] = useState(1);
   const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const nextPage = parsePageParam(searchParams.get("page"));
+    setPage((currentPage) => (currentPage === nextPage ? currentPage : nextPage));
+  }, [searchParams]);
+
+  const updatePageQuery = useCallback(
+    (nextPage: number) => {
+      setSearchParams((previousParams) => {
+        const nextParams = new URLSearchParams(previousParams);
+
+        if (nextPage <= 1) {
+          nextParams.delete("page");
+        } else {
+          nextParams.set("page", String(nextPage));
+        }
+
+        return nextParams;
+      });
+    },
+    [setSearchParams]
+  );
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -55,6 +90,7 @@ export default function PanelSpeciesPage() {
 
         if (page > nextPages) {
           setPage(nextPages);
+          updatePageQuery(nextPages);
           return;
         }
 
@@ -75,12 +111,15 @@ export default function PanelSpeciesPage() {
       });
 
     return () => controller.abort();
-  }, [debouncedSearch, page]);
+  }, [debouncedSearch, page, updatePageQuery]);
 
   function handleSearchChange(value: string) {
     setSearch(value);
     setPage(1);
+    updatePageQuery(1);
   }
+
+  const queryString = searchParams.toString();
 
   return (
     <section className="text-slate-900">
@@ -156,8 +195,13 @@ export default function PanelSpeciesPage() {
                       <SpeciesActionsMenu
                         locale={locale}
                         speciesId={item.id}
+                        queryString={queryString || undefined}
                         actionsLabel={t("panel_page.col_actions")}
                         managePhotosLabel={t("panel_page.action_manage_photos")}
+                        manageSpeciesLabel={t("panel_page.action_manage")}
+                        detailsSpeciesLabel={t("panel_page.action_details")}
+                        canManageSpecies={canManageSpecies}
+                        canManagePhotos={canManageSpecies}
                       />
                     </td>
                   </tr>
@@ -196,8 +240,13 @@ export default function PanelSpeciesPage() {
                   <SpeciesActionsMenu
                     locale={locale}
                     speciesId={item.id}
+                    queryString={queryString || undefined}
                     actionsLabel={t("panel_page.col_actions")}
                     managePhotosLabel={t("panel_page.action_manage_photos")}
+                    manageSpeciesLabel={t("panel_page.action_manage")}
+                    detailsSpeciesLabel={t("panel_page.action_details")}
+                    canManageSpecies={canManageSpecies}
+                    canManagePhotos={canManageSpecies}
                     mobile
                   />
                 </div>
@@ -215,7 +264,10 @@ export default function PanelSpeciesPage() {
             summaryLabel={({ start, end, total: summaryTotal }) =>
               t("panel_page.species_pagination_summary", { start, end, total: summaryTotal })
             }
-            onPageChange={setPage}
+            onPageChange={(nextPage) => {
+              setPage(nextPage);
+              updatePageQuery(nextPage);
+            }}
           />
         </>
       ) : null}

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { LummLogo } from "@/components/logo";
 import LanguageSwitcher from "@/components/languege-switcher";
 import {
@@ -17,7 +16,7 @@ import { DEFAULT_LOCALE } from "@/lib/lang";
 import { PanelUserMenu } from "@/pages/panel/components/panel-user-menu";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate, useParams, NavLink, Outlet, useLocation, Link } from "react-router";
-import { ArrowLeft, FileCheck2, Users } from "lucide-react";
+import { FileCheck2, Users } from "lucide-react";
 import { TbMushroom } from "react-icons/tb";
 import { useTranslation } from "react-i18next";
 
@@ -34,8 +33,9 @@ export default function InternalPanelPage() {
   const isSpeciesRoute = /\/painel\/especies(\/|$)/.test(location.pathname);
   const role = (user?.role ?? "").toLowerCase();
   const isAdmin = Boolean(user?.is_admin || role === "admin");
+  const canAccessSpecies = Boolean(user);
   const canReviewRequests = Boolean(isAdmin || user?.is_curator || role === "curator");
-  const hasAnyPanelResource = Boolean(canReviewRequests || isAdmin);
+  const hasAnyPanelResource = Boolean(canAccessSpecies || canReviewRequests || isAdmin);
 
   function handleLogout() {
     clearSession();
@@ -61,7 +61,7 @@ export default function InternalPanelPage() {
         </SidebarHeader>
 
         <SidebarContent>
-          {canReviewRequests ? (
+          {canAccessSpecies ? (
             <div className="mb-4">
               <SidebarMenu>
                 <SidebarMenuItem>
@@ -72,14 +72,16 @@ export default function InternalPanelPage() {
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild isActive={isRequestsRoute}>
-                    <NavLink to={`/${locale}/painel/solicitacoes`}>
-                      <FileCheck2 className="h-4 w-4" />
-                      {t("panel_page.nav_requests")}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                {canReviewRequests ? (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={isRequestsRoute}>
+                      <NavLink to={`/${locale}/painel/solicitacoes`}>
+                        <FileCheck2 className="h-4 w-4" />
+                        {t("panel_page.nav_requests")}
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ) : null}
               </SidebarMenu>
             </div>
           ) : null}
@@ -112,6 +114,8 @@ export default function InternalPanelPage() {
             displayName={displayName}
             displayEmail={displayEmail}
             initials={initials}
+            backToSiteLabel={t("panel_page.back_to_site")}
+            backToSitePath={`/${locale}`}
             logoutLabel={t("panel_page.logout")}
             onLogout={handleLogout}
           />
@@ -122,15 +126,6 @@ export default function InternalPanelPage() {
         <header className="h-16 border-b border-slate-200 bg-white">
           <div className="flex h-full items-center gap-2 px-4 md:px-6">
             <SidebarTrigger className="md:hidden" />
-
-            <Button
-              variant="link"
-              onClick={() => navigate(`/${locale}`)}
-              className="text-slate-700 px-0 min-w-0"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="truncate">{t("panel_page.back_to_site")}</span>
-            </Button>
 
             <div className="ml-auto">
               <LanguageSwitcher />
