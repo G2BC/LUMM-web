@@ -31,9 +31,7 @@ export default function PanelSpeciesPage() {
   const user = useAuthStore((state) => state.user);
   const locale = lang ?? DEFAULT_LOCALE;
   const role = (user?.role ?? "").toLowerCase();
-  const canManageSpecies = Boolean(
-    user?.is_admin || user?.is_curator || role === "admin" || role === "curator"
-  );
+  const canManageSpecies = Boolean(role === "admin" || role === "curator");
 
   const [items, setItems] = useState<ISpecie[]>([]);
   const [isLoading, setIsLoading] = useState(false);

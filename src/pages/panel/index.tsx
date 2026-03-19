@@ -32,9 +32,9 @@ export default function InternalPanelPage() {
   const isRequestsRoute = location.pathname.endsWith("/solicitacoes");
   const isSpeciesRoute = /\/painel\/especies(\/|$)/.test(location.pathname);
   const role = (user?.role ?? "").toLowerCase();
-  const isAdmin = Boolean(user?.is_admin || role === "admin");
+  const isAdmin = Boolean(role === "admin");
   const canAccessSpecies = Boolean(user);
-  const canReviewRequests = Boolean(isAdmin || user?.is_curator || role === "curator");
+  const canReviewRequests = Boolean(isAdmin || role === "curator");
   const hasAnyPanelResource = Boolean(canAccessSpecies || canReviewRequests || isAdmin);
 
   function handleLogout() {

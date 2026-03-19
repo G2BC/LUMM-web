@@ -52,14 +52,14 @@ export function AuthGuard({
   }
 
   const role = (user?.role ?? "").toLowerCase();
-  const isAdmin = Boolean(user?.is_admin || role === "admin");
+  const isAdmin = Boolean(role === "admin");
 
   if (requireAdmin && !isAdmin) {
     return <Navigate to={`/${locale}`} replace />;
   }
 
   if (requireCurator) {
-    const isCurator = Boolean(user?.is_curator || isAdmin || role === "curator");
+    const isCurator = Boolean(isAdmin || role === "curator");
     if (!isCurator) {
       return <Navigate to={`/${locale}`} replace />;
     }
