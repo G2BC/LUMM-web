@@ -8,6 +8,7 @@ import { Alert } from "@/components/alert";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { DEFAULT_LOCALE } from "@/lib/lang";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { IdentityStep } from "@/pages/species-request/components/identity-step";
 import { PhotosStep } from "@/pages/species-request/components/photos-step";
 import { ReviewStep } from "@/pages/species-request/components/review-step";
@@ -21,9 +22,9 @@ import type { ISpecie } from "@/api/species/types/ISpecie";
 import { optimizeImageForUpload } from "@/pages/species-request/image-upload-optimizer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight, Loader2, Upload } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
 import axios from "axios";
@@ -32,11 +33,13 @@ export default function SpeciesRequestPage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { lang, species } = useParams();
+  const authUser = useAuthStore((state) => state.user);
 
   const locale = lang ?? DEFAULT_LOCALE;
   const [speciesData, setSpeciesData] = useState<ISpecie | null>(null);
   const [loadingSpecies, setLoadingSpecies] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(() => (authUser ? 1 : 0));
+  const hasAppliedAuthenticatedDefaultsRef = useRef(false);
 
   const schema = useMemo(
     () =>
@@ -161,6 +164,42 @@ export default function SpeciesRequestPage() {
       })
       .finally(() => setLoadingSpecies(false));
   }, [locale, navigate, species, t]);
+
+  useEffect(() => {
+    if (!authUser || hasAppliedAuthenticatedDefaultsRef.current) return;
+
+    const requesterName = form.getValues("requester_name");
+    const requesterEmail = form.getValues("requester_email");
+    const requesterInstitution = form.getValues("requester_institution");
+
+    if (!requesterName.trim() && authUser.name.trim()) {
+      form.setValue("requester_name", authUser.name, {
+        shouldDirty: false,
+        shouldTouch: false,
+        shouldValidate: false,
+      });
+    }
+
+    if (!requesterEmail.trim() && authUser.email.trim()) {
+      form.setValue("requester_email", authUser.email, {
+        shouldDirty: false,
+        shouldTouch: false,
+        shouldValidate: false,
+      });
+    }
+
+    const userInstitution = authUser.institution?.trim();
+    if (!requesterInstitution?.trim() && userInstitution) {
+      form.setValue("requester_institution", userInstitution, {
+        shouldDirty: false,
+        shouldTouch: false,
+        shouldValidate: false,
+      });
+    }
+
+    hasAppliedAuthenticatedDefaultsRef.current = true;
+    setCurrentStep((prev) => (prev === 0 ? 1 : prev));
+  }, [authUser, form]);
 
   async function handleNextStep() {
     if (currentStepKey === "identity") {
@@ -344,9 +383,17 @@ export default function SpeciesRequestPage() {
       <div className="mb-6 space-y-2">
         <h1 className="text-3xl font-bold">{t("species_request.title")}</h1>
         <p className="text-white/70">
-          {speciesData?.scientific_name
-            ? t("species_request.subtitle_with_species", { species: speciesData.scientific_name })
-            : t("species_request.subtitle")}
+          {speciesData?.scientific_name ? (
+            <Trans
+              i18nKey="species_request.subtitle_with_species"
+              values={{ species: speciesData.scientific_name }}
+              components={{
+                italic: <em className="italic" />,
+              }}
+            />
+          ) : (
+            t("species_request.subtitle")
+          )}
         </p>
       </div>
 

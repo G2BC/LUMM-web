@@ -279,7 +279,7 @@
     "species_request": {
       "title": "Submit species update",
       "subtitle": "Send new data and photos for curator review.",
-      "subtitle_with_species": "Send new data and photos about {{species}}.",
+      "subtitle_with_species": "Send new data and photos about <italic>{{species}}</italic>",
       "load_error_title": "Could not load species",
       "load_error_text": "Please try again in a few moments.",
       "requester_name": "Your name",

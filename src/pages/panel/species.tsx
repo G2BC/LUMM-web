@@ -32,6 +32,7 @@ export default function PanelSpeciesPage() {
   const locale = lang ?? DEFAULT_LOCALE;
   const role = (user?.role ?? "").toLowerCase();
   const canManageSpecies = Boolean(role === "admin" || role === "curator");
+  const canRequestUpdate = role === "researcher";
 
   const [items, setItems] = useState<ISpecie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -198,8 +199,10 @@ export default function PanelSpeciesPage() {
                         managePhotosLabel={t("panel_page.action_manage_photos")}
                         manageSpeciesLabel={t("panel_page.action_manage")}
                         detailsSpeciesLabel={t("panel_page.action_details")}
+                        requestUpdateLabel={t("species_page.request_update_cta")}
                         canManageSpecies={canManageSpecies}
                         canManagePhotos={canManageSpecies}
+                        canRequestUpdate={canRequestUpdate}
                       />
                     </td>
                   </tr>
@@ -243,8 +246,10 @@ export default function PanelSpeciesPage() {
                     managePhotosLabel={t("panel_page.action_manage_photos")}
                     manageSpeciesLabel={t("panel_page.action_manage")}
                     detailsSpeciesLabel={t("panel_page.action_details")}
+                    requestUpdateLabel={t("species_page.request_update_cta")}
                     canManageSpecies={canManageSpecies}
                     canManagePhotos={canManageSpecies}
+                    canRequestUpdate={canRequestUpdate}
                     mobile
                   />
                 </div>

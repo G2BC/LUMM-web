@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit2, Eye, ImagePlus, MoreHorizontal } from "lucide-react";
+import { Edit2, Eye, ImagePlus, MoreHorizontal, Send } from "lucide-react";
 import { Link } from "react-router";
 
 type SpeciesActionsMenuProps = {
@@ -17,8 +17,10 @@ type SpeciesActionsMenuProps = {
   managePhotosLabel: string;
   manageSpeciesLabel: string;
   detailsSpeciesLabel: string;
+  requestUpdateLabel?: string;
   canManageSpecies?: boolean;
   canManagePhotos?: boolean;
+  canRequestUpdate?: boolean;
   mobile?: boolean;
 };
 
@@ -31,10 +33,14 @@ export function SpeciesActionsMenu({
   mobile = false,
   manageSpeciesLabel,
   detailsSpeciesLabel,
+  requestUpdateLabel,
   canManageSpecies = true,
   canManagePhotos = true,
+  canRequestUpdate = false,
 }: SpeciesActionsMenuProps) {
   const withQuery = (path: string) => (queryString ? `${path}?${queryString}` : path);
+  const hasAdditionalActions = canRequestUpdate || canManageSpecies || canManagePhotos;
+  const hasManageActions = canManageSpecies || canManagePhotos;
 
   return (
     <div className={mobile ? "w-full" : "flex justify-end"}>
@@ -59,7 +65,18 @@ export function SpeciesActionsMenu({
             </Link>
           </DropdownMenuItem>
 
-          {canManageSpecies || canManagePhotos ? <DropdownMenuSeparator /> : null}
+          {hasAdditionalActions ? <DropdownMenuSeparator /> : null}
+
+          {canRequestUpdate ? (
+            <DropdownMenuItem asChild>
+              <Link to={`/${locale}/especie/${speciesId}/solicitar-atualizacao`}>
+                <Send className="h-4 w-4" />
+                {requestUpdateLabel}
+              </Link>
+            </DropdownMenuItem>
+          ) : null}
+
+          {canRequestUpdate && hasManageActions ? <DropdownMenuSeparator /> : null}
 
           {canManageSpecies ? (
             <DropdownMenuItem asChild>

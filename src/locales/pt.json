@@ -279,7 +279,7 @@
     "species_request": {
       "title": "Solicitar atualização de espécie",
       "subtitle": "Envie novas informações e fotos para revisão do curador.",
-      "subtitle_with_species": "Envie novas informações e fotos sobre {{species}}.",
+      "subtitle_with_species": "Envie novas informações e fotos sobre <italic>{{species}}</italic>",
       "load_error_title": "Não foi possível carregar a espécie",
       "load_error_text": "Tente novamente em alguns instantes.",
       "requester_name": "Seu nome",
