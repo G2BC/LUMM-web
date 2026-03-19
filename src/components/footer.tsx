@@ -32,11 +32,7 @@ export function Footer() {
                 {t("footer.join_us_section.subtitle")}
                 <br /> {t("footer.join_us_section.subtitle_end")}
               </h3>
-              <Button
-                onClick={() => navigate(buildPath("/cadastro"))}
-                variant="outline"
-                className="h-10 mt-4"
-              >
+              <Button onClick={() => navigate(buildPath("/cadastro"))} className="h-10 mt-4">
                 {t("footer.join_us_section.cta")}
               </Button>
             </div>

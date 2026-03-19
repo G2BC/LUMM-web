@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { HeaderNav } from "./header-nav";
 import { useState } from "react";
 import { DEFAULT_LOCALE } from "@/lib/lang";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export function HeaderMenuNav() {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,11 @@ export function HeaderMenuNav() {
   const { t } = useTranslation();
   const { lang } = useParams();
   const locale = lang ?? DEFAULT_LOCALE;
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const user = useAuthStore((state) => state.user);
+  const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
+  const showPanelButton = Boolean(accessToken && (user || mustChangePassword));
+  const panelPath = mustChangePassword ? `/${locale}/trocar-senha` : `/${locale}/painel`;
 
   function handleClose() {
     setOpen(false);
@@ -42,25 +48,40 @@ export function HeaderMenuNav() {
         <div className="flex-1 flex gap-6 px-4">
           <HeaderNav mobile onClick={handleClose} />
         </div>
-        <SheetFooter className="hidden">
-          <Button
-            onClick={() => {
-              navigate(`/${locale}/login`);
-              handleClose();
-            }}
-            variant="outline"
-          >
-            {t("header.ctas.login")}
-          </Button>
-          <Button
-            onClick={() => {
-              navigate(`/${locale}/cadastro`);
-              handleClose();
-            }}
-            className=" t"
-          >
-            {t("header.ctas.register")}
-          </Button>
+        <SheetFooter className="mt-auto flex flex-col gap-2 border-t border-white/10 px-4 pt-4">
+          {showPanelButton ? (
+            <Button
+              onClick={() => {
+                navigate(panelPath);
+                handleClose();
+              }}
+              className="w-full bg-primary text-black font-semibold hover:bg-primary/90"
+            >
+              {t("header.ctas.panel")}
+            </Button>
+          ) : (
+            <>
+              <Button
+                onClick={() => {
+                  navigate(`/${locale}/login`);
+                  handleClose();
+                }}
+                variant="outline"
+                className="w-full border-primary/60 bg-transparent text-primary hover:bg-primary/15 hover:text-primary"
+              >
+                {t("header.ctas.login")}
+              </Button>
+              <Button
+                onClick={() => {
+                  navigate(`/${locale}/cadastro`);
+                  handleClose();
+                }}
+                className="w-full bg-primary text-black font-semibold hover:bg-primary/90"
+              >
+                {t("header.ctas.register")}
+              </Button>
+            </>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>

@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { HeaderMenuNav } from "./header-menu-nav";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { LayoutDashboard, Lock } from "lucide-react";
 
 export function Header() {
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ export function Header() {
   const user = useAuthStore((state) => state.user);
   const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
   const showPanelButton = Boolean(accessToken && (user || mustChangePassword));
+  const panelPath = mustChangePassword ? `/${locale}/trocar-senha` : `/${locale}/painel`;
 
   return (
     <header className="h-20 w-full bg-[#0A100B] flex items-center min-h-[85px]">
@@ -28,31 +28,31 @@ export function Header() {
           </Link>
           <HeaderNav />
         </div>
-        <div className="hidden lg:flex items-center gap-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-primary hover:text-white hover:bg-primary"
-            title={showPanelButton ? t("header.ctas.panel") : t("header.ctas.login")}
-            onClick={() =>
-              navigate(
-                showPanelButton
-                  ? mustChangePassword
-                    ? `/${locale}/trocar-senha`
-                    : `/${locale}/painel`
-                  : `/${locale}/login`
-              )
-            }
-          >
-            {showPanelButton ? (
-              <LayoutDashboard className="h-5 w-5" />
-            ) : (
-              <Lock className="h-5 w-5" />
-            )}
-            <span className="sr-only">
-              {showPanelButton ? t("header.ctas.panel") : t("header.ctas.login")}
-            </span>
-          </Button>
+        <div className="hidden lg:flex items-center gap-3">
+          {showPanelButton ? (
+            <Button
+              onClick={() => navigate(panelPath)}
+              className="bg-primary text-black font-semibold hover:bg-primary/90"
+            >
+              {t("header.ctas.panel")}
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                className="border-primary/60 bg-transparent text-primary hover:bg-primary/15 hover:text-primary"
+                onClick={() => navigate(`/${locale}/login`)}
+              >
+                {t("header.ctas.login")}
+              </Button>
+              <Button
+                className="bg-primary text-black font-semibold hover:bg-primary/90"
+                onClick={() => navigate(`/${locale}/cadastro`)}
+              >
+                {t("header.ctas.register")}
+              </Button>
+            </>
+          )}
           <LanguageSwitcher />
         </div>
         <div className="lg:hidden flex items-center">
