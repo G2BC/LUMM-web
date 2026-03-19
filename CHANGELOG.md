@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/G2BC/LUMM-web/compare/v1.14.0...v1.15.0) (2026-03-19)
+
+
+### Features
+
+* add species update request functionality and enhance UI with dynamic labels and user role checks ([d233c6e](https://github.com/G2BC/LUMM-web/commit/d233c6ef51a9da32e6e06034c8de8da0f4261655))
+
 ## [1.14.0](https://github.com/G2BC/LUMM-web/compare/v1.13.2...v1.14.0) (2026-03-19)
 
 
