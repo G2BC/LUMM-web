@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.1](https://github.com/G2BC/LUMM-web/compare/v1.15.0...v1.15.1) (2026-03-22)
+
+
+### Bug Fixes
+
+* restore MycoBank type label in localization files for consistency ([fa33065](https://github.com/G2BC/LUMM-web/commit/fa330659f46997fa8a031d6278f03660a0a81e76))
+* update MycoBank links and labels in localization files for improved clarity ([f4e0931](https://github.com/G2BC/LUMM-web/commit/f4e093124f7196957e9fd973fec79f9ef98cb0d8))
+
 ## [1.15.0](https://github.com/G2BC/LUMM-web/compare/v1.14.0...v1.15.0) (2026-03-19)
 
 
