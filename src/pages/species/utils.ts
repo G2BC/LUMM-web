@@ -451,17 +451,22 @@ export function extractSpeciesExternalLinks(
     );
   }
 
+  if (species.mycobank_index_fungorum_id) {
+    results.fungal_links.push({
+      url: `https://www.mycobank.org/MB/${species.mycobank_index_fungorum_id}`,
+      labelKey: "species_page.external_links.links.mycobank_mb",
+    });
+
+    results.fungal_links.push({
+      url: `https://www.indexfungorum.org/names/NamesRecord.asp?RecordID=${species.mycobank_index_fungorum_id}`,
+      labelKey: "species_page.external_links.links.index_fungorum",
+    });
+  }
+
   if (species.mycobank_type) {
     results.fungal_links.push({
       url: `https://www.mycobank.org/details/${species.mycobank_type}`,
       labelKey: "species_page.external_links.links.mycobank_type",
-    });
-  }
-
-  if (species.mycobank_index_fungorum_id) {
-    results.fungal_links.push({
-      url: `https://www.indexfungorum.org/names/NamesRecord.asp?RecordID=${species.mycobank_index_fungorum_id}`,
-      labelKey: "species_page.external_links.links.index_fungorum",
     });
   }
 
