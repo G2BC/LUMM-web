@@ -44,7 +44,7 @@ export default function AboutPage() {
             href="https://doi.org/10.3390/jof11010019"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 underline ml-1" // ml-1 adiciona um pequeno espaço antes do link
+            className="text-blue-600 hover:text-blue-800 underline ml-1"
           >
             https://doi.org/10.3390/jof11010019
           </a>
@@ -56,13 +56,13 @@ export default function AboutPage() {
             href="https://doi.org/10.1073/pnas.1803615115"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:text-blue-800 underline ml-1" // ml-1 adiciona um pequeno espaço antes do link
+            className="text-blue-600 hover:text-blue-800 underline ml-1"
           >
             https://doi.org/10.1073/pnas.1803615115
           </a>
         </li>
       </ul>
-      <LogoPartners title={t("about_page.partners")} />
+      <LogoPartners />
     </section>
   );
 }

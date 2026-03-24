@@ -17,6 +17,8 @@
       "distribution": "Distribuição",
       "explore": "Explorar",
       "about": "Sobre",
+      "publications": "Publicações",
+      "collaborators": "Colaboradores",
       "ctas": {
         "login": "Entrar",
         "register": "Cadastre-se",
@@ -379,7 +381,8 @@
       }
     },
     "collaborators_page": {
-      "title": "Nossos colaboradores"
+      "team": "Nossos colaboradores",
+      "groups": "Grupos de pesquisa"
     },
     "about_page": {
       "title": "Sobre",
@@ -395,7 +398,8 @@
       "references": "Referências",
       "reference1": "Perry, B. A., Desjardin, D. E., & Stevani, C. V. (2024). Diversity, Distribution, and Evolution of Bioluminescent Fungi. Journal of Fungi, 11(1), 19. ",
       "reference2": "Kotlobay, A. A., Sarkisyan, K. S., Mokrushina, Y. A., Marcet-Houben, M., Serebrovskaya, E. O., Markina, N. M., ... & Yampolsky, I. V. (2018). Genetically encodable bioluminescent system from fungi. Proceedings of the National Academy of Sciences, 115(50), 12728-12732.",
-      "partners": "Instituições"
+      "partners": "Instituições parceiras",
+      "research_groups": "Grupos de pesquisa"
     },
     "not_found_page": {
       "title": "Página não encontrada",

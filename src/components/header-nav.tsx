@@ -8,6 +8,7 @@ const links = [
   { path: "/distribuicao", label: "header.distribution" },
   { path: "/explorar", label: "header.explore" },
   { path: "/sobre", label: "header.about" },
+  { path: "/colaboradores", label: "header.collaborators" },
 ];
 
 export function HeaderNav({

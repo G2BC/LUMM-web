@@ -1,12 +1,30 @@
-import { Github, Link, Mail } from "lucide-react";
+import { Github, Link, Mail, Instagram } from "lucide-react";
 import { LiaOrcid } from "react-icons/lia";
 import ALenz from "@/assets/contributors/A_Lenz.jpeg";
 import EJunior from "@/assets/contributors/E_Junior.jpg";
 import DMendel from "@/assets/contributors/D_Mendel.jpeg";
 import CStevani from "@/assets/contributors/C_Stevani.jpeg";
 import JArthur from "@/assets/contributors/J_Arthur.jpeg";
+import g2bc from "@/assets/contributors/G2BC.jpeg";
+import funsynbio from "@/assets/contributors/funsynbio.jpeg";
+import lbf from "@/assets/contributors/LBF.jpeg";
+import React from "react";
 
-export const contributors = [
+export type Contributor = {
+  avatar: string;
+  name: string;
+  bio: {
+    pt: string;
+    en: string;
+  };
+  links: {
+    icon: React.JSX.Element;
+    href: string;
+    title: string;
+  }[];
+};
+
+export const contributors: Contributor[] = [
   {
     avatar: ALenz,
     name: "Alexandre Rafael Lenz",
@@ -130,11 +148,11 @@ export const contributors = [
         href: "mailto:joaoarthurvalentelima2@gmail.com",
         title: "Email",
       },
-      // {
-      //   icon: <Link className="w-5 h-5" />,
-      //   href: "https://lattes.cnpq.br/0556706706006912",
-      //   title: "Lattes",
-      // },
+      {
+        icon: <Link className="w-5 h-5" />,
+        href: "https://lattes.cnpq.br/0556706706006912",
+        title: "Lattes",
+      },
       // {
       //   icon: <LiaOrcid className="w-6 h-6" />,
       //   href: "https://orcid.org/0009-0002-6069-932X",
@@ -145,6 +163,59 @@ export const contributors = [
         href: "https://github.com/ArthXD",
         title: "GitHub",
       },
+    ],
+  },
+];
+
+export const research_groups: Contributor[] = [
+  {
+    avatar: g2bc,
+    name: "G2BC",
+    bio: {
+      pt: "O Grupo de Pesquisa em Bioinformática e Biologia Computacional da UNEB (G2BC) atua na intersecção entre computação e ciências da vida, desenvolvendo ferramentas computacionais e modelagens matemáticas para transformar grandes volumes de dados biológicos e médicos em conhecimento aplicado. As investigações colaborativas do grupo concentram-se em duas vertentes principais baseadas na análise de dados ômicos: a Bioinformática Fúngica, voltada ao estudo de fungos e cogumelos para identificação de espécies, detecção de patógenos e aproveitamento biotecnológico nas indústrias farmacêutica e ambiental; e a Bioinformática Viral, que foca em arbovírus e patógenos emergentes, analisando mutações e marcadores de virulência para auxiliar no desenvolvimento de vacinas e no controle de epidemias. Pautado por uma atuação multidisciplinar que une especialistas em genômica, computação e medicina, o G2BC aplica técnicas avançadas de inteligência artificial para correlacionar características genômicas a resultados fenotípicos, reafirmando seu compromisso com a produção científica rigorosa e fornecendo subsídios fundamentais para a evolução da medicina de precisão e a proteção da saúde pública global e da biodiversidade.",
+      en: "The UNEB Bioinformatics and Computational Biology Research Group (G2BC) operates at the intersection of computing and life sciences, developing computational tools and mathematical modeling to transform large volumes of biological and medical data into applied knowledge. The group's collaborative investigations focus on two main lines based on the analysis of omics data: Fungal Bioinformatics, aimed at the study of fungi and mushrooms for species identification, pathogen detection, and biotechnological applications in the pharmaceutical and environmental industries; and Viral Bioinformatics, which focuses on arboviruses and emerging pathogens, analyzing mutations and virulence markers to assist in vaccine development and epidemic control. Guided by a multidisciplinary approach that unites specialists in genomics, computing, and medicine, G2BC applies advanced artificial intelligence techniques to correlate genomic characteristics with phenotypic outcomes, reaffirming its commitment to rigorous scientific production and providing fundamental support for the evolution of precision medicine and the protection of global public health and biodiversity.",
+    },
+    links: [
+      { icon: <Link className="w-5 h-5" />, href: "https://g2bc.uneb.br/", title: "Site" },
+      {
+        icon: <Instagram className="w-5 h-5" />,
+        href: "https://www.instagram.com/g2bc.uneb/",
+        title: "Instagram",
+      },
+    ],
+  },
+  {
+    avatar: funsynbio,
+    name: "FunSynBio",
+    bio: {
+      pt: "O Fungal Synthetic Biology Group (FunSynBio), sediado na Faculdade de Ciências Farmacêuticas do Campus de Araraquara (FCFAr/UNESP), atua na vanguarda da biologia sintética voltada ao estudo da funga brasileira, com ênfase em Basidiomicetos. O grupo dedica-se a preencher a lacuna de conhecimento sobre a biodiversidade fúngica, utilizando avanços em ciências ômicas para prospectar metabólitos secundários — em especial os policetídeos — e caracterizar funcionalmente as complexas enzimas policetídeo sintases (PKS). Sua principal linha de atuação, focada na Engenharia de Biossíntese e Biofábricas, integra estratégias de aprendizagem de máquina ao desenho racional de PKS e ao desenvolvimento de ferramentas moleculares para Basidiomicetos, visando transformar espécies formadoras de cogumelos em plataformas de produção sustentável. Ao unir técnicas avançadas de engenharia genética, clonagem e produção de proteínas recombinantes,  o FunSynBio busca expandir a diversidade química de compostos bioativos para as indústrias farmacêutica e agrícola, reafirmando seu compromisso com a pesquisa científica de alto nível e com a aplicação dos princípios de economia circular e química verde no aproveitamento sustentável do patrimônio genético nacional.",
+      en: "The Fungal Synthetic Biology Group (FunSynBio), based at the School of Pharmaceutical Sciences of the Araraquara Campus (FCFAr/UNESP), operates at the forefront of synthetic biology focused on the study of Brazilian funga, with an emphasis on Basidiomycetes. The group is dedicated to filling the knowledge gap regarding fungal biodiversity, utilizing advances in omics sciences to prospect for secondary metabolites—specifically polyketides—and functionally characterize complex polyketide synthase (PKS) enzymes. Its main research line, focused on Biosynthesis Engineering and Biofactories, integrates machine learning strategies with the rational design of PKS and the development of molecular tools for Basidiomycetes, aiming to transform mushroom-forming species into sustainable production platforms. By combining advanced techniques in genetic engineering, cloning, and recombinant protein production, FunSynBio seeks to expand the chemical diversity of bioactive compounds for the pharmaceutical and agricultural industries, reaffirming its commitment to high-level scientific research and the application of circular economy and green chemistry principles in the sustainable use of the national genetic heritage.",
+    },
+    links: [
+      //  { icon: <Link className="w-5 h-5"/>,
+      //    href: "https://g2bc.uneb.br/",
+      //    title: "Site",
+      //  },
+      {
+        icon: <Instagram className="w-5 h-5" />,
+        href: "https://www.instagram.com/funsynbio/",
+        title: "Instagram",
+      },
+    ],
+  },
+  {
+    avatar: lbf,
+    name: "LBF",
+    bio: {
+      pt: "O Laboratório de Bioluminescência de Fungos (LBF) constitui o único núcleo de pesquisa brasileiro dedicado ao estudo da emissão de luz por fungos, posicionando o país em uma seleta rede científica global ao lado de grupos de excelência na Rússia, Japão e Estados Unidos. Composto por uma frente multidisciplinar de pesquisadores da USP, UFSCar e Unifesp, e em colaboração estratégica com a San Francisco State University, o LBF atua na fronteira entre a bioquímica e a biotecnologia para desvendar fenômenos biológicos que permaneceram incógnitos desde as observações de Aristóteles. Suas investigações concentram-se na vertente de Inovação Biotecnológica, voltada ao desenvolvimento de bioensaios toxicológicos que utilizam a variação da luminescência do micélio — resultante de uma reação consecutiva entre uma redutase NAD(P)H-dependente e uma luciferase de membrana — como um indicador sensível e versátil para o monitoramento de solos e a detecção de substâncias perigosas. Pautado pela integração entre a ciência básica e aplicada, o LBF transforma o entendimento do sistema luminescente fúngico em ferramentas analíticas de alto impacto, de forma análoga ao uso histórico de genes de vagalumes na biologia molecular, reafirmando seu compromisso com a produção científica rigorosa e com a proteção da biodiversidade e da saúde ambiental.",
+      en: "The Fungal Bioluminescence Laboratory (LBF) is the only Brazilian research hub dedicated to the study of light emission by fungi, positioning the country within a select global scientific network alongside leading research groups in Russia, Japan, and the United States. Comprising a multidisciplinary team of researchers from USP, UFSCar, and Unifesp, and in strategic collaboration with San Francisco State University, LBF operates at the frontier between biochemistry and biotechnology to unravel biological phenomena that have remained unsolved since Aristotle's observations. Its investigations focus on the Biotechnological Innovation research line, aimed at the development of toxicological bioassays that use the variation in mycelium luminescence—resulting from a consecutive reaction between an NAD(P)H-dependent reductase and a membrane luciferase—as a sensitive and versatile indicator for soil monitoring and the detection of hazardous substances. Guided by the integration of basic and applied science, LBF transforms the understanding of the fungal luminescent system into high-impact analytical tools, analogous to the historical use of firefly genes in molecular biology, reaffirming its commitment to rigorous scientific production and the protection of biodiversity and environmental health.",
+    },
+    links: [
+      { icon: <Link className="w-5 h-5" />, href: "https://www.stevanilab.com/", title: "Site" },
+      //  { icon: <Instagram className="w-5 h-5" />,
+      //    href: "https://www.instagram.com/g2bc.uneb/",
+      //    title: "Instagram",
+      //  }
     ],
   },
 ];
