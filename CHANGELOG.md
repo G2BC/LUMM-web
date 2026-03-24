@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/G2BC/LUMM-web/compare/v1.15.1...v1.16.0) (2026-03-24)
+
+
+### Features
+
+* add collaborators page and enhance localization for contributors ([#56](https://github.com/G2BC/LUMM-web/issues/56)) ([2c92891](https://github.com/G2BC/LUMM-web/commit/2c92891da4d76b46037d7b3f051d10a1ef8c0c38))
+
 ## [1.15.1](https://github.com/G2BC/LUMM-web/compare/v1.15.0...v1.15.1) (2026-03-22)
 
 
