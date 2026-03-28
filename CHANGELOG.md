@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.17.0](https://github.com/G2BC/LUMM-web/compare/v1.16.0...v1.17.0) (2026-03-28)
+
+
+### Features
+
+* add toggle group component and enhance species visibility management in forms ([eceee90](https://github.com/G2BC/LUMM-web/commit/eceee90112e9e8d7d5e97f7507677389c60a0fe1))
+* implement species creation functionality with form validation and localization updates ([bcaee97](https://github.com/G2BC/LUMM-web/commit/bcaee9717d32fd50dd872eb39574b431167ec4f0))
+
 ## [1.16.0](https://github.com/G2BC/LUMM-web/compare/v1.15.1...v1.16.0) (2026-03-24)
 
 
