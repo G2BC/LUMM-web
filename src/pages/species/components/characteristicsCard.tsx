@@ -71,7 +71,6 @@ export function CharacteristicsCard({
         getLocalizedCharacteristicValue(characteristics, "colors", isPtLanguage),
         noInformationLabel
       ),
-      longText: true,
     },
     {
       label: t("species_page.fields.edible"),
