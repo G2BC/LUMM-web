@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,10 +58,7 @@ function PanelSpeciesCreatePage() {
     [fieldConfigByName]
   );
 
-  const identityFields = useMemo(
-    () => pickEditableFields(["lineage", "is_visible"]),
-    [pickEditableFields]
-  );
+  const identityFields = useMemo(() => pickEditableFields(["lineage"]), [pickEditableFields]);
 
   const biologyFields = useMemo(
     () =>
@@ -149,6 +147,44 @@ function PanelSpeciesCreatePage() {
           onSubmit={form.handleSubmit((values) => void handleSubmit(values))}
           className="space-y-4"
         >
+          <FormField
+            control={form.control}
+            name="is_visible"
+            render={({ field }) => (
+              <FormItem className="gap-2">
+                <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
+                  {t("panel_page.species_edit_field_is_visible")}
+                </FormLabel>
+                <FormControl>
+                  <ToggleGroup
+                    type="single"
+                    variant="outline"
+                    value={field.value}
+                    onValueChange={(value) => {
+                      if (!value) return;
+                      field.onChange(value);
+                    }}
+                    className="w-fit"
+                  >
+                    <ToggleGroupItem
+                      value="true"
+                      className="data-[state=on]:border-[#118A2A] data-[state=on]:bg-[#118A2A] data-[state=on]:text-white hover:data-[state=on]:bg-[#0E7323]"
+                    >
+                      {t("species_page.lumm.yes")}
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="false"
+                      className="data-[state=on]:border-rose-600 data-[state=on]:bg-rose-600 data-[state=on]:text-white hover:data-[state=on]:bg-rose-700"
+                    >
+                      {t("species_page.lumm.no")}
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
@@ -222,98 +258,6 @@ function PanelSpeciesCreatePage() {
                       onChange={field.onChange}
                       placeholder={t("panel_page.species_edit_mycobank_id_placeholder")}
                       spellCheck={false}
-                      className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="ncbi_taxonomy_id"
-              render={({ field }) => (
-                <FormItem className="gap-1">
-                  <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
-                    {t("panel_page.species_edit_field_ncbi_taxonomy_id")}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t("panel_page.species_create_ncbi_taxonomy_id_placeholder")}
-                      spellCheck={false}
-                      inputMode="numeric"
-                      className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="inaturalist_taxon_id"
-              render={({ field }) => (
-                <FormItem className="gap-1">
-                  <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
-                    {t("panel_page.species_create_field_inaturalist_taxon_id")}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t("panel_page.species_create_inaturalist_taxon_id_placeholder")}
-                      spellCheck={false}
-                      inputMode="numeric"
-                      className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="unite_taxon_id"
-              render={({ field }) => (
-                <FormItem className="gap-1">
-                  <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
-                    {t("panel_page.species_create_field_unite_taxon_id")}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t("panel_page.species_create_unite_taxon_id_placeholder")}
-                      spellCheck={false}
-                      inputMode="numeric"
-                      className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="iucn_redlist"
-              render={({ field }) => (
-                <FormItem className="gap-1">
-                  <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
-                    {t("panel_page.species_edit_field_iucn_redlist")}
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t("panel_page.species_create_iucn_redlist_placeholder")}
-                      spellCheck={false}
-                      inputMode="numeric"
                       className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
                     />
                   </FormControl>

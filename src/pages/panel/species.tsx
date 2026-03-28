@@ -26,6 +26,13 @@ function getSpeciesThumb(species: ISpecie) {
   return firstPhoto?.medium_url || firstPhoto?.original_url || specieCardDefault;
 }
 
+function getPublishedBadgeClass(isVisible?: boolean) {
+  if (isVisible) {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+  return "border-rose-200 bg-rose-50 text-rose-700";
+}
+
 export default function PanelSpeciesPage() {
   const { t } = useTranslation();
   const { lang } = useParams();
@@ -164,11 +171,12 @@ export default function PanelSpeciesPage() {
       {!isLoading && !hasError && items.length > 0 ? (
         <>
           <div className="hidden overflow-x-auto rounded-lg border border-slate-200 md:block">
-            <table className="min-w-[760px] w-full text-left text-sm">
+            <table className="min-w-[880px] w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
                   <th className="px-4 py-3">{t("panel_page.col_species_name")}</th>
                   <th className="px-4 py-3">{t("panel_page.col_lineage")}</th>
+                  <th className="px-4 py-3">{t("panel_page.col_published")}</th>
                   <th className="px-4 py-3 text-right">{t("panel_page.col_actions")}</th>
                 </tr>
               </thead>
@@ -201,6 +209,15 @@ export default function PanelSpeciesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-3 pr-3">{item.lineage || "-"}</td>
+                    <td className="px-4 py-3 pr-3">
+                      <span
+                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getPublishedBadgeClass(
+                          item.is_visible
+                        )}`}
+                      >
+                        {item.is_visible ? t("species_page.lumm.yes") : t("species_page.lumm.no")}
+                      </span>
+                    </td>
                     <td className="px-4 py-3 text-right">
                       <SpeciesActionsMenu
                         locale={locale}
@@ -247,6 +264,16 @@ export default function PanelSpeciesPage() {
                 </div>
                 <p className="mt-1 text-sm text-slate-600">
                   {t("panel_page.col_lineage")}: {item.lineage || "-"}
+                </p>
+                <p className="mt-1 text-sm text-slate-600 flex items-center gap-2">
+                  <span>{t("panel_page.col_published")}:</span>
+                  <span
+                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getPublishedBadgeClass(
+                      item.is_visible
+                    )}`}
+                  >
+                    {item.is_visible ? t("species_page.lumm.yes") : t("species_page.lumm.no")}
+                  </span>
                 </p>
                 <div className="mt-3">
                   <SpeciesActionsMenu

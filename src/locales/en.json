@@ -426,6 +426,7 @@
       "col_species_name": "Scientific name",
       "col_family": "Family",
       "col_lineage": "Lineage",
+      "col_published": "Published",
       "action_coming_soon": "Actions soon",
       "action_manage_photos": "Manage photos",
       "species_photos_title": "Manage species photos",

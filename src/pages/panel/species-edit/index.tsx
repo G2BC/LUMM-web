@@ -2,7 +2,15 @@ import { fetchSpecies, updateSpecies } from "@/api/species";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -131,7 +139,9 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   const pageSubtitle = isViewMode
     ? t("panel_page.species_details_subtitle")
     : t("panel_page.species_edit_subtitle");
-  const visibleFields = SPECIES_EDIT_FIELDS.filter((field) => isViewMode || !field.detailOnly);
+  const visibleFields = SPECIES_EDIT_FIELDS.filter(
+    (field) => (isViewMode || !field.detailOnly) && (isViewMode || field.name !== "is_visible")
+  );
   const luminescentRows = buildLuminescentRows(speciesData, t);
   const domainViewValueMap = buildDomainViewValueMap(
     speciesData,
@@ -161,6 +171,46 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
           onSubmit={form.handleSubmit((values) => void handleSubmit(values))}
           className="space-y-4"
         >
+          {!isViewMode ? (
+            <FormField
+              control={form.control}
+              name="is_visible"
+              render={({ field }) => (
+                <FormItem className="gap-2">
+                  <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
+                    {t("panel_page.species_edit_field_is_visible")}
+                  </FormLabel>
+                  <FormControl>
+                    <ToggleGroup
+                      type="single"
+                      variant="outline"
+                      value={field.value}
+                      onValueChange={(value) => {
+                        if (!value) return;
+                        field.onChange(value);
+                      }}
+                      className="w-fit"
+                    >
+                      <ToggleGroupItem
+                        value="true"
+                        className="data-[state=on]:border-[#118A2A] data-[state=on]:bg-[#118A2A] data-[state=on]:text-white hover:data-[state=on]:bg-[#0E7323]"
+                      >
+                        {t("species_page.lumm.yes")}
+                      </ToggleGroupItem>
+                      <ToggleGroupItem
+                        value="false"
+                        className="data-[state=on]:border-rose-600 data-[state=on]:bg-rose-600 data-[state=on]:text-white hover:data-[state=on]:bg-rose-700"
+                      >
+                        {t("species_page.lumm.no")}
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ) : null}
+
           <SpeciesFieldsGrid
             form={form}
             visibleFields={visibleFields}

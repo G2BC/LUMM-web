@@ -426,6 +426,7 @@
       "col_species_name": "Nome científico",
       "col_family": "Família",
       "col_lineage": "Linhagem",
+      "col_published": "Visível",
       "action_coming_soon": "Ações em breve",
       "action_manage_photos": "Gerenciar fotos",
       "action_manage": "Editar",

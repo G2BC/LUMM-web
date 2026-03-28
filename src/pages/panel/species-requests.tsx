@@ -101,8 +101,8 @@ function DecisionToggle({
         variant={value === "approve" ? "default" : "ghost"}
         className={
           value === "approve"
-            ? "h-7 bg-emerald-600 px-2 text-xs text-white hover:bg-emerald-700"
-            : "h-7 px-2 text-xs text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700"
+            ? "h-7 bg-[#118A2A] px-2 text-xs text-white hover:bg-[#0E7323]"
+            : "h-7 px-2 text-xs text-[#118A2A] hover:bg-emerald-50 hover:text-[#0E7323]"
         }
         onClick={() => onChange("approve")}
       >
@@ -697,7 +697,7 @@ export default function PanelSpeciesRequestsPage() {
                           <Button
                             disabled={isBusy}
                             onClick={() => void handleGranularReview(item)}
-                            className="bg-emerald-600 text-white hover:bg-emerald-700"
+                            className="bg-[#118A2A] text-white hover:bg-[#0E7323]"
                           >
                             {isBusy ? (
                               <Loader2 className="h-4 w-4 animate-spin" />
