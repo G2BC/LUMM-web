@@ -62,7 +62,7 @@ export function useExplorePage() {
 
     setLoading(true);
     try {
-      const res = await searchEspecies({ ...params, signal: controller.signal });
+      const res = await searchEspecies({ ...params, signal: controller.signal, isVisible: true });
       setDados(res);
       setFetchedSearch(params.search?.trim() ?? "");
     } catch (err: unknown) {

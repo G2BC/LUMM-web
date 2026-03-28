@@ -1,10 +1,11 @@
 import { z } from "zod";
 import type { TFunction } from "i18next";
 import { SPECIES_LINEAGE_OPTIONS } from "./constants";
-import { TRI_STATE_FORM_VALUES } from "./types";
+import { BOOLEAN_FORM_VALUES, TRI_STATE_FORM_VALUES } from "./types";
 
 export function createSpeciesEditSchema(t: TFunction) {
   const triStateFieldSchema = z.enum(TRI_STATE_FORM_VALUES);
+  const booleanFieldSchema = z.enum(BOOLEAN_FORM_VALUES);
   const monthFieldSchema = z.string().refine((value) => {
     const normalized = value.trim();
     if (!normalized) return true;
@@ -23,6 +24,7 @@ export function createSpeciesEditSchema(t: TFunction) {
             SPECIES_LINEAGE_OPTIONS.includes(value as (typeof SPECIES_LINEAGE_OPTIONS)[number]),
           t("panel_page.species_edit_validation_lineage")
         ),
+      is_visible: booleanFieldSchema,
       mycobank_index_fungorum_id: z.string(),
       family: z.string(),
       size_cm: z

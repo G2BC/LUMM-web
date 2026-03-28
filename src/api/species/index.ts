@@ -30,6 +30,7 @@ export interface SearchEspeciesProps {
   page?: number;
   per_page?: number;
   signal?: AbortController["signal"];
+  isVisible?: boolean;
 }
 
 export type ISearchEspecies = { items: ISpecie[] } & IPagination;
@@ -41,9 +42,10 @@ export const searchEspecies = async ({
   page,
   per_page,
   signal,
+  isVisible,
 }: SearchEspeciesProps): Promise<ISearchEspecies> => {
   const resposta: AxiosResponse<ISearchEspecies> = await API.get("/species/list", {
-    params: { search, lineage, country, page, per_page },
+    params: { search, lineage, country, page, per_page, is_visible: isVisible },
     signal,
   });
 
@@ -112,8 +114,31 @@ export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
   return resposta.data;
 };
 
+export type CreateSpeciesPayload = UpdateSpeciesPayload &
+  Partial<{
+    family: string;
+    group_name: string;
+    section: string;
+    type_country: string;
+    mycobank_type: string;
+    ncbi_taxonomy_id: number;
+    inaturalist_taxon_id: number;
+    unite_taxon_id: number;
+    iucn_redlist: number;
+    references_raw: string;
+    distribution_regions: string;
+  }> & {
+    scientific_name: string;
+  };
+
+export const createSpecies = async (payload: CreateSpeciesPayload): Promise<ISpecie> => {
+  const response = await API.post<ISpecie>("/species", payload);
+  return response.data;
+};
+
 export type UpdateSpeciesPayload = Partial<{
   lineage: string;
+  is_visible: boolean;
   mycobank_index_fungorum_id: string | null;
   size_cm: number | null;
   edible: boolean | null;

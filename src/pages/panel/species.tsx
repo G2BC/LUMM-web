@@ -1,11 +1,13 @@
 import { searchEspecies } from "@/api/species";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import specieCardDefault from "@/assets/specie-card-default.webp";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { SpeciesActionsMenu } from "@/pages/panel/components/species-actions-menu";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { PlusIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router";
@@ -122,18 +124,27 @@ export default function PanelSpeciesPage() {
 
   return (
     <section className="text-slate-900">
-      <div className="mb-6">
-        <h2 className="text-2xl font-semibold">{t("panel_page.species_title")}</h2>
-        <p className="mt-1 text-slate-600">{t("panel_page.species_subtitle")}</p>
-      </div>
+      <div className="mb-6 flex items-center justify-between flex-wrap gap-x-6">
+        <span>
+          <h2 className="text-2xl font-semibold">{t("panel_page.species_title")}</h2>
+          <p className="mt-1 text-slate-600 mb-6">{t("panel_page.species_subtitle")}</p>
+          <div className="mb-4 md:max-w-sm">
+            <Input
+              value={search}
+              onChange={(event) => handleSearchChange(event.target.value)}
+              placeholder={t("panel_page.species_search_placeholder")}
+              className="text-slate-900 caret-slate-900 placeholder:text-slate-400"
+            />
+          </div>
+        </span>
 
-      <div className="mb-4 md:max-w-sm">
-        <Input
-          value={search}
-          onChange={(event) => handleSearchChange(event.target.value)}
-          placeholder={t("panel_page.species_search_placeholder")}
-          className="text-slate-900 caret-slate-900 placeholder:text-slate-400"
-        />
+        {canManageSpecies ? (
+          <Link to={`/${locale}/painel/especies/cadastro`}>
+            <Button className="text-white bg-[#118A2A] hover:bg-[#0E7323] font-medium">
+              <PlusIcon /> Adicionar nova espécie
+            </Button>
+          </Link>
+        ) : null}
       </div>
 
       {isLoading ? <p className="text-slate-600">{t("panel_page.loading_species")}</p> : null}

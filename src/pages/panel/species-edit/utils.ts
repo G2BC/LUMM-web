@@ -1,8 +1,13 @@
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import type { UpdateSpeciesPayload } from "@/api/species";
 import type { TFunction } from "i18next";
-import { EDITABLE_PENDING_FIELDS, LUMINESCENT_FIELDS } from "./constants";
+import {
+  EDITABLE_PENDING_FIELDS,
+  LUMINESCENT_FIELDS,
+  SPECIES_EDIT_FORM_INITIAL_VALUES,
+} from "./constants";
 import type {
+  BooleanFormValue,
   LuminescentRow,
   PendingFieldChange,
   SpeciesEditFieldConfig,
@@ -15,6 +20,10 @@ export function toTriStateFormValue(value: boolean | null | undefined): TriState
   if (value === true) return "true";
   if (value === false) return "false";
   return "unknown";
+}
+
+function toBooleanFormValue(value: boolean | null | undefined): BooleanFormValue {
+  return value === true ? "true" : "false";
 }
 
 export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEditFormValues {
@@ -40,6 +49,7 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
 
   return {
     lineage: speciesData.lineage ?? "",
+    is_visible: toBooleanFormValue(speciesData.is_visible),
     mycobank_index_fungorum_id: speciesData.mycobank_index_fungorum_id ?? "",
     family: speciesData.family ?? "",
     size_cm: String(speciesData.species_characteristics?.size_cm ?? ""),
@@ -120,6 +130,10 @@ function toTriStateApiValue(value: TriStateFormValue): boolean | null {
   return null;
 }
 
+function toBooleanApiValue(value: BooleanFormValue): boolean {
+  return value === "true";
+}
+
 function normalizeIdArray(value: unknown): number[] {
   if (!Array.isArray(value)) return [];
 
@@ -170,6 +184,10 @@ function normalizeForCompare(name: SpeciesEditFieldConfig["name"], value: unknow
     return toTriStateApiValue(String(value ?? "") as TriStateFormValue);
   }
 
+  if (name === "is_visible") {
+    return toBooleanApiValue(String(value ?? "false") as BooleanFormValue);
+  }
+
   if (name === "size_cm") {
     return parseOptionalNumber(String(value ?? ""));
   }
@@ -208,6 +226,13 @@ export function buildSpeciesUpdatePayload(
   });
 
   return payload as UpdateSpeciesPayload;
+}
+
+export function buildSpeciesCreatePayload(values: SpeciesEditFormValues): UpdateSpeciesPayload {
+  return {
+    ...buildSpeciesUpdatePayload(values, SPECIES_EDIT_FORM_INITIAL_VALUES),
+    is_visible: toBooleanApiValue(values.is_visible),
+  };
 }
 
 export function getLuminescentLevelClass(level: 0 | 1 | 2) {

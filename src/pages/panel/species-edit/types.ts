@@ -1,11 +1,14 @@
 import type { SpeciesDomainSelectType } from "@/api/species";
 
 export const TRI_STATE_FORM_VALUES = ["unknown", "true", "false"] as const;
+export const BOOLEAN_FORM_VALUES = ["true", "false"] as const;
 
 export type TriStateFormValue = (typeof TRI_STATE_FORM_VALUES)[number];
+export type BooleanFormValue = (typeof BOOLEAN_FORM_VALUES)[number];
 
 export type SpeciesEditFormValues = {
   lineage: string;
+  is_visible: BooleanFormValue;
   mycobank_index_fungorum_id: string;
   family: string;
   size_cm: string;

@@ -1,5 +1,5 @@
 import type { LuminescentFieldConfig, PendingFieldConfig, SpeciesEditFieldConfig } from "./types";
-import type { SpeciesEditFormValues, TriStateFormValue } from "./types";
+import type { BooleanFormValue, SpeciesEditFormValues, TriStateFormValue } from "./types";
 
 export const SPECIES_LINEAGE_OPTIONS = [
   "Lucentipes",
@@ -15,6 +15,11 @@ export const TRISTATE_SELECT_OPTIONS: Array<{ value: TriStateFormValue; labelKey
   { value: "false", labelKey: "species_page.lumm.no" },
 ];
 
+export const BOOLEAN_SELECT_OPTIONS: Array<{ value: BooleanFormValue; labelKey: string }> = [
+  { value: "true", labelKey: "species_page.lumm.yes" },
+  { value: "false", labelKey: "species_page.lumm.no" },
+];
+
 export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
   {
     name: "lineage",
@@ -22,6 +27,17 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     placeholderKey: "panel_page.species_edit_lineage_placeholder",
     inputType: "select",
     options: SPECIES_LINEAGE_OPTIONS.map((value) => ({ value, label: value })),
+  },
+  {
+    name: "is_visible",
+    labelKey: "panel_page.species_edit_field_is_visible",
+    placeholderKey: "panel_page.species_edit_is_visible_placeholder",
+    inputType: "select",
+    options: BOOLEAN_SELECT_OPTIONS.map((option) => ({
+      value: option.value,
+      label: option.labelKey,
+      isLabelKey: true,
+    })),
   },
   {
     name: "mycobank_index_fungorum_id",
@@ -227,6 +243,7 @@ export const EDITABLE_PENDING_FIELDS: PendingFieldConfig[] = [
 
 export const SPECIES_EDIT_FORM_INITIAL_VALUES: SpeciesEditFormValues = {
   lineage: "",
+  is_visible: "false",
   mycobank_index_fungorum_id: "",
   family: "",
   size_cm: "",

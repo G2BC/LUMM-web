@@ -18,9 +18,9 @@ import { SPECIES_EDIT_FIELDS, SPECIES_EDIT_FORM_INITIAL_VALUES } from "./constan
 import { createSpeciesEditSchema } from "./schema";
 import type { SpeciesEditFormValues } from "./types";
 import {
+  buildDomainViewValueMap,
   buildLuminescentRows,
   buildSpeciesUpdatePayload,
-  buildDomainViewValueMap,
   createSpeciesEditFormDefaults,
 } from "./utils";
 
