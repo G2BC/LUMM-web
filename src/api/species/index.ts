@@ -116,6 +116,7 @@ export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
 
 export type CreateSpeciesPayload = UpdateSpeciesPayload &
   Partial<{
+    scientific_name: string;
     family: string;
     group_name: string;
     section: string;
@@ -127,9 +128,7 @@ export type CreateSpeciesPayload = UpdateSpeciesPayload &
     iucn_redlist: number;
     references_raw: string;
     distribution_regions: string;
-  }> & {
-    scientific_name: string;
-  };
+  }>;
 
 export const createSpecies = async (payload: CreateSpeciesPayload): Promise<ISpecie> => {
   const response = await API.post<ISpecie>("/species", payload);
@@ -167,6 +166,7 @@ export type UpdateSpeciesPayload = Partial<{
   lum_pileus: boolean | null;
   lum_lamellae: boolean | null;
   lum_spores: boolean | null;
+  inaturalist_taxon_id: number | string | null;
 }>;
 
 export const updateSpecies = async (
@@ -174,6 +174,10 @@ export const updateSpecies = async (
   payload: UpdateSpeciesPayload
 ): Promise<void> => {
   await API.patch(`/species/${encodeURIComponent(String(speciesId))}`, payload);
+};
+
+export const deleteSpecies = async (speciesId: number | string): Promise<void> => {
+  await API.delete(`/species/${encodeURIComponent(String(speciesId))}`);
 };
 
 export const generateSpeciesDirectPhotoUploadUrl = async (

@@ -46,6 +46,12 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     inputType: "text",
   },
   {
+    name: "inaturalist_taxon_id",
+    labelKey: "panel_page.species_edit_field_inaturalist_taxon_id",
+    placeholderKey: "panel_page.species_create_inaturalist_taxon_id_placeholder",
+    inputType: "text",
+  },
+  {
     name: "family",
     labelKey: "panel_page.species_edit_field_family",
     placeholderKey: "panel_page.species_edit_empty_value",
@@ -268,6 +274,7 @@ export const SPECIES_EDIT_FORM_INITIAL_VALUES: SpeciesEditFormValues = {
   general_description_pt: "",
   general_description: "",
   ncbi_taxonomy_id: "",
+  inaturalist_taxon_id: "",
   conservation_status: "",
   iucn_redlist: "",
   lum_mycelium: "unknown",

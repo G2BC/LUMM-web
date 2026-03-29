@@ -58,7 +58,10 @@ function PanelSpeciesCreatePage() {
     [fieldConfigByName]
   );
 
-  const identityFields = useMemo(() => pickEditableFields(["lineage"]), [pickEditableFields]);
+  const identityFields = useMemo(
+    () => pickEditableFields(["lineage", "inaturalist_taxon_id"]),
+    [pickEditableFields]
+  );
 
   const biologyFields = useMemo(
     () =>

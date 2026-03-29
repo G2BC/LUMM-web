@@ -11,10 +11,11 @@ export function createSpeciesCreateSchema(t: TFunction) {
   }, t("panel_page.species_create_validation_integer_id"));
 
   const createSchema = z.object({
-    scientific_name: z
+    scientific_name: z.string(),
+    mycobank_index_fungorum_id: z
       .string()
       .trim()
-      .min(1, t("panel_page.species_create_validation_scientific_name")),
+      .min(1, t("panel_page.species_create_validation_mycobank_id")),
     ncbi_taxonomy_id: optionalIntegerStringSchema,
     inaturalist_taxon_id: optionalIntegerStringSchema,
     unite_taxon_id: optionalIntegerStringSchema,

@@ -90,6 +90,10 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
       speciesData.ncbi_taxonomy_id === null || speciesData.ncbi_taxonomy_id === undefined
         ? ""
         : String(speciesData.ncbi_taxonomy_id),
+    inaturalist_taxon_id:
+      speciesData.inaturalist_taxon_id === null || speciesData.inaturalist_taxon_id === undefined
+        ? ""
+        : String(speciesData.inaturalist_taxon_id),
     conservation_status:
       speciesData.species_characteristics?.conservation_status === null ||
       speciesData.species_characteristics?.conservation_status === undefined

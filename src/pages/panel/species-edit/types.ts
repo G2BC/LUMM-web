@@ -33,6 +33,7 @@ export type SpeciesEditFormValues = {
   general_description_pt: string;
   general_description: string;
   ncbi_taxonomy_id: string;
+  inaturalist_taxon_id: string;
   conservation_status: string;
   iucn_redlist: string;
   lum_mycelium: TriStateFormValue;

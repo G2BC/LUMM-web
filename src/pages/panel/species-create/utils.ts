@@ -11,10 +11,11 @@ function toOptionalInteger(value: string): number | undefined {
 
 export function buildCreateSpeciesPayload(values: SpeciesCreateFormValues): CreateSpeciesPayload {
   const basePayload = buildSpeciesCreatePayload(values);
+  const scientificName = values.scientific_name.trim();
 
   return {
     ...basePayload,
-    scientific_name: values.scientific_name.trim(),
+    ...(scientificName ? { scientific_name: scientificName } : {}),
     ncbi_taxonomy_id: toOptionalInteger(values.ncbi_taxonomy_id),
     inaturalist_taxon_id: toOptionalInteger(values.inaturalist_taxon_id),
     unite_taxon_id: toOptionalInteger(values.unite_taxon_id),

@@ -1,7 +1,16 @@
-import { fetchSpecies, updateSpecies } from "@/api/species";
+import { deleteSpecies, fetchSpecies, updateSpecies } from "@/api/species";
+import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { Alert } from "@/components/alert";
+import { confirmAction } from "@/components/confirm-action";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Form,
   FormControl,
@@ -14,7 +23,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Edit2, ExternalLink, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -44,9 +53,11 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   const [speciesData, setSpeciesData] = useState<ISpecie | null>(null);
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(false);
   const [hasLoadError, setHasLoadError] = useState(false);
+  const [isDeletingSpecies, setIsDeletingSpecies] = useState(false);
 
   const locale = lang ?? DEFAULT_LOCALE;
   const isViewMode = viewMode;
+  const backToSpeciesListPath = `/${locale}/painel/especies${location.search}`;
 
   const schema = useMemo(() => createSpeciesEditSchema(t), [t]);
 
@@ -117,6 +128,48 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     }
   }
 
+  async function handleDeleteSpecies() {
+    if (!speciesData?.id || isDeletingSpecies) return;
+
+    const confirmed = await confirmAction({
+      title: t("panel_page.species_delete_confirm_title"),
+      text: t("panel_page.species_delete_confirm_text", { species: speciesData.scientific_name }),
+      confirmButtonText: t("panel_page.species_delete_confirm_yes"),
+      cancelButtonText: t("panel_page.species_delete_confirm_no"),
+      requireCode: true,
+      codeLabel: t("panel_page.species_delete_confirm_code_label"),
+      codePlaceholder: t("panel_page.species_delete_confirm_code_placeholder"),
+      codeInvalidMessage: t("panel_page.species_delete_confirm_code_invalid"),
+    });
+
+    if (!confirmed) return;
+
+    setIsDeletingSpecies(true);
+    try {
+      await runWithSilencedApiErrors(() => deleteSpecies(speciesData.id));
+
+      await Alert({
+        icon: "success",
+        title: t("panel_page.species_delete_success_title"),
+        text: t("panel_page.species_delete_success_text"),
+      });
+
+      navigate(backToSpeciesListPath, { replace: true });
+    } catch (error) {
+      const backendMessage = axios.isAxiosError(error)
+        ? (error.response?.data as { message?: string } | undefined)?.message
+        : undefined;
+
+      await Alert({
+        icon: "error",
+        title: t("panel_page.species_delete_error_title"),
+        text: backendMessage || t("panel_page.species_delete_error_text"),
+      });
+    } finally {
+      setIsDeletingSpecies(false);
+    }
+  }
+
   if (isLoadingSpecies) {
     return (
       <div className="flex items-center gap-2 text-slate-600">
@@ -147,7 +200,8 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     speciesData,
     i18n.language.toLowerCase().startsWith("pt")
   );
-  const backToSpeciesListPath = `/${locale}/painel/especies${location.search}`;
+  const publicSpeciesPath = `/${locale}/especie/${speciesData.id}`;
+  const editSpeciesPath = `/${locale}/painel/especies/${speciesData.id}/editar${location.search}`;
 
   return (
     <section className="space-y-6 text-slate-900">
@@ -158,12 +212,48 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
           </h2>
           <p className="mt-1 text-sm text-slate-600">{pageSubtitle}</p>
         </div>
-        <Button variant="outline" className="w-full md:w-auto" asChild>
-          <Link to={backToSpeciesListPath}>
-            <ArrowLeft className="h-4 w-4" />
-            {t("panel_page.species_edit_back")}
-          </Link>
-        </Button>
+        <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
+          <Button variant="outline" className="w-full md:w-auto" asChild>
+            <Link to={backToSpeciesListPath}>
+              <ArrowLeft className="h-4 w-4" />
+              {t("panel_page.species_edit_back")}
+            </Link>
+          </Button>
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full md:w-auto" disabled={isDeletingSpecies}>
+                <MoreHorizontal className="h-4 w-4" />
+                {t("panel_page.col_actions")}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              {isViewMode ? (
+                <DropdownMenuItem asChild>
+                  <Link to={editSpeciesPath}>
+                    <Edit2 className="h-4 w-4" />
+                    {t("panel_page.action_manage")}
+                  </Link>
+                </DropdownMenuItem>
+              ) : null}
+              {isViewMode ? <DropdownMenuSeparator /> : null}
+              <DropdownMenuItem asChild>
+                <Link to={publicSpeciesPath} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4" />
+                  {t("panel_page.species_photos_open_public")}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant="destructive"
+                onSelect={() => void handleDeleteSpecies()}
+                disabled={isDeletingSpecies}
+              >
+                <Trash2 className="h-4 w-4" />
+                {t("panel_page.species_delete_action")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <Form {...form}>

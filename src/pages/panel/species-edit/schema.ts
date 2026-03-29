@@ -6,6 +6,11 @@ import { BOOLEAN_FORM_VALUES, TRI_STATE_FORM_VALUES } from "./types";
 export function createSpeciesEditSchema(t: TFunction) {
   const triStateFieldSchema = z.enum(TRI_STATE_FORM_VALUES);
   const booleanFieldSchema = z.enum(BOOLEAN_FORM_VALUES);
+  const optionalIntegerIdSchema = z.string().refine((value) => {
+    const normalized = value.trim();
+    if (!normalized) return true;
+    return /^\d+$/.test(normalized);
+  }, t("panel_page.species_create_validation_integer_id"));
   const monthFieldSchema = z.string().refine((value) => {
     const normalized = value.trim();
     if (!normalized) return true;
@@ -56,6 +61,7 @@ export function createSpeciesEditSchema(t: TFunction) {
       general_description_pt: z.string(),
       general_description: z.string(),
       ncbi_taxonomy_id: z.string(),
+      inaturalist_taxon_id: optionalIntegerIdSchema,
       conservation_status: z.string(),
       iucn_redlist: z.string(),
       lum_mycelium: triStateFieldSchema,
