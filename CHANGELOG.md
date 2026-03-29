@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.1](https://github.com/G2BC/LUMM-web/compare/v1.17.0...v1.17.1) (2026-03-29)
+
+
+### Bug Fixes
+
+* enhance explore page responsiveness and update per-page logic in useExplorePage hook ([e9d16b9](https://github.com/G2BC/LUMM-web/commit/e9d16b91f1a0511dba2832e39f11819409c3eb98))
+
 ## [1.17.0](https://github.com/G2BC/LUMM-web/compare/v1.16.0...v1.17.0) (2026-03-28)
 
 
