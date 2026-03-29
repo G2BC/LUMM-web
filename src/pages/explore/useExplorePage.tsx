@@ -4,7 +4,31 @@ import axios from "axios";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-const EXPLORE_PER_PAGE = 16;
+const SPECIE_CARD_WIDTH = 280;
+const SPECIE_CARD_GAP = 24;
+const EXPLORE_CONTAINER_HORIZONTAL_PADDING = 32;
+
+const getExploreContainerMaxWidth = (viewportWidth: number) => {
+  if (viewportWidth >= 1536) return 1536;
+  if (viewportWidth >= 1280) return 1280;
+  if (viewportWidth >= 1024) return 1024;
+  if (viewportWidth >= 768) return 768;
+  if (viewportWidth >= 640) return 640;
+  return viewportWidth;
+};
+
+const getExplorePerPage = (viewportWidth: number) => {
+  const containerWidth = Math.min(viewportWidth, getExploreContainerMaxWidth(viewportWidth));
+  const availableWidth = Math.max(0, containerWidth - EXPLORE_CONTAINER_HORIZONTAL_PADDING);
+  const columns = Math.max(
+    1,
+    Math.floor((availableWidth + SPECIE_CARD_GAP) / (SPECIE_CARD_WIDTH + SPECIE_CARD_GAP))
+  );
+
+  // Keep the amount close to the previous baseline while preserving full grid rows.
+  const rows = Math.max(2, Math.min(4, Math.round(16 / columns)));
+  return columns * rows;
+};
 
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,6 +49,10 @@ export function useExplorePage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [fetchedSearch, setFetchedSearch] = useState<string>(searchParam);
   const [dados, setDados] = useState<ISearchEspecies | null>(null);
+  const [perPage, setPerPage] = useState<number>(() => {
+    if (typeof window === "undefined") return 16;
+    return getExplorePerPage(window.innerWidth);
+  });
 
   const upsertFilterParams = (
     patch: Partial<{ search: string; lineage: string; country: string; page: number | string }>,
@@ -136,6 +164,19 @@ export function useExplorePage() {
   };
 
   useEffect(() => {
+    const onResize = () => {
+      const nextPerPage = getExplorePerPage(window.innerWidth);
+      setPerPage((prevPerPage) => (prevPerPage === nextPerPage ? prevPerPage : nextPerPage));
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  useEffect(() => {
     setSearch(searchParam);
     setLineage(lineageParam);
     setCountry(countryParam);
@@ -145,9 +186,9 @@ export function useExplorePage() {
       lineage: lineageParam,
       country: countryParam,
       page: pageParam,
-      per_page: EXPLORE_PER_PAGE,
+      per_page: perPage,
     });
-  }, [searchParam, pageParam, lineageParam, countryParam]);
+  }, [searchParam, pageParam, lineageParam, countryParam, perPage]);
 
   return {
     dados,

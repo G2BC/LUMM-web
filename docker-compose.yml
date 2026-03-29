@@ -2,8 +2,9 @@ version: "3.9"
 services:
   web:
     image: ${APP_IMAGE:-ghcr.io/g2bc/lumm-web}:${IMAGE_TAG:-latest}
+    container_name: lumm-web
+    restart: unless-stopped
     ports:
       - "4001:80"
-    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
