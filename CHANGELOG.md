@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.0](https://github.com/G2BC/LUMM-web/compare/v1.17.1...v1.18.0) (2026-03-29)
+
+
+### Features
+
+* add species deletion functionality and enhance species creation and editing forms with inaturalist_taxon_id support ([53cfc5f](https://github.com/G2BC/LUMM-web/commit/53cfc5fb6527e72fcdfa237ad0d873065a4c99ed))
+* implement infinite scroll and improve loading logic on explore page ([63f112a](https://github.com/G2BC/LUMM-web/commit/63f112a9ec6c21c9654ec25e20935537915ff20b))
+
 ## [1.17.1](https://github.com/G2BC/LUMM-web/compare/v1.17.0...v1.17.1) (2026-03-29)
 
 
