@@ -50,6 +50,11 @@ export function FindingTipsCard({
     seasonStart && seasonEnd
       ? `${seasonStart} à ${seasonEnd}`
       : t("species_page.fields.no_information");
+  const similarSpecies = (characteristics.similar_species ?? []).map((item) => ({
+    id: item.id,
+    name: item.name,
+    label: item.label,
+  }));
 
   return (
     <Card className={sectionCardClass}>
@@ -83,7 +88,7 @@ export function FindingTipsCard({
             <p className={rowLabelClass}>{t("species_page.fields.similar_species")}</p>
           </div>
           <div className="text-[0.98rem] leading-relaxed text-white/88">
-            <SimilarSpecies similarSpecies={species?.similar_species ?? []} locale={locale} />
+            <SimilarSpecies similarSpecies={similarSpecies} locale={locale} />
           </div>
         </div>
       </CardContent>
