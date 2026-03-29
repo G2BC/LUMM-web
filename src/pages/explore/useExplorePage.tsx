@@ -1,12 +1,14 @@
 import { searchEspecies, type ISearchEspecies, type SearchEspeciesProps } from "@/api/species";
+import type { ISpecie } from "@/api/species/types/ISpecie";
 import { paramsToObject } from "@/utils/paramsToObject";
 import axios from "axios";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 const SPECIE_CARD_WIDTH = 280;
 const SPECIE_CARD_GAP = 24;
 const EXPLORE_CONTAINER_HORIZONTAL_PADDING = 32;
+const MAX_AUTO_LOAD_PAGES = 2;
 
 const getExploreContainerMaxWidth = (viewportWidth: number) => {
   if (viewportWidth >= 1536) return 1536;
@@ -30,23 +32,35 @@ const getExplorePerPage = (viewportWidth: number) => {
   return columns * rows;
 };
 
+const appendUniqueSpecies = (currentItems: ISpecie[], nextItems: ISpecie[]) => {
+  if (!currentItems.length) return nextItems;
+
+  const ids = new Set(currentItems.map((item) => item.id));
+  const merged = [...currentItems];
+
+  for (const specie of nextItems) {
+    if (ids.has(specie.id)) continue;
+    ids.add(specie.id);
+    merged.push(specie);
+  }
+
+  return merged;
+};
+
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchParam = searchParams.get("search") ?? "";
   const lineageParam = searchParams.get("lineage") ?? "";
   const countryParam = searchParams.get("country") ?? "";
-  const pageParam = useMemo(
-    () => parseInt(searchParams.get("page") ?? "1", 10) || 1,
-    [searchParams]
-  );
 
-  const [page, setPage] = useState<number>(pageParam);
   const [lineage, setLineage] = useState<string>(lineageParam);
   const [country, setCountry] = useState<string>(countryParam);
   const [search, setSearch] = useState<string>(searchParam);
 
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [autoLoadsUsed, setAutoLoadsUsed] = useState<number>(0);
   const [fetchedSearch, setFetchedSearch] = useState<string>(searchParam);
   const [dados, setDados] = useState<ISearchEspecies | null>(null);
   const [perPage, setPerPage] = useState<number>(() => {
@@ -54,9 +68,25 @@ export function useExplorePage() {
     return getExplorePerPage(window.innerWidth);
   });
 
+  const abortRef = useRef<AbortController | null>(null);
+  const loadingMoreRef = useRef<boolean>(false);
+  const autoLoadsUsedRef = useRef<number>(0);
+  const activeFiltersRef = useRef<{
+    search: string;
+    lineage: string;
+    country: string;
+    per_page: number;
+  }>({
+    search: searchParam,
+    lineage: lineageParam,
+    country: countryParam,
+    per_page: perPage,
+  });
+  const activeQueryKeyRef = useRef<string>("");
+
   const upsertFilterParams = (
-    patch: Partial<{ search: string; lineage: string; country: string; page: number | string }>,
-    opts?: { resetPage?: boolean; replace?: boolean }
+    patch: Partial<{ search: string; lineage: string; country: string }>,
+    opts?: { replace?: boolean }
   ) => {
     const curr = paramsToObject(searchParams);
     const next: Record<string, string> = { ...curr };
@@ -71,8 +101,7 @@ export function useExplorePage() {
     if ("lineage" in patch) setOrDelete("lineage", String(patch.lineage ?? ""));
     if ("country" in patch) setOrDelete("country", String(patch.country ?? ""));
 
-    if (opts?.resetPage) next.page = "1";
-    if ("page" in patch && patch.page != null) next.page = String(patch.page);
+    delete next.page;
 
     const nextQS = new URLSearchParams(next);
 
@@ -81,36 +110,11 @@ export function useExplorePage() {
     }
   };
 
-  const abortRef = useRef<AbortController | null>(null);
-
-  const getSpecies = async (params: SearchEspeciesProps) => {
-    abortRef.current?.abort();
-    const controller = new AbortController();
-    abortRef.current = controller;
-
-    setLoading(true);
-    try {
-      const res = await searchEspecies({ ...params, signal: controller.signal, isVisible: true });
-      setDados(res);
-      setFetchedSearch(params.search?.trim() ?? "");
-    } catch (err: unknown) {
-      if (axios.isCancel(err)) {
-        return;
-      }
-
-      setDados({ items: [], total: 0, page: null, per_page: null, pages: null });
-      setFetchedSearch(params.search?.trim() ?? "");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const onChangeSearch = (value: string) => setSearch(value);
 
   const submitSearch = (raw?: string) => {
     const q = (raw ?? search).trim();
-    upsertFilterParams({ search: q }, { resetPage: true });
-    setPage(1);
+    upsertFilterParams({ search: q });
   };
 
   const handleSearch = (
@@ -132,17 +136,7 @@ export function useExplorePage() {
 
   const handleClearInput = () => {
     setSearch("");
-    upsertFilterParams({ search: "" }, { resetPage: true });
-    setPage(1);
-  };
-
-  const changePage = (newPage: number) => {
-    if (page === newPage) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-    setPage(newPage);
-    upsertFilterParams({ page: newPage });
+    upsertFilterParams({ search: "" });
   };
 
   const changeLineage = (newLineage: string) => {
@@ -150,8 +144,7 @@ export function useExplorePage() {
       return;
     }
     setLineage(newLineage);
-    upsertFilterParams({ lineage: newLineage }, { resetPage: true });
-    setPage(1);
+    upsertFilterParams({ lineage: newLineage });
   };
 
   const changeCountry = (newCountry: string) => {
@@ -159,8 +152,7 @@ export function useExplorePage() {
       return;
     }
     setCountry(newCountry);
-    upsertFilterParams({ country: newCountry }, { resetPage: true });
-    setPage(1);
+    upsertFilterParams({ country: newCountry });
   };
 
   useEffect(() => {
@@ -180,28 +172,131 @@ export function useExplorePage() {
     setSearch(searchParam);
     setLineage(lineageParam);
     setCountry(countryParam);
-    setPage(pageParam);
-    getSpecies({
+
+    const queryKey = `${searchParam}::${lineageParam}::${countryParam}::${perPage}`;
+    activeQueryKeyRef.current = queryKey;
+    activeFiltersRef.current = {
       search: searchParam,
       lineage: lineageParam,
       country: countryParam,
-      page: pageParam,
       per_page: perPage,
-    });
-  }, [searchParam, pageParam, lineageParam, countryParam, perPage]);
+    };
+
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setLoading(true);
+    setLoadingMore(false);
+    loadingMoreRef.current = false;
+    setAutoLoadsUsed(0);
+    autoLoadsUsedRef.current = 0;
+
+    const params: SearchEspeciesProps = {
+      search: searchParam,
+      lineage: lineageParam,
+      country: countryParam,
+      page: 1,
+      per_page: perPage,
+      signal: controller.signal,
+      isVisible: true,
+    };
+
+    void searchEspecies(params)
+      .then((res) => {
+        if (activeQueryKeyRef.current !== queryKey) return;
+
+        setDados({
+          ...res,
+          page: res.page ?? 1,
+          items: res.items ?? [],
+        });
+        setFetchedSearch(searchParam.trim());
+      })
+      .catch((err: unknown) => {
+        if (axios.isCancel(err)) return;
+        if (activeQueryKeyRef.current !== queryKey) return;
+
+        setDados({ items: [], total: 0, page: 1, per_page: perPage, pages: 1 });
+        setFetchedSearch(searchParam.trim());
+      })
+      .finally(() => {
+        if (activeQueryKeyRef.current === queryKey) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, [searchParam, lineageParam, countryParam, perPage]);
+
+  const hasMore = Boolean(dados?.pages && dados?.page && dados.page < dados.pages);
+  const canAutoLoadMore = hasMore && autoLoadsUsed < MAX_AUTO_LOAD_PAGES;
+  const showManualLoadMore = hasMore && !canAutoLoadMore;
+
+  const loadMore = useCallback(
+    async (mode: "auto" | "manual" = "auto") => {
+      if (!dados || loading || loadingMore || loadingMoreRef.current || !hasMore) return;
+      if (mode === "auto" && autoLoadsUsedRef.current >= MAX_AUTO_LOAD_PAGES) return;
+
+      const nextPage = (dados.page ?? 1) + 1;
+      const queryKey = activeQueryKeyRef.current;
+
+      loadingMoreRef.current = true;
+      setLoadingMore(true);
+
+      try {
+        const res = await searchEspecies({
+          ...activeFiltersRef.current,
+          page: nextPage,
+          isVisible: true,
+        });
+
+        if (activeQueryKeyRef.current !== queryKey) return;
+
+        setDados((prev) => {
+          const currentItems = prev?.items ?? [];
+          const nextItems = res.items ?? [];
+          const mergedItems = appendUniqueSpecies(currentItems, nextItems);
+
+          return {
+            ...res,
+            items: mergedItems,
+            page: res.page ?? nextPage,
+          };
+        });
+        if (mode === "auto") {
+          autoLoadsUsedRef.current += 1;
+          setAutoLoadsUsed(autoLoadsUsedRef.current);
+        }
+      } catch (err: unknown) {
+        if (axios.isCancel(err)) return;
+      } finally {
+        if (activeQueryKeyRef.current === queryKey) {
+          setLoadingMore(false);
+        }
+        loadingMoreRef.current = false;
+      }
+    },
+    [dados, hasMore, loading, loadingMore]
+  );
 
   return {
     dados,
     loading,
+    loadingMore,
+    canAutoLoadMore,
+    showManualLoadMore,
+    hasMore,
+    loadMore,
     fetchedSearch,
     search,
     lineage,
     country,
-    page,
     onChangeSearch,
     handleSearch,
     handleClearInput,
-    changePage,
     changeLineage,
     changeCountry,
   };
