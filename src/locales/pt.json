@@ -164,7 +164,7 @@
         "general_description": "Descrição geral",
         "curiosities": "Curiosidades",
         "colors": "Cores",
-        "size_cm": "Tamanho (cm)",
+        "size_cm": "Tamanho médio (cm)",
         "conservation_status": "Status de conservação",
         "conservation_status_values": {
           "NE": {
@@ -318,7 +318,7 @@
       "curiosities_placeholder": "Informações adicionais relevantes",
       "general_description": "Descrição geral",
       "general_description_placeholder": "Descrição geral da espécie",
-      "size_cm": "Tamanho (cm)",
+      "size_cm": "Tamanho médio (cm)",
       "size_cm_placeholder": "Ex.: 12.5",
       "seasonality": "Sazonalidade",
       "season_start_month": "Mês inicial",
@@ -455,7 +455,7 @@
       "species_edit_field_is_visible": "Visível publicamente",
       "species_edit_field_mycobank_id": "MycoBank ID",
       "species_edit_field_family": "Família",
-      "species_edit_field_size_cm": "Tamanho (cm)",
+      "species_edit_field_size_cm": "Tamanho médio (cm)",
       "species_edit_field_seasonality": "Sazonalidade",
       "species_edit_field_season_start_month": "Mês inicial",
       "species_edit_field_season_end_month": "Mês final",
