@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.2](https://github.com/G2BC/LUMM-web/compare/v1.18.1...v1.18.2) (2026-03-31)
+
+
+### Bug Fixes
+
+* update size label to "Medium size (cm)" in English and Portuguese locale files ([1fe998c](https://github.com/G2BC/LUMM-web/commit/1fe998cc0d8dfab1f6a5a2ffa8851663a16457e0))
+
 ## [1.18.1](https://github.com/G2BC/LUMM-web/compare/v1.18.0...v1.18.1) (2026-03-31)
 
 
