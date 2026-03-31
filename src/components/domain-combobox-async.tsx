@@ -23,6 +23,7 @@ type DomainComboboxBaseProps = {
   domain: SpeciesDomainSelectType;
   placeholder?: string;
   variant?: "dark" | "light";
+  initialKnownOptions?: ISelectLocalized[];
 };
 
 type DomainComboboxSingleProps = DomainComboboxBaseProps & {
@@ -45,7 +46,11 @@ export function DomainComboboxAsync(props: DomainComboboxAsyncProps) {
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [options, setOptions] = React.useState<ISelectLocalized[]>([]);
-  const [knownOptions, setKnownOptions] = React.useState<Record<string, ISelectLocalized>>({});
+  const initialKnownOptionsRef = React.useRef(props.initialKnownOptions);
+  const [knownOptions, setKnownOptions] = React.useState<Record<string, ISelectLocalized>>(() => {
+    const items = initialKnownOptionsRef.current ?? [];
+    return Object.fromEntries(items.map((item) => [String(item.value), item]));
+  });
 
   const [selectedValues, setSelectedValues] = React.useState<string[]>(
     props.multiple

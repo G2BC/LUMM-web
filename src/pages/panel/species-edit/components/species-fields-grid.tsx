@@ -1,4 +1,6 @@
 import { DomainComboboxAsync } from "@/components/domain-combobox-async";
+import type { SpeciesDomainSelectType } from "@/api/species";
+import type { ISelectLocalized } from "@/api/types/ISelectLocalized";
 import { SpeciesComboboxAsync } from "@/components/species-combobox-async";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -26,6 +28,8 @@ type SpeciesFieldsGridProps = {
   locale: string;
   viewValueOverrides?: Partial<Record<SpeciesEditFieldName, string>>;
   excludeSpeciesId?: number;
+  domainPreloadedOptions?: Partial<Record<SpeciesDomainSelectType, ISelectLocalized[]>>;
+  similarSpeciesPreloadedOptions?: Array<{ id: number; label: string; photo?: string | null }>;
   t: TFunction;
 };
 
@@ -36,6 +40,8 @@ export function SpeciesFieldsGrid({
   locale,
   viewValueOverrides,
   excludeSpeciesId,
+  domainPreloadedOptions,
+  similarSpeciesPreloadedOptions,
   t,
 }: SpeciesFieldsGridProps) {
   const triStateFieldNames = new Set([
@@ -253,6 +259,7 @@ export function SpeciesFieldsGrid({
                           value={Array.isArray(field.value) ? field.value : []}
                           onSelect={field.onChange}
                           placeholder={t(fieldConfig.placeholderKey)}
+                          initialKnownOptions={similarSpeciesPreloadedOptions}
                         />
                       </FormControl>
                     ) : fieldConfig.inputType === "domain-multi-async" && fieldConfig.domain ? (
@@ -269,6 +276,7 @@ export function SpeciesFieldsGrid({
                             field.onChange(normalizedIds);
                           }}
                           placeholder={t(fieldConfig.placeholderKey)}
+                          initialKnownOptions={domainPreloadedOptions?.[fieldConfig.domain]}
                         />
                       </FormControl>
                     ) : fieldConfig.inputType === "select" ? (
