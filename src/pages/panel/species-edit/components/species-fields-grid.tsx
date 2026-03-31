@@ -38,6 +38,44 @@ export function SpeciesFieldsGrid({
   excludeSpeciesId,
   t,
 }: SpeciesFieldsGridProps) {
+  const triStateFieldNames = new Set([
+    "edible",
+    "lum_mycelium",
+    "lum_basidiome",
+    "lum_stipe",
+    "lum_pileus",
+    "lum_lamellae",
+    "lum_spores",
+  ]);
+
+  const getNormalizedSelectValue = (name: SpeciesEditFieldName, value: unknown) => {
+    if (triStateFieldNames.has(name)) {
+      if (value === true) return "true";
+      if (value === false) return "false";
+      if (value === null || value === undefined) return "unknown";
+
+      const normalized = String(value ?? "")
+        .trim()
+        .toLowerCase();
+      if (normalized === "true" || normalized === "false" || normalized === "unknown") {
+        return normalized;
+      }
+      return "unknown";
+    }
+
+    if (name === "is_visible") {
+      if (value === true) return "true";
+      if (value === false) return "false";
+
+      const normalized = String(value ?? "")
+        .trim()
+        .toLowerCase();
+      return normalized === "true" ? "true" : "false";
+    }
+
+    return String(value ?? "").trim();
+  };
+
   const monthOptions = useMemo(
     () =>
       Array.from({ length: 12 }, (_, index) => {
@@ -161,7 +199,11 @@ export function SpeciesFieldsGrid({
               control={form.control}
               name={fieldConfig.name}
               render={({ field }) => {
-                const normalizedFieldValue = String(field.value ?? "");
+                const rawFieldValue = String(field.value ?? "");
+                const normalizedFieldValue =
+                  fieldConfig.inputType === "select"
+                    ? getNormalizedSelectValue(fieldConfig.name, field.value)
+                    : rawFieldValue;
                 const overrideViewValue = viewValueOverrides?.[fieldConfig.name];
                 const showMycoBankSyncTooltip =
                   !isViewMode && fieldConfig.name === "mycobank_index_fungorum_id";
@@ -247,7 +289,7 @@ export function SpeciesFieldsGrid({
                     ) : fieldConfig.inputType === "textarea" ? (
                       <FormControl>
                         <Textarea
-                          value={normalizedFieldValue}
+                          value={rawFieldValue}
                           onChange={field.onChange}
                           rows={fieldConfig.rows ?? 3}
                           placeholder={t(fieldConfig.placeholderKey)}
@@ -259,7 +301,7 @@ export function SpeciesFieldsGrid({
                       <FormControl>
                         <Input
                           type={fieldConfig.inputType}
-                          value={normalizedFieldValue}
+                          value={rawFieldValue}
                           onChange={field.onChange}
                           placeholder={t(fieldConfig.placeholderKey)}
                           spellCheck={false}

@@ -1,6 +1,5 @@
 import { z } from "zod";
 import type { TFunction } from "i18next";
-import { SPECIES_LINEAGE_OPTIONS } from "./constants";
 import { BOOLEAN_FORM_VALUES, TRI_STATE_FORM_VALUES } from "./types";
 
 export function createSpeciesEditSchema(t: TFunction) {
@@ -21,14 +20,7 @@ export function createSpeciesEditSchema(t: TFunction) {
 
   return z
     .object({
-      lineage: z
-        .string()
-        .min(1, t("panel_page.species_edit_validation_lineage"))
-        .refine(
-          (value) =>
-            SPECIES_LINEAGE_OPTIONS.includes(value as (typeof SPECIES_LINEAGE_OPTIONS)[number]),
-          t("panel_page.species_edit_validation_lineage")
-        ),
+      lineage: z.string().trim().min(1, t("panel_page.species_edit_validation_lineage")),
       is_visible: booleanFieldSchema,
       mycobank_index_fungorum_id: z.string(),
       family: z.string(),

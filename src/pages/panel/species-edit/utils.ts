@@ -4,6 +4,7 @@ import type { TFunction } from "i18next";
 import {
   EDITABLE_PENDING_FIELDS,
   LUMINESCENT_FIELDS,
+  SPECIES_LINEAGE_OPTIONS,
   SPECIES_EDIT_FORM_INITIAL_VALUES,
 } from "./constants";
 import type {
@@ -16,14 +17,44 @@ import type {
   TriStateFormValue,
 } from "./types";
 
-export function toTriStateFormValue(value: boolean | null | undefined): TriStateFormValue {
+function normalizeLineageValue(value: unknown): string {
+  if (typeof value !== "string") return "";
+
+  const normalized = value.trim();
+  if (!normalized) return "";
+
+  const matchedOption = SPECIES_LINEAGE_OPTIONS.find(
+    (option) => option.toLowerCase() === normalized.toLowerCase()
+  );
+
+  return matchedOption ?? normalized;
+}
+
+export function toTriStateFormValue(value: unknown): TriStateFormValue {
   if (value === true) return "true";
   if (value === false) return "false";
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === "true") return "true";
+    if (normalized === "false") return "false";
+    if (normalized === "unknown") return "unknown";
+  }
+
   return "unknown";
 }
 
-function toBooleanFormValue(value: boolean | null | undefined): BooleanFormValue {
-  return value === true ? "true" : "false";
+function toBooleanFormValue(value: unknown): BooleanFormValue {
+  if (value === true) return "true";
+  if (value === false) return "false";
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === "true") return "true";
+    if (normalized === "false") return "false";
+  }
+
+  return "false";
 }
 
 export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEditFormValues {
@@ -48,7 +79,7 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
     .filter((value) => Number.isFinite(value));
 
   return {
-    lineage: speciesData.lineage ?? "",
+    lineage: normalizeLineageValue(speciesData.lineage),
     is_visible: toBooleanFormValue(speciesData.is_visible),
     mycobank_index_fungorum_id: speciesData.mycobank_index_fungorum_id ?? "",
     family: speciesData.family ?? "",
