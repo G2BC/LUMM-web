@@ -26,6 +26,7 @@ type SpeciesComboboxAsyncProps = {
   onSelect?: (_value: number[]) => void;
   variant?: "dark" | "light";
   excludeSpeciesId?: number;
+  initialKnownOptions?: Array<{ id: number; label: string; photo?: string | null }>;
 };
 
 export function SpeciesComboboxAsync(props: SpeciesComboboxAsyncProps) {
@@ -34,7 +35,13 @@ export function SpeciesComboboxAsync(props: SpeciesComboboxAsyncProps) {
   const [search, setSearch] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const [options, setOptions] = React.useState<ISpeciesSelect[]>([]);
-  const [knownOptions, setKnownOptions] = React.useState<Record<number, ISpeciesSelect>>({});
+  const initialKnownOptionsRef = React.useRef(props.initialKnownOptions);
+  const [knownOptions, setKnownOptions] = React.useState<Record<number, ISpeciesSelect>>(() => {
+    const items = initialKnownOptionsRef.current ?? [];
+    return Object.fromEntries(
+      items.map((item) => [item.id, { id: item.id, label: item.label, photo: item.photo ?? null }])
+    );
+  });
   const [selectedIds, setSelectedIds] = React.useState<number[]>(props.value ?? []);
 
   const variant = props.variant ?? "dark";
