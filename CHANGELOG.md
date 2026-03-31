@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.3](https://github.com/G2BC/LUMM-web/compare/v1.18.2...v1.18.3) (2026-03-31)
+
+
+### Bug Fixes
+
+* pre-populate combobox knownOptions from species API data ([376268b](https://github.com/G2BC/LUMM-web/commit/376268ba7d2cdfa9a341847074d407fea2cc1b4b))
+
 ## [1.18.2](https://github.com/G2BC/LUMM-web/compare/v1.18.1...v1.18.2) (2026-03-31)
 
 
