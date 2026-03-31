@@ -2,29 +2,36 @@ import axios, { type AxiosError } from "axios";
 import { API } from ".";
 import { Alert } from "@/components/alert";
 import { shouldSilenceApiErrors } from "@/api/error-silencer";
+import i18n from "@/lib/i18n";
 
-type ApiErrorPayload = {
-  message?: string;
+type BilingualErrorData = {
+  message_pt?: string;
+  message_en?: string;
   detail?: string | string[];
   errors?: Record<string, string[] | string>;
 };
 
-function extractMessage(err: AxiosError<ApiErrorPayload>) {
+function t(key: string) {
+  return i18n.t(key);
+}
+
+function extractMessage(err: AxiosError<BilingualErrorData>): string | undefined {
   const data = err.response?.data;
   if (typeof data === "string") return data;
 
+  const isPt = i18n.language.startsWith("pt");
+
   const candidates: Array<string | undefined> = [
-    data?.message,
+    isPt ? data?.message_pt : data?.message_en,
     Array.isArray(data?.detail) ? data.detail.join("\n") : (data?.detail as string),
     data?.errors
       ? Object.entries(data.errors)
           .map(([field, msgs]) => `• ${field}: ${Array.isArray(msgs) ? msgs.join(", ") : msgs}`)
           .join("\n")
       : undefined,
-    err.message,
   ];
 
-  return candidates.find(Boolean) ?? "Falha ao comunicar com o servidor.";
+  return candidates.find(Boolean);
 }
 
 let lastShownAt = 0;
@@ -37,79 +44,49 @@ function showOnce(opts: {
   const now = Date.now();
   if (now - lastShownAt < COOLDOWN_MS) return;
   lastShownAt = now;
-  Alert({ ...opts, confirmButtonText: "Fechar" });
+  Alert({ ...opts, confirmButtonText: t("errors.close") });
 }
 
-function showAlert(err: AxiosError<ApiErrorPayload>) {
+function showAlert(err: AxiosError<BilingualErrorData>) {
   if (axios.isCancel(err) || err.code === "ERR_CANCELED") {
     return;
   }
 
   const status = err.response?.status;
-  const requestUrl = err.config?.url ?? "";
-  const isLoginRequest = requestUrl.includes("/auth/login");
 
+  // Network errors — no response from server
   if (!status) {
     if (err.code === "ECONNABORTED") {
       return showOnce({
-        title: "Tempo de resposta excedido",
+        title: t("errors.timeout"),
         icon: "warning",
-        text: "Tente novamente em instantes.",
+        text: t("errors.timeout_text"),
       });
     }
-
     return showOnce({
-      title: "Sem conexão com o servidor",
+      title: t("errors.no_connection"),
       icon: "error",
-      text: "Verifique sua internet e tente de novo.",
+      text: t("errors.no_connection_text"),
     });
   }
 
-  if (status === 401) {
-    if (isLoginRequest) {
-      return showOnce({
-        title: "Credenciais inválidas",
-        icon: "warning",
-        text: extractMessage(err),
-      });
-    }
-
+  // Session expired (non-login 401)
+  const isLoginRequest = (err.config?.url ?? "").includes("/auth/login");
+  if (status === 401 && !isLoginRequest) {
     return showOnce({
-      title: "Sessão expirada",
+      title: t("errors.session_expired"),
       icon: "warning",
-      text: "Faça login novamente para continuar.",
+      text: t("errors.session_expired_text"),
     });
   }
 
-  if (status === 403) {
-    return showOnce({
-      title: "Acesso negado",
-      icon: "warning",
-      text: "Você não tem permissão para esta ação.",
-    });
-  }
-
-  if (status === 404) {
-    return showOnce({
-      title: "Não encontrado",
-      icon: "info",
-      text: "O recurso solicitado não foi localizado.",
-    });
-  }
-
-  if (status === 400 || status === 422) {
-    return showOnce({ title: "Dados inválidos", icon: "warning", text: extractMessage(err) });
-  }
-
-  if (status >= 500) {
-    return showOnce({
-      title: "Erro interno",
-      icon: "error",
-      text: "Tente novamente em alguns instantes.",
-    });
-  }
-
-  return showOnce({ title: "Erro", icon: "error", text: extractMessage(err) });
+  // All other errors: generic title + message from API
+  const icon = status >= 500 ? "error" : "warning";
+  return showOnce({
+    title: t("errors.occurred"),
+    icon,
+    text: extractMessage(err),
+  });
 }
 
 let registered = false;
@@ -119,7 +96,7 @@ export function registerErrorInterceptor() {
 
   API.interceptors.response.use(
     (res) => res,
-    (error: AxiosError<ApiErrorPayload>) => {
+    (error: AxiosError<BilingualErrorData>) => {
       if (shouldSilenceApiErrors()) {
         return Promise.reject(error);
       }

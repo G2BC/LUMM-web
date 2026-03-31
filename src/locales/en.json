@@ -81,7 +81,10 @@
       "button_sending": "Sending...",
       "subject_technical": "Technical questions",
       "subject_collaboration": "Collaborations",
-      "subject_other": "Other"
+      "subject_other": "Other",
+      "send_success_title": "Message sent!",
+      "send_success_text": "Thank you for reaching out. We'll get back to you soon.",
+      "send_error_text": "We couldn't send your message right now. Please try again in a moment."
     },
     "register_page": {
       "title": "Create your account",
@@ -734,6 +737,16 @@
       "photo_attribution": "Uploaded by",
       "photo_rights_holder": "Copyright holder",
       "photo_source": "Source"
+    },
+    "errors": {
+      "occurred": "An error occurred",
+      "timeout": "Request timed out",
+      "timeout_text": "Please try again in a moment.",
+      "no_connection": "No server connection",
+      "no_connection_text": "Check your internet and try again.",
+      "session_expired": "Session expired",
+      "session_expired_text": "Please log in again to continue.",
+      "close": "Close"
     }
   }
 }

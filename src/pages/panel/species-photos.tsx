@@ -5,7 +5,8 @@ import {
   generateSpeciesDirectPhotoUploadUrl,
   updateSpeciesPhoto,
 } from "@/api/species";
-import type { ISpecie, SpeciePhoto } from "@/api/species/types/ISpecie";
+import { speciesKeys } from "@/api/query-keys";
+import type { SpeciePhoto } from "@/api/species/types/ISpecie";
 import specieCardDefault from "@/assets/specie-card-default.webp";
 import { Alert } from "@/components/alert";
 import { confirmAction } from "@/components/confirm-action";
@@ -32,7 +33,8 @@ import {
   normalizeUploadUrlProtocol,
 } from "@/pages/species-request/utils";
 import { getPhotoUrl } from "@/pages/species/utils";
-import axios from "axios";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getLocalizedError } from "@/api/get-localized-error";
 import { ArrowLeft, ExternalLink, Loader2, Pencil, Trash2, Upload, X } from "lucide-react";
 import { useEffect, useState, type ChangeEvent, type DragEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -71,10 +73,19 @@ export default function PanelSpeciesPhotosPage() {
   const location = useLocation();
   const { lang, species } = useParams();
 
+  const queryClient = useQueryClient();
   const locale = lang ?? DEFAULT_LOCALE;
-  const [speciesData, setSpeciesData] = useState<ISpecie | null>(null);
-  const [isLoadingSpecies, setIsLoadingSpecies] = useState(false);
-  const [hasLoadError, setHasLoadError] = useState(false);
+
+  const {
+    data: speciesData,
+    isLoading: isLoadingSpecies,
+    isError: hasLoadError,
+  } = useQuery({
+    queryKey: speciesKeys.detail(species!),
+    queryFn: ({ signal }) => fetchSpecies(species, signal),
+    enabled: !!species,
+  });
+
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previewByKey, setPreviewByKey] = useState<Record<string, string>>({});
   const [photoMetadataByKey, setPhotoMetadataByKey] = useState<Record<string, PhotoMetadataValues>>(
@@ -102,21 +113,6 @@ export default function PanelSpeciesPhotosPage() {
       Object.values(nextPreviewByKey).forEach((previewUrl) => URL.revokeObjectURL(previewUrl));
     };
   }, [selectedFiles]);
-
-  useEffect(() => {
-    if (!species) return;
-
-    setIsLoadingSpecies(true);
-    setHasLoadError(false);
-
-    void fetchSpecies(species)
-      .then((data) => setSpeciesData(data))
-      .catch(() => {
-        setHasLoadError(true);
-        setSpeciesData(null);
-      })
-      .finally(() => setIsLoadingSpecies(false));
-  }, [species]);
 
   function upsertFiles(filesToAdd: File[]) {
     if (!filesToAdd.length) return;
@@ -209,9 +205,8 @@ export default function PanelSpeciesPhotosPage() {
   }
 
   async function reloadSpeciesPhotos() {
-    if (!speciesData?.id) return;
-    const refreshed = await runWithSilencedApiErrors(() => fetchSpecies(String(speciesData.id)));
-    setSpeciesData(refreshed);
+    if (!species) return;
+    await queryClient.invalidateQueries({ queryKey: speciesKeys.detail(species) });
   }
 
   async function handleSaveEditedPhoto() {
@@ -275,10 +270,9 @@ export default function PanelSpeciesPhotosPage() {
         text: t("panel_page.species_photos_edit_success_text"),
       });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
-      setEditingPhotoMessage(backendMessage || t("panel_page.species_photos_edit_error_text"));
+      setEditingPhotoMessage(
+        getLocalizedError(error) || t("panel_page.species_photos_edit_error_text")
+      );
     } finally {
       setSavingPhotoId(null);
     }
@@ -310,13 +304,10 @@ export default function PanelSpeciesPhotosPage() {
         text: t("panel_page.species_photos_delete_success_text"),
       });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
       await Alert({
         icon: "error",
-        title: t("panel_page.species_photos_delete_error_title"),
-        text: backendMessage || t("panel_page.species_photos_delete_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     } finally {
       setDeletingPhotoId(null);
@@ -427,14 +418,10 @@ export default function PanelSpeciesPhotosPage() {
         text: t("panel_page.species_photos_upload_success_text", { count: selectedFiles.length }),
       });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
-
       await Alert({
         icon: "error",
-        title: t("panel_page.species_photos_upload_error_title"),
-        text: backendMessage || t("panel_page.species_photos_upload_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     } finally {
       setIsUploading(false);

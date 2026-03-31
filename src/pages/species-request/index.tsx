@@ -3,6 +3,7 @@ import {
   fetchSpecies,
   generateSpeciesPhotoUploadUrl,
 } from "@/api/species";
+import { speciesKeys } from "@/api/query-keys";
 import type { SpeciesPhotoRequestPayload } from "@/api/species/types/IChangeRequest";
 import { Alert } from "@/components/alert";
 import { Button } from "@/components/ui/button";
@@ -18,8 +19,8 @@ import { LUMINESCENT_PART_OPTIONS, SPECIES_REQUEST_STEPS } from "@/pages/species
 import { usePhotoUploadState } from "@/pages/species-request/hooks/use-photo-upload-state";
 import type { SpeciesRequestFormValues } from "@/pages/species-request/types";
 import { getFileKey, normalizeUploadUrlProtocol } from "@/pages/species-request/utils";
-import type { ISpecie } from "@/api/species/types/ISpecie";
 import { optimizeImageForUpload } from "@/pages/species-request/image-upload-optimizer";
+import { useQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight, Loader2, Upload } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -27,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { Trans, useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import { z } from "zod";
-import axios from "axios";
+import { getLocalizedError } from "@/api/get-localized-error";
 
 export default function SpeciesRequestPage() {
   const { t, i18n } = useTranslation();
@@ -36,9 +37,17 @@ export default function SpeciesRequestPage() {
   const authUser = useAuthStore((state) => state.user);
 
   const locale = lang ?? DEFAULT_LOCALE;
-  const [speciesData, setSpeciesData] = useState<ISpecie | null>(null);
-  const [loadingSpecies, setLoadingSpecies] = useState(false);
   const [currentStep, setCurrentStep] = useState(() => (authUser ? 1 : 0));
+
+  const {
+    data: speciesData,
+    isLoading: loadingSpecies,
+    isError: hasSpeciesError,
+  } = useQuery({
+    queryKey: speciesKeys.detail(species!),
+    queryFn: ({ signal }) => fetchSpecies(species, signal),
+    enabled: !!species,
+  });
   const hasAppliedAuthenticatedDefaultsRef = useRef(false);
 
   const schema = useMemo(
@@ -148,22 +157,13 @@ export default function SpeciesRequestPage() {
   const currentStepKey = SPECIES_REQUEST_STEPS[currentStep];
 
   useEffect(() => {
-    if (!species) return;
-
-    setLoadingSpecies(true);
-
-    void fetchSpecies(species)
-      .then((data) => setSpeciesData(data))
-      .catch(async () => {
-        await Alert({
-          icon: "error",
-          title: t("species_request.load_error_title"),
-          text: t("species_request.load_error_text"),
-        });
-        navigate(`/${locale}/explorar`, { replace: true });
-      })
-      .finally(() => setLoadingSpecies(false));
-  }, [locale, navigate, species, t]);
+    if (!hasSpeciesError) return;
+    void Alert({
+      icon: "error",
+      title: t("errors.occurred"),
+      text: t("species_request.load_error_text"),
+    }).then(() => navigate(`/${locale}/explorar`, { replace: true }));
+  }, [hasSpeciesError, locale, navigate, t]);
 
   useEffect(() => {
     if (!authUser || hasAppliedAuthenticatedDefaultsRef.current) return;
@@ -367,13 +367,10 @@ export default function SpeciesRequestPage() {
 
       navigate(`/${locale}/especie/${speciesData.id}`, { replace: true });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
       await Alert({
         icon: "error",
-        title: t("species_request.load_error_title"),
-        text: backendMessage || t("species_request.load_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     }
   }

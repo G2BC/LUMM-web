@@ -108,8 +108,13 @@ export const selectSpecies = async (params?: {
   return resposta.data;
 };
 
-export const fetchSpecies = async (species?: string): Promise<ISpecie> => {
-  const resposta: AxiosResponse<ISpecie> = await API.get(`/species/${species}`);
+export const fetchSpecies = async (
+  species?: string,
+  signal?: AbortController["signal"]
+): Promise<ISpecie> => {
+  const resposta: AxiosResponse<ISpecie> = await API.get(`/species/${species}`, {
+    signal,
+  });
 
   return resposta.data;
 };

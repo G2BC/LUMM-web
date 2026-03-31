@@ -14,7 +14,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { getLocalizedError } from "@/api/get-localized-error";
 import { ArrowLeft, Info, Loader2 } from "lucide-react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -114,14 +114,10 @@ function PanelSpeciesCreatePage() {
         : `/${locale}/painel/especies${location.search}`;
       navigate(destination, { replace: true });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
-
       await Alert({
         icon: "error",
-        title: t("panel_page.species_create_error_title"),
-        text: backendMessage || t("panel_page.species_create_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     }
   }
