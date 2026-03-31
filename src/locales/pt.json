@@ -81,7 +81,10 @@
       "button_sending": "Enviando...",
       "subject_technical": "Dúvidas técnicas",
       "subject_collaboration": "Colaborações",
-      "subject_other": "Outros"
+      "subject_other": "Outros",
+      "send_success_title": "Mensagem enviada!",
+      "send_success_text": "Obrigado por entrar em contato. Responderemos em breve.",
+      "send_error_text": "Não conseguimos enviar sua mensagem agora. Tente novamente em instantes."
     },
     "register_page": {
       "title": "Crie sua conta",
@@ -734,6 +737,16 @@
       "photo_attribution": "Enviado por",
       "photo_rights_holder": "Titular dos direitos autorais",
       "photo_source": "Fonte"
+    },
+    "errors": {
+      "occurred": "Ocorreu um erro",
+      "timeout": "Tempo de resposta excedido",
+      "timeout_text": "Tente novamente em instantes.",
+      "no_connection": "Sem conexão com o servidor",
+      "no_connection_text": "Verifique sua internet e tente de novo.",
+      "session_expired": "Sessão expirada",
+      "session_expired_text": "Faça login novamente para continuar.",
+      "close": "Fechar"
     }
   }
 }

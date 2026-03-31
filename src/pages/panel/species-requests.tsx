@@ -1,4 +1,5 @@
 import { listSpeciesChangeRequests, reviewSpeciesChangeRequest } from "@/api/species";
+import { changeRequestKeys } from "@/api/query-keys";
 import type {
   SpeciesChangeRequest,
   SpeciesChangeRequestReviewPayload,
@@ -18,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, ChevronDown, Clock3, Loader2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -129,10 +131,8 @@ function DecisionToggle({
 
 export default function PanelSpeciesRequestsPage() {
   const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
   const [statusFilter, setStatusFilter] = useState<"all" | SpeciesRequestStatus>("pending");
-  const [items, setItems] = useState<SpeciesChangeRequest[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [pendingCount, setPendingCount] = useState(0);
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [reviewNotes, setReviewNotes] = useState<Record<string, string>>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -144,64 +144,62 @@ export default function PanelSpeciesRequestsPage() {
     Record<string, Record<string, SpeciesReviewDecision>>
   >({});
 
+  const { data: requestsData, isLoading: loading } = useQuery({
+    queryKey: changeRequestKeys.list({ status: statusFilter }),
+    queryFn: () =>
+      Promise.all([
+        listSpeciesChangeRequests({
+          status: statusFilter === "all" ? undefined : statusFilter,
+          page: 1,
+          per_page: 30,
+        }),
+        statusFilter === "pending"
+          ? Promise.resolve(null)
+          : listSpeciesChangeRequests({ status: "pending", page: 1, per_page: 1 }),
+      ]),
+  });
+
+  const items: SpeciesChangeRequest[] = requestsData?.[0]?.items ?? [];
+  const pendingCount =
+    statusFilter === "pending" ? (requestsData?.[0]?.total ?? 0) : (requestsData?.[1]?.total ?? 0);
+
   useEffect(() => {
-    void (async () => {
-      setLoading(true);
-      try {
-        const [response, pendingSummary] = await Promise.all([
-          listSpeciesChangeRequests({
-            status: statusFilter === "all" ? undefined : statusFilter,
-            page: 1,
-            per_page: 30,
-          }),
-          statusFilter === "pending"
-            ? Promise.resolve(null)
-            : listSpeciesChangeRequests({
-                status: "pending",
-                page: 1,
-                per_page: 1,
-              }),
-        ]);
+    if (!requestsData) return;
+    const [response] = requestsData;
 
-        setItems(response.items);
-        setPendingCount(statusFilter === "pending" ? response.total : (pendingSummary?.total ?? 0));
-        setExpandedId((prev) =>
-          prev && response.items.some((item) => item.id === prev)
-            ? prev
-            : (response.items[0]?.id ?? null)
-        );
+    setExpandedId((prev) =>
+      prev && response.items.some((item) => item.id === prev)
+        ? prev
+        : (response.items[0]?.id ?? null)
+    );
 
-        setProposedDataFieldDecisions((prev) => {
-          const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
-          response.items.forEach((item) => {
-            if (item.status !== "pending") return;
-            const prevForRequest = prev[item.id] ?? {};
-            const proposedFields = Object.keys(item.proposed_data || {});
-            next[item.id] = {};
-            proposedFields.forEach((field) => {
-              next[item.id][field] = prevForRequest[field] ?? "approve";
-            });
-          });
-          return next;
+    setProposedDataFieldDecisions((prev) => {
+      const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
+      response.items.forEach((item) => {
+        if (item.status !== "pending") return;
+        const prevForRequest = prev[item.id] ?? {};
+        const proposedFields = Object.keys(item.proposed_data || {});
+        next[item.id] = {};
+        proposedFields.forEach((field) => {
+          next[item.id][field] = prevForRequest[field] ?? "approve";
         });
+      });
+      return next;
+    });
 
-        setPhotoDecisions((prev) => {
-          const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
-          response.items.forEach((item) => {
-            if (item.status !== "pending") return;
-            const prevForRequest = prev[item.id] ?? {};
-            next[item.id] = {};
-            item.photos.forEach((photo) => {
-              next[item.id][photo.id] = prevForRequest[photo.id] ?? "approve";
-            });
-          });
-          return next;
+    setPhotoDecisions((prev) => {
+      const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
+      response.items.forEach((item) => {
+        if (item.status !== "pending") return;
+        const prevForRequest = prev[item.id] ?? {};
+        next[item.id] = {};
+        item.photos.forEach((photo) => {
+          next[item.id][photo.id] = prevForRequest[photo.id] ?? "approve";
         });
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [statusFilter]);
+      });
+      return next;
+    });
+  }, [requestsData]);
 
   const uiLocale = i18n.language?.toLowerCase().startsWith("pt") ? "pt-BR" : "en-US";
   const isPtLanguage = i18n.language?.toLowerCase().startsWith("pt");
@@ -273,39 +271,23 @@ export default function PanelSpeciesRequestsPage() {
     return normalizedCode;
   };
 
-  function updateLocalAfterReview(updated: SpeciesChangeRequest) {
-    setItems((prev) => {
-      const next = prev
-        .map((current) => (current.id === updated.id ? updated : current))
-        .filter((current) => statusFilter === "all" || current.status === statusFilter);
-
-      setExpandedId((prevExpanded) =>
-        prevExpanded && next.some((current) => current.id === prevExpanded)
-          ? prevExpanded
-          : (next[0]?.id ?? null)
-      );
-
-      return next;
-    });
-
+  function cleanReviewStateForItem(id: string) {
     setReviewNotes((prev) => {
-      if (!prev[updated.id]) return prev;
+      if (!prev[id]) return prev;
       const next = { ...prev };
-      delete next[updated.id];
+      delete next[id];
       return next;
     });
-
     setProposedDataFieldDecisions((prev) => {
-      if (!(updated.id in prev)) return prev;
+      if (!(id in prev)) return prev;
       const next = { ...prev };
-      delete next[updated.id];
+      delete next[id];
       return next;
     });
-
     setPhotoDecisions((prev) => {
-      if (!(updated.id in prev)) return prev;
+      if (!(id in prev)) return prev;
       const next = { ...prev };
-      delete next[updated.id];
+      delete next[id];
       return next;
     });
   }
@@ -325,11 +307,12 @@ export default function PanelSpeciesRequestsPage() {
 
     setReviewingId(item.id);
     try {
-      const updated = await reviewSpeciesChangeRequest(item.id, {
+      await reviewSpeciesChangeRequest(item.id, {
         decision,
         review_note: reviewNotes[item.id] || undefined,
       });
-      updateLocalAfterReview(updated);
+      cleanReviewStateForItem(item.id);
+      await queryClient.invalidateQueries({ queryKey: changeRequestKeys.lists() });
     } finally {
       setReviewingId(null);
     }
@@ -367,8 +350,9 @@ export default function PanelSpeciesRequestsPage() {
 
     setReviewingId(item.id);
     try {
-      const updated = await reviewSpeciesChangeRequest(item.id, payload);
-      updateLocalAfterReview(updated);
+      await reviewSpeciesChangeRequest(item.id, payload);
+      cleanReviewStateForItem(item.id);
+      await queryClient.invalidateQueries({ queryKey: changeRequestKeys.lists() });
     } finally {
       setReviewingId(null);
     }

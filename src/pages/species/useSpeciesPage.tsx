@@ -1,72 +1,38 @@
 import { fetchSpecies, fetchSpeciesNcbi } from "@/api/species";
-import type { ISpecie } from "@/api/species/types/ISpecie";
-import { Alert } from "@/components/alert";
+import { speciesKeys } from "@/api/query-keys";
 import { DEFAULT_LOCALE } from "@/lib/lang";
-import { normalizeSpeciesNcbiRecords, type SpeciesNcbiRecord } from "@/pages/species/utils";
-import { useEffect, useState } from "react";
+import { normalizeSpeciesNcbiRecords } from "@/pages/species/utils";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 
 export function useSpeciesPage() {
-  const params = useParams<{ species: string }>();
-  const [dados, setDados] = useState<ISpecie | null>(null);
-  const [ncbiRecords, setNcbiRecords] = useState<SpeciesNcbiRecord[]>([]);
-  const [ncbiLoading, setNcbiLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const { species, lang } = useParams<{ species: string; lang: string }>();
   const navigate = useNavigate();
-  const { lang } = useParams();
 
-  const getSpecies = async () => {
-    try {
-      setLoading(true);
-      const res = await fetchSpecies(params.species);
+  const speciesQuery = useQuery({
+    queryKey: speciesKeys.detail(species!),
+    queryFn: ({ signal }) => fetchSpecies(species, signal),
+    enabled: !!species,
+  });
 
-      if (!res)
-        return Alert({
-          title: "Erro",
-          icon: "error",
-          text: "Tente novamente em alguns instantes.",
-        });
-
-      setDados(res);
-    } catch {
-      return Alert({
-        title: "Erro",
-        icon: "error",
-        text: "Tente novamente em alguns instantes.",
-        didClose: () => navigate(`/${lang ?? DEFAULT_LOCALE}/explorar`),
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getNcbiRecords = async (signal?: AbortController["signal"]) => {
-    if (!params.species) return;
-
-    try {
-      setNcbiRecords([]);
-      setNcbiLoading(true);
-      const response = await fetchSpeciesNcbi(params.species, signal);
-      setNcbiRecords(normalizeSpeciesNcbiRecords(response));
-    } catch {
-      setNcbiRecords([]);
-    } finally {
-      setNcbiLoading(false);
-    }
-  };
+  const ncbiQuery = useQuery({
+    queryKey: speciesKeys.ncbi(species!),
+    queryFn: ({ signal }) => fetchSpeciesNcbi(species, signal),
+    enabled: !!species,
+    select: normalizeSpeciesNcbiRecords,
+  });
 
   useEffect(() => {
-    if (params.species) {
-      const controller = new AbortController();
-      const loadSpeciesPage = async () => {
-        await getSpecies();
-        await getNcbiRecords(controller.signal);
-      };
-      void loadSpeciesPage();
-      return () => controller.abort();
+    if (speciesQuery.isError) {
+      navigate(`/${lang ?? DEFAULT_LOCALE}/explorar`);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.species]);
+  }, [speciesQuery.isError, navigate, lang]);
 
-  return { dados, loading, ncbiRecords, ncbiLoading };
+  return {
+    dados: speciesQuery.data ?? null,
+    loading: speciesQuery.isLoading,
+    ncbiRecords: ncbiQuery.data ?? [],
+    ncbiLoading: ncbiQuery.isLoading,
+  };
 }
