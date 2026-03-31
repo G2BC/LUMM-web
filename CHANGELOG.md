@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/G2BC/LUMM-web/compare/v1.18.3...v1.19.0) (2026-03-31)
+
+
+### Features
+
+* migrate API layer to TanStack Query and standardize error handling ([6fe8ae0](https://github.com/G2BC/LUMM-web/commit/6fe8ae00088c75c898d096597e49767db44bbbf2))
+
 ## [1.18.3](https://github.com/G2BC/LUMM-web/compare/v1.18.2...v1.18.3) (2026-03-31)
 
 
