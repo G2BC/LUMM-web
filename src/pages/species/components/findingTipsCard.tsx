@@ -50,6 +50,8 @@ export function FindingTipsCard({
     seasonStart && seasonEnd
       ? `${seasonStart} à ${seasonEnd}`
       : t("species_page.fields.no_information");
+  const useNearbyTreesLongText =
+    typeof nearbyTreesValue === "string" && nearbyTreesValue.length > 70;
   const similarSpecies = (characteristics.similar_species ?? []).map((item) => ({
     id: item.id,
     name: item.name,
@@ -70,16 +72,30 @@ export function FindingTipsCard({
         </p>
         <div className="mt-3 space-y-2 border-t border-white/10 pt-3">
           <div className="flex items-start justify-between gap-4">
-            <p className={rowLabelClass}>{t("species_page.fields.nearby_trees")}</p>
-            <p className="max-w-[60%] break-words text-right text-[0.98rem] font-medium text-white/90">
-              {nearbyTreesValue}
-            </p>
-          </div>
-          <div className="flex items-start justify-between gap-4">
             <p className={rowLabelClass}>{t("species_page.fields.season")}</p>
             <p className="max-w-[60%] break-words text-right text-[0.98rem] font-medium text-white/90">
               {seasonValue}
             </p>
+          </div>
+          <div
+            className={
+              useNearbyTreesLongText ? "space-y-1" : "flex items-start justify-between gap-4"
+            }
+          >
+            <p className={rowLabelClass}>{t("species_page.fields.nearby_trees")}</p>
+            <div
+              className={`flex items-start ${
+                useNearbyTreesLongText ? "justify-start" : "max-w-[60%] justify-end"
+              }`}
+            >
+              <p
+                className={`text-[0.98rem] font-medium text-white/90 ${
+                  useNearbyTreesLongText ? "text-left leading-relaxed" : "break-words text-right"
+                }`}
+              >
+                {nearbyTreesValue}
+              </p>
+            </div>
           </div>
         </div>
         <div className="mt-3 space-y-2 border-t border-white/10 pt-3">
