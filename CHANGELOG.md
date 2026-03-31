@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/G2BC/LUMM-web/compare/v1.18.0...v1.18.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* improve layout for nearby trees information in FindingTipsCard component based on text length ([373a59c](https://github.com/G2BC/LUMM-web/commit/373a59c4fdb32d6d7893336c97e5c3a6fef9018b))
+
 ## [1.18.0](https://github.com/G2BC/LUMM-web/compare/v1.17.1...v1.18.0) (2026-03-29)
 
 
