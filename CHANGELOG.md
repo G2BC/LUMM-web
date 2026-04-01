@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.1](https://github.com/G2BC/LUMM-web/compare/v1.19.0...v1.19.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* update lock ([8cc9ba9](https://github.com/G2BC/LUMM-web/commit/8cc9ba92b08f0003c708a18f2df9451020837673))
+
 ## [1.19.0](https://github.com/G2BC/LUMM-web/compare/v1.18.3...v1.19.0) (2026-03-31)
 
 
