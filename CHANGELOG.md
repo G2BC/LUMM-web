@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.19.0](https://github.com/G2BC/LUMM-web/compare/v1.18.3...v1.19.0) (2026-03-31)
+
+
+### Features
+
+* migrate API layer to TanStack Query and standardize error handling ([6fe8ae0](https://github.com/G2BC/LUMM-web/commit/6fe8ae00088c75c898d096597e49767db44bbbf2))
+
+## [1.18.3](https://github.com/G2BC/LUMM-web/compare/v1.18.2...v1.18.3) (2026-03-31)
+
+
+### Bug Fixes
+
+* pre-populate combobox knownOptions from species API data ([376268b](https://github.com/G2BC/LUMM-web/commit/376268ba7d2cdfa9a341847074d407fea2cc1b4b))
+
 ## [1.18.2](https://github.com/G2BC/LUMM-web/compare/v1.18.1...v1.18.2) (2026-03-31)
 
 

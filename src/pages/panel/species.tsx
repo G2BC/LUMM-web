@@ -1,4 +1,5 @@
 import { searchEspecies } from "@/api/species";
+import { speciesKeys } from "@/api/query-keys";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import specieCardDefault from "@/assets/specie-card-default.webp";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { DEFAULT_LOCALE } from "@/lib/lang";
 import { SpeciesActionsMenu } from "@/pages/panel/components/species-actions-menu";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PlusIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,14 +45,9 @@ export default function PanelSpeciesPage() {
   const canManageSpecies = Boolean(role === "admin" || role === "curator");
   const canRequestUpdate = role === "researcher";
 
-  const [items, setItems] = useState<ISpecie[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(() => parsePageParam(searchParams.get("page")));
-  const [pages, setPages] = useState(1);
-  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const nextPage = parsePageParam(searchParams.get("page"));
@@ -61,13 +58,11 @@ export default function PanelSpeciesPage() {
     (nextPage: number) => {
       setSearchParams((previousParams) => {
         const nextParams = new URLSearchParams(previousParams);
-
         if (nextPage <= 1) {
           nextParams.delete("page");
         } else {
           nextParams.set("page", String(nextPage));
         }
-
         return nextParams;
       });
     },
@@ -75,51 +70,37 @@ export default function PanelSpeciesPage() {
   );
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setDebouncedSearch(search.trim());
-    }, 400);
-
+    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 400);
     return () => window.clearTimeout(timer);
   }, [search]);
 
+  const {
+    data,
+    isLoading,
+    isError: hasError,
+  } = useQuery({
+    queryKey: speciesKeys.list({ search: debouncedSearch, page }),
+    queryFn: ({ signal }) =>
+      searchEspecies({
+        search: debouncedSearch || undefined,
+        page,
+        per_page: SPECIES_PER_PAGE,
+        signal,
+      }),
+    placeholderData: keepPreviousData,
+  });
+
+  const items: ISpecie[] = data?.items ?? [];
+  const pages = Math.max(1, data?.pages ?? 1);
+  const total = data?.total ?? 0;
+
   useEffect(() => {
-    const controller = new AbortController();
-    setIsLoading(true);
-    setHasError(false);
-
-    void searchEspecies({
-      search: debouncedSearch || undefined,
-      page,
-      per_page: SPECIES_PER_PAGE,
-      signal: controller.signal,
-    })
-      .then((response) => {
-        const nextPages = Math.max(1, response.pages ?? 1);
-
-        if (page > nextPages) {
-          setPage(nextPages);
-          updatePageQuery(nextPages);
-          return;
-        }
-
-        setItems(response.items);
-        setTotal(response.total);
-        setPages(nextPages);
-      })
-      .catch(() => {
-        if (controller.signal.aborted) return;
-        setHasError(true);
-        setItems([]);
-        setTotal(0);
-        setPages(1);
-      })
-      .finally(() => {
-        if (controller.signal.aborted) return;
-        setIsLoading(false);
-      });
-
-    return () => controller.abort();
-  }, [debouncedSearch, page, updatePageQuery]);
+    if (data && page > Math.max(1, data.pages ?? 1)) {
+      const nextPages = Math.max(1, data.pages ?? 1);
+      setPage(nextPages);
+      updatePageQuery(nextPages);
+    }
+  }, [data, page, updatePageQuery]);
 
   function handleSearchChange(value: string) {
     setSearch(value);

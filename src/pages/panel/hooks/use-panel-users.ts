@@ -5,13 +5,15 @@ import {
   listUsers,
   updateUserRole,
 } from "@/api/auth";
+import { userKeys } from "@/api/query-keys";
 import type { AuthUser, AuthUserRole } from "@/api/auth/types";
 import { Alert } from "@/components/alert";
 import { confirmAction } from "@/components/confirm-action";
 import { resolveUserRole } from "@/pages/panel/users-utils";
 import { useAuthStore } from "@/stores/useAuthStore";
-import axios from "axios";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getLocalizedError } from "@/api/get-localized-error";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 type StatusFilter = "all" | "active" | "inactive";
@@ -19,9 +21,8 @@ const USERS_PER_PAGE = 20;
 
 export function usePanelUsers() {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const currentUserId = useAuthStore((state) => state.user?.id);
-  const [users, setUsers] = useState<AuthUser[]>([]);
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
   const [updatingRoleUserId, setUpdatingRoleUserId] = useState<string | null>(null);
   const [resettingUserId, setResettingUserId] = useState<string | null>(null);
@@ -29,87 +30,52 @@ export function usePanelUsers() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalUsers, setTotalUsers] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totals, setTotals] = useState({ total: 0, active: 0, inactive: 0 });
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setDebouncedSearch(search.trim());
-    }, 400);
-
+    const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 400);
     return () => window.clearTimeout(timer);
   }, [search]);
 
-  const loadTotals = useCallback(async () => {
-    const [allUsers, activeUsers, inactiveUsers] = await Promise.all([
+  const { data: usersData, isLoading: isLoadingUsers } = useQuery({
+    queryKey: userKeys.list({ search: debouncedSearch, statusFilter, currentPage }),
+    queryFn: () =>
       listUsers({
-        page: 1,
-        per_page: 1,
-        search: debouncedSearch || undefined,
-      }),
-      listUsers({
-        page: 1,
-        per_page: 1,
-        search: debouncedSearch || undefined,
-        is_active: true,
-      }),
-      listUsers({
-        page: 1,
-        per_page: 1,
-        search: debouncedSearch || undefined,
-        is_active: false,
-      }),
-    ]);
-
-    setTotals({
-      total: allUsers.total,
-      active: activeUsers.total,
-      inactive: inactiveUsers.total,
-    });
-  }, [debouncedSearch]);
-
-  const loadUsers = useCallback(async () => {
-    setIsLoadingUsers(true);
-
-    try {
-      const response = await listUsers({
         page: currentPage,
         per_page: USERS_PER_PAGE,
         search: debouncedSearch || undefined,
         is_active: statusFilter === "all" ? undefined : statusFilter === "active",
-      });
+      }),
+    placeholderData: keepPreviousData,
+  });
 
-      const nextTotalPages = Math.max(1, response.pages ?? 1);
+  const { data: totalsData } = useQuery({
+    queryKey: userKeys.totals(debouncedSearch),
+    queryFn: () =>
+      Promise.all([
+        listUsers({ page: 1, per_page: 1, search: debouncedSearch || undefined }),
+        listUsers({ page: 1, per_page: 1, search: debouncedSearch || undefined, is_active: true }),
+        listUsers({ page: 1, per_page: 1, search: debouncedSearch || undefined, is_active: false }),
+      ]),
+  });
 
-      if (currentPage > nextTotalPages) {
-        setCurrentPage(nextTotalPages);
-        return;
-      }
+  const users: AuthUser[] = usersData?.items ?? [];
+  const totalUsers = usersData?.total ?? 0;
+  const totalPages = Math.max(1, usersData?.pages ?? 1);
+  const totals = {
+    total: totalsData?.[0]?.total ?? 0,
+    active: totalsData?.[1]?.total ?? 0,
+    inactive: totalsData?.[2]?.total ?? 0,
+  };
 
-      setUsers(response.items);
-      setTotalUsers(response.total);
-      setTotalPages(nextTotalPages);
-    } finally {
-      setIsLoadingUsers(false);
+  // correct page when it goes out of bounds
+  useEffect(() => {
+    if (usersData && currentPage > Math.max(1, usersData.pages ?? 1)) {
+      setCurrentPage(Math.max(1, usersData.pages ?? 1));
     }
-  }, [currentPage, debouncedSearch, statusFilter]);
-
-  useEffect(() => {
-    void loadUsers();
-  }, [loadUsers]);
-
-  useEffect(() => {
-    void loadTotals();
-  }, [loadTotals]);
+  }, [usersData, currentPage]);
 
   const pagination = useMemo(
-    () => ({
-      page: currentPage,
-      perPage: USERS_PER_PAGE,
-      total: totalUsers,
-      pages: totalPages,
-    }),
+    () => ({ page: currentPage, perPage: USERS_PER_PAGE, total: totalUsers, pages: totalPages }),
     [currentPage, totalPages, totalUsers]
   );
 
@@ -129,14 +95,14 @@ export function usePanelUsers() {
     if (!isConfirmed) return;
 
     setUpdatingUserId(user.id);
-
     try {
       if (user.is_active) {
         await deactivateUser(user.id);
       } else {
         await approveUser(user.id);
       }
-      await Promise.all([loadUsers(), loadTotals()]);
+      await queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+      await queryClient.invalidateQueries({ queryKey: userKeys.totals(debouncedSearch) });
     } finally {
       setUpdatingUserId(null);
     }
@@ -157,17 +123,9 @@ export function usePanelUsers() {
     if (!isConfirmed) return;
 
     setResettingUserId(user.id);
-
     try {
       const result = await adminResetPassword(user.id);
-
-      setUsers((prev) =>
-        prev.map((item) =>
-          item.id === user.id
-            ? { ...item, must_change_password: result.must_change_password }
-            : item
-        )
-      );
+      await queryClient.invalidateQueries({ queryKey: userKeys.lists() });
 
       await Alert({
         icon: "info",
@@ -205,27 +163,14 @@ export function usePanelUsers() {
     if (!isConfirmed) return;
 
     setUpdatingRoleUserId(user.id);
-
     try {
-      const updatedUser = await updateUserRole(user.id, nextRole);
-      setUsers((prev) =>
-        prev.map((item) =>
-          item.id === user.id
-            ? {
-                ...item,
-                role: updatedUser.role,
-              }
-            : item
-        )
-      );
+      await updateUserRole(user.id, nextRole);
+      await queryClient.invalidateQueries({ queryKey: userKeys.lists() });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
       await Alert({
         icon: "error",
-        title: t("panel_page.update_role_error_title"),
-        text: backendMessage || t("panel_page.update_role_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     } finally {
       setUpdatingRoleUserId(null);

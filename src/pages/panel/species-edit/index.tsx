@@ -1,6 +1,6 @@
 import { deleteSpecies, fetchSpecies, updateSpecies } from "@/api/species";
+import { speciesKeys } from "@/api/query-keys";
 import { runWithSilencedApiErrors } from "@/api/error-silencer";
-import type { ISpecie } from "@/api/species/types/ISpecie";
 import { Alert } from "@/components/alert";
 import { confirmAction } from "@/components/confirm-action";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,8 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getLocalizedError } from "@/api/get-localized-error";
 import { ArrowLeft, Edit2, ExternalLink, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,9 +51,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   const { lang, species } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [speciesData, setSpeciesData] = useState<ISpecie | null>(null);
-  const [isLoadingSpecies, setIsLoadingSpecies] = useState(false);
-  const [hasLoadError, setHasLoadError] = useState(false);
+  const queryClient = useQueryClient();
   const [isDeletingSpecies, setIsDeletingSpecies] = useState(false);
 
   const locale = lang ?? DEFAULT_LOCALE;
@@ -66,20 +65,15 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     defaultValues: SPECIES_EDIT_FORM_INITIAL_VALUES,
   });
 
-  useEffect(() => {
-    if (!species) return;
-
-    setIsLoadingSpecies(true);
-    setHasLoadError(false);
-
-    void fetchSpecies(species)
-      .then((data) => setSpeciesData(data))
-      .catch(() => {
-        setHasLoadError(true);
-        setSpeciesData(null);
-      })
-      .finally(() => setIsLoadingSpecies(false));
-  }, [species]);
+  const {
+    data: speciesData,
+    isLoading: isLoadingSpecies,
+    isError: hasLoadError,
+  } = useQuery({
+    queryKey: speciesKeys.detail(species!),
+    queryFn: ({ signal }) => fetchSpecies(species, signal),
+    enabled: !!species,
+  });
 
   useEffect(() => {
     if (!speciesData) return;
@@ -103,9 +97,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
 
     try {
       await updateSpecies(speciesData.id, payload);
-      const refreshedSpeciesData = await fetchSpecies(String(speciesData.id));
-      setSpeciesData(refreshedSpeciesData);
-      form.reset(createSpeciesEditFormDefaults(refreshedSpeciesData));
+      await queryClient.invalidateQueries({ queryKey: speciesKeys.detail(species!) });
 
       await Alert({
         icon: "success",
@@ -116,14 +108,10 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
       const detailsPath = `/${locale}/painel/especies/${speciesData.id}/detalhes${location.search}`;
       navigate(detailsPath, { replace: true });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
-
       await Alert({
         icon: "error",
-        title: t("panel_page.species_edit_update_error_title"),
-        text: backendMessage || t("panel_page.species_edit_update_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     }
   }
@@ -147,6 +135,8 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     setIsDeletingSpecies(true);
     try {
       await runWithSilencedApiErrors(() => deleteSpecies(speciesData.id));
+      queryClient.removeQueries({ queryKey: speciesKeys.detail(speciesData.id) });
+      await queryClient.invalidateQueries({ queryKey: speciesKeys.lists() });
 
       await Alert({
         icon: "success",
@@ -156,14 +146,10 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
 
       navigate(backToSpeciesListPath, { replace: true });
     } catch (error) {
-      const backendMessage = axios.isAxiosError(error)
-        ? (error.response?.data as { message?: string } | undefined)?.message
-        : undefined;
-
       await Alert({
         icon: "error",
-        title: t("panel_page.species_delete_error_title"),
-        text: backendMessage || t("panel_page.species_delete_error_text"),
+        title: t("errors.occurred"),
+        text: getLocalizedError(error),
       });
     } finally {
       setIsDeletingSpecies(false);
