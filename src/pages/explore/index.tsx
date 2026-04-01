@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Loader2, Search, X } from "lucide-react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { ComboboxAsync } from "@/components/combobox-async";
+import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
 import { selectLineage, selectSpeciesCountry } from "@/api/species";
+import { translateCountryName } from "@/utils/translateCountryName";
+import { SUPPORTED_LOCALES, type Locale } from "@/lib/lang";
 import { Button } from "@/components/ui/button";
 
 export default function ExplorePage() {
@@ -27,7 +29,33 @@ export default function ExplorePage() {
     country,
     changeCountry,
   } = useExplorePage();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as Locale;
+
+  const fetchLineageOptions = React.useCallback(
+    async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
+      const res = await selectLineage(search, signal);
+      return res.map((item) => ({ id: item.value, label: item.label }));
+    },
+    []
+  );
+
+  const fetchCountryOptions = React.useCallback(
+    async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
+      const targetLang = SUPPORTED_LOCALES.includes(lang) ? (lang as string) : "en";
+      const res = await selectSpeciesCountry(search, signal);
+      return res.map((item) => {
+        let label = item.label;
+        try {
+          label = translateCountryName(item.label, "en", targetLang) ?? item.label;
+        } catch {
+          // keep original label
+        }
+        return { id: item.value, label };
+      });
+    },
+    [lang]
+  );
 
   const baseClassNameIcons =
     "absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 tr transition-colors cursor-pointer";
@@ -81,17 +109,17 @@ export default function ExplorePage() {
         <div className="col-span-1/2">
           <ComboboxAsync
             placeholder={t("explore_page.select_lineage")}
-            api={(search) => selectLineage(search)}
-            onSelect={(value) => changeLineage(value)}
-            value={lineage}
+            fetchOptions={fetchLineageOptions}
+            value={lineage || null}
+            onSelect={(id) => changeLineage(id ? String(id) : "")}
           />
         </div>
         <div className="col-span-1/2">
           <ComboboxAsync
             placeholder={t("explore_page.select_country")}
-            api={(search) => selectSpeciesCountry(search)}
-            onSelect={(value) => changeCountry(value)}
-            value={country}
+            fetchOptions={fetchCountryOptions}
+            value={country || null}
+            onSelect={(id) => changeCountry(id ? String(id) : "")}
           />
         </div>
       </div>

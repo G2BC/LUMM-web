@@ -51,7 +51,7 @@ export interface SpeciesCharacteristics {
   season_end_month?: number | null;
   season_start_month?: number | null;
   similar_species?: SpeciesSimpleOption[];
-  size_cm?: string | null;
+  size_cm?: number | null;
   species_id?: number;
   substrates?: SpeciesLocalizedOption[];
 }
@@ -74,7 +74,7 @@ export interface ISpecie {
   lum_pileus?: boolean | null;
   lum_lamellae?: boolean | null;
   lum_spores?: boolean | null;
-  ncbi_taxonomy_id: string | null;
+  ncbi_taxonomy_id: number | null;
   inaturalist_taxon_id?: string | null;
   iucn_redlist?: string | null;
 }

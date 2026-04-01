@@ -292,6 +292,12 @@ export function SpeciesFieldsGrid({
                               {resolveOptionLabel(option, t)}
                             </SelectItem>
                           ))}
+                          {normalizedFieldValue &&
+                            !fieldConfig.options?.some((o) => o.value === normalizedFieldValue) && (
+                              <SelectItem value={normalizedFieldValue}>
+                                {normalizedFieldValue}
+                              </SelectItem>
+                            )}
                         </SelectContent>
                       </Select>
                     ) : fieldConfig.inputType === "textarea" ? (
