@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.1](https://github.com/G2BC/LUMM-web/compare/v1.20.0...v1.20.1) (2026-04-06)
+
+
+### Bug Fixes
+
+* update country flag assets and adjust image class names ([08a2e7e](https://github.com/G2BC/LUMM-web/commit/08a2e7eb3ae4cfaa26b57ea0378403df57190cec))
+
 ## [1.20.0](https://github.com/G2BC/LUMM-web/compare/v1.19.2...v1.20.0) (2026-04-06)
 
 
