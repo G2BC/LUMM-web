@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { parseClassification, taxonomyLabels } from "../utils";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { BookOpenText } from "lucide-react";
+import { getCountryName } from "@/lib/country-names";
 
 interface TaxonomyCardProps {
   show: boolean;
@@ -27,7 +28,7 @@ export function TaxonomyCard({
   rowLabelClass,
   rowValueClass,
 }: TaxonomyCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!show || !species) return null;
 
@@ -50,6 +51,18 @@ export function TaxonomyCard({
       value: (species?.scientific_name?.trim().split(/\s+/).pop() || "").trim(),
       level: taxonomyLabels.length,
       italicValue: true,
+    })
+    .concat({
+      label: t("species_page.taxonomy.lineage"),
+      value: species?.lineage || "",
+      level: 0,
+      italicValue: false,
+    })
+    .concat({
+      label: t("species_page.taxonomy.type_country"),
+      value: getCountryName(species?.type_country, i18n.language),
+      level: 0,
+      italicValue: false,
     })
     .concat({
       label: t("species_page.taxonomy.authors"),

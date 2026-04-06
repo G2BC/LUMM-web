@@ -11,7 +11,7 @@
       "external_links": "Links externos",
       "source": "Fonte",
       "view_more": "Ver mais",
-      "type_country_description": "País do Espécime Tipo: {{country}}"
+      "type_country_description": "País do espécime tipo: {{country}}"
     },
     "header": {
       "home": "Início",
@@ -64,7 +64,7 @@
       "page_unavailable_text": "Utilize o botão abaixo para recomeçar a consulta.",
       "page_unavailable_btn": "Recomeçar",
       "select_lineage": "Selecione uma linhagem",
-      "select_country": "Selecione o País do Espécime Tipo"
+      "select_country": "Selecione o país do espécime tipo"
     },
     "contact_page": {
       "title": "Entre em contato",
@@ -229,7 +229,9 @@
         "genus": "Gênero",
         "species": "Espécie",
         "authors": "Autores",
-        "year_of_publication": "Ano da publicação"
+        "year_of_publication": "Ano da publicação",
+        "lineage": "Linhagem",
+        "type_country": "País do espécime tipo"
       },
       "lumm": {
         "section_title": "Partes luminescentes",
