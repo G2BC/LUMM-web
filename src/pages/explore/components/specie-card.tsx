@@ -63,11 +63,7 @@ export function SpecieCard(props: ISpecie) {
                     country: getCountryName(props.type_country, lang ?? DEFAULT_LOCALE),
                   })}
                   className="inline-flex shrink-0"
-                  imageClassName={
-                    /United States/i.test(props.type_country ?? "")
-                      ? "h-9 w-9 shrink-0"
-                      : "h-10 w-10 shrink-0"
-                  }
+                  imageClassName="h-10 w-10 shrink-0"
                 />
                 <ConservationStatusIcon
                   code={conservationStatusCode}

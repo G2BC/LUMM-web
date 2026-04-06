@@ -102,11 +102,7 @@ export default function SpeciesPage() {
                   description={t("common.type_country_description", {
                     country: getCountryName(dados?.type_country, lang ?? DEFAULT_LOCALE),
                   })}
-                  imageClassName={
-                    /United States/i.test(dados?.type_country ?? "")
-                      ? "w-12 h-12 xl:h-14 xl:w-14 shrink-0"
-                      : "w-12 h-12 xl:h-16 xl:w-16 shrink-0"
-                  }
+                  imageClassName="w-12 h-12 xl:h-16 xl:w-16 shrink-0"
                 />
                 <ConservationStatusIcon
                   code={conservationStatusCode}
