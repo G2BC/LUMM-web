@@ -7,8 +7,8 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
 import { selectLineage, selectSpeciesCountry } from "@/api/species";
-import { translateCountryName } from "@/utils/translateCountryName";
-import { SUPPORTED_LOCALES, type Locale } from "@/lib/lang";
+import { getCountryName } from "@/lib/country-names";
+import type { Locale } from "@/lib/lang";
 import { Button } from "@/components/ui/button";
 
 export default function ExplorePage() {
@@ -42,17 +42,11 @@ export default function ExplorePage() {
 
   const fetchCountryOptions = React.useCallback(
     async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
-      const targetLang = SUPPORTED_LOCALES.includes(lang) ? (lang as string) : "en";
       const res = await selectSpeciesCountry(search, signal);
-      return res.map((item) => {
-        let label = item.label;
-        try {
-          label = translateCountryName(item.label, "en", targetLang) ?? item.label;
-        } catch {
-          // keep original label
-        }
-        return { id: item.value, label };
-      });
+      return res.map((item) => ({
+        id: item.value,
+        label: getCountryName(item.label, lang) || item.label,
+      }));
     },
     [lang]
   );

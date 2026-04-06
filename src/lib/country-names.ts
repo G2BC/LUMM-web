@@ -1,0 +1,47 @@
+export const COUNTRY_NAMES_PT: Record<string, string> = {
+  Australia: "Austrália",
+  Borneo: "Bornéu",
+  Brazil: "Brasil",
+  Canada: "Canadá",
+  Chile: "Chile",
+  China: "China",
+  Congo: "Congo",
+  Cuba: "Cuba",
+  "Czech Republic": "República Tcheca",
+  "Dominican Republic": "República Dominicana",
+  Europe: "Europa",
+  "Federated Malay States": "Estados Malaios Federados",
+  Finland: "Finlândia",
+  France: "França",
+  Germany: "Alemanha",
+  "Great Britain": "Grã-Bretanha",
+  India: "Índia",
+  Indonesia: "Indonésia",
+  Jamaica: "Jamaica",
+  Japan: "Japão",
+  Madagascar: "Madagascar",
+  Malaysia: "Malásia",
+  Mexico: "México",
+  Micronesia: "Micronésia",
+  "New Caledonia": "Nova Caledônia",
+  "New Zeland": "Nova Zelândia",
+  "Papua New Guinea": "Papua Nova Guiné",
+  Paraguay: "Paraguai",
+  Philippines: "Filipinas",
+  "Puerto Rico": "Porto Rico",
+  Singapore: "Singapura",
+  Slovenia: "Eslovênia",
+  "Solomon Islands": "Ilhas Salomão",
+  "Sri Lanka": "Sri Lanka",
+  Sweden: "Suécia",
+  Taiwan: "Taiwan",
+  "United States": "Estados Unidos",
+  Venezuela: "Venezuela",
+  Vietnam: "Vietnã",
+};
+
+export function getCountryName(country: string | null | undefined, lang: string): string {
+  if (!country) return "";
+  if (lang === "pt") return COUNTRY_NAMES_PT[country] ?? country;
+  return country;
+}

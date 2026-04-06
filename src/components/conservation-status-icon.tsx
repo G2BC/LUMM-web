@@ -19,7 +19,7 @@ export function ConservationStatusIcon({
   label,
   description,
   className = "inline-flex",
-  imageClassName = "h-12 w-12 xl:h-16 xl:w-16 shrink-0",
+  imageClassName = "h-12 w-12 xl:h-14 xl:w-14 shrink-0",
 }: ConservationStatusIconProps) {
   const normalizedCode = normalizeConservationCode(code);
   const iconUrl = useIucnIcon(normalizedCode);

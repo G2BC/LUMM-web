@@ -77,6 +77,7 @@ export interface ISpecie {
   ncbi_taxonomy_id: number | null;
   inaturalist_taxon_id?: string | null;
   iucn_redlist?: string | null;
+  type_country: string | null;
 }
 
 export interface SpeciePhoto {

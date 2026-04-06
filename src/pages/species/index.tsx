@@ -26,6 +26,8 @@ import { LumCard } from "./components/lumCard";
 import { FindingTipsCard } from "./components/findingTipsCard";
 import { MolecularCard } from "./components/molecularCard";
 import { CharacteristicsCard } from "./components/characteristicsCard";
+import { CountryTypeIcon } from "@/components/country-type-icon";
+import { getCountryName } from "@/lib/country-names";
 
 export default function SpeciesPage() {
   const { dados, loading, ncbiRecords, ncbiLoading } = useSpeciesPage();
@@ -94,11 +96,24 @@ export default function SpeciesPage() {
               <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic tracking-tight">
                 {dados?.scientific_name}
               </h1>
-              <ConservationStatusIcon
-                code={conservationStatusCode}
-                label={conservationStatusLabel}
-                description={conservationStatusDescription}
-              />
+              <span className="flex items-center gap-3">
+                <CountryTypeIcon
+                  country={dados?.type_country ?? ""}
+                  description={t("common.type_country_description", {
+                    country: getCountryName(dados?.type_country, lang ?? DEFAULT_LOCALE),
+                  })}
+                  imageClassName={
+                    /United States/i.test(dados?.type_country ?? "")
+                      ? "w-12 h-12 xl:h-14 xl:w-14 shrink-0"
+                      : "w-12 h-12 xl:h-16 xl:w-16 shrink-0"
+                  }
+                />
+                <ConservationStatusIcon
+                  code={conservationStatusCode}
+                  label={conservationStatusLabel}
+                  description={conservationStatusDescription}
+                />
+              </span>
             </div>
           </header>
 

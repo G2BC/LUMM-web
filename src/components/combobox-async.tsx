@@ -165,7 +165,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
                 : "text-white hover:text-white"
           )}
         >
-          {buttonLabel}
+          <span className="truncate">{buttonLabel}</span>
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
