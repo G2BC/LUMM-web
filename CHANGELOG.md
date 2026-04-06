@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.2](https://github.com/G2BC/LUMM-web/compare/v1.19.1...v1.19.2) (2026-04-02)
+
+
+### Bug Fixes
+
+* delay form render until reset to fix Radix Select display ([7156401](https://github.com/G2BC/LUMM-web/commit/71564010d00c2564e9491df77ca1a1a5076fabd9))
+
 ## [1.19.1](https://github.com/G2BC/LUMM-web/compare/v1.19.0...v1.19.1) (2026-04-01)
 
 

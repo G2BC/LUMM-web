@@ -53,6 +53,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [isDeletingSpecies, setIsDeletingSpecies] = useState(false);
+  const [isFormReady, setIsFormReady] = useState(false);
 
   const locale = lang ?? DEFAULT_LOCALE;
   const isViewMode = viewMode;
@@ -78,6 +79,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   useEffect(() => {
     if (!speciesData) return;
     form.reset(createSpeciesEditFormDefaults(speciesData));
+    setIsFormReady(true);
   }, [form, speciesData]);
 
   async function handleSubmit(values: SpeciesEditFormValues) {
@@ -173,7 +175,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     );
   }
 
-  if (!speciesData) return null;
+  if (!speciesData || !isFormReady) return null;
 
   const pageSubtitle = isViewMode
     ? t("panel_page.species_details_subtitle")
