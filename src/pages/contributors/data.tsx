@@ -185,6 +185,21 @@ export const research_groups: Contributor[] = [
     ],
   },
   {
+    avatar: lbf,
+    name: "LBF",
+    bio: {
+      pt: "O Laboratório de Bioluminescência de Fungos (LBF) constitui o único núcleo de pesquisa brasileiro dedicado ao estudo da emissão de luz por fungos, posicionando o país em uma seleta rede científica global ao lado de grupos de excelência na Rússia, Japão e Estados Unidos. Composto por uma frente multidisciplinar de pesquisadores da USP, UFSCar e Unifesp, e em colaboração estratégica com a San Francisco State University, o LBF atua na fronteira entre a bioquímica e a biotecnologia para desvendar fenômenos biológicos que permaneceram incógnitos desde as observações de Aristóteles. Suas investigações concentram-se na vertente de Inovação Biotecnológica, voltada ao desenvolvimento de bioensaios toxicológicos que utilizam a variação da luminescência do micélio — resultante de uma reação consecutiva entre uma redutase NAD(P)H-dependente e uma luciferase de membrana — como um indicador sensível e versátil para o monitoramento de solos e a detecção de substâncias perigosas. Pautado pela integração entre a ciência básica e aplicada, o LBF transforma o entendimento do sistema luminescente fúngico em ferramentas analíticas de alto impacto, de forma análoga ao uso histórico de genes de vagalumes na biologia molecular, reafirmando seu compromisso com a produção científica rigorosa e com a proteção da biodiversidade e da saúde ambiental.",
+      en: "The Fungal Bioluminescence Laboratory (LBF) is the only Brazilian research hub dedicated to the study of light emission by fungi, positioning the country within a select global scientific network alongside leading research groups in Russia, Japan, and the United States. Comprising a multidisciplinary team of researchers from USP, UFSCar, and Unifesp, and in strategic collaboration with San Francisco State University, LBF operates at the frontier between biochemistry and biotechnology to unravel biological phenomena that have remained unsolved since Aristotle's observations. Its investigations focus on the Biotechnological Innovation research line, aimed at the development of toxicological bioassays that use the variation in mycelium luminescence—resulting from a consecutive reaction between an NAD(P)H-dependent reductase and a membrane luciferase—as a sensitive and versatile indicator for soil monitoring and the detection of hazardous substances. Guided by the integration of basic and applied science, LBF transforms the understanding of the fungal luminescent system into high-impact analytical tools, analogous to the historical use of firefly genes in molecular biology, reaffirming its commitment to rigorous scientific production and the protection of biodiversity and environmental health.",
+    },
+    links: [
+      { icon: <Link className="w-5 h-5" />, href: "https://www.stevanilab.com/", title: "Site" },
+      //  { icon: <Instagram className="w-5 h-5" />,
+      //    href: "https://www.instagram.com/g2bc.uneb/",
+      //    title: "Instagram",
+      //  }
+    ],
+  },
+  {
     avatar: funsynbio,
     name: "FunSynBio",
     bio: {
@@ -201,21 +216,6 @@ export const research_groups: Contributor[] = [
         href: "https://www.instagram.com/funsynbio/",
         title: "Instagram",
       },
-    ],
-  },
-  {
-    avatar: lbf,
-    name: "LBF",
-    bio: {
-      pt: "O Laboratório de Bioluminescência de Fungos (LBF) constitui o único núcleo de pesquisa brasileiro dedicado ao estudo da emissão de luz por fungos, posicionando o país em uma seleta rede científica global ao lado de grupos de excelência na Rússia, Japão e Estados Unidos. Composto por uma frente multidisciplinar de pesquisadores da USP, UFSCar e Unifesp, e em colaboração estratégica com a San Francisco State University, o LBF atua na fronteira entre a bioquímica e a biotecnologia para desvendar fenômenos biológicos que permaneceram incógnitos desde as observações de Aristóteles. Suas investigações concentram-se na vertente de Inovação Biotecnológica, voltada ao desenvolvimento de bioensaios toxicológicos que utilizam a variação da luminescência do micélio — resultante de uma reação consecutiva entre uma redutase NAD(P)H-dependente e uma luciferase de membrana — como um indicador sensível e versátil para o monitoramento de solos e a detecção de substâncias perigosas. Pautado pela integração entre a ciência básica e aplicada, o LBF transforma o entendimento do sistema luminescente fúngico em ferramentas analíticas de alto impacto, de forma análoga ao uso histórico de genes de vagalumes na biologia molecular, reafirmando seu compromisso com a produção científica rigorosa e com a proteção da biodiversidade e da saúde ambiental.",
-      en: "The Fungal Bioluminescence Laboratory (LBF) is the only Brazilian research hub dedicated to the study of light emission by fungi, positioning the country within a select global scientific network alongside leading research groups in Russia, Japan, and the United States. Comprising a multidisciplinary team of researchers from USP, UFSCar, and Unifesp, and in strategic collaboration with San Francisco State University, LBF operates at the frontier between biochemistry and biotechnology to unravel biological phenomena that have remained unsolved since Aristotle's observations. Its investigations focus on the Biotechnological Innovation research line, aimed at the development of toxicological bioassays that use the variation in mycelium luminescence—resulting from a consecutive reaction between an NAD(P)H-dependent reductase and a membrane luciferase—as a sensitive and versatile indicator for soil monitoring and the detection of hazardous substances. Guided by the integration of basic and applied science, LBF transforms the understanding of the fungal luminescent system into high-impact analytical tools, analogous to the historical use of firefly genes in molecular biology, reaffirming its commitment to rigorous scientific production and the protection of biodiversity and environmental health.",
-    },
-    links: [
-      { icon: <Link className="w-5 h-5" />, href: "https://www.stevanilab.com/", title: "Site" },
-      //  { icon: <Instagram className="w-5 h-5" />,
-      //    href: "https://www.instagram.com/g2bc.uneb/",
-      //    title: "Instagram",
-      //  }
     ],
   },
 ];
