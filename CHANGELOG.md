@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.20.0](https://github.com/G2BC/LUMM-web/compare/v1.19.2...v1.20.0) (2026-04-06)
+
+
+### Features
+
+* add country type support and related assets ([65c8ed0](https://github.com/G2BC/LUMM-web/commit/65c8ed08bdb49ad8461e3449cac9d7c10e298624))
+* enhance taxonomy card with lineage and type country details ([31b52e6](https://github.com/G2BC/LUMM-web/commit/31b52e657f7585c71122d11b66edfb19a8991d58))
+
+
+### Bug Fixes
+
+* update localization for type specimen country descriptions ([f0d82c1](https://github.com/G2BC/LUMM-web/commit/f0d82c150997a1cb629d36e122c4f66d94c16dd0))
+
 ## [1.19.2](https://github.com/G2BC/LUMM-web/compare/v1.19.1...v1.19.2) (2026-04-02)
 
 
