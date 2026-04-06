@@ -11,7 +11,7 @@
       "external_links": "Links externos",
       "source": "Fonte",
       "view_more": "Ver mais",
-      "type_country_description": "País do espécime tipo: {{country}}"
+      "type_country_description": "País do Espécime Tipo: {{country}}"
     },
     "header": {
       "home": "Início",
@@ -64,7 +64,7 @@
       "page_unavailable_text": "Utilize o botão abaixo para recomeçar a consulta.",
       "page_unavailable_btn": "Recomeçar",
       "select_lineage": "Selecione uma linhagem",
-      "select_country": "Selecione um país do espécime tipo"
+      "select_country": "Selecione o País do Espécime Tipo"
     },
     "contact_page": {
       "title": "Entre em contato",

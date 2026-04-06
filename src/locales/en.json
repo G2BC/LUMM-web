@@ -11,7 +11,7 @@
       "external_links": "External links",
       "source": "Source",
       "view_more": "View more",
-      "type_country_description": "Type specimen country: {{country}}"
+      "type_country_description": "Country of Type Specimen: {{country}}"
     },
     "header": {
       "home": "Home",
@@ -64,7 +64,7 @@
       "page_unavailable_text": "Use the button below to restart the search.",
       "page_unavailable_btn": "Restart",
       "select_lineage": "Select a lineage",
-      "select_country": "Select a type specimen country"
+      "select_country": "Select a country for the type specimen"
     },
     "contact_page": {
       "title": "Contact us",
