@@ -96,7 +96,7 @@ export default function SpeciesPage() {
               <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic tracking-tight">
                 {dados?.scientific_name}
               </h1>
-              <span className="flex items-center gap-3">
+              <span className="flex items-center gap-3 shrink-0">
                 <CountryTypeIcon
                   country={dados?.type_country ?? ""}
                   description={t("common.type_country_description", {
