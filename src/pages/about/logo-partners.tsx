@@ -19,16 +19,16 @@ const institutions: Institution[] = [
   { id: 1, logoSrc: logoG2BC, alt: "Logo G2BC", url: "https://g2bc.uneb.br/", category: "grupo" },
   {
     id: 2,
-    logoSrc: logoFUNSYNBIO,
-    alt: "Logo FunSynBio",
-    url: "https://www.instagram.com/funsynbio/",
+    logoSrc: logoLBF,
+    alt: "Logo LBF",
+    url: "https://www.stevanilab.com",
     category: "grupo",
   },
   {
     id: 3,
-    logoSrc: logoLBF,
-    alt: "Logo LBF",
-    url: "https://www.stevanilab.com",
+    logoSrc: logoFUNSYNBIO,
+    alt: "Logo FunSynBio",
+    url: "https://www.instagram.com/funsynbio/",
     category: "grupo",
   },
   {
