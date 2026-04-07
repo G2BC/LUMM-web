@@ -288,15 +288,16 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
                       {t("panel_page.action_manage")}
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to={manageSpeciesPhotosPath}>
-                      <ImagePlus className="h-4 w-4" />
-                      {t("panel_page.action_manage_photos")}
-                    </Link>
-                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                 </>
               ) : null}
+              <DropdownMenuItem asChild>
+                <Link to={manageSpeciesPhotosPath}>
+                  <ImagePlus className="h-4 w-4" />
+                  {t("panel_page.action_manage_photos")}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to={publicSpeciesPath} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-4 w-4" />
