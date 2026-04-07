@@ -321,8 +321,8 @@ export function useSpeciesPhotosPage() {
 
     setIsUploading(true);
     try {
-      await runWithSilencedApiErrors(async () => {
-        for (const file of selectedFiles) {
+      const results = await Promise.allSettled(
+        selectedFiles.map(async (file) => {
           const fileKey = getFileKey(file);
           const metadata = photoMetadataByKey[fileKey] ?? createDefaultPhotoMetadata();
           const fileToUpload = await optimizeImageForUpload(file);
@@ -360,19 +360,51 @@ export function useSpeciesPhotosPage() {
             lumm: metadata.lumm,
             featured: metadata.featured,
           });
-        }
-      });
+        })
+      );
 
-      setSelectedFiles([]);
-      setPhotoMetadataByKey({});
-      await reloadSpeciesPhotos();
-      await Alert({
-        icon: "success",
-        title: t("panel_page.species_photos_upload_success_title"),
-        text: t("panel_page.species_photos_upload_success_text", {
-          count: selectedFiles.length,
-        }),
-      });
+      const failedFiles = selectedFiles.filter((_, i) => results[i]?.status === "rejected");
+      const successCount = results.length - failedFiles.length;
+
+      if (failedFiles.length === 0) {
+        setSelectedFiles([]);
+        setPhotoMetadataByKey({});
+      } else {
+        setSelectedFiles(failedFiles);
+        setPhotoMetadataByKey((prev) => {
+          const next: Record<string, PhotoMetadataValues> = {};
+          failedFiles.forEach((file) => {
+            const key = getFileKey(file);
+            if (prev[key]) next[key] = prev[key];
+          });
+          return next;
+        });
+      }
+
+      if (successCount > 0) await reloadSpeciesPhotos();
+
+      if (failedFiles.length === 0) {
+        await Alert({
+          icon: "success",
+          title: t("panel_page.species_photos_upload_success_title"),
+          text: t("panel_page.species_photos_upload_success_text", { count: successCount }),
+        });
+      } else if (successCount === 0) {
+        await Alert({
+          icon: "error",
+          title: t("panel_page.species_photos_upload_error_title"),
+          text: t("panel_page.species_photos_upload_error_text"),
+        });
+      } else {
+        await Alert({
+          icon: "warning",
+          title: t("panel_page.species_photos_upload_partial_title"),
+          text: t("panel_page.species_photos_upload_partial_text", {
+            success: successCount,
+            failed: failedFiles.length,
+          }),
+        });
+      }
     } catch (error) {
       await Alert({
         icon: "error",

@@ -586,6 +586,8 @@
       "species_photos_upload_success_text": "{{count}} foto(s) foram adicionadas à espécie.",
       "species_photos_upload_error_title": "Falha ao enviar fotos",
       "species_photos_upload_error_text": "Não foi possível concluir o upload. Tente novamente.",
+      "species_photos_upload_partial_title": "Upload parcialmente concluído",
+      "species_photos_upload_partial_text": "{{success}} foto(s) enviada(s) com sucesso. {{failed}} falhou — remova e tente novamente.",
       "species_photos_action_edit": "Editar",
       "species_photos_action_delete": "Remover",
       "species_photos_edit_title": "Editar metadados da foto",
