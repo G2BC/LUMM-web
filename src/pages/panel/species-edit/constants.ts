@@ -76,6 +76,12 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     })),
   },
   {
+    name: "type_country",
+    labelKey: "panel_page.species_edit_field_type_country",
+    placeholderKey: "panel_page.species_create_type_country_placeholder",
+    inputType: "country-select",
+  },
+  {
     name: "season_start_month",
     labelKey: "panel_page.species_edit_field_season_start_month",
     placeholderKey: "panel_page.species_edit_season_start_month_placeholder",
@@ -277,6 +283,7 @@ export const SPECIES_EDIT_FORM_INITIAL_VALUES: SpeciesEditFormValues = {
   inaturalist_taxon_id: "",
   conservation_status: "",
   iucn_redlist: "",
+  type_country: "",
   lum_mycelium: "unknown",
   lum_basidiome: "unknown",
   lum_stipe: "unknown",

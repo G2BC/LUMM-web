@@ -55,6 +55,7 @@ export function createSpeciesEditSchema(t: TFunction) {
     inaturalist_taxon_id: optionalIntegerIdSchema,
     conservation_status: z.string(),
     iucn_redlist: z.string(),
+    type_country: z.string(),
     lum_mycelium: triStateFieldSchema,
     lum_basidiome: triStateFieldSchema,
     lum_stipe: triStateFieldSchema,

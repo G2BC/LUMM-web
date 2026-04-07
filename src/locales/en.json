@@ -488,6 +488,7 @@
       "species_edit_field_inaturalist_taxon_id": "iNaturalist Taxon ID",
       "species_edit_field_conservation_status": "Conservation status",
       "species_edit_field_iucn_redlist": "IUCN Red List ID",
+      "species_edit_field_type_country": "Type specimen country",
       "species_edit_mycobank_sync_tooltip": "When this value is changed, some species fields will be synchronized directly from MycoBank.",
       "species_create_mycobank_sync_tooltip": "When this value is provided, some species fields will be synchronized directly from MycoBank.",
       "species_edit_lineage_placeholder": "Select a lineage",

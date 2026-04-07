@@ -1,7 +1,10 @@
 import { DomainComboboxAsync } from "@/components/domain-combobox-async";
 import type { SpeciesDomainSelectType } from "@/api/species";
+import { selectSpeciesCountry } from "@/api/species";
 import type { ISelectLocalized } from "@/api/types/ISelectLocalized";
 import { SpeciesComboboxAsync } from "@/components/species-combobox-async";
+import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
+import { getCountryName } from "@/lib/country-names";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { TFunction } from "i18next";
 import { Info } from "lucide-react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { DETAIL_VALUE_TEXT_CLASS } from "../constants";
 import type { SpeciesEditFieldConfig, SpeciesEditFieldName, SpeciesEditFormValues } from "../types";
@@ -44,6 +47,17 @@ export function SpeciesFieldsGrid({
   similarSpeciesPreloadedOptions,
   t,
 }: SpeciesFieldsGridProps) {
+  const fetchCountryOptions = useCallback(
+    async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
+      const res = await selectSpeciesCountry(search, signal);
+      return res.map((item) => ({
+        id: item.value,
+        label: getCountryName(item.label, locale) || item.label,
+      }));
+    },
+    [locale]
+  );
+
   const triStateFieldNames = new Set([
     "edible",
     "lum_mycelium",
@@ -300,6 +314,16 @@ export function SpeciesFieldsGrid({
                             )}
                         </SelectContent>
                       </Select>
+                    ) : fieldConfig.inputType === "country-select" ? (
+                      <FormControl>
+                        <ComboboxAsync
+                          variant="light"
+                          fetchOptions={fetchCountryOptions}
+                          value={rawFieldValue || null}
+                          onSelect={(id) => field.onChange(id ? String(id) : "")}
+                          placeholder={t(fieldConfig.placeholderKey)}
+                        />
+                      </FormControl>
                     ) : fieldConfig.inputType === "textarea" ? (
                       <FormControl>
                         <Textarea

@@ -36,6 +36,7 @@ export type SpeciesEditFormValues = {
   inaturalist_taxon_id: string;
   conservation_status: string;
   iucn_redlist: string;
+  type_country: string;
   lum_mycelium: TriStateFormValue;
   lum_basidiome: TriStateFormValue;
   lum_stipe: TriStateFormValue;
@@ -62,7 +63,8 @@ export type SpeciesEditFieldConfig = {
     | "select"
     | "number"
     | "domain-multi-async"
-    | "species-multi-async";
+    | "species-multi-async"
+    | "country-select";
   domain?: SpeciesDomainSelectType;
   options?: SpeciesEditOption[];
   rows?: number;

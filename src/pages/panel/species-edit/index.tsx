@@ -219,7 +219,8 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   const luminescentRows = buildLuminescentRows(speciesData, t);
   const domainViewValueMap = buildDomainViewValueMap(
     speciesData,
-    i18n.language.toLowerCase().startsWith("pt")
+    i18n.language.toLowerCase().startsWith("pt"),
+    i18n.language
   );
   const publicSpeciesPath = `/${locale}/especie/${speciesData.id}`;
   const editSpeciesPath = `/${locale}/painel/especies/${speciesData.id}/editar${location.search}`;

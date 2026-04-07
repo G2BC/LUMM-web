@@ -1,6 +1,7 @@
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import type { UpdateSpeciesPayload } from "@/api/species";
 import type { TFunction } from "i18next";
+import { getCountryName } from "@/lib/country-names";
 import {
   EDITABLE_PENDING_FIELDS,
   LUMINESCENT_FIELDS,
@@ -134,6 +135,7 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
       speciesData.iucn_redlist === null || speciesData.iucn_redlist === undefined
         ? ""
         : String(speciesData.iucn_redlist),
+    type_country: speciesData.type_country ?? "",
     lum_mycelium: toTriStateFormValue(lumMycelium),
     lum_basidiome: toTriStateFormValue(lumBasidiome),
     lum_stipe: toTriStateFormValue(lumStipe),
@@ -335,7 +337,11 @@ function getLocalizedOptionLabels(
     .join(", ");
 }
 
-export function buildDomainViewValueMap(speciesData: ISpecie, isPtLanguage: boolean) {
+export function buildDomainViewValueMap(
+  speciesData: ISpecie,
+  isPtLanguage: boolean,
+  locale?: string
+) {
   const similarSpeciesFromCharacteristics = (
     speciesData.species_characteristics?.similar_species ?? []
   )
@@ -362,5 +368,6 @@ export function buildDomainViewValueMap(speciesData: ISpecie, isPtLanguage: bool
       isPtLanguage
     ),
     habitats: getLocalizedOptionLabels(speciesData.species_characteristics?.habitats, isPtLanguage),
+    type_country: getCountryName(speciesData.type_country, locale ?? (isPtLanguage ? "pt" : "en")),
   };
 }
