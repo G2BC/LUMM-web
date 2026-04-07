@@ -5,6 +5,7 @@ import * as React from "react";
 import specieCardDefault from "@/assets/specie-card-default.webp";
 import { selectSpecies } from "@/api/species";
 import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
+import { useInitialComboboxOptions } from "@/components/use-initial-combobox-options";
 
 type SpeciesComboboxAsyncProps = {
   placeholder?: string;
@@ -28,11 +29,9 @@ export function SpeciesComboboxAsync(props: SpeciesComboboxAsyncProps) {
     [props.excludeSpeciesId]
   );
 
-  const initialKnownOptions = React.useMemo<ComboboxOption[]>(
-    () => (props.initialKnownOptions ?? []).map((item) => ({ ...item })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const initialKnownOptions = useInitialComboboxOptions(props.initialKnownOptions, (item) => ({
+    ...item,
+  }));
 
   const handleSelect = (ids: Array<string | number>) => {
     const numericIds = ids.map((id) => Number(id)).filter((id) => Number.isFinite(id) && id > 0);

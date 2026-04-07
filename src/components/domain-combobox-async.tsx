@@ -5,7 +5,12 @@ import { useTranslation } from "react-i18next";
 
 import { selectSpeciesDomain, type SpeciesDomainSelectType } from "@/api/species";
 import type { ISelectLocalized } from "@/api/types/ISelectLocalized";
-import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
+import {
+  ComboboxAsync,
+  type ComboboxAsyncProps,
+  type ComboboxOption,
+} from "@/components/combobox-async";
+import { useInitialComboboxOptions } from "@/components/use-initial-combobox-options";
 
 type DomainComboboxBaseProps = {
   domain: SpeciesDomainSelectType;
@@ -43,38 +48,28 @@ export function DomainComboboxAsync(props: DomainComboboxAsyncProps) {
     [props.domain, isPt]
   );
 
-  const initialKnownOptions = React.useMemo<ComboboxOption[]>(
-    () =>
-      (props.initialKnownOptions ?? []).map((item) => ({
-        id: item.value,
-        label: isPt ? item.label_pt : item.label_en,
-      })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const initialKnownOptions = useInitialComboboxOptions(props.initialKnownOptions, (item) => ({
+    id: item.value,
+    label: isPt ? item.label_pt : item.label_en,
+  }));
+
+  const sharedProps = {
+    fetchOptions,
+    variant: props.variant,
+    placeholder: props.placeholder,
+    initialKnownOptions,
+  } satisfies Partial<ComboboxAsyncProps>;
 
   if (props.multiple) {
     return (
       <ComboboxAsync
-        fetchOptions={fetchOptions}
+        {...sharedProps}
         multiple
         value={props.value ?? []}
         onSelect={props.onSelect}
-        variant={props.variant}
-        placeholder={props.placeholder}
-        initialKnownOptions={initialKnownOptions}
       />
     );
   }
 
-  return (
-    <ComboboxAsync
-      fetchOptions={fetchOptions}
-      value={props.value ?? null}
-      onSelect={props.onSelect}
-      variant={props.variant}
-      placeholder={props.placeholder}
-      initialKnownOptions={initialKnownOptions}
-    />
-  );
+  return <ComboboxAsync {...sharedProps} value={props.value ?? null} onSelect={props.onSelect} />;
 }
