@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.22.0](https://github.com/G2BC/LUMM-web/compare/v1.21.0...v1.22.0) (2026-04-07)
+
+
+### Features
+
+* add pendingCount query key and optimize species requests fetching ([5cd5b3e](https://github.com/G2BC/LUMM-web/commit/5cd5b3eab0c4d94a79033378a3c0e4dd04b9da62))
+* add responsive table layout for species display ([11afa7a](https://github.com/G2BC/LUMM-web/commit/11afa7a0da80e6e239ae1a718db53a71e7a75f30))
+* add type country field to species edit form ([1266d75](https://github.com/G2BC/LUMM-web/commit/1266d75d3bf144d198ea36a9bff883354ea5d116))
+* enhance species edit form handling with useRef ([06455b1](https://github.com/G2BC/LUMM-web/commit/06455b16b05dda6a9636b67f6e97b0a62b2d30bb))
+* enhance species photos upload functionality ([ffd4149](https://github.com/G2BC/LUMM-web/commit/ffd414990c522e40adb00ab1cae05947d629bcd6))
+* implement pagination for species requests ([f06f481](https://github.com/G2BC/LUMM-web/commit/f06f481fd34d5d53295326e1a02f6cde129a80af))
+* improve species update payload comparison logic ([2d64f5f](https://github.com/G2BC/LUMM-web/commit/2d64f5f11246fd1da1c0c59558209f617cc7edb4))
+* refactor species edit page to use useMemo for preloaded options ([0d72e5e](https://github.com/G2BC/LUMM-web/commit/0d72e5e4e92425e4cc1af96ada2e2b87e5ed94a5))
+
 ## [1.21.0](https://github.com/G2BC/LUMM-web/compare/v1.20.2...v1.21.0) (2026-04-06)
 
 
