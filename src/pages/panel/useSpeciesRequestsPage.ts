@@ -77,35 +77,36 @@ export function useSpeciesRequestsPage() {
   const { data: requestsData, isLoading: loading } = useQuery({
     queryKey: changeRequestKeys.list({ status: statusFilter }),
     queryFn: () =>
-      Promise.all([
-        listSpeciesChangeRequests({
-          status: statusFilter === "all" ? undefined : statusFilter,
-          page: 1,
-          per_page: 30,
-        }),
-        statusFilter === "pending"
-          ? Promise.resolve(null)
-          : listSpeciesChangeRequests({ status: "pending", page: 1, per_page: 1 }),
-      ]),
+      listSpeciesChangeRequests({
+        status: statusFilter === "all" ? undefined : statusFilter,
+        page: 1,
+        per_page: 30,
+      }),
   });
 
-  const items: SpeciesChangeRequest[] = requestsData?.[0]?.items ?? [];
+  const { data: pendingCountData } = useQuery({
+    queryKey: changeRequestKeys.pendingCount(),
+    queryFn: () => listSpeciesChangeRequests({ status: "pending", page: 1, per_page: 1 }),
+    staleTime: 30_000,
+    enabled: statusFilter !== "pending",
+  });
+
+  const items: SpeciesChangeRequest[] = requestsData?.items ?? [];
   const pendingCount =
-    statusFilter === "pending" ? (requestsData?.[0]?.total ?? 0) : (requestsData?.[1]?.total ?? 0);
+    statusFilter === "pending" ? (requestsData?.total ?? 0) : (pendingCountData?.total ?? 0);
 
   useEffect(() => {
     if (!requestsData) return;
-    const [response] = requestsData;
 
     setExpandedId((prev) =>
-      prev && response.items.some((item) => item.id === prev)
+      prev && requestsData.items.some((item) => item.id === prev)
         ? prev
-        : (response.items[0]?.id ?? null)
+        : (requestsData.items[0]?.id ?? null)
     );
 
     setProposedDataFieldDecisions((prev) => {
       const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
-      response.items.forEach((item) => {
+      requestsData.items.forEach((item) => {
         if (item.status !== "pending") return;
         const prevForRequest = prev[item.id] ?? {};
         const proposedFields = Object.keys(item.proposed_data || {});
@@ -119,7 +120,7 @@ export function useSpeciesRequestsPage() {
 
     setPhotoDecisions((prev) => {
       const next: Record<string, Record<string, SpeciesReviewDecision>> = {};
-      response.items.forEach((item) => {
+      requestsData.items.forEach((item) => {
         if (item.status !== "pending") return;
         const prevForRequest = prev[item.id] ?? {};
         next[item.id] = {};
@@ -202,7 +203,7 @@ export function useSpeciesRequestsPage() {
         review_note: reviewNotes[item.id] || undefined,
       });
       cleanReviewStateForItem(item.id);
-      await queryClient.invalidateQueries({ queryKey: changeRequestKeys.lists() });
+      await queryClient.invalidateQueries({ queryKey: changeRequestKeys.all });
     } finally {
       setReviewingId(null);
     }
@@ -241,7 +242,7 @@ export function useSpeciesRequestsPage() {
     try {
       await reviewSpeciesChangeRequest(item.id, payload);
       cleanReviewStateForItem(item.id);
-      await queryClient.invalidateQueries({ queryKey: changeRequestKeys.lists() });
+      await queryClient.invalidateQueries({ queryKey: changeRequestKeys.all });
     } finally {
       setReviewingId(null);
     }

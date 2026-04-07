@@ -12,6 +12,7 @@ export const changeRequestKeys = {
   all: ["changeRequests"] as const,
   lists: () => [...changeRequestKeys.all, "list"] as const,
   list: (params: Record<string, unknown>) => [...changeRequestKeys.lists(), params] as const,
+  pendingCount: () => [...changeRequestKeys.all, "pendingCount"] as const,
 };
 
 export const userKeys = {
