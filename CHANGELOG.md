@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/G2BC/LUMM-web/compare/v1.23.0...v1.24.0) (2026-04-07)
+
+
+### Features
+
+* add manage species photos link to species edit page ([cb14b10](https://github.com/G2BC/LUMM-web/commit/cb14b10d4ee3a4269820ac1863923366b462e682))
+
 ## [1.23.0](https://github.com/G2BC/LUMM-web/compare/v1.22.0...v1.23.0) (2026-04-07)
 
 
