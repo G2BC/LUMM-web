@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/G2BC/LUMM-web/compare/v1.22.0...v1.23.0) (2026-04-07)
+
+
+### Features
+
+* ensure type_country is included in species creation payload ([c5a3b2a](https://github.com/G2BC/LUMM-web/commit/c5a3b2a99a961a64c0f9ca812bb3dda73d0dcd13))
+
 ## [1.22.0](https://github.com/G2BC/LUMM-web/compare/v1.21.0...v1.22.0) (2026-04-07)
 
 
