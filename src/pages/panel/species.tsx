@@ -14,6 +14,21 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router";
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 768px)");
+    const onChange = () => setIsDesktop(query.matches);
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  return isDesktop;
+}
+
 const SPECIES_PER_PAGE = 20;
 
 function parsePageParam(value: string | null) {
@@ -109,6 +124,7 @@ export default function PanelSpeciesPage() {
   }
 
   const queryString = searchParams.toString();
+  const isDesktop = useIsDesktop();
 
   return (
     <section className="text-slate-900">
@@ -151,130 +167,132 @@ export default function PanelSpeciesPage() {
 
       {!isLoading && !hasError && items.length > 0 ? (
         <>
-          <div className="hidden overflow-x-auto rounded-lg border border-slate-200 md:block">
-            <table className="min-w-[880px] w-full text-left text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
-                  <th className="px-4 py-3">{t("panel_page.col_species_name")}</th>
-                  <th className="px-4 py-3">{t("panel_page.col_lineage")}</th>
-                  <th className="px-4 py-3">{t("panel_page.col_published")}</th>
-                  <th className="px-4 py-3 text-right">{t("panel_page.col_actions")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="border-b border-slate-100 transition-colors hover:bg-slate-50"
-                  >
-                    <td className="px-4 py-3 pr-3">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={getSpeciesThumb(item)}
-                          alt={item.scientific_name}
-                          className="h-10 w-10 rounded-md border border-slate-200 object-cover"
-                          loading="lazy"
-                          onError={(event) => {
-                            event.currentTarget.onerror = null;
-                            event.currentTarget.src = specieCardDefault;
-                          }}
-                        />
-                        <Link
-                          to={`/${locale}/especie/${item.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-slate-900 hover:underline"
-                        >
-                          {item.scientific_name}
-                        </Link>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 pr-3">{item.lineage || "-"}</td>
-                    <td className="px-4 py-3 pr-3">
-                      <span
-                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getPublishedBadgeClass(
-                          item.is_visible
-                        )}`}
-                      >
-                        {item.is_visible ? t("species_page.lumm.yes") : t("species_page.lumm.no")}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <SpeciesActionsMenu
-                        locale={locale}
-                        speciesId={item.id}
-                        queryString={queryString || undefined}
-                        actionsLabel={t("panel_page.col_actions")}
-                        managePhotosLabel={t("panel_page.action_manage_photos")}
-                        manageSpeciesLabel={t("panel_page.action_manage")}
-                        detailsSpeciesLabel={t("panel_page.action_details")}
-                        requestUpdateLabel={t("species_page.request_update_cta")}
-                        canManageSpecies={canManageSpecies}
-                        canManagePhotos={canManageSpecies}
-                        canRequestUpdate={canRequestUpdate}
-                      />
-                    </td>
+          {isDesktop ? (
+            <div className="overflow-x-auto rounded-lg border border-slate-200">
+              <table className="min-w-[880px] w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50 text-slate-600">
+                    <th className="px-4 py-3">{t("panel_page.col_species_name")}</th>
+                    <th className="px-4 py-3">{t("panel_page.col_lineage")}</th>
+                    <th className="px-4 py-3">{t("panel_page.col_published")}</th>
+                    <th className="px-4 py-3 text-right">{t("panel_page.col_actions")}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="space-y-3 md:hidden">
-            {items.map((item) => (
-              <article key={item.id} className="rounded-lg border border-slate-200 p-4">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={getSpeciesThumb(item)}
-                    alt={item.scientific_name}
-                    className="h-10 w-10 rounded-md border border-slate-200 object-cover"
-                    loading="lazy"
-                    onError={(event) => {
-                      event.currentTarget.onerror = null;
-                      event.currentTarget.src = specieCardDefault;
-                    }}
-                  />
-                  <Link
-                    to={`/${locale}/especie/${item.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-semibold text-slate-900 hover:underline"
-                  >
-                    {item.scientific_name}
-                  </Link>
-                </div>
-                <p className="mt-1 text-sm text-slate-600">
-                  {t("panel_page.col_lineage")}: {item.lineage || "-"}
-                </p>
-                <p className="mt-1 text-sm text-slate-600 flex items-center gap-2">
-                  <span>{t("panel_page.col_published")}:</span>
-                  <span
-                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getPublishedBadgeClass(
-                      item.is_visible
-                    )}`}
-                  >
-                    {item.is_visible ? t("species_page.lumm.yes") : t("species_page.lumm.no")}
-                  </span>
-                </p>
-                <div className="mt-3">
-                  <SpeciesActionsMenu
-                    locale={locale}
-                    speciesId={item.id}
-                    queryString={queryString || undefined}
-                    actionsLabel={t("panel_page.col_actions")}
-                    managePhotosLabel={t("panel_page.action_manage_photos")}
-                    manageSpeciesLabel={t("panel_page.action_manage")}
-                    detailsSpeciesLabel={t("panel_page.action_details")}
-                    requestUpdateLabel={t("species_page.request_update_cta")}
-                    canManageSpecies={canManageSpecies}
-                    canManagePhotos={canManageSpecies}
-                    canRequestUpdate={canRequestUpdate}
-                    mobile
-                  />
-                </div>
-              </article>
-            ))}
-          </div>
+                </thead>
+                <tbody>
+                  {items.map((item) => (
+                    <tr
+                      key={item.id}
+                      className="border-b border-slate-100 transition-colors hover:bg-slate-50"
+                    >
+                      <td className="px-4 py-3 pr-3">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={getSpeciesThumb(item)}
+                            alt={item.scientific_name}
+                            className="h-10 w-10 rounded-md border border-slate-200 object-cover"
+                            loading="lazy"
+                            onError={(event) => {
+                              event.currentTarget.onerror = null;
+                              event.currentTarget.src = specieCardDefault;
+                            }}
+                          />
+                          <Link
+                            to={`/${locale}/especie/${item.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium text-slate-900 hover:underline"
+                          >
+                            {item.scientific_name}
+                          </Link>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 pr-3">{item.lineage || "-"}</td>
+                      <td className="px-4 py-3 pr-3">
+                        <span
+                          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getPublishedBadgeClass(
+                            item.is_visible
+                          )}`}
+                        >
+                          {item.is_visible ? t("species_page.lumm.yes") : t("species_page.lumm.no")}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <SpeciesActionsMenu
+                          locale={locale}
+                          speciesId={item.id}
+                          queryString={queryString || undefined}
+                          actionsLabel={t("panel_page.col_actions")}
+                          managePhotosLabel={t("panel_page.action_manage_photos")}
+                          manageSpeciesLabel={t("panel_page.action_manage")}
+                          detailsSpeciesLabel={t("panel_page.action_details")}
+                          requestUpdateLabel={t("species_page.request_update_cta")}
+                          canManageSpecies={canManageSpecies}
+                          canManagePhotos={canManageSpecies}
+                          canRequestUpdate={canRequestUpdate}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {items.map((item) => (
+                <article key={item.id} className="rounded-lg border border-slate-200 p-4">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={getSpeciesThumb(item)}
+                      alt={item.scientific_name}
+                      className="h-10 w-10 rounded-md border border-slate-200 object-cover"
+                      loading="lazy"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null;
+                        event.currentTarget.src = specieCardDefault;
+                      }}
+                    />
+                    <Link
+                      to={`/${locale}/especie/${item.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-slate-900 hover:underline"
+                    >
+                      {item.scientific_name}
+                    </Link>
+                  </div>
+                  <p className="mt-1 text-sm text-slate-600">
+                    {t("panel_page.col_lineage")}: {item.lineage || "-"}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600 flex items-center gap-2">
+                    <span>{t("panel_page.col_published")}:</span>
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${getPublishedBadgeClass(
+                        item.is_visible
+                      )}`}
+                    >
+                      {item.is_visible ? t("species_page.lumm.yes") : t("species_page.lumm.no")}
+                    </span>
+                  </p>
+                  <div className="mt-3">
+                    <SpeciesActionsMenu
+                      locale={locale}
+                      speciesId={item.id}
+                      queryString={queryString || undefined}
+                      actionsLabel={t("panel_page.col_actions")}
+                      managePhotosLabel={t("panel_page.action_manage_photos")}
+                      manageSpeciesLabel={t("panel_page.action_manage")}
+                      detailsSpeciesLabel={t("panel_page.action_details")}
+                      requestUpdateLabel={t("species_page.request_update_cta")}
+                      canManageSpecies={canManageSpecies}
+                      canManagePhotos={canManageSpecies}
+                      canRequestUpdate={canRequestUpdate}
+                      mobile
+                    />
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
 
           <UsersPagination
             page={page}
