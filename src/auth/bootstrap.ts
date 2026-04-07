@@ -4,11 +4,22 @@ import type { AxiosError } from "axios";
 
 let bootstrapPromise: Promise<void> | null = null;
 
+// Structured field returned by the API (preferred signal).
+// Fallback: match the error message in any language for older API versions that
+// return a plain { message } instead of { must_change_password: true }.
+// TODO: remove the text fallback once all environments return the structured field.
+type PasswordChangeErrorData = {
+  must_change_password?: boolean;
+  message_pt?: string;
+  message_en?: string;
+};
+
 function isPasswordChangeRequiredError(error: unknown) {
-  const err = error as AxiosError<{ message?: string }>;
-  const status = err.response?.status;
-  const message = err.response?.data?.message ?? "";
-  return status === 403 && message.includes("Troca de senha obrigatória");
+  const err = error as AxiosError<PasswordChangeErrorData>;
+  if (err.response?.status !== 403) return false;
+
+  const data = err.response.data;
+  return data?.must_change_password === true;
 }
 
 async function tryRefresh(refreshToken: string) {

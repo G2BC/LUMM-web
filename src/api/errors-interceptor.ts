@@ -34,17 +34,44 @@ function extractMessage(err: AxiosError<BilingualErrorData>): string | undefined
   return candidates.find(Boolean);
 }
 
-let lastShownAt = 0;
-const COOLDOWN_MS = 1200;
-function showOnce(opts: {
+type AlertOpts = {
   title: string;
   text?: string;
   icon?: "error" | "warning" | "info" | "success";
-}) {
-  const now = Date.now();
-  if (now - lastShownAt < COOLDOWN_MS) return;
-  lastShownAt = now;
-  Alert({ ...opts, confirmButtonText: t("errors.close") });
+};
+
+// Deduplication queue: identical errors (same title+text+icon) are merged into
+// one entry; distinct errors are shown sequentially, one modal at a time.
+// This replaces the previous time-based cooldown that silently dropped errors
+// arriving within 1.2s of each other — including legitimately different errors.
+const pendingAlerts = new Map<string, AlertOpts>();
+let isAlertOpen = false;
+
+function makeAlertKey(opts: AlertOpts): string {
+  return `${opts.title}||${opts.text ?? ""}||${opts.icon ?? ""}`;
+}
+
+async function drainAlertQueue() {
+  if (isAlertOpen || pendingAlerts.size === 0) return;
+
+  const [[key, opts]] = pendingAlerts;
+  pendingAlerts.delete(key);
+  isAlertOpen = true;
+
+  try {
+    await Alert({ ...opts, confirmButtonText: t("errors.close") });
+  } finally {
+    isAlertOpen = false;
+    void drainAlertQueue();
+  }
+}
+
+function showOnce(opts: AlertOpts) {
+  const key = makeAlertKey(opts);
+  if (!pendingAlerts.has(key)) {
+    pendingAlerts.set(key, opts);
+  }
+  void drainAlertQueue();
 }
 
 function showAlert(err: AxiosError<BilingualErrorData>) {

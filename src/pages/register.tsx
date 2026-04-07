@@ -1,6 +1,5 @@
 import heroDesktop from "@/assets/home/hero_desktop.webp";
-import { registerUser } from "@/api/auth";
-import { Alert } from "@/components/alert";
+import { getCurrentUser, registerUser } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,6 +24,8 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { lang } = useParams();
   const locale = lang ?? DEFAULT_LOCALE;
+  const setSession = useAuthStore((state) => state.setSession);
+  const setUser = useAuthStore((state) => state.setUser);
   const accessToken = useAuthStore((state) => state.accessToken);
   const user = useAuthStore((state) => state.user);
   const mustChangePassword = useAuthStore((state) => state.mustChangePassword);
@@ -85,21 +86,23 @@ export default function RegisterPage() {
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     try {
-      await registerUser({
+      const tokens = await registerUser({
         name: values.name,
         institution: values.institution?.trim() || undefined,
         email: values.email,
         password: values.password,
       });
 
-      await Alert({
-        icon: "success",
-        title: t("register_page.success_pending_title"),
-        text: t("register_page.success_pending_text"),
-        confirmButtonText: "OK",
+      setSession({
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        mustChangePassword: tokens.must_change_password ?? false,
       });
 
-      navigate(`/${locale}/login`, { replace: true });
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+
+      navigate(`/${locale}/painel`, { replace: true });
     } catch {
       // O interceptor global já exibe o erro para o usuário.
     }
