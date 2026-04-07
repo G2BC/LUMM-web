@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.25.0](https://github.com/G2BC/LUMM-web/compare/v1.24.1...v1.25.0) (2026-04-07)
+
+
+### Features
+
+* enhance error handling and registration flow ([002f214](https://github.com/G2BC/LUMM-web/commit/002f21410952546c2881c9d3d7f05d9cd0589d79))
+* introduce useInitialComboboxOptions hook and refactor combobox components ([5e08881](https://github.com/G2BC/LUMM-web/commit/5e088810a688d8deccecebcf9d0807dc93eee10e))
+* refactor species edit page and introduce new components ([1ff5057](https://github.com/G2BC/LUMM-web/commit/1ff505774facd176579392e1473a16acfbbf7d56))
+
 ## [1.24.1](https://github.com/G2BC/LUMM-web/compare/v1.24.0...v1.24.1) (2026-04-07)
 
 
