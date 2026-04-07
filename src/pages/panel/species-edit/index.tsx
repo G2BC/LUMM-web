@@ -24,7 +24,15 @@ import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getLocalizedError } from "@/api/get-localized-error";
-import { ArrowLeft, Edit2, ExternalLink, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Edit2,
+  ExternalLink,
+  ImagePlus,
+  Loader2,
+  MoreHorizontal,
+  Trash2,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -246,6 +254,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
 
   const publicSpeciesPath = `/${locale}/especie/${speciesData.id}`;
   const editSpeciesPath = `/${locale}/painel/especies/${speciesData.id}/editar${location.search}`;
+  const manageSpeciesPhotosPath = `/${locale}/painel/especies/${speciesData.id}/fotos${location.search}`;
 
   return (
     <section className="space-y-6 text-slate-900">
@@ -272,14 +281,22 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               {isViewMode ? (
-                <DropdownMenuItem asChild>
-                  <Link to={editSpeciesPath}>
-                    <Edit2 className="h-4 w-4" />
-                    {t("panel_page.action_manage")}
-                  </Link>
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link to={editSpeciesPath}>
+                      <Edit2 className="h-4 w-4" />
+                      {t("panel_page.action_manage")}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to={manageSpeciesPhotosPath}>
+                      <ImagePlus className="h-4 w-4" />
+                      {t("panel_page.action_manage_photos")}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                </>
               ) : null}
-              {isViewMode ? <DropdownMenuSeparator /> : null}
               <DropdownMenuItem asChild>
                 <Link to={publicSpeciesPath} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-4 w-4" />
