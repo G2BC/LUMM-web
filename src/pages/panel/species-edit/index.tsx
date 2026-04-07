@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getLocalizedError } from "@/api/get-localized-error";
 import { ArrowLeft, Edit2, ExternalLink, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
@@ -54,6 +54,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   const queryClient = useQueryClient();
   const [isDeletingSpecies, setIsDeletingSpecies] = useState(false);
   const [isFormReady, setIsFormReady] = useState(false);
+  const originalFormValuesRef = useRef<SpeciesEditFormValues | null>(null);
 
   const locale = lang ?? DEFAULT_LOCALE;
   const isViewMode = viewMode;
@@ -78,7 +79,9 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
 
   useEffect(() => {
     if (!speciesData) return;
-    form.reset(createSpeciesEditFormDefaults(speciesData));
+    const defaults = createSpeciesEditFormDefaults(speciesData);
+    originalFormValuesRef.current = defaults;
+    form.reset(defaults);
     setIsFormReady(true);
   }, [form, speciesData]);
 
@@ -144,10 +147,9 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
   );
 
   async function handleSubmit(values: SpeciesEditFormValues) {
-    if (!speciesData) return;
+    if (!speciesData || !originalFormValuesRef.current) return;
 
-    const originalValues = createSpeciesEditFormDefaults(speciesData);
-    const payload = buildSpeciesUpdatePayload(values, originalValues);
+    const payload = buildSpeciesUpdatePayload(values, originalFormValuesRef.current);
 
     if (Object.keys(payload).length === 0) {
       await Alert({
