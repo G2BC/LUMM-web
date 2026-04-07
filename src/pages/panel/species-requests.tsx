@@ -10,6 +10,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { RequestCard } from "./components/request-card";
+import { UsersPagination } from "./components/users-pagination";
 import { useSpeciesRequestsPage } from "./useSpeciesRequestsPage";
 
 export default function PanelSpeciesRequestsPage() {
@@ -17,6 +18,11 @@ export default function PanelSpeciesRequestsPage() {
   const {
     loading,
     items,
+    page,
+    pages,
+    total,
+    perPage,
+    setPage,
     pendingCount,
     statusFilter,
     setStatusFilter,
@@ -85,39 +91,53 @@ export default function PanelSpeciesRequestsPage() {
           {t("panel_requests.empty")}
         </div>
       ) : (
-        <div className="grid gap-4">
-          {items.map((item) => (
-            <RequestCard
-              key={item.id}
-              item={item}
-              isExpanded={expandedId === item.id}
-              isBusy={reviewingId === item.id}
-              reviewNote={reviewNotes[item.id] ?? ""}
-              fieldDecisions={Object.fromEntries(
-                Object.keys(item.proposed_data || {}).map((field) => [
-                  field,
-                  getFieldDecision(item.id, field),
-                ])
-              )}
-              photoDecisions={Object.fromEntries(
-                item.photos.map((photo) => [photo.id, getPhotoDecision(item.id, photo.id)])
-              )}
-              onToggleExpand={() => setExpandedId((prev) => (prev === item.id ? null : item.id))}
-              onChangeReviewNote={(value) =>
-                setReviewNotes((prev) => ({ ...prev, [item.id]: value }))
-              }
-              onChangeFieldDecision={(fields, decision) =>
-                setFieldDecision(item.id, fields, decision)
-              }
-              onChangePhotoDecision={(photoId, decision) =>
-                setPhotoDecisionFor(item.id, photoId, decision)
-              }
-              onGranularReview={() => void handleGranularReview(item)}
-              onRejectAll={() => void handleReview(item, "reject")}
-              onPreviewPhoto={(src, alt) => setPreviewPhoto({ src, alt })}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-4">
+            {items.map((item) => (
+              <RequestCard
+                key={item.id}
+                item={item}
+                isExpanded={expandedId === item.id}
+                isBusy={reviewingId === item.id}
+                reviewNote={reviewNotes[item.id] ?? ""}
+                fieldDecisions={Object.fromEntries(
+                  Object.keys(item.proposed_data || {}).map((field) => [
+                    field,
+                    getFieldDecision(item.id, field),
+                  ])
+                )}
+                photoDecisions={Object.fromEntries(
+                  item.photos.map((photo) => [photo.id, getPhotoDecision(item.id, photo.id)])
+                )}
+                onToggleExpand={() => setExpandedId((prev) => (prev === item.id ? null : item.id))}
+                onChangeReviewNote={(value) =>
+                  setReviewNotes((prev) => ({ ...prev, [item.id]: value }))
+                }
+                onChangeFieldDecision={(fields, decision) =>
+                  setFieldDecision(item.id, fields, decision)
+                }
+                onChangePhotoDecision={(photoId, decision) =>
+                  setPhotoDecisionFor(item.id, photoId, decision)
+                }
+                onGranularReview={() => void handleGranularReview(item)}
+                onRejectAll={() => void handleReview(item, "reject")}
+                onPreviewPhoto={(src, alt) => setPreviewPhoto({ src, alt })}
+              />
+            ))}
+          </div>
+          <UsersPagination
+            page={page}
+            pages={pages}
+            perPage={perPage}
+            total={total}
+            previousLabel={t("panel_page.pagination_previous")}
+            nextLabel={t("panel_page.pagination_next")}
+            summaryLabel={({ start, end, total: summaryTotal }) =>
+              t("panel_requests.pagination_summary", { start, end, total: summaryTotal })
+            }
+            onPageChange={setPage}
+          />
+        </>
       )}
 
       <Dialog

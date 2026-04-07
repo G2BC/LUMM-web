@@ -740,7 +740,8 @@
       "photo_license_missing": "Não informada",
       "photo_attribution": "Enviado por",
       "photo_rights_holder": "Titular dos direitos autorais",
-      "photo_source": "Fonte"
+      "photo_source": "Fonte",
+      "pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} solicitações"
     },
     "errors": {
       "occurred": "Ocorreu um erro",

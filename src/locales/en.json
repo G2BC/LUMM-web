@@ -740,7 +740,8 @@
       "photo_license_missing": "Not provided",
       "photo_attribution": "Uploaded by",
       "photo_rights_holder": "Copyright holder",
-      "photo_source": "Source"
+      "photo_source": "Source",
+      "pagination_summary": "Showing {{start}}-{{end}} of {{total}} requests"
     },
     "errors": {
       "occurred": "An error occurred",

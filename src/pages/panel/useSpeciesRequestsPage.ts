@@ -7,9 +7,11 @@ import type {
   SpeciesReviewDecision,
 } from "@/api/species/types/IChangeRequest";
 import { confirmAction } from "@/components/confirm-action";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+const REQUESTS_PER_PAGE = 10;
 
 export const TRANSLATABLE_FIELD_PAIRS: Record<string, string> = {
   colors: "colors_pt",
@@ -63,6 +65,12 @@ export function useSpeciesRequestsPage() {
   const queryClient = useQueryClient();
 
   const [statusFilter, setStatusFilter] = useState<"all" | SpeciesRequestStatus>("pending");
+  const [page, setPage] = useState(1);
+
+  function handleSetStatusFilter(value: "all" | SpeciesRequestStatus) {
+    setPage(1);
+    setStatusFilter(value);
+  }
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [reviewNotes, setReviewNotes] = useState<Record<string, string>>({});
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -75,13 +83,14 @@ export function useSpeciesRequestsPage() {
   >({});
 
   const { data: requestsData, isLoading: loading } = useQuery({
-    queryKey: changeRequestKeys.list({ status: statusFilter }),
+    queryKey: changeRequestKeys.list({ status: statusFilter, page }),
     queryFn: () =>
       listSpeciesChangeRequests({
         status: statusFilter === "all" ? undefined : statusFilter,
-        page: 1,
-        per_page: 30,
+        page,
+        per_page: REQUESTS_PER_PAGE,
       }),
+    placeholderData: keepPreviousData,
   });
 
   const { data: pendingCountData } = useQuery({
@@ -92,8 +101,9 @@ export function useSpeciesRequestsPage() {
   });
 
   const items: SpeciesChangeRequest[] = requestsData?.items ?? [];
-  const pendingCount =
-    statusFilter === "pending" ? (requestsData?.total ?? 0) : (pendingCountData?.total ?? 0);
+  const total = requestsData?.total ?? 0;
+  const pages = Math.max(1, requestsData?.pages ?? 1);
+  const pendingCount = statusFilter === "pending" ? total : (pendingCountData?.total ?? 0);
 
   useEffect(() => {
     if (!requestsData) return;
@@ -251,9 +261,14 @@ export function useSpeciesRequestsPage() {
   return {
     loading,
     items,
+    page,
+    pages,
+    total,
+    perPage: REQUESTS_PER_PAGE,
+    setPage,
     pendingCount,
     statusFilter,
-    setStatusFilter,
+    setStatusFilter: handleSetStatusFilter,
     reviewingId,
     reviewNotes,
     setReviewNotes,
