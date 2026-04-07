@@ -15,6 +15,7 @@ export function buildCreateSpeciesPayload(values: SpeciesCreateFormValues): Crea
 
   return {
     ...basePayload,
+    type_country: basePayload.type_country ?? undefined,
     ...(scientificName ? { scientific_name: scientificName } : {}),
     ncbi_taxonomy_id: toOptionalInteger(values.ncbi_taxonomy_id),
     inaturalist_taxon_id: toOptionalInteger(values.inaturalist_taxon_id),
