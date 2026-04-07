@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/G2BC/LUMM-web/compare/v1.24.0...v1.24.1) (2026-04-07)
+
+
+### Bug Fixes
+
+* restore manage species photos link in dropdown menu ([b7352de](https://github.com/G2BC/LUMM-web/commit/b7352de0c7dc8fd1530c4f09f9173f2ff2ec4c4b))
+
 ## [1.24.0](https://github.com/G2BC/LUMM-web/compare/v1.23.0...v1.24.0) (2026-04-07)
 
 
