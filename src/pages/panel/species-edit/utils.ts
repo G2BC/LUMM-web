@@ -244,6 +244,13 @@ function toApiFieldValue(name: SpeciesEditFieldConfig["name"], value: unknown): 
   return normalizeForCompare(name, value);
 }
 
+function isComparableEqual(a: unknown, b: unknown): boolean {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((v, i) => v === b[i]);
+  }
+  return a === b;
+}
+
 export function buildSpeciesUpdatePayload(
   values: SpeciesEditFormValues,
   originalValues: SpeciesEditFormValues
@@ -255,7 +262,7 @@ export function buildSpeciesUpdatePayload(
     const nextComparable = normalizeForCompare(fieldName, values[fieldName]);
     const previousComparable = normalizeForCompare(fieldName, originalValues[fieldName]);
 
-    if (JSON.stringify(nextComparable) === JSON.stringify(previousComparable)) {
+    if (isComparableEqual(nextComparable, previousComparable)) {
       return;
     }
 
