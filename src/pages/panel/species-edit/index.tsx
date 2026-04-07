@@ -82,6 +82,67 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     setIsFormReady(true);
   }, [form, speciesData]);
 
+  const domainPreloadedOptions = useMemo(() => {
+    if (!speciesData) return undefined;
+    return {
+      growth_form: (speciesData.species_characteristics?.growth_forms ?? []).map((item) => ({
+        value: item.id,
+        label_pt: item.label_pt,
+        label_en: item.label_en,
+      })),
+      nutrition_mode: (speciesData.species_characteristics?.nutrition_modes ?? []).map((item) => ({
+        value: item.id,
+        label_pt: item.label_pt,
+        label_en: item.label_en,
+      })),
+      substrate: (speciesData.species_characteristics?.substrates ?? []).map((item) => ({
+        value: item.id,
+        label_pt: item.label_pt,
+        label_en: item.label_en,
+      })),
+      habitat: (speciesData.species_characteristics?.habitats ?? []).map((item) => ({
+        value: item.id,
+        label_pt: item.label_pt,
+        label_en: item.label_en,
+      })),
+    };
+  }, [speciesData]);
+
+  const similarSpeciesPreloadedOptions = useMemo(() => {
+    if (!speciesData) return [];
+    const fromChars = speciesData.species_characteristics?.similar_species ?? [];
+    const fromTop = speciesData.similar_species ?? [];
+    const items = fromChars.length > 0 ? fromChars : fromTop;
+    return items
+      .map((item) => ({ id: Number(item.id), label: item.label ?? item.name ?? "" }))
+      .filter((item) => Number.isFinite(item.id) && item.label);
+  }, [speciesData]);
+
+  const visibleFields = useMemo(
+    () =>
+      SPECIES_EDIT_FIELDS.filter(
+        (field) => (isViewMode || !field.detailOnly) && (isViewMode || field.name !== "is_visible")
+      ),
+    [isViewMode]
+  );
+
+  const luminescentRows = useMemo(
+    () => (speciesData ? buildLuminescentRows(speciesData, t) : []),
+    [speciesData, t]
+  );
+
+  const domainViewValueMap = useMemo(
+    () =>
+      speciesData
+        ? buildDomainViewValueMap(
+            speciesData,
+            i18n.language.toLowerCase().startsWith("pt"),
+            i18n.language
+          )
+        : {},
+    [speciesData, i18n.language]
+  );
+
   async function handleSubmit(values: SpeciesEditFormValues) {
     if (!speciesData) return;
 
@@ -181,47 +242,6 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     ? t("panel_page.species_details_subtitle")
     : t("panel_page.species_edit_subtitle");
 
-  const domainPreloadedOptions = {
-    growth_form: (speciesData.species_characteristics?.growth_forms ?? []).map((item) => ({
-      value: item.id,
-      label_pt: item.label_pt,
-      label_en: item.label_en,
-    })),
-    nutrition_mode: (speciesData.species_characteristics?.nutrition_modes ?? []).map((item) => ({
-      value: item.id,
-      label_pt: item.label_pt,
-      label_en: item.label_en,
-    })),
-    substrate: (speciesData.species_characteristics?.substrates ?? []).map((item) => ({
-      value: item.id,
-      label_pt: item.label_pt,
-      label_en: item.label_en,
-    })),
-    habitat: (speciesData.species_characteristics?.habitats ?? []).map((item) => ({
-      value: item.id,
-      label_pt: item.label_pt,
-      label_en: item.label_en,
-    })),
-  };
-
-  const similarSpeciesPreloadedOptions = (() => {
-    const fromChars = speciesData.species_characteristics?.similar_species ?? [];
-    const fromTop = speciesData.similar_species ?? [];
-    const items = fromChars.length > 0 ? fromChars : fromTop;
-    return items
-      .map((item) => ({ id: Number(item.id), label: item.label ?? item.name ?? "" }))
-      .filter((item) => Number.isFinite(item.id) && item.label);
-  })();
-
-  const visibleFields = SPECIES_EDIT_FIELDS.filter(
-    (field) => (isViewMode || !field.detailOnly) && (isViewMode || field.name !== "is_visible")
-  );
-  const luminescentRows = buildLuminescentRows(speciesData, t);
-  const domainViewValueMap = buildDomainViewValueMap(
-    speciesData,
-    i18n.language.toLowerCase().startsWith("pt"),
-    i18n.language
-  );
   const publicSpeciesPath = `/${locale}/especie/${speciesData.id}`;
   const editSpeciesPath = `/${locale}/painel/especies/${speciesData.id}/editar${location.search}`;
 
