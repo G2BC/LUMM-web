@@ -378,35 +378,6 @@ export function extractSpeciesBibliographyLinks(species: ISpecie | null): Biblio
 
   const results: BibliographyLink[] = [];
 
-  const scientificName =
-    typeof species.scientific_name === "string" ? species.scientific_name.trim() : "";
-
-  const ncbiTxid = species.ncbi_taxonomy_id;
-  if (ncbiTxid) {
-    results.push({
-      labelKey: "species_page.bibliography.links.pubmed_central_taxid",
-      url: `https://pmc.ncbi.nlm.nih.gov/search/?term=txid${ncbiTxid}[Organism:noexp]&pmfilter_Fulltext=off`,
-    });
-  }
-
-  const pubMedTerms = buildScientificNameSearchTerms(scientificName);
-
-  if (pubMedTerms.length) {
-    results.push({
-      labelKey: "species_page.bibliography.links.pubmed_scientific_name",
-      url: `https://pubmed.ncbi.nlm.nih.gov/?cmd=Search&dopt=DocSum&term=${pubMedTerms.join(
-        "+AND+"
-      )}`,
-    });
-  }
-
-  if (scientificName) {
-    results.push({
-      labelKey: "species_page.bibliography.links.google_scholar_scientific_name",
-      url: `https://scholar.google.com/scholar?q=${encodeURIComponent(scientificName)}`,
-    });
-  }
-
   return results;
 }
 
@@ -447,8 +418,31 @@ export function extractSpeciesExternalLinks(
       {
         url: `https://www.google.com/search?q=${encodedScientificName}`,
         labelKey: "species_page.external_links.links.google",
+      },
+      {
+        labelKey: "species_page.bibliography.links.google_scholar_scientific_name",
+        url: `https://scholar.google.com/scholar?q=${encodeURIComponent(scientificName)}`,
       }
     );
+
+    const pubMedTerms = buildScientificNameSearchTerms(scientificName);
+
+    if (pubMedTerms.length) {
+      results.general.push({
+        labelKey: "species_page.bibliography.links.pubmed_scientific_name",
+        url: `https://pubmed.ncbi.nlm.nih.gov/?cmd=Search&dopt=DocSum&term=${pubMedTerms.join(
+          "+AND+"
+        )}`,
+      });
+    }
+
+    const ncbiTxid = species.ncbi_taxonomy_id;
+    if (ncbiTxid) {
+      results.general.push({
+        labelKey: "species_page.bibliography.links.pubmed_central_taxid",
+        url: `https://pmc.ncbi.nlm.nih.gov/search/?term=txid${ncbiTxid}[Organism:noexp]&pmfilter_Fulltext=off`,
+      });
+    }
   }
 
   if (species.mycobank_index_fungorum_id) {
