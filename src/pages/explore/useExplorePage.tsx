@@ -36,9 +36,13 @@ export function useExplorePage() {
   const searchParam = searchParams.get("search") ?? "";
   const lineageParam = searchParams.get("lineage") ?? "";
   const countryParam = searchParams.get("country") ?? "";
+  const distributionsParam = searchParams.get("distributions") ?? "";
 
   const [lineage, setLineage] = useState<string>(lineageParam);
   const [country, setCountry] = useState<string>(countryParam);
+  const [distributions, setDistributions] = useState<string[]>(() =>
+    distributionsParam ? distributionsParam.split(",") : []
+  );
   const [search, setSearch] = useState<string>(searchParam);
   const [autoLoadsUsed, setAutoLoadsUsed] = useState(0);
   const [perPage, setPerPage] = useState<number>(() => {
@@ -51,12 +55,13 @@ export function useExplorePage() {
     setSearch(searchParam);
     setLineage(lineageParam);
     setCountry(countryParam);
-  }, [searchParam, lineageParam, countryParam]);
+    setDistributions(distributionsParam ? distributionsParam.split(",") : []);
+  }, [searchParam, lineageParam, countryParam, distributionsParam]);
 
   // Reset auto-load counter whenever filters change
   useEffect(() => {
     setAutoLoadsUsed(0);
-  }, [searchParam, lineageParam, countryParam, perPage]);
+  }, [searchParam, lineageParam, countryParam, distributionsParam, perPage]);
 
   // Responsive per_page
   useEffect(() => {
@@ -75,6 +80,7 @@ export function useExplorePage() {
         search: searchParam,
         lineage: lineageParam,
         country: countryParam,
+        distributions: distributionsParam,
         perPage,
       }),
       queryFn: ({ pageParam, signal }) =>
@@ -82,6 +88,7 @@ export function useExplorePage() {
           search: searchParam || undefined,
           lineage: lineageParam || undefined,
           country: countryParam || undefined,
+          distributions: distributionsParam || undefined,
           page: pageParam as number,
           per_page: perPage,
           signal,
@@ -129,13 +136,13 @@ export function useExplorePage() {
   );
 
   const upsertFilterParams = (
-    patch: Partial<{ search: string; lineage: string; country: string }>,
+    patch: Partial<{ search: string; lineage: string; country: string; distributions: string }>,
     opts?: { replace?: boolean }
   ) => {
     const curr = paramsToObject(searchParams);
     const next: Record<string, string> = { ...curr };
 
-    const setOrDelete = (key: "search" | "lineage" | "country", val?: string) => {
+    const setOrDelete = (key: "search" | "lineage" | "country" | "distributions", val?: string) => {
       const v = (val ?? "").trim();
       if (v) next[key] = v;
       else delete next[key];
@@ -144,6 +151,7 @@ export function useExplorePage() {
     if ("search" in patch) setOrDelete("search", String(patch.search ?? ""));
     if ("lineage" in patch) setOrDelete("lineage", String(patch.lineage ?? ""));
     if ("country" in patch) setOrDelete("country", String(patch.country ?? ""));
+    if ("distributions" in patch) setOrDelete("distributions", String(patch.distributions ?? ""));
 
     delete next.page;
 
@@ -190,6 +198,13 @@ export function useExplorePage() {
     upsertFilterParams({ country: newCountry });
   };
 
+  const changeDistributions = (newDistributions: string[]) => {
+    const joined = newDistributions.join(",");
+    if (distributions.join(",") === joined) return;
+    setDistributions(newDistributions);
+    upsertFilterParams({ distributions: joined });
+  };
+
   return {
     dados,
     loading,
@@ -202,10 +217,12 @@ export function useExplorePage() {
     search,
     lineage,
     country,
+    distributions,
     onChangeSearch,
     handleSearch,
     handleClearInput,
     changeLineage,
     changeCountry,
+    changeDistributions,
   };
 }

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin 'tailwind-scrollbar';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -158,6 +159,7 @@ body {
     opacity: 0;
     transform: translateY(18px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -169,6 +171,7 @@ body {
     opacity: 0;
     transform: translateX(24px) scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -198,6 +201,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .hero-reveal,
   .hero-image-reveal {
     opacity: 1;

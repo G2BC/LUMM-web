@@ -6,7 +6,7 @@ import { Loader2, Search, X } from "lucide-react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
-import { selectLineage, selectSpeciesCountry } from "@/api/species";
+import { selectDistributions, selectLineage, selectSpeciesCountry } from "@/api/species";
 import { getCountryName } from "@/lib/country-names";
 import type { Locale } from "@/lib/lang";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,8 @@ export default function ExplorePage() {
     lineage,
     country,
     changeCountry,
+    distributions,
+    changeDistributions,
   } = useExplorePage();
   const { t, i18n } = useTranslation();
   const lang = i18n.language as Locale;
@@ -46,6 +48,18 @@ export default function ExplorePage() {
       return res.map((item) => ({
         id: item.value,
         label: getCountryName(item.label, lang) || item.label,
+      }));
+    },
+    [lang]
+  );
+
+  const fetchDistributionOptions = React.useCallback(
+    async (_search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
+      const res = await selectDistributions(signal);
+      const isPt = lang === "pt";
+      return res.map((item) => ({
+        id: item.slug,
+        label: `${item.slug} - ${isPt ? item.label_pt : item.label_en}`,
       }));
     },
     [lang]
@@ -114,6 +128,15 @@ export default function ExplorePage() {
             fetchOptions={fetchCountryOptions}
             value={country || null}
             onSelect={(id) => changeCountry(id ? String(id) : "")}
+          />
+        </div>
+        <div className="col-span-1/2">
+          <ComboboxAsync
+            multiple
+            placeholder={t("explore_page.select_distributions")}
+            fetchOptions={fetchDistributionOptions}
+            value={distributions}
+            onSelect={(ids) => changeDistributions(ids.map(String))}
           />
         </div>
       </div>
