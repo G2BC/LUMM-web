@@ -1,3 +1,6 @@
+import type { IDistribution } from "@/api/types/IDistribution";
+import type { IReference } from "@/api/types/IReference";
+
 interface Taxonomy {
   authors: string;
   classification: string;
@@ -78,6 +81,8 @@ export interface ISpecie {
   inaturalist_taxon_id?: string | null;
   iucn_redlist?: string | null;
   type_country: string | null;
+  references: IReference[];
+  distributions: IDistribution[];
 }
 
 export interface SpeciePhoto {
