@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.26.0](https://github.com/G2BC/LUMM-web/compare/v1.25.0...v1.26.0) (2026-04-09)
+
+
+### Features
+
+* add distribution selection and integrate tailwind-scrollbar ([5dd7f3e](https://github.com/G2BC/LUMM-web/commit/5dd7f3ee8d9aefc44e70349fea8c75275842b793))
+* enhance species data structure and UI components ([0e0756f](https://github.com/G2BC/LUMM-web/commit/0e0756fdb849cea54e9a667395da7f8ced8efd15))
+
+
+### Bug Fixes
+
+* update bibliography and external links for species ([fdf6045](https://github.com/G2BC/LUMM-web/commit/fdf60452a6b65dec2b82ed1d5bb95605f4e3bc4f))
+
 ## [1.25.0](https://github.com/G2BC/LUMM-web/compare/v1.24.1...v1.25.0) (2026-04-07)
 
 
