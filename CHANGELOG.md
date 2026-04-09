@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/G2BC/LUMM-web/compare/v1.26.0...v1.26.1) (2026-04-09)
+
+
+### Bug Fixes
+
+* improve country type flag handling and enhance species card rendering ([b5204b5](https://github.com/G2BC/LUMM-web/commit/b5204b52cce7ff3816ce549fb47e4cbc765311eb))
+
 ## [1.26.0](https://github.com/G2BC/LUMM-web/compare/v1.25.0...v1.26.0) (2026-04-09)
 
 
