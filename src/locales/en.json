@@ -56,15 +56,16 @@
       "title": "Distribution of species (2022)"
     },
     "explore_page": {
-      "input_placeholder": "Search by species",
+      "input_placeholder": "Species",
       "result_label": "species found",
       "result_label_empty": "No species found",
       "resulta_label_connection": "for",
       "page_unavailable": "The requested page is not available.",
       "page_unavailable_text": "Use the button below to restart the search.",
       "page_unavailable_btn": "Restart",
-      "select_lineage": "Select a lineage",
-      "select_country": "Select type specimen country"
+      "select_lineage": "Lineage",
+      "select_country": "Type specimen country",
+      "select_distributions": "Occurrence regions"
     },
     "contact_page": {
       "title": "Contact us",

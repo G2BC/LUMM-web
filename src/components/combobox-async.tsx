@@ -169,10 +169,10 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent align="start" className="w-[var(--radix-popover-trigger-width)] p-0">
         <Command>
           <CommandInput value={search} onValueChange={setSearch} placeholder={t("common.search")} />
-          <CommandList>
+          <CommandList className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
             <CommandEmpty>{t("common.no_results")}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {

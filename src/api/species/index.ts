@@ -4,6 +4,7 @@ import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type { ISpecie, SpeciePhoto } from "./types/ISpecie";
 import type { IPagination } from "../types/IPagination";
 import type { ISelect } from "../types/ISelect";
+import type { IDistribution } from "../types/IDistribution";
 import type { ISelectLocalized } from "../types/ISelectLocalized";
 import type { ISpeciesSelect } from "./types/ISpeciesSelect";
 import type {
@@ -27,6 +28,7 @@ export interface SearchEspeciesProps {
   search?: string;
   lineage?: string;
   country?: string;
+  distributions?: string;
   page?: number;
   per_page?: number;
   signal?: AbortController["signal"];
@@ -39,16 +41,24 @@ export const searchEspecies = async ({
   search,
   lineage,
   country,
+  distributions,
   page,
   per_page,
   signal,
   isVisible,
 }: SearchEspeciesProps): Promise<ISearchEspecies> => {
   const resposta: AxiosResponse<ISearchEspecies> = await API.get("/species/list", {
-    params: { search, lineage, country, page, per_page, is_visible: isVisible },
+    params: { search, lineage, country, distributions, page, per_page, is_visible: isVisible },
     signal,
   });
 
+  return resposta.data;
+};
+
+export const selectDistributions = async (signal?: AbortController["signal"]) => {
+  const resposta: AxiosResponse<IDistribution[]> = await API.get("/species/distributions/select", {
+    signal,
+  });
   return resposta.data;
 };
 
