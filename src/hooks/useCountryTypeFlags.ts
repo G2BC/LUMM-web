@@ -8,7 +8,10 @@ export function useCountryTypeFlags(country: string | null) {
   const [iconUrl, setIconUrl] = useState<string>("");
 
   useEffect(() => {
-    if (!country) return;
+    if (!country) {
+      setIconUrl("");
+      return;
+    }
 
     const normalizedArr = country.split(" ");
     const normalized = normalizedArr.join("_").toLowerCase();

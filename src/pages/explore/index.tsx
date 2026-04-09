@@ -155,7 +155,7 @@ export default function ExplorePage() {
       {!loading ? (
         <>
           <div className="w-full grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
-            {React.Children.toArray(dados?.items.map((specie) => <SpecieCard {...specie} />))}
+            {dados?.items.map((specie) => <SpecieCard key={specie.id} {...specie} />)}
           </div>
 
           {canAutoLoadMore && <div ref={loadMoreSentinelRef} className="h-12 w-full" />}
