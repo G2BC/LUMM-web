@@ -1,6 +1,6 @@
 import type { SpeciesCharacteristics } from "@/api/species/types/ISpecie";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { HoverPopover } from "@/components/hover-popover";
 import { FileText, Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -150,28 +150,19 @@ export function CharacteristicsCard({
                         {row.value}
                       </p>
                       {row.tooltip ? (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                type="button"
-                                className="inline-flex items-center"
-                                aria-label={row.tooltipTitle || row.tooltip}
-                              >
-                                <Info className="h-3.5 w-3.5 text-white/50" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent
-                              side="bottom"
-                              className="max-w-80 border border-white/20 bg-black/90 px-3 py-2 text-xs leading-relaxed text-white/90 shadow-lg"
-                            >
+                        <HoverPopover
+                          trigger={<Info className="size-4 text-white/50" />}
+                          triggerClassName="inline-flex items-center"
+                          contentClassName="max-w-80 border border-white/20 bg-black/90 px-3 py-2 text-xs leading-relaxed text-white/90 shadow-lg"
+                          content={
+                            <>
                               {row.tooltipTitle ? (
                                 <p className="font-semibold text-white">{row.tooltipTitle}</p>
                               ) : null}
                               <p className={row.tooltipTitle ? "mt-1" : ""}>{row.tooltip}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                            </>
+                          }
+                        />
                       ) : null}
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 import { useIucnIcon } from "@/hooks/useIucnIcon";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { HoverPopover } from "@/components/hover-popover";
 
 type ConservationStatusIconProps = {
   code?: string | null;
@@ -41,21 +41,18 @@ export function ConservationStatusIcon({
   }
 
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span className={className}>{image}</span>
-        </TooltipTrigger>
-        <TooltipContent
-          side="bottom"
-          className="max-w-80 border border-white/20 bg-black/90 px-3 py-2 text-xs leading-relaxed text-white/90 shadow-lg"
-        >
+    <HoverPopover
+      trigger={image}
+      triggerClassName={className}
+      contentClassName="max-w-80 border border-white/20 bg-black/90 px-3 py-2 text-xs leading-relaxed text-white/90 shadow-lg"
+      content={
+        <>
           {label ? (
-            <p className="font-semibold text-white">{`${normalizedCode}${label ? ` - ${label}` : ""}`}</p>
+            <p className="font-semibold text-white">{`${normalizedCode} - ${label}`}</p>
           ) : null}
           {description ? <p className={label ? "mt-1" : ""}>{description}</p> : null}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        </>
+      }
+    />
   );
 }

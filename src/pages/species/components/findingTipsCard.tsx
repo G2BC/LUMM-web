@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { HoverPopover } from "@/components/hover-popover";
 import { Search, Users } from "lucide-react";
 import { SimilarSpecies } from "./similarSpecies";
 import { useTranslation } from "react-i18next";
@@ -58,6 +59,9 @@ export function FindingTipsCard({
     label: item.label,
   }));
 
+  const occurrenceDistributions =
+    species.distributions && !!species.distributions?.length ? species.distributions : null;
+
   return (
     <Card className={sectionCardClass}>
       <CardContent className={sectionCardContentClass}>
@@ -96,6 +100,26 @@ export function FindingTipsCard({
                 {nearbyTreesValue}
               </p>
             </div>
+          </div>
+          <div className="flex items-start justify-between gap-4">
+            <p className={rowLabelClass}>{t("species_page.fields.occurrence")}</p>
+            <p className="max-w-[60%] break-words text-right text-[0.98rem] font-medium text-white/90">
+              {occurrenceDistributions ? (
+                <>
+                  {occurrenceDistributions.map((d, i) => (
+                    <span key={d.id}>
+                      <HoverPopover
+                        trigger={d.slug}
+                        content={`${d.slug} - ${isPtLanguage ? d.label_pt : d.label_en}`}
+                      />
+                      {i < occurrenceDistributions.length - 1 && ", "}
+                    </span>
+                  ))}
+                </>
+              ) : (
+                t("species_page.fields.no_information")
+              )}
+            </p>
           </div>
         </div>
         <div className="mt-3 space-y-2 border-t border-white/10 pt-3">

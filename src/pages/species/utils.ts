@@ -376,7 +376,15 @@ export function buildScientificNameSearchTerms(name: string): string[] {
 export function extractSpeciesBibliographyLinks(species: ISpecie | null): BibliographyLink[] {
   if (!species || !isObject(species)) return [];
 
+  const references = species.references;
   const results: BibliographyLink[] = [];
+
+  references.forEach((r) => {
+    results.push({
+      labelKey: r.apa,
+      url: r.url || r.doi || "",
+    });
+  });
 
   return results;
 }
