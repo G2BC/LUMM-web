@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.27.0](https://github.com/G2BC/LUMM-web/compare/v1.26.1...v1.27.0) (2026-04-10)
+
+
+### Features
+
+* add contributor images for G2BC and LBF ([dc59e24](https://github.com/G2BC/LUMM-web/commit/dc59e2495c62ca5d49d70e82914ce539f1976984))
+* add distributions field and enhance species edit functionality ([d1d5c4f](https://github.com/G2BC/LUMM-web/commit/d1d5c4fed8ddb8651b89f5558c151527d8a0aa61))
+* remove unused contributor images for G2BC and LBF ([8fc5a29](https://github.com/G2BC/LUMM-web/commit/8fc5a29c58b2f03541c607817ddc0e60e9de71d7))
+* update contributor logos and add LBF details to contributors data ([07a3488](https://github.com/G2BC/LUMM-web/commit/07a3488f6541af6bf0a2ad27390c07c1436f5d6c))
+
+
+### Bug Fixes
+
+* prevent default pointer behavior in HoverPopover component ([c40f4bc](https://github.com/G2BC/LUMM-web/commit/c40f4bc6b90914e50a485b5c6391e00f78cb3edc))
+
 ## [1.26.1](https://github.com/G2BC/LUMM-web/compare/v1.26.0...v1.26.1) (2026-04-09)
 
 
