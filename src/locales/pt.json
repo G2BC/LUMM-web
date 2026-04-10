@@ -11,7 +11,8 @@
       "external_links": "Links externos",
       "source": "Fonte",
       "view_more": "Ver mais",
-      "type_country_description": "País do espécime tipo: {{country}}"
+      "type_country_description": "País do espécime tipo: {{country}}",
+      "continue": "Continuar"
     },
     "header": {
       "home": "Início",
@@ -453,7 +454,7 @@
       "species_create_field_unite_taxon_id": "UNITE Taxon ID",
       "species_create_field_references_raw": "Referências (texto livre)",
       "species_create_field_distribution_regions": "Regiões de distribuição",
-      "species_create_scientific_name_sync_tooltip": "Esse nome será sincronizado automaticamente com o MycoBank pela rotina.",
+      "species_create_scientific_name_sync_tooltip": "Esse campo será sincronizado automaticamente com o MycoBank",
       "species_create_taxonomy_ids_tooltip": "Preencha com IDs correlatos ao nome científico informado, todos apontando para o mesmo táxon.",
       "species_details_title": "Detalhes da espécie",
       "species_details_subtitle": "Confira os dados da espécie",
@@ -490,6 +491,7 @@
       "species_edit_field_conservation_status": "Status de conservação",
       "species_edit_field_iucn_redlist": "IUCN Red List ID",
       "species_edit_field_type_country": "País do espécime tipo",
+      "species_edit_field_distributions": "Regiões de ocorrência",
       "species_edit_mycobank_sync_tooltip": "Ao alterar esse dado, alguns campos da espécie serão sincronizados diretamente do MycoBank.",
       "species_create_mycobank_sync_tooltip": "Ao informar esse dado, alguns campos da espécie serão sincronizados diretamente do MycoBank.",
       "species_edit_lineage_placeholder": "Selecione uma linhagem",

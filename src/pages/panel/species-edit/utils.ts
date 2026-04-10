@@ -136,6 +136,7 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
         ? ""
         : String(speciesData.iucn_redlist),
     type_country: speciesData.type_country ?? "",
+    distributions: (speciesData.distributions ?? []).map((item) => item.id),
     lum_mycelium: toTriStateFormValue(lumMycelium),
     lum_basidiome: toTriStateFormValue(lumBasidiome),
     lum_stipe: toTriStateFormValue(lumStipe),
@@ -204,7 +205,8 @@ function normalizeForCompare(name: SpeciesEditFieldConfig["name"], value: unknow
     name === "nutrition_modes" ||
     name === "substrates" ||
     name === "habitats" ||
-    name === "similar_species_ids"
+    name === "similar_species_ids" ||
+    name === "distributions"
   ) {
     return normalizeIdArray(value);
   }
@@ -376,5 +378,6 @@ export function buildDomainViewValueMap(
     ),
     habitats: getLocalizedOptionLabels(speciesData.species_characteristics?.habitats, isPtLanguage),
     type_country: getCountryName(speciesData.type_country, locale ?? (isPtLanguage ? "pt" : "en")),
+    distributions: getLocalizedOptionLabels(speciesData.distributions, isPtLanguage),
   };
 }

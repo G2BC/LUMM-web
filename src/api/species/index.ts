@@ -183,6 +183,7 @@ export type UpdateSpeciesPayload = Partial<{
   lum_spores: boolean | null;
   inaturalist_taxon_id: number | string | null;
   type_country: string | null;
+  distributions: number[];
 }>;
 
 export const updateSpecies = async (

@@ -34,6 +34,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
     luminescentRows,
     domainViewValueMap,
     domainPreloadedOptions,
+    distributionPreloadedOptions,
     similarSpeciesPreloadedOptions,
     handleSubmit,
     i18nLanguage,
@@ -97,6 +98,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
             viewValueOverrides={viewMode ? domainViewValueMap : undefined}
             excludeSpeciesId={speciesData.id}
             domainPreloadedOptions={!viewMode ? domainPreloadedOptions : undefined}
+            distributionPreloadedOptions={!viewMode ? distributionPreloadedOptions : undefined}
             similarSpeciesPreloadedOptions={!viewMode ? similarSpeciesPreloadedOptions : undefined}
             t={t}
           />

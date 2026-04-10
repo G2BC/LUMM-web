@@ -82,6 +82,12 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     inputType: "country-select",
   },
   {
+    name: "distributions",
+    labelKey: "panel_page.species_edit_field_distributions",
+    placeholderKey: "panel_page.species_edit_domain_multi_placeholder",
+    inputType: "distribution-multi-async",
+  },
+  {
     name: "season_start_month",
     labelKey: "panel_page.species_edit_field_season_start_month",
     placeholderKey: "panel_page.species_edit_season_start_month_placeholder",
@@ -284,6 +290,7 @@ export const SPECIES_EDIT_FORM_INITIAL_VALUES: SpeciesEditFormValues = {
   conservation_status: "",
   iucn_redlist: "",
   type_country: "",
+  distributions: [],
   lum_mycelium: "unknown",
   lum_basidiome: "unknown",
   lum_stipe: "unknown",

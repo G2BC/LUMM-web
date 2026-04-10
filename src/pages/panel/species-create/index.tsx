@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { HoverPopover } from "@/components/hover-popover";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getLocalizedError } from "@/api/get-localized-error";
 import { ArrowLeft, Info, Loader2 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
@@ -68,6 +68,8 @@ function PanelSpeciesCreatePage() {
       pickEditableFields([
         "size_cm",
         "edible",
+        "type_country",
+        "distributions",
         "season_start_month",
         "season_end_month",
         "growth_forms",
@@ -123,6 +125,8 @@ function PanelSpeciesCreatePage() {
   }
 
   const backToSpeciesListPath = `/${locale}/painel/especies${location.search}`;
+
+  const hasShownAlert = useRef(false);
 
   return (
     <section className="space-y-6 text-slate-900">
@@ -194,22 +198,12 @@ function PanelSpeciesCreatePage() {
                     <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
                       {t("panel_page.species_create_field_scientific_name")}
                     </FormLabel>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className="inline-flex items-center justify-center text-slate-500 transition-colors hover:text-slate-700"
-                            aria-label={t("panel_page.species_create_scientific_name_sync_tooltip")}
-                          >
-                            <Info className="size-4" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="max-w-xs">
-                          {t("panel_page.species_create_scientific_name_sync_tooltip")}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <HoverPopover
+                      trigger={
+                        <Info className="size-4 text-slate-500 transition-colors hover:text-slate-700" />
+                      }
+                      content={t("panel_page.species_create_scientific_name_sync_tooltip")}
+                    />
                   </div>
                   <FormControl>
                     <Input
@@ -234,25 +228,19 @@ function PanelSpeciesCreatePage() {
                     <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
                       {t("panel_page.species_edit_field_mycobank_id")}
                     </FormLabel>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className="inline-flex items-center justify-center text-slate-500 transition-colors hover:text-slate-700"
-                            aria-label={t("panel_page.species_create_mycobank_sync_tooltip")}
-                          >
-                            <Info className="size-4" />
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top" className="max-w-xs">
-                          {t("panel_page.species_create_mycobank_sync_tooltip")}
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
                   </div>
                   <FormControl>
                     <Input
+                      onClick={() => {
+                        if (hasShownAlert.current) return;
+                        hasShownAlert.current = true;
+                        Alert({
+                          title: "Aviso",
+                          icon: "warning",
+                          text: t("panel_page.species_create_mycobank_sync_tooltip"),
+                          confirmButtonText: t("common.continue"),
+                        }).then(() => null);
+                      }}
                       value={field.value}
                       onChange={field.onChange}
                       placeholder={t("panel_page.species_edit_mycobank_id_placeholder")}
