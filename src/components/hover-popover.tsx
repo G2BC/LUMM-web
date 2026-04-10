@@ -26,6 +26,7 @@ export function HoverPopover({
             "cursor-pointer select-none",
             triggerClassName
           )}
+          onPointerDown={(e) => e.preventDefault()}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
         >
