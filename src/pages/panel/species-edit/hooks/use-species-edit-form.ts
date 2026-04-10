@@ -83,6 +83,15 @@ export function useSpeciesEditForm({ species, isViewMode, locale }: UseSpeciesEd
     };
   }, [speciesData]);
 
+  const distributionPreloadedOptions = useMemo(() => {
+    if (!speciesData) return [];
+    const isPt = i18n.language.toLowerCase().startsWith("pt");
+    return (speciesData.distributions ?? []).map((item) => ({
+      id: item.id,
+      label: isPt ? item.label_pt : item.label_en,
+    }));
+  }, [speciesData, i18n.language]);
+
   const similarSpeciesPreloadedOptions = useMemo(() => {
     if (!speciesData) return [];
     const fromChars = speciesData.species_characteristics?.similar_species ?? [];
@@ -163,6 +172,7 @@ export function useSpeciesEditForm({ species, isViewMode, locale }: UseSpeciesEd
     luminescentRows,
     domainViewValueMap,
     domainPreloadedOptions,
+    distributionPreloadedOptions,
     similarSpeciesPreloadedOptions,
     handleSubmit,
     i18nLanguage: i18n.language,

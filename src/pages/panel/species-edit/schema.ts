@@ -34,6 +34,7 @@ export function createSpeciesEditSchema(t: TFunction) {
     season_start_month: monthFieldSchema,
     season_end_month: monthFieldSchema,
     edible: triStateFieldSchema,
+    distributions: z.array(z.number()).catch([]),
     similar_species_ids: z.array(z.number()).catch([]),
     growth_forms: z.array(z.number()).catch([]),
     nutrition_modes: z.array(z.number()).catch([]),

@@ -1,6 +1,6 @@
 import { DomainComboboxAsync } from "@/components/domain-combobox-async";
 import type { SpeciesDomainSelectType } from "@/api/species";
-import { selectSpeciesCountry } from "@/api/species";
+import { selectDistributions, selectSpeciesCountry } from "@/api/species";
 import type { ISelectLocalized } from "@/api/types/ISelectLocalized";
 import { SpeciesComboboxAsync } from "@/components/species-combobox-async";
 import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
@@ -33,6 +33,7 @@ type SpeciesFieldsGridProps = {
   excludeSpeciesId?: number;
   domainPreloadedOptions?: Partial<Record<SpeciesDomainSelectType, ISelectLocalized[]>>;
   similarSpeciesPreloadedOptions?: Array<{ id: number; label: string; photo?: string | null }>;
+  distributionPreloadedOptions?: Array<{ id: number; label: string }>;
   t: TFunction;
 };
 
@@ -45,6 +46,7 @@ export function SpeciesFieldsGrid({
   excludeSpeciesId,
   domainPreloadedOptions,
   similarSpeciesPreloadedOptions,
+  distributionPreloadedOptions,
   t,
 }: SpeciesFieldsGridProps) {
   const fetchCountryOptions = useCallback(
@@ -56,6 +58,18 @@ export function SpeciesFieldsGrid({
       }));
     },
     [locale]
+  );
+
+  const isPtLocale = locale.toLowerCase().startsWith("pt");
+  const fetchDistributionOptions = useCallback(
+    async (_search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
+      const res = await selectDistributions(signal);
+      return res.map((item) => ({
+        id: item.id,
+        label: isPtLocale ? item.label_pt : item.label_en,
+      }));
+    },
+    [isPtLocale]
   );
 
   const triStateFieldNames = new Set([
@@ -314,6 +328,23 @@ export function SpeciesFieldsGrid({
                             )}
                         </SelectContent>
                       </Select>
+                    ) : fieldConfig.inputType === "distribution-multi-async" ? (
+                      <FormControl>
+                        <ComboboxAsync
+                          variant="light"
+                          fetchOptions={fetchDistributionOptions}
+                          multiple
+                          value={Array.isArray(field.value) ? field.value : []}
+                          onSelect={(nextValues) => {
+                            const normalizedIds = nextValues
+                              .map((v) => Number(v))
+                              .filter((v) => Number.isFinite(v));
+                            field.onChange(normalizedIds);
+                          }}
+                          placeholder={t(fieldConfig.placeholderKey)}
+                          initialKnownOptions={distributionPreloadedOptions}
+                        />
+                      </FormControl>
                     ) : fieldConfig.inputType === "country-select" ? (
                       <FormControl>
                         <ComboboxAsync

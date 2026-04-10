@@ -37,6 +37,7 @@ export type SpeciesEditFormValues = {
   conservation_status: string;
   iucn_redlist: string;
   type_country: string;
+  distributions: number[];
   lum_mycelium: TriStateFormValue;
   lum_basidiome: TriStateFormValue;
   lum_stipe: TriStateFormValue;
@@ -64,7 +65,8 @@ export type SpeciesEditFieldConfig = {
     | "number"
     | "domain-multi-async"
     | "species-multi-async"
-    | "country-select";
+    | "country-select"
+    | "distribution-multi-async";
   domain?: SpeciesDomainSelectType;
   options?: SpeciesEditOption[];
   rows?: number;
