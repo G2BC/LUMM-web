@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/G2BC/LUMM-web/compare/v1.27.0...v1.28.0) (2026-04-10)
+
+
+### Features
+
+* add warning message to localization and alert functionality ([aa17d2a](https://github.com/G2BC/LUMM-web/commit/aa17d2ad09b78cedaf12a2627c074f9639f138ce))
+
 ## [1.27.0](https://github.com/G2BC/LUMM-web/compare/v1.26.1...v1.27.0) (2026-04-10)
 
 
