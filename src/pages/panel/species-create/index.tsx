@@ -235,7 +235,7 @@ function PanelSpeciesCreatePage() {
                         if (hasShownAlert.current) return;
                         hasShownAlert.current = true;
                         Alert({
-                          title: "Aviso",
+                          title: t("common.warning"),
                           icon: "warning",
                           text: t("panel_page.species_create_mycobank_sync_tooltip"),
                           confirmButtonText: t("common.continue"),

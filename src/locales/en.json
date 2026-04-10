@@ -12,7 +12,8 @@
       "source": "Source",
       "view_more": "View more",
       "type_country_description": "Type specimen country: {{country}}",
-      "continue": "Continue"
+      "continue": "Continue",
+      "warning": "Warning"
     },
     "header": {
       "home": "Home",

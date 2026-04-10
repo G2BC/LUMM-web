@@ -12,7 +12,8 @@
       "source": "Fonte",
       "view_more": "Ver mais",
       "type_country_description": "País do espécime tipo: {{country}}",
-      "continue": "Continuar"
+      "continue": "Continuar",
+      "warning": "Aviso"
     },
     "header": {
       "home": "Início",

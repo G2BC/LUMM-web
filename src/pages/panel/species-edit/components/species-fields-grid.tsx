@@ -15,10 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Alert } from "@/components/alert";
 import type { TFunction } from "i18next";
-import { Info } from "lucide-react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { DETAIL_VALUE_TEXT_CLASS } from "../constants";
 import type { SpeciesEditFieldConfig, SpeciesEditFieldName, SpeciesEditFormValues } from "../types";
@@ -49,6 +48,7 @@ export function SpeciesFieldsGrid({
   distributionPreloadedOptions,
   t,
 }: SpeciesFieldsGridProps) {
+  const hasShownMycobankAlert = useRef(false);
   const fetchCountryOptions = useCallback(
     async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
       const res = await selectSpeciesCountry(search, signal);
@@ -239,33 +239,12 @@ export function SpeciesFieldsGrid({
                     ? getNormalizedSelectValue(fieldConfig.name, field.value)
                     : rawFieldValue;
                 const overrideViewValue = viewValueOverrides?.[fieldConfig.name];
-                const showMycoBankSyncTooltip =
-                  !isViewMode && fieldConfig.name === "mycobank_index_fungorum_id";
-
                 return (
                   <FormItem className="gap-1">
                     <div className="flex items-center gap-1.5">
                       <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
                         {t(fieldConfig.labelKey)}
                       </FormLabel>
-                      {showMycoBankSyncTooltip ? (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                type="button"
-                                className="inline-flex items-center justify-center text-slate-500 transition-colors hover:text-slate-700"
-                                aria-label={t("panel_page.species_edit_mycobank_sync_tooltip")}
-                              >
-                                <Info className="size-4" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="top" className="max-w-xs">
-                              {t("panel_page.species_edit_mycobank_sync_tooltip")}
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      ) : null}
                     </div>
                     {isViewMode ? (
                       <p
@@ -372,6 +351,20 @@ export function SpeciesFieldsGrid({
                           type={fieldConfig.inputType}
                           value={rawFieldValue}
                           onChange={field.onChange}
+                          onClick={
+                            fieldConfig.name === "mycobank_index_fungorum_id"
+                              ? () => {
+                                  if (hasShownMycobankAlert.current) return;
+                                  hasShownMycobankAlert.current = true;
+                                  Alert({
+                                    title: t("common.warning"),
+                                    icon: "warning",
+                                    text: t("panel_page.species_create_mycobank_sync_tooltip"),
+                                    confirmButtonText: t("common.continue"),
+                                  }).then(() => null);
+                                }
+                              : undefined
+                          }
                           placeholder={t(fieldConfig.placeholderKey)}
                           spellCheck={false}
                           inputMode={fieldConfig.inputType === "number" ? "decimal" : undefined}
