@@ -23,6 +23,7 @@ const PanelOverviewPage = React.lazy(() => import("./pages/panel/overview"));
 const PanelUsersPage = React.lazy(() => import("./pages/panel/users"));
 const PanelSpeciesPage = React.lazy(() => import("./pages/panel/species"));
 const PanelSpeciesPhotosPage = React.lazy(() => import("./pages/panel/species-photos"));
+const PanelSpeciesReferencesPage = React.lazy(() => import("./pages/panel/species-references"));
 const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-requests"));
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 const PanelSpeciesEditPage = React.lazy(() => import("./pages/panel/species-edit"));
@@ -53,6 +54,10 @@ function Router() {
             <Route element={<AuthGuard requireCurator />}>
               <Route path="especies/cadastro" element={<PanelSpeciesCreatePage />} />
               <Route path="especies/:species/fotos" element={<PanelSpeciesPhotosPage />} />
+              <Route
+                path="especies/:species/referencias"
+                element={<PanelSpeciesReferencesPage />}
+              />
               <Route path="especies/:species/editar" element={<PanelSpeciesEditPage />} />
               <Route path="solicitacoes" element={<PanelSpeciesRequestsPage />} />
             </Route>

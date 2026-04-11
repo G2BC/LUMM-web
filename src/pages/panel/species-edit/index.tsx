@@ -78,6 +78,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
         editPath={`/${locale}/painel/especies/${speciesData.id}/editar${location.search}`}
         publicPath={`/${locale}/especie/${speciesData.id}`}
         photosPath={`/${locale}/painel/especies/${speciesData.id}/fotos${location.search}`}
+        referencesPath={`/${locale}/painel/especies/${speciesData.id}/referencias${location.search}`}
         isViewMode={viewMode}
         isDeletingSpecies={isDeletingSpecies}
         onDelete={handleDeleteSpecies}

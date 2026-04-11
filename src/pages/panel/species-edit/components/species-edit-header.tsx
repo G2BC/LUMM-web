@@ -6,7 +6,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, Edit2, ExternalLink, ImagePlus, MoreHorizontal, Trash2 } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  Edit2,
+  ExternalLink,
+  ImagePlus,
+  MoreHorizontal,
+  Trash2,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
@@ -17,6 +25,7 @@ type SpeciesEditHeaderProps = {
   editPath: string;
   publicPath: string;
   photosPath: string;
+  referencesPath: string;
   isViewMode: boolean;
   isDeletingSpecies: boolean;
   onDelete: () => void;
@@ -29,6 +38,7 @@ export function SpeciesEditHeader({
   editPath,
   publicPath,
   photosPath,
+  referencesPath,
   isViewMode,
   isDeletingSpecies,
   onDelete,
@@ -71,6 +81,13 @@ export function SpeciesEditHeader({
               <Link to={photosPath}>
                 <ImagePlus className="h-4 w-4" />
                 {t("panel_page.action_manage_photos")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to={referencesPath}>
+                <BookOpen className="h-4 w-4" />
+                {t("panel_page.action_manage_references")}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

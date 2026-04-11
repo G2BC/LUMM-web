@@ -223,11 +223,13 @@ export default function PanelSpeciesPage() {
                           queryString={queryString || undefined}
                           actionsLabel={t("panel_page.col_actions")}
                           managePhotosLabel={t("panel_page.action_manage_photos")}
+                          manageReferencesLabel={t("panel_page.action_manage_references")}
                           manageSpeciesLabel={t("panel_page.action_manage")}
                           detailsSpeciesLabel={t("panel_page.action_details")}
                           requestUpdateLabel={t("species_page.request_update_cta")}
                           canManageSpecies={canManageSpecies}
                           canManagePhotos={canManageSpecies}
+                          canManageReferences={canManageSpecies}
                           canRequestUpdate={canRequestUpdate}
                         />
                       </td>
@@ -280,11 +282,13 @@ export default function PanelSpeciesPage() {
                       queryString={queryString || undefined}
                       actionsLabel={t("panel_page.col_actions")}
                       managePhotosLabel={t("panel_page.action_manage_photos")}
+                      manageReferencesLabel={t("panel_page.action_manage_references")}
                       manageSpeciesLabel={t("panel_page.action_manage")}
                       detailsSpeciesLabel={t("panel_page.action_details")}
                       requestUpdateLabel={t("species_page.request_update_cta")}
                       canManageSpecies={canManageSpecies}
                       canManagePhotos={canManageSpecies}
+                      canManageReferences={canManageSpecies}
                       canRequestUpdate={canRequestUpdate}
                       mobile
                     />

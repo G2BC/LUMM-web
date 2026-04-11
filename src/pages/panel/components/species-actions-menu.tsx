@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit2, Eye, ImagePlus, MoreHorizontal, Send } from "lucide-react";
+import { BookOpen, Edit2, Eye, ImagePlus, MoreHorizontal, Send } from "lucide-react";
 import { Link } from "react-router";
 
 type SpeciesActionsMenuProps = {
@@ -15,11 +15,13 @@ type SpeciesActionsMenuProps = {
   queryString?: string;
   actionsLabel: string;
   managePhotosLabel: string;
+  manageReferencesLabel: string;
   manageSpeciesLabel: string;
   detailsSpeciesLabel: string;
   requestUpdateLabel?: string;
   canManageSpecies?: boolean;
   canManagePhotos?: boolean;
+  canManageReferences?: boolean;
   canRequestUpdate?: boolean;
   mobile?: boolean;
 };
@@ -30,17 +32,20 @@ export function SpeciesActionsMenu({
   queryString,
   actionsLabel,
   managePhotosLabel,
+  manageReferencesLabel,
   mobile = false,
   manageSpeciesLabel,
   detailsSpeciesLabel,
   requestUpdateLabel,
   canManageSpecies = true,
   canManagePhotos = true,
+  canManageReferences = true,
   canRequestUpdate = false,
 }: SpeciesActionsMenuProps) {
   const withQuery = (path: string) => (queryString ? `${path}?${queryString}` : path);
-  const hasAdditionalActions = canRequestUpdate || canManageSpecies || canManagePhotos;
-  const hasManageActions = canManageSpecies || canManagePhotos;
+  const hasAdditionalActions =
+    canRequestUpdate || canManageSpecies || canManagePhotos || canManageReferences;
+  const hasManageActions = canManageSpecies || canManagePhotos || canManageReferences;
 
   return (
     <div className={mobile ? "w-full" : "flex justify-end"}>
@@ -94,6 +99,17 @@ export function SpeciesActionsMenu({
               <Link to={withQuery(`/${locale}/painel/especies/${speciesId}/fotos`)}>
                 <ImagePlus className="h-4 w-4" />
                 {managePhotosLabel}
+              </Link>
+            </DropdownMenuItem>
+          ) : null}
+
+          {canManagePhotos && canManageReferences ? <DropdownMenuSeparator /> : null}
+
+          {canManageReferences ? (
+            <DropdownMenuItem asChild>
+              <Link to={withQuery(`/${locale}/painel/especies/${speciesId}/referencias`)}>
+                <BookOpen className="h-4 w-4" />
+                {manageReferencesLabel}
               </Link>
             </DropdownMenuItem>
           ) : null}

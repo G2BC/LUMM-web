@@ -2,6 +2,7 @@ import type { AxiosResponse } from "axios";
 import { API } from "..";
 import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type { ISpecie, SpeciePhoto } from "./types/ISpecie";
+import type { IReference } from "../types/IReference";
 import type { IPagination } from "../types/IPagination";
 import type { ISelect } from "../types/ISelect";
 import type { IDistribution } from "../types/IDistribution";
@@ -283,6 +284,59 @@ export const reviewSpeciesChangeRequest = async (
     payload
   );
   return response.data;
+};
+
+export type CreateAndAssociateReferencePayload = {
+  apa?: string | null;
+  doi?: string | null;
+  url?: string | null;
+};
+
+export type UpdateReferencePayload = Partial<{
+  apa: string | null;
+  doi: string | null;
+  url: string | null;
+}>;
+
+export const searchReferences = async (search?: string, signal?: AbortController["signal"]) => {
+  const response = await API.get<IReference[]>("/references/select", {
+    params: { search },
+    signal,
+  });
+  return response.data;
+};
+
+export const associateExistingReference = async (
+  speciesId: number,
+  referenceId: number
+): Promise<IReference> => {
+  const response = await API.post<IReference>(`/species/${speciesId}/references/associate`, {
+    reference_id: referenceId,
+  });
+  return response.data;
+};
+
+export const createAndAssociateReference = async (
+  speciesId: number,
+  payload: CreateAndAssociateReferencePayload
+): Promise<IReference> => {
+  const response = await API.post<IReference>(`/species/${speciesId}/references`, payload);
+  return response.data;
+};
+
+export const updateReference = async (
+  referenceId: number,
+  payload: UpdateReferencePayload
+): Promise<IReference> => {
+  const response = await API.patch<IReference>(`/references/${referenceId}`, payload);
+  return response.data;
+};
+
+export const disassociateReference = async (
+  speciesId: number,
+  referenceId: number
+): Promise<void> => {
+  await API.delete(`/species/${speciesId}/references/${referenceId}`);
 };
 
 export const cleanupTmpSpeciesUploads = async (params?: {
