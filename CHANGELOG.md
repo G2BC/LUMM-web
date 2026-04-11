@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://github.com/G2BC/LUMM-web/compare/v1.28.0...v1.29.0) (2026-04-11)
+
+
+### Features
+
+* add species references management functionality ([83476e4](https://github.com/G2BC/LUMM-web/commit/83476e4e11e9e695af77243a8b65efe7b4ed4c4c))
+
 ## [1.28.0](https://github.com/G2BC/LUMM-web/compare/v1.27.0...v1.28.0) (2026-04-10)
 
 
