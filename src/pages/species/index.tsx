@@ -93,7 +93,7 @@ export default function SpeciesPage() {
         <div className="min-w-0 text-white max-xl:order-1">
           <header className="xl:max-w-[95%]">
             <div className="flex items-center gap-5 xl:gap-6">
-              <h1 className="text-[34px] xl:text-[50px] font-bold leading-[38px] xl:leading-[54px] italic tracking-tight">
+              <h1 className="text-[34px] xl:text-[48px] font-bold leading-[38px] xl:leading-[52px] italic tracking-tight">
                 {dados?.scientific_name}
               </h1>
               <span className="flex items-center gap-3 shrink-0">

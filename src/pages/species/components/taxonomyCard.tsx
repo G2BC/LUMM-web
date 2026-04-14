@@ -17,6 +17,8 @@ interface TaxonomyCardProps {
   species: ISpecie | null;
 }
 
+type TaxonomyRow = { label: string; value: string; level: number; italicValue: boolean };
+
 export function TaxonomyCard({
   show,
   sectionCardClass,
@@ -43,14 +45,45 @@ export function TaxonomyCard({
         italicValue: label === "species_page.taxonomy.genus",
       };
     })
-    .filter((item): item is { label: string; value: string; level: number; italicValue: boolean } =>
-      Boolean(item)
+    .concat(
+      species.section
+        ? {
+            label: t("species_page.taxonomy.section"),
+            value: species.section,
+            level: 6,
+            italicValue: false,
+          }
+        : ({} as TaxonomyRow)
     )
     .concat({
       label: t("species_page.taxonomy.species"),
       value: (species?.scientific_name?.trim().split(/\s+/).pop() || "").trim(),
-      level: taxonomyLabels.length,
+      level: taxonomyLabels.length + (species.section ? 1 : 0),
       italicValue: true,
+    })
+    .concat({
+      label: t("species_page.taxonomy.authors"),
+      value: species?.taxonomy?.authors || "",
+      level: 0,
+      italicValue: false,
+    })
+    .concat({
+      label: t("species_page.taxonomy.year_of_publication"),
+      value: species?.taxonomy?.years_of_effective_publication || "",
+      level: 0,
+      italicValue: false,
+    })
+    .concat({
+      label: t("species_page.taxonomy.basionym"),
+      value: species?.taxonomy?.basionym || "",
+      level: 0,
+      italicValue: false,
+    })
+    .concat({
+      label: t("species_page.taxonomy.synonyms"),
+      value: species?.taxonomy?.synonyms || "",
+      level: 0,
+      italicValue: false,
     })
     .concat({
       label: t("species_page.taxonomy.lineage"),
@@ -64,18 +97,7 @@ export function TaxonomyCard({
       level: 0,
       italicValue: false,
     })
-    .concat({
-      label: t("species_page.taxonomy.authors"),
-      value: species?.taxonomy?.authors || "",
-      level: 0,
-      italicValue: false,
-    })
-    .concat({
-      label: t("species_page.taxonomy.year_of_publication"),
-      value: species?.taxonomy?.years_of_effective_publication || "",
-      level: 0,
-      italicValue: false,
-    });
+    .filter((item): item is TaxonomyRow => Boolean(item && item.label));
 
   return (
     <Card className={sectionCardClass}>
@@ -92,16 +114,20 @@ export function TaxonomyCard({
             .map((row) => (
               <div
                 key={row.label}
-                className="flex items-center justify-between border-b border-white/10 pb-2 last:border-b-0"
+                className="flex flex-wrap items-start justify-between gap-1 border-b border-white/10 pb-2 last:border-b-0"
               >
                 <div
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 shrink-0"
                   style={{ marginLeft: `${row.level * 12}px` }}
                 >
                   {row.level > 0 ? <span className="text-white/45">↳</span> : null}
                   <p className={rowLabelClass}>{row.label}</p>
                 </div>
-                <p className={`${rowValueClass} ${row.italicValue ? "italic" : ""}`}>{row.value}</p>
+                <p
+                  className={`${rowValueClass} ${row.italicValue ? "italic" : ""} max-w-[65%] text-right`}
+                >
+                  {row.value}
+                </p>
               </div>
             ))}
         </div>

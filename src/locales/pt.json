@@ -231,6 +231,9 @@
         "order": "Ordem",
         "family": "Família",
         "genus": "Gênero",
+        "section": "Seção",
+        "synonyms": "Sinônimos",
+        "basionym": "Basiônimo",
         "species": "Espécie",
         "authors": "Autores",
         "year_of_publication": "Ano da publicação",
@@ -238,7 +241,7 @@
         "type_country": "País do espécime tipo"
       },
       "lumm": {
-        "section_title": "Partes luminescentes",
+        "section_title": "Anatomia Bioluminescente",
         "mycelium": "Micélio",
         "basidiome": "Basidioma",
         "stipe": "Estipe",
@@ -301,7 +304,7 @@
       "requester_email_placeholder": "voce@instituicao.br",
       "requester_institution": "Instituição",
       "requester_institution_placeholder": "Ex.: Universidade X",
-      "luminescent_parts": "Partes luminescentes sugeridas",
+      "luminescent_parts": "Anatomia Bioluminescente sugerida",
       "luminescent_parts_help": "Selecione as partes em que a espécie apresenta bioluminescência.",
       "lum_part_toggle_enable": "Alterar",
       "lum_part_toggle_clear": "Limpar",

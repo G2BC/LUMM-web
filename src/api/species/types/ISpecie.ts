@@ -6,6 +6,7 @@ interface Taxonomy {
   classification: string;
   gender: string | null;
   synonyms: string;
+  basionym: string | null;
   years_of_effective_publication: string;
 }
 
@@ -83,6 +84,7 @@ export interface ISpecie {
   type_country: string | null;
   references: IReference[];
   distributions: IDistribution[];
+  section: string | null;
 }
 
 export interface SpeciePhoto {
