@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   web:
     image: ${APP_IMAGE:-ghcr.io/g2bc/lumm-web}:${IMAGE_TAG:-latest}
