@@ -77,12 +77,19 @@ export function sortPhotos(photos: SpeciePhoto[]) {
 export function parseClassification(classification?: string) {
   if (!classification) return [];
 
-  const parts = classification.split(",").map((p) => p.trim());
-  const mains = parts.filter((_, i) => i % 2 === 0);
-  const last = parts[parts.length - 1];
-  if (mains[mains.length - 1] !== last) mains.push(last);
+  const parts = classification
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
 
-  return [...new Set(mains)];
+  return [
+    parts[0], // kingdom
+    parts[2], // phylum
+    parts[4], // class
+    parts[6], // order
+    parts[8], // family
+    parts[9], // genus
+  ].filter(Boolean);
 }
 
 export const taxonomyLabels = [
@@ -520,4 +527,35 @@ export function extractSpeciesExternalLinks(
   }
 
   return results;
+}
+
+export function splitTaxonName(name: string) {
+  if (!name || !name.trim()) {
+    return {
+      genus: null,
+      epithet: null,
+      infraspecific_taxon: null,
+    };
+  }
+
+  const parts = name.trim().split(/\s+/);
+  const infraRanks = new Set(["subsp.", "ssp.", "var.", "f.", "forma"]);
+
+  const genus = parts[0] ?? null;
+  const epithet = parts[1] ?? null;
+
+  let infraspecific_taxon = null;
+
+  for (let i = 0; i < parts.length; i++) {
+    if (infraRanks.has(parts[i].toLowerCase())) {
+      infraspecific_taxon = parts.slice(i).join(" ");
+      break;
+    }
+  }
+
+  return {
+    genus,
+    epithet,
+    infraspecific_taxon,
+  };
 }

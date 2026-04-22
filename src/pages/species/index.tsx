@@ -9,7 +9,6 @@ import { useParams } from "react-router";
 import defaultPhoto from "@/assets/specie-card-default.webp";
 import {
   extractSpeciesBibliographyLinks,
-  formatLocalizedMonth,
   getLocalizedCharacteristicValue,
   normalizeConservationStatusCode,
   sortPhotos,
@@ -18,14 +17,13 @@ import { DEFAULT_LOCALE } from "@/lib/lang";
 import { BibliographyCard } from "./components/bibliographyCard";
 import { ConservationStatusIcon } from "@/components/conservation-status-icon";
 import { CuriositiesCard } from "./components/curiositiesCard";
-import { CultivationCard } from "./components/cultivationCard";
 import { ExternalLinksCard } from "./components/externalLinksCard";
 import { SpeciesRequestCard } from "./components/speciesRequestCard";
 import { TaxonomyCard } from "./components/taxonomyCard";
 import { LumCard } from "./components/lumCard";
-import { FindingTipsCard } from "./components/findingTipsCard";
 import { MolecularCard } from "./components/molecularCard";
 import { CharacteristicsCard } from "./components/characteristicsCard";
+import { ConservationStatusCard } from "./components/conservationStatusCard";
 import { CountryTypeIcon } from "@/components/country-type-icon";
 import { getCountryName } from "@/lib/country-names";
 
@@ -139,16 +137,6 @@ export default function SpeciesPage() {
               species={dados}
             />
 
-            <MolecularCard
-              isLoading={ncbiLoading}
-              sectionCardClass={sectionCardClass}
-              sectionCardContentClass={sectionCardContentClass}
-              sectionTitleWrapClass={sectionTitleWrapClass}
-              sectionIconWrapClass={sectionIconWrapClass}
-              sectionTitleClass={sectionTitleClass}
-              ncbiRecords={ncbiRecords}
-            />
-
             <CharacteristicsCard
               sectionCardClass={sectionCardClass}
               sectionCardContentClass={sectionCardContentClass}
@@ -162,37 +150,30 @@ export default function SpeciesPage() {
               isPtLanguage={isPtLanguage}
               noInformationLabel={noInformationLabel}
               conservationStatusDescription={conservationStatusDescription}
+              species={dados}
+              locale={i18n.language}
             />
 
-            <FindingTipsCard
+            <ConservationStatusCard
               sectionCardClass={sectionCardClass}
               sectionCardContentClass={sectionCardContentClass}
               sectionTitleWrapClass={sectionTitleWrapClass}
               sectionIconWrapClass={sectionIconWrapClass}
               sectionTitleClass={sectionTitleClass}
               rowLabelClass={rowLabelClass}
-              findingTipsValue={
-                getLocalizedCharacteristicValue(characteristics, "finding_tips", isPtLanguage) ||
-                t("species_page.fields.no_information")
-              }
-              isPtLanguage={isPtLanguage}
+              rowValueClass={rowValueClass}
+              characteristics={characteristics}
               noInformationLabel={noInformationLabel}
-              seasonStart={formatLocalizedMonth(i18n.language, characteristics?.season_start_month)}
-              seasonEnd={formatLocalizedMonth(i18n.language, characteristics?.season_end_month)}
-              species={dados}
-              locale={locale}
             />
 
-            <CultivationCard
+            <MolecularCard
+              isLoading={ncbiLoading}
               sectionCardClass={sectionCardClass}
               sectionCardContentClass={sectionCardContentClass}
               sectionTitleWrapClass={sectionTitleWrapClass}
               sectionIconWrapClass={sectionIconWrapClass}
               sectionTitleClass={sectionTitleClass}
-              cultivation={
-                getLocalizedCharacteristicValue(characteristics, "cultivation", isPtLanguage) ||
-                t("species_page.fields.no_information")
-              }
+              ncbiRecords={ncbiRecords}
             />
 
             <CuriositiesCard
@@ -205,6 +186,7 @@ export default function SpeciesPage() {
                 getLocalizedCharacteristicValue(characteristics, "curiosities", isPtLanguage) ||
                 t("species_page.fields.no_information")
               }
+              show={Boolean(characteristics?.curiosities && characteristics?.colors_pt)}
             />
 
             <BibliographyCard

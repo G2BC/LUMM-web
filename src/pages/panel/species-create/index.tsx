@@ -21,6 +21,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate, useParams } from "react-router";
 import type { UseFormReturn } from "react-hook-form";
+import { CultivationFields } from "../species-edit/components/cultivation-fields";
+import { FormSection } from "../species-edit/components/form-section";
 import { LuminescenceEditSection } from "../species-edit/components/luminescence-edit-section";
 import { SpeciesFieldsGrid } from "../species-edit/components/species-fields-grid";
 import { SPECIES_EDIT_FIELDS, SPECIES_EDIT_FORM_INITIAL_VALUES } from "../species-edit/constants";
@@ -59,30 +61,29 @@ function PanelSpeciesCreatePage() {
   );
 
   const identityFields = useMemo(
-    () => pickEditableFields(["lineage", "inaturalist_taxon_id"]),
+    () => pickEditableFields(["type_country", "lineage", "inaturalist_taxon_id", "unite_taxon_id"]),
     [pickEditableFields]
   );
 
-  const biologyFields = useMemo(
+  const trophicFields = useMemo(
+    () => pickEditableFields(["growth_forms", "size_cm", "nutrition_modes"]),
+    [pickEditableFields]
+  );
+  const substrateFields = useMemo(() => pickEditableFields(["substrates"]), [pickEditableFields]);
+  const habitatFields = useMemo(() => pickEditableFields(["habitats"]), [pickEditableFields]);
+  const distributionFields = useMemo(
     () =>
       pickEditableFields([
-        "size_cm",
-        "edible",
-        "type_country",
         "distributions",
+        "similar_species_ids",
         "season_start_month",
         "season_end_month",
-        "growth_forms",
-        "nutrition_modes",
-        "substrates",
-        "habitats",
-        "similar_species_ids",
-        "colors_pt",
-        "colors",
-        "cultivation_pt",
-        "cultivation",
+        "edible",
+        "cultivation_possible",
         "finding_tips_pt",
         "finding_tips",
+        "colors_pt",
+        "colors",
         "nearby_trees_pt",
         "nearby_trees",
         "curiosities_pt",
@@ -188,92 +189,146 @@ function PanelSpeciesCreatePage() {
             )}
           />
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="scientific_name"
-              render={({ field }) => (
-                <FormItem className="gap-1">
-                  <div className="flex items-center gap-1.5">
-                    <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
-                      {t("panel_page.species_create_field_scientific_name")}
-                    </FormLabel>
-                    <HoverPopover
-                      trigger={
-                        <Info className="size-4 text-slate-500 transition-colors hover:text-slate-700" />
-                      }
-                      content={t("panel_page.species_create_scientific_name_sync_tooltip")}
-                    />
-                  </div>
-                  <FormControl>
-                    <Input
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t("panel_page.species_create_scientific_name_placeholder")}
-                      spellCheck={false}
-                      className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="mycobank_index_fungorum_id"
-              render={({ field }) => (
-                <FormItem className="gap-1">
-                  <div className="flex items-center gap-1.5">
-                    <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
-                      {t("panel_page.species_edit_field_mycobank_id")}
-                    </FormLabel>
-                  </div>
-                  <FormControl>
-                    <Input
-                      onClick={() => {
-                        if (hasShownAlert.current) return;
-                        hasShownAlert.current = true;
-                        Alert({
-                          title: t("common.warning"),
-                          icon: "warning",
-                          text: t("panel_page.species_create_mycobank_sync_tooltip"),
-                          confirmButtonText: t("common.continue"),
-                        }).then(() => null);
-                      }}
-                      value={field.value}
-                      onChange={field.onChange}
-                      placeholder={t("panel_page.species_edit_mycobank_id_placeholder")}
-                      spellCheck={false}
-                      className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <SpeciesFieldsGrid
-            form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
-            visibleFields={identityFields}
-            isViewMode={false}
-            locale={i18n.language}
-            t={t}
-          />
-
-          <SpeciesFieldsGrid
-            form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
-            visibleFields={biologyFields}
-            isViewMode={false}
-            locale={i18n.language}
-            t={t}
-          />
-
           <LuminescenceEditSection
             form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
             t={t}
           />
+
+          <FormSection title={t("panel_page.species_section_taxonomy")}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="scientific_name"
+                  render={({ field }) => (
+                    <FormItem className="gap-1">
+                      <div className="flex items-center gap-1.5">
+                        <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
+                          {t("panel_page.species_create_field_scientific_name")}
+                        </FormLabel>
+                        <HoverPopover
+                          trigger={
+                            <Info className="size-4 text-slate-500 transition-colors hover:text-slate-700" />
+                          }
+                          content={t("panel_page.species_create_scientific_name_sync_tooltip")}
+                        />
+                      </div>
+                      <FormControl>
+                        <Input
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder={t("panel_page.species_create_scientific_name_placeholder")}
+                          spellCheck={false}
+                          className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="mycobank_index_fungorum_id"
+                  render={({ field }) => (
+                    <FormItem className="gap-1">
+                      <div className="flex items-center gap-1.5">
+                        <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
+                          {t("panel_page.species_edit_field_mycobank_id")}
+                        </FormLabel>
+                      </div>
+                      <FormControl>
+                        <Input
+                          onClick={() => {
+                            if (hasShownAlert.current) return;
+                            hasShownAlert.current = true;
+                            Alert({
+                              title: t("common.warning"),
+                              icon: "warning",
+                              text: t("panel_page.species_create_mycobank_sync_tooltip"),
+                              confirmButtonText: t("common.continue"),
+                            }).then(() => null);
+                          }}
+                          value={field.value}
+                          onChange={field.onChange}
+                          placeholder={t("panel_page.species_edit_mycobank_id_placeholder")}
+                          spellCheck={false}
+                          className="text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <SpeciesFieldsGrid
+                form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
+                visibleFields={identityFields}
+                isViewMode={false}
+                locale={i18n.language}
+                t={t}
+              />
+            </div>
+          </FormSection>
+
+          <FormSection title={t("panel_page.species_section_ecological_attributes")}>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-slate-400">
+                  {t("species_page.sections.characteristics_trophic")}
+                </p>
+                <SpeciesFieldsGrid
+                  form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
+                  visibleFields={trophicFields}
+                  isViewMode={false}
+                  locale={i18n.language}
+                  t={t}
+                />
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-slate-400">
+                  {t("species_page.sections.characteristics_substrate")}
+                </p>
+                <SpeciesFieldsGrid
+                  form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
+                  visibleFields={substrateFields}
+                  isViewMode={false}
+                  locale={i18n.language}
+                  t={t}
+                />
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-slate-400">
+                  {t("species_page.sections.characteristics_habitat")}
+                </p>
+                <SpeciesFieldsGrid
+                  form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
+                  visibleFields={habitatFields}
+                  isViewMode={false}
+                  locale={i18n.language}
+                  t={t}
+                />
+              </div>
+              <div className="space-y-3">
+                <p className="text-xs font-semibold text-slate-400">
+                  {t("species_page.sections.characteristics_distribution")}
+                </p>
+                <SpeciesFieldsGrid
+                  form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
+                  visibleFields={distributionFields}
+                  isViewMode={false}
+                  locale={i18n.language}
+                  t={t}
+                />
+                <CultivationFields
+                  form={form as unknown as UseFormReturn<SpeciesEditFormValues>}
+                  isViewMode={false}
+                  t={t}
+                />
+              </div>
+            </div>
+          </FormSection>
 
           <div>
             <Button type="submit" disabled={form.formState.isSubmitting}>

@@ -183,6 +183,8 @@ export type UpdateSpeciesPayload = Partial<{
   lum_lamellae: boolean | null;
   lum_spores: boolean | null;
   inaturalist_taxon_id: number | string | null;
+  unite_taxon_id: number | string | null;
+  cultivation_possible: boolean | null;
   type_country: string | null;
   distributions: number[];
 }>;

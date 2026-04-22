@@ -9,6 +9,7 @@ interface CuriositiesCardProps {
   sectionIconWrapClass: string;
   sectionTitleClass: string;
   curiosities: string;
+  show: boolean;
 }
 
 export function CuriositiesCard({
@@ -18,8 +19,11 @@ export function CuriositiesCard({
   sectionIconWrapClass,
   sectionTitleClass,
   curiosities,
+  show,
 }: CuriositiesCardProps) {
   const { t } = useTranslation();
+
+  if (!show) return null;
 
   return (
     <Card className={sectionCardClass}>

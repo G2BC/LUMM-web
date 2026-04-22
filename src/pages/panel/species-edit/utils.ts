@@ -126,6 +126,13 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
       speciesData.inaturalist_taxon_id === null || speciesData.inaturalist_taxon_id === undefined
         ? ""
         : String(speciesData.inaturalist_taxon_id),
+    cultivation_possible: toTriStateFormValue(
+      speciesData.species_characteristics?.cultivation_possible ?? speciesData.cultivation_possible
+    ),
+    unite_taxon_id:
+      speciesData.unite_taxon_id === null || speciesData.unite_taxon_id === undefined
+        ? ""
+        : String(speciesData.unite_taxon_id),
     conservation_status:
       speciesData.species_characteristics?.conservation_status === null ||
       speciesData.species_characteristics?.conservation_status === undefined
@@ -218,7 +225,8 @@ function normalizeForCompare(name: SpeciesEditFieldConfig["name"], value: unknow
     name === "lum_pileus" ||
     name === "lum_lamellae" ||
     name === "lum_spores" ||
-    name === "edible"
+    name === "edible" ||
+    name === "cultivation_possible"
   ) {
     return toTriStateApiValue(String(value ?? "") as TriStateFormValue);
   }

@@ -52,11 +52,10 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     inputType: "text",
   },
   {
-    name: "family",
-    labelKey: "panel_page.species_edit_field_family",
-    placeholderKey: "panel_page.species_edit_empty_value",
+    name: "unite_taxon_id",
+    labelKey: "panel_page.species_edit_field_unite_taxon_id",
+    placeholderKey: "panel_page.species_create_unite_taxon_id_placeholder",
     inputType: "text",
-    detailOnly: true,
   },
   {
     name: "size_cm",
@@ -65,10 +64,23 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     inputType: "number",
   },
   {
+    name: "cultivation_possible",
+    labelKey: "panel_page.species_edit_field_cultivation_possible",
+    placeholderKey: "panel_page.species_edit_cultivation_possible_placeholder",
+    inputType: "select",
+    fullWidth: true,
+    options: TRISTATE_SELECT_OPTIONS.map((option) => ({
+      value: option.value,
+      label: option.labelKey,
+      isLabelKey: true,
+    })),
+  },
+  {
     name: "edible",
     labelKey: "panel_page.species_edit_field_edible",
     placeholderKey: "panel_page.species_edit_edible_placeholder",
     inputType: "select",
+    fullWidth: true,
     options: TRISTATE_SELECT_OPTIONS.map((option) => ({
       value: option.value,
       label: option.labelKey,
@@ -225,20 +237,6 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     inputType: "text",
     detailOnly: true,
   },
-  {
-    name: "conservation_status",
-    labelKey: "panel_page.species_edit_field_conservation_status",
-    placeholderKey: "panel_page.species_edit_empty_value",
-    inputType: "text",
-    detailOnly: true,
-  },
-  {
-    name: "iucn_redlist",
-    labelKey: "panel_page.species_edit_field_iucn_redlist",
-    placeholderKey: "panel_page.species_edit_empty_value",
-    inputType: "text",
-    detailOnly: true,
-  },
 ];
 
 export const EDITABLE_SPECIES_EDIT_FIELDS = SPECIES_EDIT_FIELDS.filter(
@@ -287,6 +285,8 @@ export const SPECIES_EDIT_FORM_INITIAL_VALUES: SpeciesEditFormValues = {
   general_description: "",
   ncbi_taxonomy_id: "",
   inaturalist_taxon_id: "",
+  unite_taxon_id: "",
+  cultivation_possible: "unknown",
   conservation_status: "",
   iucn_redlist: "",
   type_country: "",

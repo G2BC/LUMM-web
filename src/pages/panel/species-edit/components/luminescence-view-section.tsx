@@ -2,6 +2,7 @@ import type { TFunction } from "i18next";
 import { DETAIL_VALUE_TEXT_CLASS } from "../constants";
 import type { LuminescentRow } from "../types";
 import { getLuminescenceStatusPillClass, getLuminescentLevelClass } from "../utils";
+import { FormSection } from "./form-section";
 
 type LuminescenceViewSectionProps = {
   rows: LuminescentRow[];
@@ -10,13 +11,12 @@ type LuminescenceViewSectionProps = {
 
 export function LuminescenceViewSection({ rows, t }: LuminescenceViewSectionProps) {
   return (
-    <section className="space-y-2 border-t border-slate-200 pt-3">
-      <h3 className="text-sm font-medium text-slate-600">{t("species_page.lumm.section_title")}</h3>
-      <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50/35">
+    <FormSection title={t("species_page.lumm.section_title")}>
+      <div className="space-y-1">
         {rows.map((row, index) => (
           <div
             key={row.key}
-            className={`flex items-center justify-between gap-3 px-4 py-3.5 ${index < rows.length - 1 ? "border-b border-slate-200" : ""}`}
+            className={`flex items-center justify-between gap-3 px-3 py-3 ${index < rows.length - 1 ? "border-b border-slate-200" : ""}`}
           >
             <span
               className={`flex items-center ${DETAIL_VALUE_TEXT_CLASS} ${getLuminescentLevelClass(row.level)}`}
@@ -36,6 +36,6 @@ export function LuminescenceViewSection({ rows, t }: LuminescenceViewSectionProp
           </div>
         ))}
       </div>
-    </section>
+    </FormSection>
   );
 }

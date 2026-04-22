@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
-import { parseClassification, taxonomyLabels } from "../utils";
+import { parseClassification, splitTaxonName, taxonomyLabels } from "../utils";
 import type { ISpecie } from "@/api/species/types/ISpecie";
 import { BookOpenText } from "lucide-react";
 import { getCountryName } from "@/lib/country-names";
@@ -34,32 +34,39 @@ export function TaxonomyCard({
 
   if (!show || !species) return null;
 
+  const speciesNames = splitTaxonName(species.scientific_name);
+
   const taxonomyRows = parseClassification(species?.taxonomy?.classification)
     .map((item, index) => {
       const label = taxonomyLabels[index];
       if (!label || !item) return null;
+
+      const isGenus = label === "species_page.taxonomy.genus";
+
       return {
         label: t(label),
-        value: item,
+        value: isGenus ? speciesNames.genus || item : item,
         level: index,
-        italicValue: label === "species_page.taxonomy.genus",
+        italicValue: isGenus,
       };
     })
-    .concat(
-      species.section
-        ? {
-            label: t("species_page.taxonomy.section"),
-            value: species.section,
-            level: 6,
-            italicValue: false,
-          }
-        : ({} as TaxonomyRow)
-    )
     .concat({
-      label: t("species_page.taxonomy.species"),
-      value: (species?.scientific_name?.trim().split(/\s+/).pop() || "").trim(),
-      level: taxonomyLabels.length + (species.section ? 1 : 0),
+      label: t("species_page.taxonomy.section"),
+      value: species.section || "",
+      level: 6,
       italicValue: true,
+    })
+    .concat({
+      label: t("species_page.taxonomy.epithet"),
+      value: speciesNames.epithet || "",
+      level: 7,
+      italicValue: true,
+    })
+    .concat({
+      label: t("species_page.taxonomy.infraspecific_taxon"),
+      value: speciesNames.infraspecific_taxon || "",
+      level: 8,
+      italicValue: false,
     })
     .concat({
       label: t("species_page.taxonomy.authors"),
@@ -86,14 +93,14 @@ export function TaxonomyCard({
       italicValue: false,
     })
     .concat({
-      label: t("species_page.taxonomy.lineage"),
-      value: species?.lineage || "",
+      label: t("species_page.taxonomy.type_country"),
+      value: getCountryName(species?.type_country, i18n.language),
       level: 0,
       italicValue: false,
     })
     .concat({
-      label: t("species_page.taxonomy.type_country"),
-      value: getCountryName(species?.type_country, i18n.language),
+      label: t("species_page.taxonomy.lineage"),
+      value: species?.lineage || "",
       level: 0,
       italicValue: false,
     })
@@ -111,25 +118,28 @@ export function TaxonomyCard({
         <div className="space-y-2">
           {taxonomyRows
             .filter((row) => Boolean(String(row.value || "").trim()))
-            .map((row) => (
-              <div
-                key={row.label}
-                className="flex flex-wrap items-start justify-between gap-1 border-b border-white/10 pb-2 last:border-b-0"
-              >
+            .map((row) => {
+              const isLong = row.value.length > 50;
+              return (
                 <div
-                  className="flex items-center gap-2 shrink-0"
-                  style={{ marginLeft: `${row.level * 12}px` }}
+                  key={row.label}
+                  className={`flex border-b border-white/10 pb-2 last:border-b-0 ${isLong ? "flex-col gap-0.5" : "flex-wrap items-start justify-between gap-1"}`}
                 >
-                  {row.level > 0 ? <span className="text-white/45">↳</span> : null}
-                  <p className={rowLabelClass}>{row.label}</p>
+                  <div
+                    className="flex items-center gap-2 shrink-0"
+                    style={{ marginLeft: `${row.level * 12}px` }}
+                  >
+                    {row.level > 0 ? <span className="text-white/45">↳</span> : null}
+                    <p className={rowLabelClass}>{row.label}</p>
+                  </div>
+                  <p
+                    className={`${rowValueClass} ${row.italicValue ? "italic" : ""} ${isLong ? "" : "max-w-[65%] text-right"}`}
+                  >
+                    {row.value}
+                  </p>
                 </div>
-                <p
-                  className={`${rowValueClass} ${row.italicValue ? "italic" : ""} max-w-[65%] text-right`}
-                >
-                  {row.value}
-                </p>
-              </div>
-            ))}
+              );
+            })}
         </div>
       </CardContent>
     </Card>

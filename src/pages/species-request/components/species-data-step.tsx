@@ -21,6 +21,7 @@ type SpeciesDataStepProps = {
 
 export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
   const { t, i18n } = useTranslation();
+  const cultivationPossible = form.watch("cultivation_possible");
   const monthOptions = Array.from({ length: 12 }, (_, index) => {
     const month = index + 1;
     const label = new Intl.DateTimeFormat(i18n.language, { month: "long" }).format(
@@ -105,22 +106,47 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
       />
       <FormField
         control={form.control}
-        name="cultivation"
+        name="cultivation_possible"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{t("species_request.cultivation")}</FormLabel>
+            <FormLabel>{t("species_request.cultivation_possible")}</FormLabel>
             <FormControl>
-              <Textarea
-                {...field}
-                value={field.value ?? ""}
-                rows={3}
-                placeholder={t("species_request.cultivation_placeholder")}
-              />
+              <Select value={field.value ?? ""} onValueChange={field.onChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder={t("species_request.cultivation_possible_placeholder")}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="true">{t("species_page.lumm.yes")}</SelectItem>
+                  <SelectItem value="false">{t("species_page.lumm.no")}</SelectItem>
+                </SelectContent>
+              </Select>
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+      {cultivationPossible === "true" ? (
+        <FormField
+          control={form.control}
+          name="cultivation"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("species_request.cultivation")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  value={field.value ?? ""}
+                  rows={3}
+                  placeholder={t("species_request.cultivation_placeholder")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      ) : null}
       <FormField
         control={form.control}
         name="finding_tips"

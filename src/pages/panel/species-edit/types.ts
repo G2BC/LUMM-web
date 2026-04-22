@@ -34,6 +34,8 @@ export type SpeciesEditFormValues = {
   general_description: string;
   ncbi_taxonomy_id: string;
   inaturalist_taxon_id: string;
+  unite_taxon_id: string;
+  cultivation_possible: TriStateFormValue;
   conservation_status: string;
   iucn_redlist: string;
   type_country: string;

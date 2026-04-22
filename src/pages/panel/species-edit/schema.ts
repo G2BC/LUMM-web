@@ -54,6 +54,8 @@ export function createSpeciesEditSchema(t: TFunction) {
     general_description: z.string(),
     ncbi_taxonomy_id: z.string(),
     inaturalist_taxon_id: optionalIntegerIdSchema,
+    unite_taxon_id: optionalIntegerIdSchema,
+    cultivation_possible: triStateFieldSchema,
     conservation_status: z.string(),
     iucn_redlist: z.string(),
     type_country: z.string(),

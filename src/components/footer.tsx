@@ -56,7 +56,7 @@ export function Footer() {
 
       <div className="w-full px-4 h-[45px] bg-[#0D140E] flex items-center">
         <span className="container mx-auto text-white font-medium text-sm">
-          © {new Date().getFullYear()} Luminescent Mushrooms
+          © {new Date().getFullYear()} Luminescent Mushrooms Database
         </span>
       </div>
     </footer>

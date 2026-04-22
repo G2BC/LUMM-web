@@ -10,6 +10,7 @@ export type SpeciesRequestFormValues = {
   request_note?: string;
   references_raw?: string;
   colors?: string;
+  cultivation_possible?: string;
   cultivation?: string;
   finding_tips?: string;
   nearby_trees?: string;

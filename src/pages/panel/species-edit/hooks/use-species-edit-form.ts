@@ -105,7 +105,7 @@ export function useSpeciesEditForm({ species, isViewMode, locale }: UseSpeciesEd
   const visibleFields = useMemo(
     () =>
       SPECIES_EDIT_FIELDS.filter(
-        (field) => (isViewMode || !field.detailOnly) && (isViewMode || field.name !== "is_visible")
+        (field) => (isViewMode || !field.detailOnly) && field.name !== "is_visible"
       ),
     [isViewMode]
   );

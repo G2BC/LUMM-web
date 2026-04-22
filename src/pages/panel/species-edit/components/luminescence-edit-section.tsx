@@ -11,6 +11,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { LUMINESCENT_FIELDS, TRISTATE_SELECT_OPTIONS } from "../constants";
 import type { SpeciesEditFormValues } from "../types";
 import { getLuminescentLevelClass } from "../utils";
+import { FormSection } from "./form-section";
 
 type LuminescenceEditSectionProps = {
   form: UseFormReturn<SpeciesEditFormValues>;
@@ -19,9 +20,8 @@ type LuminescenceEditSectionProps = {
 
 export function LuminescenceEditSection({ form, t }: LuminescenceEditSectionProps) {
   return (
-    <section className="space-y-2 border-t border-slate-200 pt-3">
-      <h3 className="text-sm font-medium text-slate-600">{t("species_page.lumm.section_title")}</h3>
-      <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50/35">
+    <FormSection title={t("species_page.lumm.section_title")}>
+      <div className="space-y-1">
         {LUMINESCENT_FIELDS.map((lumField, index) => (
           <FormField
             key={lumField.key}
@@ -29,7 +29,7 @@ export function LuminescenceEditSection({ form, t }: LuminescenceEditSectionProp
             name={lumField.key}
             render={({ field }) => (
               <FormItem
-                className={`gap-2 px-4 py-3.5 ${index < LUMINESCENT_FIELDS.length - 1 ? "border-b border-slate-200" : ""}`}
+                className={`gap-2 px-3 py-2 ${index < LUMINESCENT_FIELDS.length - 1 ? "border-b border-slate-200" : ""}`}
               >
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                   <FormLabel
@@ -65,6 +65,6 @@ export function LuminescenceEditSection({ form, t }: LuminescenceEditSectionProp
           />
         ))}
       </div>
-    </section>
+    </FormSection>
   );
 }
