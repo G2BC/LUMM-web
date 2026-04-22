@@ -51,12 +51,12 @@ export function ExternalLinksCard({
               {section.links.map((link) => (
                 <a
                   key={`${section.titleKey}-${link.labelKey}-${link.url}`}
-                  className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-primary/25 bg-primary/5 px-3 py-1.5 text-sm text-primary/75 transition-colors hover:bg-primary/12 hover:text-primary hover:border-primary/45"
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ExternalLink className="h-4 w-4" />
+                  <ExternalLink className="h-3.5 w-3.5 opacity-50" />
                   {t(link.labelKey, { defaultValue: link.fallbackLabel || link.labelKey })}
                 </a>
               ))}

@@ -92,7 +92,7 @@ export function ConservationStatusCard({
                 href={assessmentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-right text-sm font-medium text-emerald-400 hover:underline"
+                className="flex items-center gap-1 text-right text-sm font-medium text-primary/80 hover:text-primary hover:underline"
               >
                 {t("common.open_link")}
                 <ExternalLink className="size-3.5" />

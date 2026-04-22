@@ -33,17 +33,19 @@ export function BibliographyCard({
         </div>
 
         {links.length ? (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col gap-2">
             {links.map((item) => (
               <a
                 key={`${item.url}-${item.labelKey}`}
-                className="inline-flex items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/20"
+                className="flex items-start gap-3 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-primary/80 transition-colors hover:bg-primary/10 hover:text-primary hover:border-primary/50"
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ExternalLink className="h-4 w-4 shrink-0" />
-                {t(item.labelKey, { defaultValue: item.fallbackLabel || item.labelKey })}
+                <ExternalLink className="mt-0.5 h-4 w-4 shrink-0 opacity-60" />
+                <span className="leading-relaxed">
+                  {t(item.labelKey, { defaultValue: item.fallbackLabel || item.labelKey })}
+                </span>
               </a>
             ))}
           </div>
