@@ -41,10 +41,10 @@ export function FindingTipsCard({
 
   if (!species) return null;
 
-  const characteristics = species.species_characteristics || {};
+  const characteristics = species.species_characteristics;
 
   const nearbyTreesValue = withNoInformationFallback(
-    getLocalizedCharacteristicValue(characteristics, "nearby_trees", isPtLanguage),
+    getLocalizedCharacteristicValue(characteristics ?? undefined, "nearby_trees", isPtLanguage),
     noInformationLabel
   );
   const seasonValue =
@@ -53,7 +53,7 @@ export function FindingTipsCard({
       : t("species_page.fields.no_information");
   const useNearbyTreesLongText =
     typeof nearbyTreesValue === "string" && nearbyTreesValue.length > 70;
-  const similarSpecies = (characteristics.similar_species ?? []).map((item) => ({
+  const similarSpecies = (characteristics?.similar_species ?? []).map((item) => ({
     id: item.id,
     name: item.name,
     label: item.label,
