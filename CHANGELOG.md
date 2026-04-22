@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.30.0](https://github.com/G2BC/LUMM-web/compare/v1.29.0...v1.30.0) (2026-04-22)
+
+
+### Features
+
+* enhance species database details and localization ([4f1b8b1](https://github.com/G2BC/LUMM-web/commit/4f1b8b1819385266a143bf1d66d5be342ea0535b))
+* enhance species taxonomy and localization support ([55aae0b](https://github.com/G2BC/LUMM-web/commit/55aae0be232efcb6635ee4ea780b7913d8080146))
+
+
+### Bug Fixes
+
+* improve handling of species characteristics in FindingTipsCard component ([e9a9ac7](https://github.com/G2BC/LUMM-web/commit/e9a9ac73fc285cc8a160c28363e1adc1f97b5cc9))
+
 ## [1.29.0](https://github.com/G2BC/LUMM-web/compare/v1.28.0...v1.29.0) (2026-04-11)
 
 
