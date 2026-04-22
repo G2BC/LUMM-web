@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.1](https://github.com/G2BC/LUMM-web/compare/v1.30.0...v1.30.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* remove version declaration from docker-compose files ([79d865f](https://github.com/G2BC/LUMM-web/commit/79d865f22557ccd9c4fc1a9167979deb5b97afd9))
+
 ## [1.30.0](https://github.com/G2BC/LUMM-web/compare/v1.29.0...v1.30.0) (2026-04-22)
 
 
