@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.2](https://github.com/G2BC/LUMM-web/compare/v1.30.1...v1.30.2) (2026-04-22)
+
+
+### Bug Fixes
+
+* update species distribution year in localization files ([7def46d](https://github.com/G2BC/LUMM-web/commit/7def46d2c446395b3a837ac2536eae29aed26f29))
+
 ## [1.30.1](https://github.com/G2BC/LUMM-web/compare/v1.30.0...v1.30.1) (2026-04-22)
 
 
