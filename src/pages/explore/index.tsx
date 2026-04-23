@@ -94,7 +94,7 @@ export default function ExplorePage() {
   return (
     <section className="container mx-auto my-10 px-4">
       <div className="mt-10 mb-6 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-        <div className="relative col-span-2 max-md:col-span-1">
+        <div className="relative col-span-1/2 max-md:col-span-1">
           <Input
             value={search}
             onChange={(e) => onChangeSearch(e.target.value)}
@@ -130,7 +130,7 @@ export default function ExplorePage() {
             onSelect={(id) => changeCountry(id ? String(id) : "")}
           />
         </div>
-        <div className="col-span-1/2">
+        <div className="col-span-2">
           <ComboboxAsync
             multiple
             placeholder={t("explore_page.select_distributions")}

@@ -233,9 +233,8 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
   {
     name: "ncbi_taxonomy_id",
     labelKey: "panel_page.species_edit_field_ncbi_taxonomy_id",
-    placeholderKey: "panel_page.species_edit_empty_value",
+    placeholderKey: "panel_page.species_create_ncbi_taxonomy_id_placeholder",
     inputType: "text",
-    detailOnly: true,
   },
 ];
 

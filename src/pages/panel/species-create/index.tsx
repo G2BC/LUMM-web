@@ -61,7 +61,14 @@ function PanelSpeciesCreatePage() {
   );
 
   const identityFields = useMemo(
-    () => pickEditableFields(["type_country", "lineage", "inaturalist_taxon_id", "unite_taxon_id"]),
+    () =>
+      pickEditableFields([
+        "type_country",
+        "lineage",
+        "ncbi_taxonomy_id",
+        "inaturalist_taxon_id",
+        "unite_taxon_id",
+      ]),
     [pickEditableFields]
   );
 

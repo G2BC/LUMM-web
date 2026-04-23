@@ -450,14 +450,22 @@ export function extractSpeciesExternalLinks(
         )}`,
       });
     }
+  }
 
-    const ncbiTxid = species.ncbi_taxonomy_id;
-    if (ncbiTxid) {
-      results.general.push({
-        labelKey: "species_page.bibliography.links.pubmed_central_taxid",
-        url: `https://pmc.ncbi.nlm.nih.gov/search/?term=txid${ncbiTxid}[Organism:noexp]&pmfilter_Fulltext=off`,
-      });
-    }
+  const iNaturalistTaxonId = species.inaturalist_taxon_id;
+  if (iNaturalistTaxonId) {
+    results.general.push({
+      url: `https://www.inaturalist.org/taxa/${iNaturalistTaxonId}`,
+      labelKey: "iNaturalist",
+    });
+  }
+
+  const ncbiTxid = species.ncbi_taxonomy_id;
+  if (ncbiTxid) {
+    results.general.push({
+      labelKey: "species_page.bibliography.links.pubmed_central_taxid",
+      url: `https://pmc.ncbi.nlm.nih.gov/search/?term=txid${ncbiTxid}[Organism:noexp]&pmfilter_Fulltext=off`,
+    });
   }
 
   if (species.mycobank_index_fungorum_id) {
@@ -500,6 +508,13 @@ export function extractSpeciesExternalLinks(
     );
   }
 
+  if (ncbiTxid) {
+    results.fungal_links.push({
+      url: `https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=${ncbiTxid}`,
+      labelKey: "NCBI Taxonomy",
+    });
+  }
+
   if (scientificName) {
     const ncbiTerms = buildScientificNameSearchTerms(scientificName);
 
@@ -524,6 +539,14 @@ export function extractSpeciesExternalLinks(
         labelKey: "species_page.external_links.links.bold_system",
       }
     );
+  }
+
+  const uniteTaxonId = species.unite_taxon_id;
+  if (uniteTaxonId) {
+    results.molecular_links.push({
+      url: `https://unite.ut.ee/search.php?type=sh&qresult=yes&taxon_id=${uniteTaxonId}`,
+      labelKey: "species_page.external_links.links.unite",
+    });
   }
 
   return results;
