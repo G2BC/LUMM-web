@@ -24,7 +24,7 @@ export const COUNTRY_NAMES_PT: Record<string, string> = {
   Mexico: "México",
   Micronesia: "Micronésia",
   "New Caledonia": "Nova Caledônia",
-  "New Zeland": "Nova Zelândia",
+  "New Zealand": "Nova Zelândia",
   "Papua New Guinea": "Papua Nova Guiné",
   Paraguay: "Paraguai",
   Philippines: "Filipinas",
