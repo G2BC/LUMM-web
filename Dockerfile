@@ -29,14 +29,13 @@ ARG VITE_SITE_URL
 ARG VITE_PUBLIC_STORAGE_BASE_URL
 ARG VITE_CLARITY_ID
 
-ENV VITE_API_URL=${VITE_API_URL}
-ENV VITE_API_KEY=${VITE_API_KEY}
-ENV VITE_ROBOTS=${VITE_ROBOTS}
-ENV VITE_SITE_URL=${VITE_SITE_URL}
-ENV VITE_PUBLIC_STORAGE_BASE_URL=${VITE_PUBLIC_STORAGE_BASE_URL}
-ENV VITE_CLARITY_ID=${VITE_CLARITY_ID}
-
-RUN npm run build
+RUN VITE_API_URL=${VITE_API_URL} \
+    VITE_API_KEY=${VITE_API_KEY} \
+    VITE_ROBOTS=${VITE_ROBOTS} \
+    VITE_SITE_URL=${VITE_SITE_URL} \
+    VITE_PUBLIC_STORAGE_BASE_URL=${VITE_PUBLIC_STORAGE_BASE_URL} \
+    VITE_CLARITY_ID=${VITE_CLARITY_ID} \
+    npm run build
 
 # PROD
 FROM nginx:1.29.3-alpine-slim AS prod
@@ -47,7 +46,8 @@ COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
-RUN apk add --no-cache curl=8.14.1-r2
+RUN apk upgrade --no-cache && \
+    apk add --no-cache curl=8.14.1-r2
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD curl -fsS http://localhost:80/pt || exit 1

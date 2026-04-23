@@ -24,23 +24,23 @@ export type ComboboxOption = {
 };
 
 type ComboboxAsyncBaseProps = {
-  fetchOptions: (search: string, signal: AbortController["signal"]) => Promise<ComboboxOption[]>;
+  fetchOptions: (_search: string, _signal: AbortController["signal"]) => Promise<ComboboxOption[]>;
   placeholder?: string;
   variant?: "dark" | "light";
   initialKnownOptions?: ComboboxOption[];
-  renderOptionExtra?: (option: ComboboxOption) => React.ReactNode;
+  renderOptionExtra?: (_option: ComboboxOption) => React.ReactNode;
 };
 
 type ComboboxAsyncSingleProps = ComboboxAsyncBaseProps & {
   multiple?: false;
   value: string | number | null;
-  onSelect?: (id: string | number | null) => void;
+  onSelect?: (_id: string | number | null) => void;
 };
 
 type ComboboxAsyncMultipleProps = ComboboxAsyncBaseProps & {
   multiple: true;
   value: Array<string | number>;
-  onSelect?: (ids: Array<string | number>) => void;
+  onSelect?: (_ids: Array<string | number>) => void;
 };
 
 export type ComboboxAsyncProps = ComboboxAsyncSingleProps | ComboboxAsyncMultipleProps;
