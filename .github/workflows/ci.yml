@@ -63,10 +63,7 @@ jobs:
             VITE_CLARITY_ID=${{ secrets.VITE_CLARITY_ID }}
 
       - name: Install Trivy CLI
-        run: |
-          TRIVY_VERSION="v0.56.2"
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin "${TRIVY_VERSION}"
-          trivy --version
+        run: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Trivy fs
         run: |
