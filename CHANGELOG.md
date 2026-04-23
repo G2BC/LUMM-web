@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.0](https://github.com/G2BC/LUMM-web/compare/v1.30.3...v1.31.0) (2026-04-23)
+
+
+### Features
+
+* add decay_type field following substrates pattern ([0d0d3f0](https://github.com/G2BC/LUMM-web/commit/0d0d3f010303e459b140cafb097d82c306e358bb))
+
 ## [1.30.3](https://github.com/G2BC/LUMM-web/compare/v1.30.2...v1.30.3) (2026-04-23)
 
 
