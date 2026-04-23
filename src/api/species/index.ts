@@ -90,7 +90,12 @@ export const selectSpeciesFamily = async (search?: string, signal?: AbortControl
   return resposta.data;
 };
 
-export type SpeciesDomainSelectType = "growth_form" | "nutrition_mode" | "substrate" | "habitat";
+export type SpeciesDomainSelectType =
+  | "growth_form"
+  | "nutrition_mode"
+  | "substrate"
+  | "decay_type"
+  | "habitat";
 
 export const selectSpeciesDomain = async (
   domain: SpeciesDomainSelectType,

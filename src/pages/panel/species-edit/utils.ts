@@ -105,6 +105,7 @@ export function createSpeciesEditFormDefaults(speciesData: ISpecie): SpeciesEdit
       (item) => item.id
     ),
     substrates: (speciesData.species_characteristics?.substrates ?? []).map((item) => item.id),
+    decay_types: (speciesData.species_characteristics?.decay_types ?? []).map((item) => item.id),
     habitats: (speciesData.species_characteristics?.habitats ?? []).map((item) => item.id),
     colors_pt: speciesData.species_characteristics?.colors_pt ?? "",
     colors: speciesData.species_characteristics?.colors ?? "",
@@ -211,6 +212,7 @@ function normalizeForCompare(name: SpeciesEditFieldConfig["name"], value: unknow
     name === "growth_forms" ||
     name === "nutrition_modes" ||
     name === "substrates" ||
+    name === "decay_types" ||
     name === "habitats" ||
     name === "similar_species_ids" ||
     name === "distributions"
@@ -382,6 +384,10 @@ export function buildDomainViewValueMap(
     ),
     substrates: getLocalizedOptionLabels(
       speciesData.species_characteristics?.substrates,
+      isPtLanguage
+    ),
+    decay_types: getLocalizedOptionLabels(
+      speciesData.species_characteristics?.decay_types,
       isPtLanguage
     ),
     habitats: getLocalizedOptionLabels(speciesData.species_characteristics?.habitats, isPtLanguage),

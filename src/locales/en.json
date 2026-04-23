@@ -231,7 +231,8 @@
         "occurrence": "Biogeographic regions of occurrence",
         "growth_forms": "Growth form",
         "nutrition_modes": "Lifestyle",
-        "substrates": "Substrate"
+        "substrates": "Substrate",
+        "decay_types": "Decay type"
       },
       "taxonomy": {
         "kingdom": "Kingdom",
@@ -329,6 +330,7 @@
       "growth_forms": "Growth form",
       "nutrition_modes": "Lifestyle",
       "substrates": "Substrate",
+      "decay_types": "Decay type",
       "habitats": "Biomes",
       "domain_multi_placeholder": "Select one or more options",
       "colors": "Colors",
@@ -498,6 +500,7 @@
       "species_edit_field_growth_forms": "Growth form",
       "species_edit_field_nutrition_modes": "Lifestyle",
       "species_edit_field_substrates": "Substrate",
+      "species_edit_field_decay_types": "Decay type",
       "species_edit_field_habitats": "Biomes",
       "species_edit_field_colors_pt": "Colors (PT)",
       "species_edit_field_colors": "Colors (EN)",
@@ -787,10 +790,12 @@
       "field_growth_forms": "Growth form",
       "field_nutrition_modes": "Lifestyle",
       "field_substrates": "Substrate",
+      "field_decay_types": "Decay type",
       "field_habitats": "Biome",
       "field_growth_form_ids": "Growth form",
       "field_nutrition_mode_ids": "Lifestyle",
       "field_substrate_ids": "Substrate",
+      "field_decay_type_ids": "Decay type",
       "field_habitat_ids": "Biome",
       "field_colors": "Colors (EN)",
       "field_colors_pt": "Colors (PT)",

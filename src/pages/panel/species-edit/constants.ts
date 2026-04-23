@@ -133,6 +133,13 @@ export const SPECIES_EDIT_FIELDS: SpeciesEditFieldConfig[] = [
     domain: "substrate",
   },
   {
+    name: "decay_types",
+    labelKey: "panel_page.species_edit_field_decay_types",
+    placeholderKey: "panel_page.species_edit_domain_multi_placeholder",
+    inputType: "domain-multi-async",
+    domain: "decay_type",
+  },
+  {
     name: "habitats",
     labelKey: "panel_page.species_edit_field_habitats",
     placeholderKey: "panel_page.species_edit_domain_multi_placeholder",
@@ -269,6 +276,7 @@ export const SPECIES_EDIT_FORM_INITIAL_VALUES: SpeciesEditFormValues = {
   growth_forms: [],
   nutrition_modes: [],
   substrates: [],
+  decay_types: [],
   habitats: [],
   colors_pt: "",
   colors: "",

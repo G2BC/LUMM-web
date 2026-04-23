@@ -19,6 +19,7 @@ export type SpeciesEditFormValues = {
   growth_forms: number[];
   nutrition_modes: number[];
   substrates: number[];
+  decay_types: number[];
   habitats: number[];
   colors_pt: string;
   colors: string;
