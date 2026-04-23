@@ -39,6 +39,7 @@ export function createSpeciesEditSchema(t: TFunction) {
     growth_forms: z.array(z.number()).catch([]),
     nutrition_modes: z.array(z.number()).catch([]),
     substrates: z.array(z.number()).catch([]),
+    decay_types: z.array(z.number()).catch([]),
     habitats: z.array(z.number()).catch([]),
     colors_pt: z.string(),
     colors: z.string(),

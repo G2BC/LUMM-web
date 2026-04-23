@@ -32,7 +32,7 @@ const TROPHIC_FIELDS_ORDER = [
   "colors",
   "nutrition_modes",
 ] as const;
-const SUBSTRATE_FIELDS_ORDER = ["substrates"] as const;
+const SUBSTRATE_FIELDS_ORDER = ["substrates", "decay_types"] as const;
 const HABITAT_FIELDS_ORDER = ["habitats"] as const;
 const DISTRIBUTION_FIELDS_ORDER = [
   "distributions",
