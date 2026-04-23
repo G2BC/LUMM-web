@@ -10,7 +10,7 @@ import type { ComboboxOption } from "./combobox-async";
  */
 export function useInitialComboboxOptions<T>(
   items: T[] | undefined,
-  mapper: (item: T) => ComboboxOption
+  mapper: (_item: T) => ComboboxOption
 ): ComboboxOption[] {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return React.useMemo(() => (items ?? []).map(mapper), []);
