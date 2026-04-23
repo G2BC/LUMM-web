@@ -128,6 +128,7 @@ export function SpeciesFieldsGrid({
   const getMonthLabel = (value: string) =>
     monthOptions.find((option) => option.value === value)?.label;
   const hasSeasonEndField = visibleFields.some((field) => field.name === "season_end_month");
+  const hasColorsField = visibleFields.some((field) => field.name === "colors");
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -217,6 +218,82 @@ export function SpeciesFieldsGrid({
                             ))}
                           </SelectContent>
                         </Select>
+                      )}
+                      {!isViewMode ? <FormMessage /> : null}
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          );
+        }
+
+        if (fieldConfig.name === "colors" && hasColorsField) {
+          return null;
+        }
+
+        if (fieldConfig.name === "colors_pt" && hasColorsField) {
+          const colorsPtConfig = fieldConfig;
+          const colorsConfig = visibleFields.find((field) => field.name === "colors") as
+            | SpeciesEditFieldConfig
+            | undefined;
+
+          if (!colorsConfig) return null;
+
+          return (
+            <div key="colors-pair" className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="colors_pt"
+                  render={({ field }) => (
+                    <FormItem className="gap-1">
+                      <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
+                        {t(colorsPtConfig.labelKey)}
+                      </FormLabel>
+                      {isViewMode ? (
+                        <p className={DETAIL_VALUE_TEXT_CLASS}>
+                          {String(field.value ?? "") || t("panel_page.species_edit_empty_value")}
+                        </p>
+                      ) : (
+                        <FormControl>
+                          <Textarea
+                            value={String(field.value ?? "")}
+                            onChange={field.onChange}
+                            rows={colorsPtConfig.rows ?? 2}
+                            placeholder={t(colorsPtConfig.placeholderKey)}
+                            spellCheck={false}
+                            className="field-sizing-fixed min-h-28 text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
+                          />
+                        </FormControl>
+                      )}
+                      {!isViewMode ? <FormMessage /> : null}
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="colors"
+                  render={({ field }) => (
+                    <FormItem className="gap-1">
+                      <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
+                        {t(colorsConfig.labelKey)}
+                      </FormLabel>
+                      {isViewMode ? (
+                        <p className={DETAIL_VALUE_TEXT_CLASS}>
+                          {String(field.value ?? "") || t("panel_page.species_edit_empty_value")}
+                        </p>
+                      ) : (
+                        <FormControl>
+                          <Textarea
+                            value={String(field.value ?? "")}
+                            onChange={field.onChange}
+                            rows={colorsConfig.rows ?? 2}
+                            placeholder={t(colorsConfig.placeholderKey)}
+                            spellCheck={false}
+                            className="field-sizing-fixed min-h-28 text-slate-900 placeholder:text-slate-400 focus-visible:border-slate-300 focus-visible:ring-slate-200"
+                          />
+                        </FormControl>
                       )}
                       {!isViewMode ? <FormMessage /> : null}
                     </FormItem>

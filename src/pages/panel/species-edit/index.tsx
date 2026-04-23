@@ -25,7 +25,13 @@ const TAXONOMY_FIELDS_ORDER = [
 
 const TAXONOMY_FIELD_NAMES = new Set<string>(TAXONOMY_FIELDS_ORDER);
 
-const TROPHIC_FIELDS_ORDER = ["growth_forms", "size_cm", "nutrition_modes"] as const;
+const TROPHIC_FIELDS_ORDER = [
+  "growth_forms",
+  "size_cm",
+  "colors_pt",
+  "colors",
+  "nutrition_modes",
+] as const;
 const SUBSTRATE_FIELDS_ORDER = ["substrates"] as const;
 const HABITAT_FIELDS_ORDER = ["habitats"] as const;
 const DISTRIBUTION_FIELDS_ORDER = [
@@ -39,8 +45,6 @@ const DISTRIBUTION_FIELDS_ORDER = [
   "cultivation",
   "finding_tips_pt",
   "finding_tips",
-  "colors_pt",
-  "colors",
   "nearby_trees_pt",
   "nearby_trees",
   "curiosities_pt",

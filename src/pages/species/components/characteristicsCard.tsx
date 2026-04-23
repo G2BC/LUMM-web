@@ -94,6 +94,13 @@ export function CharacteristicsCard({
           value: withNoInformationFallback(characteristics?.size_cm, noInformationLabel),
         },
         {
+          label: t("species_page.fields.colors"),
+          value: withNoInformationFallback(
+            getLocalizedCharacteristicValue(characteristics, "colors", isPtLanguage),
+            noInformationLabel
+          ),
+        },
+        {
           label: t("species_page.fields.nutrition_modes"),
           value: withNoInformationFallback(nutritionModesValue, noInformationLabel),
         },

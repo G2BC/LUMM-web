@@ -73,7 +73,7 @@ function PanelSpeciesCreatePage() {
   );
 
   const trophicFields = useMemo(
-    () => pickEditableFields(["growth_forms", "size_cm", "nutrition_modes"]),
+    () => pickEditableFields(["growth_forms", "size_cm", "colors_pt", "colors", "nutrition_modes"]),
     [pickEditableFields]
   );
   const substrateFields = useMemo(() => pickEditableFields(["substrates"]), [pickEditableFields]);
@@ -89,8 +89,6 @@ function PanelSpeciesCreatePage() {
         "cultivation_possible",
         "finding_tips_pt",
         "finding_tips",
-        "colors_pt",
-        "colors",
         "nearby_trees_pt",
         "nearby_trees",
         "curiosities_pt",
