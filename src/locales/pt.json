@@ -439,6 +439,8 @@
     "dados_page": {
       "title": "Download do banco de dados",
       "description": "Baixe o banco de dados completo do LUMM no formato de sua preferência.",
+      "version_label": "Versão",
+      "version_latest": "Atual",
       "lang_label": "Idioma dos dados",
       "lang_pt": "Português",
       "lang_en": "English",

@@ -12,11 +12,14 @@ import {
 import { fetchSnapshotDownloadUrl } from "@/api/snapshot";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 
+const VERSIONS = [{ value: "latest", label: "dados_page.version_latest" }];
+
 export default function DadosPage() {
   const { t } = useTranslation();
   const { lang: urlLang } = useParams();
   const [format, setFormat] = useState<"xlsx" | "json">("xlsx");
   const [lang, setLang] = useState<"pt" | "en">((urlLang ?? DEFAULT_LOCALE) === "pt" ? "pt" : "en");
+  const [version, setVersion] = useState("latest");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -24,7 +27,8 @@ export default function DadosPage() {
     setLoading(true);
     setError(false);
     try {
-      const data = await fetchSnapshotDownloadUrl(lang, format);
+      const versionParam = version === "latest" ? undefined : Number(version);
+      const data = await fetchSnapshotDownloadUrl(lang, format, versionParam);
       window.open(data.url, "_blank", "noopener,noreferrer");
     } catch {
       setError(true);
@@ -40,6 +44,21 @@ export default function DadosPage() {
       </h1>
       <p className="text-[18px] mb-10 max-w-2xl">{t("dados_page.description")}</p>
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium">{t("dados_page.version_label")}</label>
+          <Select value={version} onValueChange={setVersion}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {VERSIONS.map((v) => (
+                <SelectItem key={v.value} value={v.value}>
+                  {t(v.label)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium">{t("dados_page.lang_label")}</label>
           <Select value={lang} onValueChange={(v) => setLang(v as "pt" | "en")}>

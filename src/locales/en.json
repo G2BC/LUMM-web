@@ -439,6 +439,8 @@
     "dados_page": {
       "title": "Database download",
       "description": "Download the full LUMM database in your preferred format.",
+      "version_label": "Version",
+      "version_latest": "Current",
       "lang_label": "Data language",
       "lang_pt": "Português",
       "lang_en": "English",
