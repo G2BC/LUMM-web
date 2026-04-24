@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowLeft, ChevronsUpDown, LogOut } from "lucide-react";
+import { User, ArrowLeft, ChevronsUpDown, LogOut } from "lucide-react";
 import { Link } from "react-router";
 
 type PanelUserMenuProps = {
@@ -15,6 +15,8 @@ type PanelUserMenuProps = {
   initials: string;
   backToSiteLabel: string;
   backToSitePath: string;
+  profileLabel: string;
+  profilePath: string;
   logoutLabel: string;
   onLogout: () => void;
 };
@@ -25,6 +27,8 @@ export function PanelUserMenu({
   initials,
   backToSiteLabel,
   backToSitePath,
+  profileLabel,
+  profilePath,
   logoutLabel,
   onLogout,
 }: PanelUserMenuProps) {
@@ -53,6 +57,13 @@ export function PanelUserMenu({
           <Link to={backToSitePath}>
             <ArrowLeft className="h-4 w-4" />
             {backToSiteLabel}
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link to={profilePath}>
+            <User className="h-4 w-4" />
+            {profileLabel}
           </Link>
         </DropdownMenuItem>
 

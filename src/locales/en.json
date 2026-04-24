@@ -456,6 +456,7 @@
     "panel_page": {
       "welcome": "Welcome, {{name}}",
       "back_to_site": "Back to site",
+      "profile": "My profile",
       "logout": "Logout",
       "group_curation": "Species",
       "group_administration": "Administration",
@@ -766,6 +767,23 @@
       "pagination_next": "Next page",
       "pagination_summary": "Showing {{start}}-{{end}} of {{total}} users",
       "species_pagination_summary": "Showing {{start}}-{{end}} of {{total}} species"
+    },
+    "panel_profile": {
+      "title": "My Profile",
+      "description": "Manage your profile information and security.",
+      "personal_info": "Personal Information",
+      "field_name": "Name",
+      "field_email": "Email",
+      "field_institution": "Institution",
+      "edit_field": "Edit",
+      "edit_description": "Make sure the new {{field}} is correct.",
+      "change_password": "Change Password",
+      "password_hint": "We recommend using a strong password that you don't use elsewhere.",
+      "button_change_password": "Change Password",
+      "success_save": "Profile updated successfully.",
+      "password_and_authentication": "Password and Authentication",
+      "cancel": "Cancel",
+      "save": "Save"
     },
     "panel_requests": {
       "title": "Update requests",

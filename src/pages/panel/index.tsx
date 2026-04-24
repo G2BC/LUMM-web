@@ -116,6 +116,8 @@ export default function InternalPanelPage() {
             initials={initials}
             backToSiteLabel={t("panel_page.back_to_site")}
             backToSitePath={`/${locale}`}
+            profileLabel={t("panel_page.profile")}
+            profilePath={`/${locale}/painel/profile`}
             logoutLabel={t("panel_page.logout")}
             onLogout={handleLogout}
           />
