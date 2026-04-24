@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.0](https://github.com/G2BC/LUMM-web/compare/v1.31.0...v1.32.0) (2026-04-24)
+
+
+### Features
+
+* improve section headers in characteristics card ([46176c7](https://github.com/G2BC/LUMM-web/commit/46176c7a397a65e414e6f314c98d458860fe0db7))
+
 ## [1.31.0](https://github.com/G2BC/LUMM-web/compare/v1.30.3...v1.31.0) (2026-04-23)
 
 
