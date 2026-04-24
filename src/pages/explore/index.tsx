@@ -93,8 +93,8 @@ export default function ExplorePage() {
 
   return (
     <section className="container mx-auto my-10 px-4">
-      <div className="mt-10 mb-6 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-        <div className="relative col-span-1/2 max-md:col-span-1">
+      <div className="mt-10 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
+        <div className="relative">
           <Input
             value={search}
             onChange={(e) => onChangeSearch(e.target.value)}
@@ -114,7 +114,7 @@ export default function ExplorePage() {
             />
           )}
         </div>
-        <div className="col-span-1/2">
+        <div>
           <ComboboxAsync
             placeholder={t("explore_page.select_lineage")}
             fetchOptions={fetchLineageOptions}
@@ -122,7 +122,7 @@ export default function ExplorePage() {
             onSelect={(id) => changeLineage(id ? String(id) : "")}
           />
         </div>
-        <div className="col-span-1/2">
+        <div>
           <ComboboxAsync
             placeholder={t("explore_page.select_country")}
             fetchOptions={fetchCountryOptions}
@@ -130,7 +130,7 @@ export default function ExplorePage() {
             onSelect={(id) => changeCountry(id ? String(id) : "")}
           />
         </div>
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <ComboboxAsync
             multiple
             placeholder={t("explore_page.select_distributions")}
@@ -141,8 +141,8 @@ export default function ExplorePage() {
         </div>
       </div>
       {!loading && (
-        <div className="mb-10 grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center ">
-          <p className="font-semibold text-[16px] col-span-2 max-md:col-span-1 text-white">
+        <div className="mb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
+          <p className="font-semibold text-[16px] md:col-span-2 text-white">
             {dados?.total
               ? `${dados?.total} ${t("explore_page.result_label")}`
               : t("explore_page.result_label_empty")}{" "}
@@ -154,7 +154,7 @@ export default function ExplorePage() {
       )}
       {!loading ? (
         <>
-          <div className="w-full grid grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
             {dados?.items.map((specie) => <SpecieCard key={specie.id} {...specie} />)}
           </div>
 

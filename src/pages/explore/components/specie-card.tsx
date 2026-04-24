@@ -38,8 +38,11 @@ export function SpecieCard(props: ISpecie) {
   );
 
   return (
-    <Link to={`/${lang ?? DEFAULT_LOCALE}/especie/${props.id}`} className="group">
-      <Card className="p-0 border-0 overflow-hidden w-[280px] h-[390px] shadow-md">
+    <Link
+      to={`/${lang ?? DEFAULT_LOCALE}/especie/${props.id}`}
+      className="group block w-full lg:w-[280px]"
+    >
+      <Card className="p-0 border-0 overflow-hidden w-full h-[500px] md:h-[390px] shadow-md">
         <CardContent className="p-0 h-full flex flex-col">
           <div className="w-full flex-1 overflow-hidden bg-[#020504]">
             <img
