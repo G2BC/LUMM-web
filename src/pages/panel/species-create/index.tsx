@@ -76,7 +76,10 @@ function PanelSpeciesCreatePage() {
     () => pickEditableFields(["growth_forms", "size_cm", "colors_pt", "colors", "nutrition_modes"]),
     [pickEditableFields]
   );
-  const substrateFields = useMemo(() => pickEditableFields(["substrates"]), [pickEditableFields]);
+  const substrateFields = useMemo(
+    () => pickEditableFields(["substrates", "decay_types"]),
+    [pickEditableFields]
+  );
   const habitatFields = useMemo(() => pickEditableFields(["habitats"]), [pickEditableFields]);
   const distributionFields = useMemo(
     () =>

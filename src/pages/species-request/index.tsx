@@ -78,6 +78,7 @@ export default function SpeciesRequestPage() {
           growth_forms: z.array(z.number()).catch([]),
           nutrition_modes: z.array(z.number()).catch([]),
           substrates: z.array(z.number()).catch([]),
+          decay_types: z.array(z.number()).catch([]),
           habitats: z.array(z.number()).catch([]),
           luminescent_parts: z.record(
             z.enum(["mycelium", "basidiome", "stipe", "pileus", "lamellae", "spores"]),
@@ -124,6 +125,7 @@ export default function SpeciesRequestPage() {
       growth_forms: [],
       nutrition_modes: [],
       substrates: [],
+      decay_types: [],
       habitats: [],
       luminescent_parts: {
         mycelium: "none",

@@ -21,11 +21,18 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
       selectSpeciesDomain("growth_form"),
       selectSpeciesDomain("nutrition_mode"),
       selectSpeciesDomain("substrate"),
+      selectSpeciesDomain("decay_type"),
       selectSpeciesDomain("habitat"),
     ])
-      .then(([growthForms, nutritionModes, substrates, habitats]) => {
+      .then(([growthForms, nutritionModes, substrates, decayTypes, habitats]) => {
         if (!active) return;
-        const merged = [...growthForms, ...nutritionModes, ...substrates, ...habitats];
+        const merged = [
+          ...growthForms,
+          ...nutritionModes,
+          ...substrates,
+          ...decayTypes,
+          ...habitats,
+        ];
         const next: Record<string, string> = {};
         for (const option of merged) {
           next[String(option.value)] = isPt ? option.label_pt : option.label_en;
@@ -60,6 +67,7 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
   const hasGrowthForms = values.growth_forms.length > 0;
   const hasNutritionModes = values.nutrition_modes.length > 0;
   const hasSubstrates = values.substrates.length > 0;
+  const hasDecayTypes = values.decay_types.length > 0;
   const hasHabitats = values.habitats.length > 0;
   const hasColors = Boolean(values.colors?.trim());
   const hasCultivation = Boolean(values.cultivation?.trim());
@@ -86,6 +94,7 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
     hasGrowthForms ||
     hasNutritionModes ||
     hasSubstrates ||
+    hasDecayTypes ||
     hasHabitats ||
     hasColors ||
     hasCultivation ||
@@ -133,6 +142,11 @@ export function ReviewStep({ values, selectedFileCount }: ReviewStepProps) {
             {hasSubstrates ? (
               <p>
                 {t("species_request.substrates")}: {formatDomainValues(values.substrates)}
+              </p>
+            ) : null}
+            {hasDecayTypes ? (
+              <p>
+                {t("species_request.decay_types")}: {formatDomainValues(values.decay_types)}
               </p>
             ) : null}
             {hasHabitats ? (

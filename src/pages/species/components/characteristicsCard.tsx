@@ -65,6 +65,7 @@ export function CharacteristicsCard({
   );
   const growthFormsValue = getLocalizedOptionLabels(characteristics?.growth_forms, isPtLanguage);
   const substratesValue = getLocalizedOptionLabels(characteristics?.substrates, isPtLanguage);
+  const decayTypesValue = getLocalizedOptionLabels(characteristics?.decay_types, isPtLanguage);
   const habitatsValue = getLocalizedOptionLabels(characteristics?.habitats, isPtLanguage);
 
   const distributionsValue = species?.distributions?.length
@@ -112,6 +113,10 @@ export function CharacteristicsCard({
         {
           label: t("species_page.fields.substrates"),
           value: withNoInformationFallback(substratesValue, noInformationLabel),
+        },
+        {
+          label: t("species_page.fields.decay_types"),
+          value: withNoInformationFallback(decayTypesValue, noInformationLabel),
         },
       ],
     },

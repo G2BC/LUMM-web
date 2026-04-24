@@ -75,6 +75,11 @@ export function useSpeciesEditForm({ species, isViewMode, locale }: UseSpeciesEd
         label_pt: item.label_pt,
         label_en: item.label_en,
       })),
+      decay_type: (speciesData.species_characteristics?.decay_types ?? []).map((item) => ({
+        value: item.id,
+        label_pt: item.label_pt,
+        label_en: item.label_en,
+      })),
       habitat: (speciesData.species_characteristics?.habitats ?? []).map((item) => ({
         value: item.id,
         label_pt: item.label_pt,

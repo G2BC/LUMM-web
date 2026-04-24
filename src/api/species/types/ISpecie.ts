@@ -58,6 +58,7 @@ export interface SpeciesCharacteristics {
   size_cm?: number | null;
   species_id?: number;
   substrates?: SpeciesLocalizedOption[];
+  decay_types?: SpeciesLocalizedOption[];
   cultivation_possible: boolean | null;
   iucn_assessment_url: string | null;
   iucn_assessment_year: string | null;

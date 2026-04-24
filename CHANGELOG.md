@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.31.0](https://github.com/G2BC/LUMM-web/compare/v1.30.3...v1.31.0) (2026-04-23)
+
+
+### Features
+
+* add decay_type field following substrates pattern ([0d0d3f0](https://github.com/G2BC/LUMM-web/commit/0d0d3f010303e459b140cafb097d82c306e358bb))
+
+## [1.30.3](https://github.com/G2BC/LUMM-web/compare/v1.30.2...v1.30.3) (2026-04-23)
+
+
+### Bug Fixes
+
+* correct spelling of New Zealand in localization files and add flag asset ([41c6fe1](https://github.com/G2BC/LUMM-web/commit/41c6fe1207cf519c25b3e5767960971d1c0567e7))
+* enhance species color fields in localization and component structure ([9bacad8](https://github.com/G2BC/LUMM-web/commit/9bacad8c386414a20feddf215136caef633cd1ff))
+* update localization files for clarity and consistency ([7cac690](https://github.com/G2BC/LUMM-web/commit/7cac690621ca4f50141426080acfee0e88828de3))
+* update localization for "lamellae" terminology ([29d4180](https://github.com/G2BC/LUMM-web/commit/29d41801fca4fd8ccb0c7a3fe3afa40eec291db8))
+
 ## [1.30.2](https://github.com/G2BC/LUMM-web/compare/v1.30.1...v1.30.2) (2026-04-22)
 
 

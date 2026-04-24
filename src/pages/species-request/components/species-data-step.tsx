@@ -45,7 +45,108 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
 
   return (
     <section className="space-y-4">
-      <StepSection title={t("species_request.section_characteristics")}>
+      <StepSection title={t("species_request.section_luminescence")}>
+        <FormField
+          control={form.control}
+          name="luminescent_parts"
+          render={({ field }) => {
+            const selected = field.value ?? {};
+            const togglePart = (id: (typeof LUMINESCENT_PART_OPTIONS)[number]["id"]) => {
+              const next = { ...selected };
+              if (next[id] && next[id] !== "none") {
+                next[id] = "none";
+                field.onChange(next);
+                return;
+              }
+              next[id] = "add";
+              field.onChange(next);
+            };
+            const setAction = (
+              id: (typeof LUMINESCENT_PART_OPTIONS)[number]["id"],
+              action: "none" | "add" | "remove"
+            ) => {
+              field.onChange({
+                ...selected,
+                [id]: action,
+              });
+            };
+
+            return (
+              <FormItem>
+                <FormLabel>{t("species_request.luminescent_parts")}</FormLabel>
+                <p className="text-xs text-white/70">
+                  {t("species_request.luminescent_parts_help")}
+                </p>
+                <FormControl>
+                  <div className="grid gap-2 pt-1 md:grid-cols-2">
+                    {LUMINESCENT_PART_OPTIONS.map((option) => {
+                      const action = selected[option.id];
+                      const isSelected = action === "add" || action === "remove";
+                      return (
+                        <div
+                          key={option.id}
+                          className="rounded-md border border-white/15 bg-black/20 p-2"
+                        >
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <span className="text-sm">{t(option.labelKey)}</span>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant={isSelected ? "default" : "outline"}
+                              onClick={() => togglePart(option.id)}
+                              className={
+                                isSelected ? "bg-slate-200 text-black hover:bg-slate-300" : ""
+                              }
+                            >
+                              {isSelected
+                                ? t("species_request.lum_part_toggle_clear")
+                                : t("species_request.lum_part_toggle_enable")}
+                            </Button>
+                          </div>
+
+                          {isSelected ? (
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                onClick={() => setAction(option.id, "add")}
+                                className={
+                                  action === "add"
+                                    ? "border-emerald-500 bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
+                                    : "border-emerald-500/80 text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
+                                }
+                              >
+                                {t("species_page.lumm.yes")}
+                              </Button>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                onClick={() => setAction(option.id, "remove")}
+                                className={
+                                  action === "remove"
+                                    ? "border-red-500 bg-red-500 text-white hover:bg-red-600 hover:text-white"
+                                    : "border-red-500/80 text-red-400 hover:bg-red-500/10 hover:text-red-300"
+                                }
+                              >
+                                {t("species_page.lumm.no")}
+                              </Button>
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        />
+      </StepSection>
+
+      <StepSection title={t("species_page.sections.characteristics_trophic")}>
         <div className="grid gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
@@ -85,50 +186,6 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
               </FormItem>
             )}
           />
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="substrates"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("species_request.substrates")}</FormLabel>
-                <FormControl>
-                  <DomainComboboxAsync
-                    domain="substrate"
-                    multiple
-                    value={field.value ?? []}
-                    onSelect={field.onChange}
-                    placeholder={t("species_request.domain_multi_placeholder")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="habitats"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("species_request.habitats")}</FormLabel>
-                <FormControl>
-                  <DomainComboboxAsync
-                    domain="habitat"
-                    multiple
-                    value={field.value ?? []}
-                    onSelect={field.onChange}
-                    placeholder={t("species_request.domain_multi_placeholder")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
             name="size_cm"
@@ -161,6 +218,73 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
                     value={field.value ?? ""}
                     onChange={field.onChange}
                     placeholder={t("species_request.colors_placeholder")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </StepSection>
+
+      <StepSection title={t("species_page.sections.characteristics_substrate")}>
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="substrates"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("species_request.substrates")}</FormLabel>
+                <FormControl>
+                  <DomainComboboxAsync
+                    domain="substrate"
+                    multiple
+                    value={field.value ?? []}
+                    onSelect={field.onChange}
+                    placeholder={t("species_request.domain_multi_placeholder")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="decay_types"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("species_request.decay_types")}</FormLabel>
+                <FormControl>
+                  <DomainComboboxAsync
+                    domain="decay_type"
+                    multiple
+                    value={field.value ?? []}
+                    onSelect={field.onChange}
+                    placeholder={t("species_request.domain_multi_placeholder")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </StepSection>
+
+      <StepSection title={t("species_page.sections.characteristics_habitat")}>
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="habitats"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("species_request.habitats")}</FormLabel>
+                <FormControl>
+                  <DomainComboboxAsync
+                    domain="habitat"
+                    multiple
+                    value={field.value ?? []}
+                    onSelect={field.onChange}
+                    placeholder={t("species_request.domain_multi_placeholder")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -305,107 +429,6 @@ export function SpeciesDataStep({ form }: SpeciesDataStepProps) {
             )}
           />
         ) : null}
-      </StepSection>
-
-      <StepSection title={t("species_request.section_luminescence")}>
-        <FormField
-          control={form.control}
-          name="luminescent_parts"
-          render={({ field }) => {
-            const selected = field.value ?? {};
-            const togglePart = (id: (typeof LUMINESCENT_PART_OPTIONS)[number]["id"]) => {
-              const next = { ...selected };
-              if (next[id] && next[id] !== "none") {
-                next[id] = "none";
-                field.onChange(next);
-                return;
-              }
-              next[id] = "add";
-              field.onChange(next);
-            };
-            const setAction = (
-              id: (typeof LUMINESCENT_PART_OPTIONS)[number]["id"],
-              action: "none" | "add" | "remove"
-            ) => {
-              field.onChange({
-                ...selected,
-                [id]: action,
-              });
-            };
-
-            return (
-              <FormItem>
-                <FormLabel>{t("species_request.luminescent_parts")}</FormLabel>
-                <p className="text-xs text-white/70">
-                  {t("species_request.luminescent_parts_help")}
-                </p>
-                <FormControl>
-                  <div className="grid gap-2 pt-1 md:grid-cols-2">
-                    {LUMINESCENT_PART_OPTIONS.map((option) => {
-                      const action = selected[option.id];
-                      const isSelected = action === "add" || action === "remove";
-                      return (
-                        <div
-                          key={option.id}
-                          className="rounded-md border border-white/15 bg-black/20 p-2"
-                        >
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <span className="text-sm">{t(option.labelKey)}</span>
-                            <Button
-                              type="button"
-                              size="sm"
-                              variant={isSelected ? "default" : "outline"}
-                              onClick={() => togglePart(option.id)}
-                              className={
-                                isSelected ? "bg-slate-200 text-black hover:bg-slate-300" : ""
-                              }
-                            >
-                              {isSelected
-                                ? t("species_request.lum_part_toggle_clear")
-                                : t("species_request.lum_part_toggle_enable")}
-                            </Button>
-                          </div>
-
-                          {isSelected ? (
-                            <div className="mt-2 flex flex-wrap gap-2">
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="outline"
-                                onClick={() => setAction(option.id, "add")}
-                                className={
-                                  action === "add"
-                                    ? "border-emerald-500 bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
-                                    : "border-emerald-500/80 text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300"
-                                }
-                              >
-                                {t("species_page.lumm.yes")}
-                              </Button>
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="outline"
-                                onClick={() => setAction(option.id, "remove")}
-                                className={
-                                  action === "remove"
-                                    ? "border-red-500 bg-red-500 text-white hover:bg-red-600 hover:text-white"
-                                    : "border-red-500/80 text-red-400 hover:bg-red-500/10 hover:text-red-300"
-                                }
-                              >
-                                {t("species_page.lumm.no")}
-                              </Button>
-                            </div>
-                          ) : null}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
       </StepSection>
 
       <StepSection title={t("species_request.section_description")}>

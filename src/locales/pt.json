@@ -231,7 +231,8 @@
         "occurrence": "Regiões biogeográficas de ocorrência",
         "growth_forms": "Forma de crescimento",
         "nutrition_modes": "Estilo de vida",
-        "substrates": "Substrato"
+        "substrates": "Substrato",
+        "decay_types": "Tipo de decomposição"
       },
       "taxonomy": {
         "kingdom": "Reino",
@@ -329,6 +330,7 @@
       "growth_forms": "Forma de crescimento",
       "nutrition_modes": "Estilo de vida",
       "substrates": "Substrato",
+      "decay_types": "Tipo de decomposição",
       "habitats": "Biomas",
       "domain_multi_placeholder": "Selecione uma ou mais opções",
       "colors": "Cores",
@@ -497,6 +499,7 @@
       "species_edit_field_growth_forms": "Forma de crescimento",
       "species_edit_field_nutrition_modes": "Estilo de vida",
       "species_edit_field_substrates": "Substrato",
+      "species_edit_field_decay_types": "Tipo de decomposição",
       "species_edit_field_habitats": "Biomas",
       "species_edit_field_colors_pt": "Cores (PT)",
       "species_edit_field_colors": "Cores (EN)",
@@ -787,10 +790,12 @@
       "field_growth_forms": "Forma de crescimento",
       "field_nutrition_modes": "Estilo de vida",
       "field_substrates": "Substrato",
+      "field_decay_types": "Tipo de decomposição",
       "field_habitats": "Bioma",
       "field_growth_form_ids": "Forma de crescimento",
       "field_nutrition_mode_ids": "Estilo de vida",
       "field_substrate_ids": "Substrato",
+      "field_decay_type_ids": "Tipo de decomposição",
       "field_habitat_ids": "Bioma",
       "field_colors": "Cores (EN)",
       "field_colors_pt": "Cores (PT)",
