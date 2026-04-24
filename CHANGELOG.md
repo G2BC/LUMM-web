@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.33.0](https://github.com/G2BC/LUMM-web/compare/v1.32.0...v1.33.0) (2026-04-24)
+
+
+### Features
+
+* add Dados page for database downloads ([8faca94](https://github.com/G2BC/LUMM-web/commit/8faca942ff2890e89891c6b28df304a3dd987996))
+* add profile management page and update user menu ([028ec65](https://github.com/G2BC/LUMM-web/commit/028ec6565cf1fbeae6130f8f21ad5d96225fe6bf))
+
+
+### Bug Fixes
+
+* update parameter names in EditFieldModalProps for consistency ([4377222](https://github.com/G2BC/LUMM-web/commit/437722271ce02121cb78dd4caf5ae01a60f05082))
+
 ## [1.32.0](https://github.com/G2BC/LUMM-web/compare/v1.31.0...v1.32.0) (2026-04-24)
 
 
