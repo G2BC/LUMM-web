@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.2](https://github.com/G2BC/LUMM-web/compare/v1.33.1...v1.33.2) (2026-04-24)
+
+
+### Bug Fixes
+
+* add version selection to Dados page for database downloads ([1d0f943](https://github.com/G2BC/LUMM-web/commit/1d0f943e041e7dae0ddf59afcdc85a99708def6f))
+
 ## [1.33.1](https://github.com/G2BC/LUMM-web/compare/v1.33.0...v1.33.1) (2026-04-24)
 
 
