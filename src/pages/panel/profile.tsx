@@ -23,7 +23,7 @@ interface EditFieldModalProps {
   label: string;
   value: string;
   field: "name" | "email" | "institution";
-  onSave: (field: string, value: string) => Promise<void>;
+  onSave: (_field: string, _value: string) => Promise<void>;
   isLoading: boolean;
   type?: string;
   t: TFunction;
