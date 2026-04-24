@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.1](https://github.com/G2BC/LUMM-web/compare/v1.33.0...v1.33.1) (2026-04-24)
+
+
+### Bug Fixes
+
+* update grid layout and styling in ExplorePage and SpecieCard components ([43b51e1](https://github.com/G2BC/LUMM-web/commit/43b51e1fd6cde70276b9e0a6a464bb74425635b1))
+
 ## [1.33.0](https://github.com/G2BC/LUMM-web/compare/v1.32.0...v1.33.0) (2026-04-24)
 
 
