@@ -418,6 +418,7 @@
     "panel_page": {
       "welcome": "Seja bem-vindo, {{name}}",
       "back_to_site": "Voltar ao site",
+      "profile": "Meu perfil",
       "logout": "Logout",
       "group_curation": "Espécies",
       "group_administration": "Administração",
@@ -663,6 +664,23 @@
       "pagination_next": "Próxima página",
       "pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} usuários",
       "species_pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} espécies"
+    },
+    "panel_profile": {
+      "title": "Meu Perfil",
+      "description": "Gerencie suas informações de perfil e segurança.",
+      "personal_info": "Informações Pessoais",
+      "field_name": "Nome",
+      "field_email": "E-mail",
+      "field_institution": "Instituição",
+      "edit_field": "Editar",
+      "edit_description": "Certifique-se de que o novo {{field}} está correto.",
+      "change_password": "Alterar Senha",
+      "password_hint": "Recomendamos o uso de uma senha forte que você não use em outros lugares.",
+      "button_change_password": "Mudar Senha",
+      "success_save": "Perfil atualizado com sucesso.",
+      "password_and_authentication": "Senha e Autenticação",
+      "cancel": "Cancelar",
+      "save": "Salvar"
     },
     "panel_requests": {
       "title": "Solicitações de atualização",
