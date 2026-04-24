@@ -204,7 +204,12 @@ export function CharacteristicsCard({
           <div className="space-y-5">
             {groups.map((group) => (
               <div key={group.title}>
-                <p className="mb-2 text-xs font-semibold text-white/40">{group.title}</p>
+                <div className="mb-3 flex items-center gap-3">
+                  <p className="shrink-0 text-[0.95rem] font-semibold tracking-wide text-primary/80">
+                    {group.title}
+                  </p>
+                  <div className="h-px flex-1 bg-primary/30" />
+                </div>
                 <div className="space-y-2">
                   {group.rows.map((row) => {
                     const useLongTextLayout =

@@ -27,7 +27,7 @@ export const SimilarSpecies = ({ similarSpecies, locale }: SimilarSpeciesProps) 
               to={`/${locale}/especie/${item.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary/80 hover:text-primary hover:underline"
+              className="text-primary/80 underline underline-offset-2 hover:text-primary"
             >
               {label}
             </Link>
