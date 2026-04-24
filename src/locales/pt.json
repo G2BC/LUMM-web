@@ -23,6 +23,7 @@
       "about": "Sobre",
       "publications": "Publicações",
       "collaborators": "Colaboradores",
+      "data": "Download",
       "ctas": {
         "login": "Entrar",
         "register": "Cadastre-se",
@@ -434,6 +435,17 @@
       "reference2": "Kotlobay, A. A., Sarkisyan, K. S., Mokrushina, Y. A., Marcet-Houben, M., Serebrovskaya, E. O., Markina, N. M., ... & Yampolsky, I. V. (2018). Genetically encodable bioluminescent system from fungi. Proceedings of the National Academy of Sciences, 115(50), 12728-12732.",
       "partners": "Instituições parceiras",
       "research_groups": "Grupos de pesquisa"
+    },
+    "dados_page": {
+      "title": "Download do banco de dados",
+      "description": "Baixe o banco de dados completo do LUMM no formato de sua preferência.",
+      "lang_label": "Idioma dos dados",
+      "lang_pt": "Português",
+      "lang_en": "English",
+      "format_label": "Formato",
+      "download_cta": "Baixar",
+      "downloading": "Gerando link...",
+      "error": "Não foi possível gerar o link de download. Tente novamente."
     },
     "not_found_page": {
       "title": "Página não encontrada",

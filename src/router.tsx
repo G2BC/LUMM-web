@@ -28,6 +28,7 @@ const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 const PanelSpeciesEditPage = React.lazy(() => import("./pages/panel/species-edit"));
 const PanelSpeciesCreatePage = React.lazy(() => import("./pages/panel/species-create"));
+const DadosPage = React.lazy(() => import("./pages/dados"));
 
 function Router() {
   const { language } = useLanguageStore();
@@ -79,6 +80,7 @@ function Router() {
           <Route path="especie/:species/solicitar-atualizacao" element={<SpeciesRequestPage />} />
           <Route path="contato" element={<ContactPage />} />
           <Route path="colaboradores" element={<ContributorsPage />} />
+          <Route path="dados" element={<DadosPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Route>
