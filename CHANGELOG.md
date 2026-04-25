@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.34.0](https://github.com/G2BC/LUMM-web/compare/v1.33.2...v1.34.0) (2026-04-25)
+
+
+### Features
+
+* implement change password modal in profile page ([bf45ae5](https://github.com/G2BC/LUMM-web/commit/bf45ae59be772fcd4404a725bc0636fd879dc5e5))
+
 ## [1.33.2](https://github.com/G2BC/LUMM-web/compare/v1.33.1...v1.33.2) (2026-04-24)
 
 
