@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -16,8 +16,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { API } from "@/api";
 import { Alert } from "@/components/alert";
+import { changePassword, getCurrentUser } from "@/api/auth";
+import { runWithSilencedApiErrors } from "@/api/error-silencer";
+import type { AxiosError } from "axios";
 
 interface EditFieldModalProps {
   label: string;
@@ -112,13 +126,195 @@ export default function PanelProfilePage() {
               <p className="text-sm font-medium">{t("panel_profile.change_password")}</p>
               <p className="text-xs text-muted-foreground">{t("panel_profile.password_hint")}</p>
             </div>
-            <Button variant="default" size="sm">
-              {t("panel_profile.button_change_password")}
-            </Button>
+            <ChangePasswordModal t={t} />
           </div>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function ChangePasswordModal({ t }: { t: TFunction }) {
+  const [open, setOpen] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const setSession = useAuthStore((state) => state.setSession);
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const formSchema = useMemo(
+    () =>
+      z
+        .object({
+          currentPassword: z
+            .string({ error: t("change_password_page.validation.current_password_required") })
+            .min(1, t("change_password_page.validation.current_password_required")),
+          newPassword: z
+            .string({ error: t("change_password_page.validation.new_password_required") })
+            .min(8, t("change_password_page.validation.new_password_min"))
+            .regex(/(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+/, {
+              message: t("change_password_page.validation.new_password_rules"),
+            }),
+          confirmPassword: z
+            .string({ error: t("change_password_page.validation.confirm_password_required") })
+            .min(1, t("change_password_page.validation.confirm_password_required")),
+        })
+        .refine((data) => data.newPassword === data.confirmPassword, {
+          message: t("change_password_page.validation.passwords_must_match"),
+          path: ["confirmPassword"],
+        }),
+    [t]
+  );
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setApiError(null);
+    try {
+      const tokens = await runWithSilencedApiErrors(() =>
+        changePassword({
+          current_password: values.currentPassword,
+          new_password: values.newPassword,
+        })
+      );
+
+      setSession({
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        mustChangePassword: tokens.must_change_password ?? false,
+      });
+
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+
+      setOpen(false);
+      form.reset();
+
+      await Alert({
+        icon: "success",
+        title: t("change_password_page.success_title"),
+        text: t("change_password_page.success_text"),
+        confirmButtonText: "OK",
+      });
+    } catch (err) {
+      const axiosErr = err as AxiosError<{
+        message_pt?: string;
+        message_en?: string;
+        detail?: string;
+      }>;
+      const data = axiosErr.response?.data;
+      const msg =
+        data?.message_pt ?? data?.message_en ?? data?.detail ?? "Ocorreu um erro inesperado.";
+      setApiError(typeof msg === "string" ? msg : "Ocorreu um erro inesperado.");
+    }
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(value) => {
+        setOpen(value);
+        if (!value) {
+          form.reset();
+          setApiError(null);
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button variant="default" size="sm">
+          {t("panel_profile.button_change_password")}
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t("panel_profile.change_password")}</DialogTitle>
+          <DialogDescription>{t("panel_profile.password_hint")}</DialogDescription>
+        </DialogHeader>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 py-2"
+            onChange={() => setApiError(null)}
+          >
+            <FormField
+              control={form.control}
+              name="currentPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("change_password_page.current_password_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="password"
+                      autoComplete="current-password"
+                      placeholder={t("change_password_page.current_password_placeholder")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="newPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("change_password_page.new_password_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="password"
+                      autoComplete="new-password"
+                      placeholder={t("change_password_page.new_password_placeholder")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("change_password_page.confirm_password_label")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="password"
+                      autoComplete="new-password"
+                      placeholder={t("change_password_page.confirm_password_placeholder")}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {apiError && (
+              <p className="text-sm text-destructive rounded-md bg-destructive/10 px-3 py-2">
+                {apiError}
+              </p>
+            )}
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                {t("panel_profile.cancel")}
+              </Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {t("panel_profile.save")}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 }
 

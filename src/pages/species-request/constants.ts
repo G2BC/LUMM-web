@@ -1,10 +1,11 @@
 export const SPECIES_REQUEST_STEPS = ["identity", "species", "photos", "review"] as const;
 
 export const PHOTO_LICENSE_OPTIONS = [
-  "CC-BY-4.0",
-  "CC-BY-SA-4.0",
-  "CC-BY-NC-4.0",
-  "CC0-1.0",
+  "CC-BY",
+  "CC-BY-SA",
+  "CC-BY-NC",
+  "CC-BY-NC-ND",
+  "CC0",
   "ALL-RIGHTS-RESERVED",
 ] as const;
 
