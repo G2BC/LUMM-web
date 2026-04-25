@@ -29,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { API } from "@/api";
 import { Alert } from "@/components/alert";
-import { changePassword, getCurrentUser } from "@/api/auth";
+import { changePassword } from "@/api/auth";
 import { runWithSilencedApiErrors } from "@/api/error-silencer";
 import type { AxiosError } from "axios";
 
@@ -137,8 +137,6 @@ export default function PanelProfilePage() {
 function ChangePasswordModal({ t }: { t: TFunction }) {
   const [open, setOpen] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const setSession = useAuthStore((state) => state.setSession);
-  const setUser = useAuthStore((state) => state.setUser);
 
   const formSchema = useMemo(
     () =>
@@ -172,21 +170,12 @@ function ChangePasswordModal({ t }: { t: TFunction }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setApiError(null);
     try {
-      const tokens = await runWithSilencedApiErrors(() =>
+      await runWithSilencedApiErrors(() =>
         changePassword({
           current_password: values.currentPassword,
           new_password: values.newPassword,
         })
       );
-
-      setSession({
-        accessToken: tokens.access_token,
-        refreshToken: tokens.refresh_token,
-        mustChangePassword: tokens.must_change_password ?? false,
-      });
-
-      const currentUser = await getCurrentUser();
-      setUser(currentUser);
 
       setOpen(false);
       form.reset();
