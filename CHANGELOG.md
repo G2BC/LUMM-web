@@ -1,3 +1,10 @@
+# [1.37.0](https://github.com/G2BC/LUMM-web/compare/v1.36.1...v1.37.0) (2026-04-27)
+
+
+### Features
+
+* integrate Drawer component for mobile filter modal ([8003a31](https://github.com/G2BC/LUMM-web/commit/8003a319a0c3174a08d5673dfa048c706f3d7109))
+
 ## [1.36.1](https://github.com/G2BC/LUMM-web/compare/v1.36.0...v1.36.1) (2026-04-27)
 
 
