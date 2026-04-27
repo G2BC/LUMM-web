@@ -29,7 +29,8 @@ export default function DadosPage() {
     try {
       const versionParam = version === "latest" ? undefined : Number(version);
       const data = await fetchSnapshotDownloadUrl(lang, format, versionParam);
-      const response = await fetch(data.url);
+      const url = import.meta.env.PROD ? data.url.replace(/^http:\/\//i, "https://") : data.url;
+      const response = await fetch(url);
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
