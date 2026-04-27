@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.35.1](https://github.com/G2BC/LUMM-web/compare/v1.35.0...v1.35.1) (2026-04-27)
+
+
+### Bug Fixes
+
+* update download status messages and improve download handling in Dados page ([e5c60a4](https://github.com/G2BC/LUMM-web/commit/e5c60a4ac6680f39fe0133efd0f823d56919dcbc))
+
 ## [1.35.0](https://github.com/G2BC/LUMM-web/compare/v1.34.0...v1.35.0) (2026-04-27)
 
 
