@@ -1,3 +1,10 @@
+## [1.36.1](https://github.com/G2BC/LUMM-web/compare/v1.36.0...v1.36.1) (2026-04-27)
+
+
+### Bug Fixes
+
+* **FilterModal:** prevent auto-focus on dialog content ([fdbb7f6](https://github.com/G2BC/LUMM-web/commit/fdbb7f67290061f3591b62d9508585c747c2735d))
+
 # [1.36.0](https://github.com/G2BC/LUMM-web/compare/v1.35.1...v1.36.0) (2026-04-27)
 
 
