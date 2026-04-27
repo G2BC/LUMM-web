@@ -446,7 +446,7 @@
       "lang_en": "English",
       "format_label": "Format",
       "download_cta": "Download",
-      "downloading": "Generating link...",
+      "downloading": "Loading...",
       "error": "Could not generate the download link. Please try again."
     },
     "not_found_page": {

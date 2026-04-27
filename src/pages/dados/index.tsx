@@ -26,13 +26,20 @@ export default function DadosPage() {
   async function handleDownload() {
     setLoading(true);
     setError(false);
-    const win = window.open("", "_blank", "noopener,noreferrer");
     try {
       const versionParam = version === "latest" ? undefined : Number(version);
       const data = await fetchSnapshotDownloadUrl(lang, format, versionParam);
-      if (win) win.location.href = data.url;
+      const response = await fetch(data.url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `lumm_v${data.version}_${data.lang}.${data.format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
     } catch {
-      win?.close();
       setError(true);
     } finally {
       setLoading(false);

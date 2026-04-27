@@ -446,7 +446,7 @@
       "lang_en": "English",
       "format_label": "Formato",
       "download_cta": "Baixar",
-      "downloading": "Gerando link...",
+      "downloading": "Carregando...",
       "error": "Não foi possível gerar o link de download. Tente novamente."
     },
     "not_found_page": {
