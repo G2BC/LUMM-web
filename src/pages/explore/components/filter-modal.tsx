@@ -165,7 +165,7 @@ export function FilterModal({
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>{t("explore_page.filters")}</DialogTitle>
         </DialogHeader>
