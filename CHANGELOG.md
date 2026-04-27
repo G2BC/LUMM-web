@@ -1,3 +1,10 @@
+# [1.36.0](https://github.com/G2BC/LUMM-web/compare/v1.35.1...v1.36.0) (2026-04-27)
+
+
+### Features
+
+* enhance ExplorePage with filter functionality and loading states ([4424a95](https://github.com/G2BC/LUMM-web/commit/4424a95a9dacafa5adf72530ab2fc8f3964832d0))
+
 # Changelog
 
 ## [1.35.1](https://github.com/G2BC/LUMM-web/compare/v1.35.0...v1.35.1) (2026-04-27)
