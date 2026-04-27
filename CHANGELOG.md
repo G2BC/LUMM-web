@@ -1,3 +1,10 @@
+## [1.37.1](https://github.com/G2BC/LUMM-web/compare/v1.37.0...v1.37.1) (2026-04-27)
+
+
+### Bug Fixes
+
+* **DadosPage:** ensure secure URL fetching in production environment ([92d53f1](https://github.com/G2BC/LUMM-web/commit/92d53f1c8ec20692a86ebb00b7c6304b967b82c0))
+
 # [1.37.0](https://github.com/G2BC/LUMM-web/compare/v1.36.1...v1.37.0) (2026-04-27)
 
 
