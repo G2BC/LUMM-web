@@ -27,6 +27,8 @@ type ComboboxAsyncBaseProps = {
   fetchOptions: (_search: string, _signal: AbortController["signal"]) => Promise<ComboboxOption[]>;
   placeholder?: string;
   variant?: "dark" | "light";
+  className?: string;
+  popoverContainer?: HTMLElement | null;
   initialKnownOptions?: ComboboxOption[];
   renderOptionExtra?: (_option: ComboboxOption) => React.ReactNode;
 };
@@ -153,56 +155,66 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          disabled={loading}
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className={clsx(
-            "w-full h-11 justify-between hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
-            variant === "light" ? "border-slate-300 bg-white" : "border-input dark:bg-input/30",
-            variant === "light"
-              ? !selectedIds.length
-                ? "text-slate-400 hover:text-slate-400"
-                : "text-slate-900 hover:text-slate-900"
-              : !selectedIds.length
-                ? "text-[#FFFFFF80] hover:text-[#FFFFFF80]"
-                : "text-white hover:text-white"
-          )}
+    <div className={props.className}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            disabled={loading}
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={clsx(
+              "w-full h-11 justify-between hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
+              variant === "light" ? "border-slate-300 bg-white" : "border-input dark:bg-input/30",
+              variant === "light"
+                ? !selectedIds.length
+                  ? "text-slate-400 hover:text-slate-400"
+                  : "text-slate-900 hover:text-slate-900"
+                : !selectedIds.length
+                  ? "text-[#FFFFFF80] hover:text-[#FFFFFF80]"
+                  : "text-white hover:text-white"
+            )}
+          >
+            <span className="line-clamp-1 whitespace-normal text-left">{buttonLabel}</span>
+            <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          align="start"
+          className="w-[var(--radix-popover-trigger-width)] p-0"
+          container={props.popoverContainer}
         >
-          <span className="line-clamp-1 whitespace-normal text-left">{buttonLabel}</span>
-          <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent align="start" className="w-[var(--radix-popover-trigger-width)] p-0">
-        <Command>
-          <CommandInput value={search} onValueChange={setSearch} placeholder={t("common.search")} />
-          <CommandList className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
-            <CommandEmpty>{t("common.no_results")}</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => {
-                const optionId = String(option.id);
-                const isSelected = selectedIds.includes(optionId);
-                return (
-                  <CommandItem
-                    key={optionId}
-                    value={`${optionId}-${option.label}`}
-                    onSelect={() => handleSelect(optionId)}
-                  >
-                    <CheckIcon
-                      className={cn("mr-2 h-4 w-4", isSelected ? "opacity-100" : "opacity-0")}
-                    />
-                    {props.renderOptionExtra?.(option)}
-                    <span className="truncate">{option.label}</span>
-                  </CommandItem>
-                );
-              })}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+          <Command>
+            <CommandInput
+              value={search}
+              onValueChange={setSearch}
+              placeholder={t("common.search")}
+            />
+            <CommandList className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
+              <CommandEmpty>{t("common.no_results")}</CommandEmpty>
+              <CommandGroup>
+                {options.map((option) => {
+                  const optionId = String(option.id);
+                  const isSelected = selectedIds.includes(optionId);
+                  return (
+                    <CommandItem
+                      key={optionId}
+                      value={`${optionId}-${option.label}`}
+                      onSelect={() => handleSelect(optionId)}
+                    >
+                      <CheckIcon
+                        className={cn("mr-2 h-4 w-4", isSelected ? "opacity-100" : "opacity-0")}
+                      />
+                      {props.renderOptionExtra?.(option)}
+                      <span className="truncate">{option.label}</span>
+                    </CommandItem>
+                  );
+                })}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }
