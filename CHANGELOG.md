@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.35.0](https://github.com/G2BC/LUMM-web/compare/v1.34.0...v1.35.0) (2026-04-27)
+
+
+### Features
+
+* update dark theme colors and component styles ([547ebae](https://github.com/G2BC/LUMM-web/commit/547ebaedf938f9eac5fe83ef82325c6f563494aa))
+
 ## [1.34.0](https://github.com/G2BC/LUMM-web/compare/v1.33.2...v1.34.0) (2026-04-25)
 
 
