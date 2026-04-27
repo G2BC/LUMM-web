@@ -35,12 +35,14 @@ type ComboboxAsyncSingleProps = ComboboxAsyncBaseProps & {
   multiple?: false;
   value: string | number | null;
   onSelect?: (_id: string | number | null) => void;
+  onSelectOption?: (_option: ComboboxOption | null) => void;
 };
 
 type ComboboxAsyncMultipleProps = ComboboxAsyncBaseProps & {
   multiple: true;
   value: Array<string | number>;
   onSelect?: (_ids: Array<string | number>) => void;
+  onSelectOption?: (_options: ComboboxOption[]) => void;
 };
 
 export type ComboboxAsyncProps = ComboboxAsyncSingleProps | ComboboxAsyncMultipleProps;
@@ -137,10 +139,15 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
         return o ? o.id : Number.isFinite(Number(id)) ? Number(id) : id;
       });
       props.onSelect?.(nextOriginalIds);
+      const nextOptions = nextStringIds
+        .map((id) => knownOptions[id])
+        .filter(Boolean) as ComboboxOption[];
+      props.onSelectOption?.(nextOptions);
     } else {
       const isSelected = selectedIds[0] === optionId;
       setSelectedIds(isSelected ? [] : [optionId]);
       props.onSelect?.(isSelected ? null : originalId);
+      props.onSelectOption?.(isSelected ? null : (option ?? null));
       setOpen(false);
     }
   };
@@ -165,7 +172,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
                 : "text-white hover:text-white"
           )}
         >
-          <span className="truncate">{buttonLabel}</span>
+          <span className="line-clamp-1 whitespace-normal text-left">{buttonLabel}</span>
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0" />
         </Button>
       </PopoverTrigger>

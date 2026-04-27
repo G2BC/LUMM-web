@@ -1,22 +1,18 @@
 import React from "react";
 import { SpecieCard } from "@/pages/explore/components/specie-card";
+import { SpecieCardSkeleton } from "@/pages/explore/components/specie-card-skeleton";
 import { useExplorePage } from "./useExplorePage";
-import { Input } from "@/components/ui/input";
-import { Loader2, Search, X } from "lucide-react";
-import clsx from "clsx";
+import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ComboboxAsync, type ComboboxOption } from "@/components/combobox-async";
-import { selectDistributions, selectLineage, selectSpeciesCountry } from "@/api/species";
-import { getCountryName } from "@/lib/country-names";
-import type { Locale } from "@/lib/lang";
 import { Button } from "@/components/ui/button";
+import { FilterModal } from "./components/filter-modal";
+import { FilterTags } from "./components/filter-tags";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ExplorePage() {
   const {
     dados,
     search,
-    onChangeSearch,
-    handleSearch,
     loading,
     loadingMore,
     canAutoLoadMore,
@@ -24,50 +20,17 @@ export default function ExplorePage() {
     loadMore,
     fetchedSearch,
     handleClearInput,
-    changeLineage,
     lineage,
     country,
-    changeCountry,
     distributions,
+    filterLabels,
+    changeLineage,
+    changeCountry,
     changeDistributions,
+    applyFilters,
   } = useExplorePage();
-  const { t, i18n } = useTranslation();
-  const lang = i18n.language as Locale;
+  const { t } = useTranslation();
 
-  const fetchLineageOptions = React.useCallback(
-    async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
-      const res = await selectLineage(search, signal);
-      return res.map((item) => ({ id: item.value, label: item.label }));
-    },
-    []
-  );
-
-  const fetchCountryOptions = React.useCallback(
-    async (search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
-      const res = await selectSpeciesCountry(search, signal);
-      return res.map((item) => ({
-        id: item.value,
-        label: getCountryName(item.label, lang) || item.label,
-      }));
-    },
-    [lang]
-  );
-
-  const fetchDistributionOptions = React.useCallback(
-    async (_search: string, signal: AbortController["signal"]): Promise<ComboboxOption[]> => {
-      const res = await selectDistributions(signal);
-      const isPt = lang === "pt";
-      return res.map((item) => ({
-        id: item.slug,
-        label: `${item.slug} - ${isPt ? item.label_pt : item.label_en}`,
-      }));
-    },
-    [lang]
-  );
-
-  const baseClassNameIcons =
-    "absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 tr transition-colors cursor-pointer";
-  const classNameIconsColor = !loading && search ? "text-white" : "text-white opacity-50";
   const loadMoreSentinelRef = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
@@ -82,9 +45,7 @@ export default function ExplorePage() {
           void loadMore("auto");
         }
       },
-      {
-        rootMargin: "300px 0px",
-      }
+      { rootMargin: "300px 0px" }
     );
 
     observer.observe(target);
@@ -93,71 +54,58 @@ export default function ExplorePage() {
 
   return (
     <section className="container mx-auto my-10 px-4">
-      <div className="mt-10 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
-        <div className="relative">
-          <Input
-            value={search}
-            onChange={(e) => onChangeSearch(e.target.value)}
-            onKeyDown={handleSearch}
-            className="h-11 pr-10 placeholder:text-white placeholder:opacity-50 text-white"
-            placeholder={t("explore_page.input_placeholder")}
-          />
-          {search && fetchedSearch === search ? (
-            <X
-              onClick={handleClearInput}
-              className={clsx(baseClassNameIcons, classNameIconsColor)}
-            />
+      <div className="mt-10 mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-x-6 gap-y-3 justify-center">
+        <div className="md:col-span-full flex items-center justify-between">
+          {loading ? (
+            <Skeleton className="hidden md:block h-6 w-48" />
           ) : (
-            <Search
-              onClick={handleSearch}
-              className={clsx(baseClassNameIcons, classNameIconsColor)}
-            />
+            <p className="hidden md:block font-semibold text-[16px] text-white">
+              {dados?.total
+                ? `${dados.total} ${t("explore_page.result_label")}`
+                : t("explore_page.result_label_empty")}
+            </p>
           )}
-        </div>
-        <div>
-          <ComboboxAsync
-            placeholder={t("explore_page.select_lineage")}
-            fetchOptions={fetchLineageOptions}
-            value={lineage || null}
-            onSelect={(id) => changeLineage(id ? String(id) : "")}
+          <FilterModal
+            search={search}
+            lineage={lineage}
+            country={country}
+            distributions={distributions}
+            filterLabels={filterLabels}
+            onApply={applyFilters}
           />
         </div>
-        <div>
-          <ComboboxAsync
-            placeholder={t("explore_page.select_country")}
-            fetchOptions={fetchCountryOptions}
-            value={country || null}
-            onSelect={(id) => changeCountry(id ? String(id) : "")}
+        <div className="col-span-full">
+          <FilterTags
+            search={fetchedSearch}
+            lineage={lineage}
+            country={country}
+            distributions={distributions}
+            filterLabels={filterLabels}
+            onClearSearch={handleClearInput}
+            onClearLineage={() => changeLineage("")}
+            onClearCountry={() => changeCountry("")}
+            onClearDistributions={() => changeDistributions([], {})}
           />
         </div>
-        <div className="md:col-span-2">
-          <ComboboxAsync
-            multiple
-            placeholder={t("explore_page.select_distributions")}
-            fetchOptions={fetchDistributionOptions}
-            value={distributions}
-            onSelect={(ids) => changeDistributions(ids.map(String))}
-          />
-        </div>
-      </div>
-      {!loading && (
-        <div className="mb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
-          <p className="font-semibold text-[16px] md:col-span-2 text-white">
+        {loading ? (
+          <Skeleton className="md:hidden col-span-full h-6 w-48" />
+        ) : (
+          <p className="md:hidden col-span-full font-semibold text-[16px] text-white">
             {dados?.total
-              ? `${dados?.total} ${t("explore_page.result_label")}`
-              : t("explore_page.result_label_empty")}{" "}
-            {fetchedSearch
-              ? `${t("explore_page.resulta_label_connection")} "${fetchedSearch}"`
-              : ""}
+              ? `${dados.total} ${t("explore_page.result_label")}`
+              : t("explore_page.result_label_empty")}
           </p>
-        </div>
-      )}
-      {!loading ? (
-        <>
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
-            {dados?.items.map((specie) => <SpecieCard key={specie.id} {...specie} />)}
-          </div>
+        )}
+      </div>
 
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => <SpecieCardSkeleton key={i} />)
+          : dados?.items.map((specie) => <SpecieCard key={specie.id} {...specie} />)}
+      </div>
+
+      {!loading && (
+        <>
           {canAutoLoadMore && <div ref={loadMoreSentinelRef} className="h-12 w-full" />}
 
           {showManualLoadMore && (
@@ -179,11 +127,6 @@ export default function ExplorePage() {
             </div>
           )}
         </>
-      ) : (
-        <div className="w-full h-full flex flex-col justify-center items-center my-10">
-          <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
-          <p className="text-[#00C000] font-semibold">{t("common.loading")}</p>
-        </div>
       )}
     </section>
   );

@@ -69,7 +69,10 @@
       "page_unavailable_btn": "Recomeçar",
       "select_lineage": "Linhagem luminescente",
       "select_country": "País do espécime tipo",
-      "select_distributions": "Regiões biogeográficas de ocorrência"
+      "select_distributions": "Regiões de ocorrência",
+      "filters": "Filtros",
+      "filter_apply": "Aplicar",
+      "filter_clear": "Limpar"
     },
     "contact_page": {
       "title": "Entre em contato",

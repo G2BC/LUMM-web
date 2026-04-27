@@ -69,7 +69,10 @@
       "page_unavailable_btn": "Restart",
       "select_lineage": "Luminescent lineage",
       "select_country": "Type specimen country",
-      "select_distributions": "Biogeographic regions of occurrence"
+      "select_distributions": "Regions of occurrence",
+      "filters": "Filters",
+      "filter_apply": "Apply",
+      "filter_clear": "Clear"
     },
     "contact_page": {
       "title": "Contact us",

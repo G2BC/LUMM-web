@@ -1,9 +1,10 @@
-import { searchEspecies } from "@/api/species";
+import { searchEspecies, selectDistributions } from "@/api/species";
 import { speciesKeys } from "@/api/query-keys";
 import { paramsToObject } from "@/utils/paramsToObject";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const SPECIE_CARD_WIDTH = 280;
 const SPECIE_CARD_GAP = 24;
@@ -32,6 +33,8 @@ const getExplorePerPage = (viewportWidth: number) => {
 
 export function useExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
 
   const searchParam = searchParams.get("search") ?? "";
   const lineageParam = searchParams.get("lineage") ?? "";
@@ -44,6 +47,34 @@ export function useExplorePage() {
     distributionsParam ? distributionsParam.split(",") : []
   );
   const [search, setSearch] = useState<string>(searchParam);
+  const [filterLabels, setFilterLabels] = useState<{
+    lineage?: string;
+    distributions: Record<string, string>;
+  }>({ distributions: {} });
+
+  // Resolve distribution labels from URL params on mount / when lang changes
+  useEffect(() => {
+    if (!distributionsParam) return;
+    const slugs = distributionsParam.split(",").filter(Boolean);
+    if (!slugs.length) return;
+    const ctrl = new AbortController();
+    selectDistributions(ctrl.signal)
+      .then((all) => {
+        const isPt = lang === "pt";
+        const labels: Record<string, string> = {};
+        for (const item of all) {
+          if (slugs.includes(item.slug)) {
+            labels[item.slug] = `${item.slug} - ${isPt ? item.label_pt : item.label_en}`;
+          }
+        }
+        setFilterLabels((prev) => ({
+          ...prev,
+          distributions: { ...labels, ...prev.distributions },
+        }));
+      })
+      .catch(() => {});
+    return () => ctrl.abort();
+  }, [distributionsParam, lang]);
   const [autoLoadsUsed, setAutoLoadsUsed] = useState(0);
   const [perPage, setPerPage] = useState<number>(() => {
     if (typeof window === "undefined") return 16;
@@ -186,10 +217,11 @@ export function useExplorePage() {
     upsertFilterParams({ search: "" });
   };
 
-  const changeLineage = (newLineage: string) => {
+  const changeLineage = (newLineage: string, label?: string) => {
     if (lineage === newLineage) return;
     setLineage(newLineage);
     upsertFilterParams({ lineage: newLineage });
+    setFilterLabels((prev) => ({ ...prev, lineage: label }));
   };
 
   const changeCountry = (newCountry: string) => {
@@ -198,11 +230,33 @@ export function useExplorePage() {
     upsertFilterParams({ country: newCountry });
   };
 
-  const changeDistributions = (newDistributions: string[]) => {
+  const changeDistributions = (newDistributions: string[], labels?: Record<string, string>) => {
     const joined = newDistributions.join(",");
     if (distributions.join(",") === joined) return;
     setDistributions(newDistributions);
     upsertFilterParams({ distributions: joined });
+    if (labels) setFilterLabels((prev) => ({ ...prev, distributions: labels }));
+  };
+
+  const applyFilters = (filters: {
+    search: string;
+    lineage: string;
+    country: string;
+    distributions: string[];
+    lineageLabel?: string;
+    distributionLabels: Record<string, string>;
+  }) => {
+    setSearch(filters.search);
+    setLineage(filters.lineage);
+    setCountry(filters.country);
+    setDistributions(filters.distributions);
+    setFilterLabels({ lineage: filters.lineageLabel, distributions: filters.distributionLabels });
+    upsertFilterParams({
+      search: filters.search,
+      lineage: filters.lineage,
+      country: filters.country,
+      distributions: filters.distributions.join(","),
+    });
   };
 
   return {
@@ -218,11 +272,13 @@ export function useExplorePage() {
     lineage,
     country,
     distributions,
+    filterLabels,
     onChangeSearch,
     handleSearch,
     handleClearInput,
     changeLineage,
     changeCountry,
     changeDistributions,
+    applyFilters,
   };
 }
