@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -143,9 +144,8 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>{t("login_page.password_label")}</FormLabel>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         {...field}
-                        type="password"
                         autoComplete="current-password"
                         placeholder={t("login_page.password_placeholder")}
                       />

@@ -26,11 +26,13 @@ export default function DadosPage() {
   async function handleDownload() {
     setLoading(true);
     setError(false);
+    const win = window.open("", "_blank", "noopener,noreferrer");
     try {
       const versionParam = version === "latest" ? undefined : Number(version);
       const data = await fetchSnapshotDownloadUrl(lang, format, versionParam);
-      window.open(data.url, "_blank", "noopener,noreferrer");
+      if (win) win.location.href = data.url;
     } catch {
+      win?.close();
       setError(true);
     } finally {
       setLoading(false);

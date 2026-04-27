@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { DEFAULT_LOCALE } from "@/lib/lang";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useTranslation } from "react-i18next";
@@ -192,9 +193,8 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel>{t("register_page.password_label")}</FormLabel>
                       <FormControl>
-                        <Input
+                        <PasswordInput
                           {...field}
-                          type="password"
                           autoComplete="new-password"
                           placeholder={t("register_page.password_placeholder")}
                         />
@@ -210,9 +210,8 @@ export default function RegisterPage() {
                     <FormItem>
                       <FormLabel>{t("register_page.confirm_password_label")}</FormLabel>
                       <FormControl>
-                        <Input
+                        <PasswordInput
                           {...field}
-                          type="password"
                           autoComplete="new-password"
                           placeholder={t("register_page.confirm_password_placeholder")}
                         />

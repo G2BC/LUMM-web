@@ -99,7 +99,7 @@ export default function ExplorePage() {
             value={search}
             onChange={(e) => onChangeSearch(e.target.value)}
             onKeyDown={handleSearch}
-            className="h-10 pr-10 placeholder:text-white placeholder:opacity-50 border-white focus-visible:ring-white text-white"
+            className="h-11 pr-10 placeholder:text-white placeholder:opacity-50 text-white"
             placeholder={t("explore_page.input_placeholder")}
           />
           {search && fetchedSearch === search ? (

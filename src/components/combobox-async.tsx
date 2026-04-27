@@ -154,8 +154,8 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
           role="combobox"
           aria-expanded={open}
           className={clsx(
-            "w-full h-[40px] justify-between hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
-            variant === "light" ? "border-slate-300 bg-white" : "border-white",
+            "w-full h-11 justify-between hover:bg-transparent text-base md:text-sm disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 font-normal",
+            variant === "light" ? "border-slate-300 bg-white" : "border-input dark:bg-input/30",
             variant === "light"
               ? !selectedIds.length
                 ? "text-slate-400 hover:text-slate-400"

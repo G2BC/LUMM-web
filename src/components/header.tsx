@@ -32,7 +32,7 @@ export function Header() {
           {showPanelButton ? (
             <Button
               onClick={() => navigate(panelPath)}
-              className="bg-primary text-black font-semibold hover:bg-primary/90"
+              className="h-9 bg-primary text-black font-semibold hover:bg-primary/90"
             >
               {t("header.ctas.panel")}
             </Button>
@@ -40,13 +40,13 @@ export function Header() {
             <>
               <Button
                 variant="outline"
-                className="border-primary/60 bg-transparent text-primary hover:bg-primary/15 hover:text-primary"
+                className="h-9 border-primary/60 bg-transparent text-primary hover:bg-primary/15 hover:text-primary"
                 onClick={() => navigate(`/${locale}/login`)}
               >
                 {t("header.ctas.login")}
               </Button>
               <Button
-                className="bg-primary text-black font-semibold hover:bg-primary/90"
+                className="h-9 bg-primary text-black font-semibold hover:bg-primary/90"
                 onClick={() => navigate(`/${locale}/cadastro`)}
               >
                 {t("header.ctas.register")}
