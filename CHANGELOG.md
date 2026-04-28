@@ -1,3 +1,10 @@
+# [1.38.0](https://github.com/G2BC/LUMM-web/compare/v1.37.1...v1.38.0) (2026-04-28)
+
+
+### Features
+
+* add outdated species management functionality ([fd30044](https://github.com/G2BC/LUMM-web/commit/fd300443d71b31fc6a04c6f395d55ecea65782c6))
+
 ## [1.37.1](https://github.com/G2BC/LUMM-web/compare/v1.37.0...v1.37.1) (2026-04-27)
 
 
