@@ -159,6 +159,7 @@ export const createSpecies = async (payload: CreateSpeciesPayload): Promise<ISpe
 export type UpdateSpeciesPayload = Partial<{
   lineage: string;
   is_visible: boolean;
+  is_outdated_mycobank: boolean;
   mycobank_index_fungorum_id: string | null;
   size_cm: number | null;
   edible: boolean | null;

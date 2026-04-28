@@ -1,7 +1,15 @@
-import { listOutdatedSpecies } from "@/api/species";
+import { listOutdatedSpecies, updateSpecies } from "@/api/species";
 import { speciesKeys } from "@/api/query-keys";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Edit2, MoreHorizontal } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useParams, useSearchParams } from "react-router";
@@ -36,6 +44,7 @@ export default function PanelSpeciesOutdatedPage() {
   const locale = lang ?? DEFAULT_LOCALE;
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(() => parsePageParam(searchParams.get("page")));
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const nextPage = parsePageParam(searchParams.get("page"));
@@ -65,6 +74,17 @@ export default function PanelSpeciesOutdatedPage() {
     queryKey: speciesKeys.outdated({ page }),
     queryFn: ({ signal }) => listOutdatedSpecies({ page, per_page: OUTDATED_PER_PAGE, signal }),
     placeholderData: keepPreviousData,
+  });
+
+  const {
+    mutate: markResolved,
+    isPending: isResolving,
+    variables: resolvingId,
+  } = useMutation({
+    mutationFn: (speciesId: number) => updateSpecies(speciesId, { is_outdated_mycobank: false }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: speciesKeys.outdated({}) });
+    },
   });
 
   const items = data?.items ?? [];
@@ -124,12 +144,34 @@ export default function PanelSpeciesOutdatedPage() {
                         {item.mycobank_index_fungorum_id ?? "-"}
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <Link
-                          to={`/${locale}/painel/especies/${item.id}/editar`}
-                          className="text-sm font-medium text-[#118A2A] hover:underline"
-                        >
-                          {t("panel_page.action_manage")}
-                        </Link>
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            disabled={isResolving && resolvingId === item.id}
+                            onClick={() => markResolved(item.id)}
+                            className="text-sm font-medium text-emerald-700 hover:underline disabled:opacity-50"
+                          >
+                            {isResolving && resolvingId === item.id
+                              ? t("panel_page.outdated_resolving")
+                              : t("panel_page.outdated_mark_resolved")}
+                          </button>
+                          <DropdownMenu modal={false}>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" size="sm">
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">{t("panel_page.col_actions")}</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-52">
+                              <DropdownMenuItem asChild>
+                                <Link to={`/${locale}/painel/especies/${item.id}/editar`}>
+                                  <Edit2 className="h-4 w-4" />
+                                  {t("panel_page.action_manage")}
+                                </Link>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -145,13 +187,33 @@ export default function PanelSpeciesOutdatedPage() {
                     {t("panel_page.outdated_col_mycobank_id")}:{" "}
                     {item.mycobank_index_fungorum_id ?? "-"}
                   </p>
-                  <div className="mt-3">
-                    <Link
-                      to={`/${locale}/painel/especies/${item.id}/editar`}
-                      className="text-sm font-medium text-[#118A2A] hover:underline"
+                  <div className="mt-3 flex items-center gap-3">
+                    <button
+                      type="button"
+                      disabled={isResolving && resolvingId === item.id}
+                      onClick={() => markResolved(item.id)}
+                      className="text-sm font-medium text-emerald-700 hover:underline disabled:opacity-50"
                     >
-                      {t("panel_page.action_manage")}
-                    </Link>
+                      {isResolving && resolvingId === item.id
+                        ? t("panel_page.outdated_resolving")
+                        : t("panel_page.outdated_mark_resolved")}
+                    </button>
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">{t("panel_page.col_actions")}</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-52">
+                        <DropdownMenuItem asChild>
+                          <Link to={`/${locale}/painel/especies/${item.id}/editar`}>
+                            <Edit2 className="h-4 w-4" />
+                            {t("panel_page.action_manage")}
+                          </Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </article>
               ))}

@@ -782,7 +782,9 @@
       "outdated_alert_title": "Species outdated with MycoBank",
       "outdated_alert_text": "{{count}} species need review.",
       "outdated_alert_cta": "View list",
-      "outdated_badge": "Outdated"
+      "outdated_badge": "Outdated",
+      "outdated_mark_resolved": "Mark as resolved",
+      "outdated_resolving": "Resolving..."
     },
     "panel_profile": {
       "title": "My Profile",
