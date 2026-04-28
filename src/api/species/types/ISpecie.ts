@@ -87,6 +87,7 @@ export interface ISpecie {
   inaturalist_taxon_id?: string | null;
   unite_taxon_id?: string | null;
   iucn_redlist?: string | null;
+  is_outdated_mycobank?: boolean;
   type_country: string | null;
   references: IReference[];
   distributions: IDistribution[];

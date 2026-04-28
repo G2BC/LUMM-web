@@ -29,6 +29,7 @@ const PanelSpeciesRequestsPage = React.lazy(() => import("./pages/panel/species-
 const NotFoundPage = React.lazy(() => import("./pages/404"));
 const PanelSpeciesEditPage = React.lazy(() => import("./pages/panel/species-edit"));
 const PanelSpeciesCreatePage = React.lazy(() => import("./pages/panel/species-create"));
+const PanelSpeciesOutdatedPage = React.lazy(() => import("./pages/panel/species-outdated"));
 const DadosPage = React.lazy(() => import("./pages/dados"));
 
 function Router() {
@@ -56,6 +57,7 @@ function Router() {
             <Route path="especies/:species/detalhes" element={<PanelSpeciesEditPage viewMode />} />
             <Route element={<AuthGuard requireCurator />}>
               <Route path="especies/cadastro" element={<PanelSpeciesCreatePage />} />
+              <Route path="especies/desatualizadas" element={<PanelSpeciesOutdatedPage />} />
               <Route path="especies/:species/fotos" element={<PanelSpeciesPhotosPage />} />
               <Route
                 path="especies/:species/referencias"

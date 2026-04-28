@@ -771,7 +771,18 @@
       "pagination_previous": "Página anterior",
       "pagination_next": "Próxima página",
       "pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} usuários",
-      "species_pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} espécies"
+      "species_pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} espécies",
+      "outdated_title": "Espécies desatualizadas",
+      "outdated_subtitle": "Espécies com divergência em relação ao MycoBank",
+      "outdated_loading": "Carregando espécies desatualizadas...",
+      "outdated_load_error": "Não foi possível carregar as espécies desatualizadas.",
+      "outdated_empty": "Nenhuma espécie desatualizada encontrada.",
+      "outdated_col_mycobank_id": "MycoBank ID",
+      "outdated_pagination_summary": "Mostrando {{start}}-{{end}} de {{total}} espécies",
+      "outdated_alert_title": "Espécies desatualizadas com o MycoBank",
+      "outdated_alert_text": "{{count}} espécie(s) precisam de revisão.",
+      "outdated_alert_cta": "Ver lista",
+      "outdated_badge": "Desatualizado"
     },
     "panel_profile": {
       "title": "Meu Perfil",

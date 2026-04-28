@@ -346,6 +346,27 @@ export const disassociateReference = async (
   await API.delete(`/species/${speciesId}/references/${referenceId}`);
 };
 
+export interface OutdatedSpeciesItem {
+  id: number;
+  scientific_name: string;
+  mycobank_index_fungorum_id: string | null;
+}
+
+export type IOutdatedSpecies = { items: OutdatedSpeciesItem[] } & IPagination;
+
+export const listOutdatedSpecies = async (params?: {
+  page?: number;
+  per_page?: number;
+  signal?: AbortController["signal"];
+}): Promise<IOutdatedSpecies> => {
+  const { page, per_page, signal } = params ?? {};
+  const response: AxiosResponse<IOutdatedSpecies> = await API.get("/species/outdated", {
+    params: { page, per_page },
+    signal,
+  });
+  return response.data;
+};
+
 export const cleanupTmpSpeciesUploads = async (params?: {
   retention_days?: number;
   dry_run?: boolean;

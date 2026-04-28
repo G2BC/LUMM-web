@@ -190,6 +190,7 @@ function SpeciesEditPage({ viewMode = false }: SpeciesEditPageProps) {
               locale={i18nLanguage}
               viewValueOverrides={viewMode ? domainViewValueMap : undefined}
               excludeSpeciesId={speciesData.id}
+              isOutdatedMycobank={speciesData.is_outdated_mycobank}
               t={t}
             />
           </FormSection>

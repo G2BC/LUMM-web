@@ -771,7 +771,18 @@
       "pagination_previous": "Previous page",
       "pagination_next": "Next page",
       "pagination_summary": "Showing {{start}}-{{end}} of {{total}} users",
-      "species_pagination_summary": "Showing {{start}}-{{end}} of {{total}} species"
+      "species_pagination_summary": "Showing {{start}}-{{end}} of {{total}} species",
+      "outdated_title": "Outdated species",
+      "outdated_subtitle": "Species with divergence from MycoBank",
+      "outdated_loading": "Loading outdated species...",
+      "outdated_load_error": "Could not load outdated species.",
+      "outdated_empty": "No outdated species found.",
+      "outdated_col_mycobank_id": "MycoBank ID",
+      "outdated_pagination_summary": "Showing {{start}}-{{end}} of {{total}} species",
+      "outdated_alert_title": "Species outdated with MycoBank",
+      "outdated_alert_text": "{{count}} species need review.",
+      "outdated_alert_cta": "View list",
+      "outdated_badge": "Outdated"
     },
     "panel_profile": {
       "title": "My Profile",

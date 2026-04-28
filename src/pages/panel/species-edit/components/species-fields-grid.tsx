@@ -33,6 +33,7 @@ type SpeciesFieldsGridProps = {
   domainPreloadedOptions?: Partial<Record<SpeciesDomainSelectType, ISelectLocalized[]>>;
   similarSpeciesPreloadedOptions?: Array<{ id: number; label: string; photo?: string | null }>;
   distributionPreloadedOptions?: Array<{ id: number; label: string }>;
+  isOutdatedMycobank?: boolean;
   t: TFunction;
 };
 
@@ -46,6 +47,7 @@ export function SpeciesFieldsGrid({
   domainPreloadedOptions,
   similarSpeciesPreloadedOptions,
   distributionPreloadedOptions,
+  isOutdatedMycobank,
   t,
 }: SpeciesFieldsGridProps) {
   const hasShownMycobankAlert = useRef(false);
@@ -322,6 +324,11 @@ export function SpeciesFieldsGrid({
                       <FormLabel className="text-sm font-medium tracking-normal text-slate-600">
                         {t(fieldConfig.labelKey)}
                       </FormLabel>
+                      {fieldConfig.name === "mycobank_index_fungorum_id" && isOutdatedMycobank ? (
+                        <span className="inline-flex items-center rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
+                          {t("panel_page.outdated_badge")}
+                        </span>
+                      ) : null}
                     </div>
                     {isViewMode ? (
                       <p
@@ -436,7 +443,7 @@ export function SpeciesFieldsGrid({
                                   Alert({
                                     title: t("common.warning"),
                                     icon: "warning",
-                                    text: t("panel_page.species_create_mycobank_sync_tooltip"),
+                                    text: t("panel_page.species_edit_mycobank_sync_tooltip"),
                                     confirmButtonText: t("common.continue"),
                                   }).then(() => null);
                                 }
