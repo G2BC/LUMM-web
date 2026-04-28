@@ -784,7 +784,11 @@
       "outdated_alert_cta": "View list",
       "outdated_badge": "Outdated",
       "outdated_mark_resolved": "Mark as resolved",
-      "outdated_resolving": "Resolving..."
+      "outdated_resolving": "Resolving...",
+      "outdated_confirm_title": "Confirm resolution",
+      "outdated_confirm_text": "Are you sure this species is up to date with MycoBank?",
+      "outdated_confirm_yes": "Confirm",
+      "outdated_confirm_no": "Cancel"
     },
     "panel_profile": {
       "title": "My Profile",

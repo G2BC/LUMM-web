@@ -1,5 +1,6 @@
 import { listOutdatedSpecies, updateSpecies } from "@/api/species";
 import { speciesKeys } from "@/api/query-keys";
+import { confirmAction } from "@/components/confirm-action";
 import { UsersPagination } from "@/pages/panel/components/users-pagination";
 import { Button } from "@/components/ui/button";
 import {
@@ -87,6 +88,17 @@ export default function PanelSpeciesOutdatedPage() {
     },
   });
 
+  async function handleMarkResolved(speciesId: number) {
+    const confirmed = await confirmAction({
+      title: t("panel_page.outdated_confirm_title"),
+      text: t("panel_page.outdated_confirm_text"),
+      confirmButtonText: t("panel_page.outdated_confirm_yes"),
+      cancelButtonText: t("panel_page.outdated_confirm_no"),
+    });
+    if (!confirmed) return;
+    markResolved(speciesId);
+  }
+
   const items = data?.items ?? [];
   const pages = Math.max(1, data?.pages ?? 1);
   const total = data?.total ?? 0;
@@ -148,7 +160,7 @@ export default function PanelSpeciesOutdatedPage() {
                           <button
                             type="button"
                             disabled={isResolving && resolvingId === item.id}
-                            onClick={() => markResolved(item.id)}
+                            onClick={() => handleMarkResolved(item.id)}
                             className="text-sm font-medium text-emerald-700 hover:underline disabled:opacity-50"
                           >
                             {isResolving && resolvingId === item.id
@@ -191,7 +203,7 @@ export default function PanelSpeciesOutdatedPage() {
                     <button
                       type="button"
                       disabled={isResolving && resolvingId === item.id}
-                      onClick={() => markResolved(item.id)}
+                      onClick={() => handleMarkResolved(item.id)}
                       className="text-sm font-medium text-emerald-700 hover:underline disabled:opacity-50"
                     >
                       {isResolving && resolvingId === item.id
