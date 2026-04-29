@@ -1,3 +1,10 @@
+# [1.41.0](https://github.com/G2BC/LUMM-web/compare/v1.40.0...v1.41.0) (2026-04-29)
+
+
+### Features
+
+* add observation functionality and enhance species page ([70299ac](https://github.com/G2BC/LUMM-web/commit/70299accd4ed36834ee40ed8c5b311d8587823fb))
+
 # [1.40.0](https://github.com/G2BC/LUMM-web/compare/v1.39.0...v1.40.0) (2026-04-28)
 
 
