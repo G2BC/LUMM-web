@@ -210,7 +210,7 @@ body {
   }
 }
 
-/* strip Leaflet popup wrapper — let shadcn Card own all styling */
+/* strip Leaflet popup wrapper */
 .leaflet-popup-content-wrapper {
   background: transparent !important;
   border: none !important;
