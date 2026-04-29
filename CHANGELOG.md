@@ -1,3 +1,10 @@
+# [1.40.0](https://github.com/G2BC/LUMM-web/compare/v1.39.0...v1.40.0) (2026-04-28)
+
+
+### Features
+
+* add confirmation dialog for marking species as resolved ([f80e181](https://github.com/G2BC/LUMM-web/commit/f80e1814b5f655a8d6c7ab718e279fa51ffa7abf))
+
 # [1.39.0](https://github.com/G2BC/LUMM-web/compare/v1.38.0...v1.39.0) (2026-04-28)
 
 
