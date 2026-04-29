@@ -14,6 +14,7 @@ import type {
   SpeciesDirectPhotoUploadUrlResponse,
   UpdateSpeciesPhotoPayload,
 } from "./types/ISpeciesPhotoManagement";
+import type { IObservationList } from "./types/IObservation";
 import type {
   CleanupTmpUploadsResponse,
   SpeciesChangeRequest,
@@ -363,6 +364,16 @@ export const listOutdatedSpecies = async (params?: {
   const { page, per_page, signal } = params ?? {};
   const response: AxiosResponse<IOutdatedSpecies> = await API.get("/species/outdated", {
     params: { page, per_page },
+    signal,
+  });
+  return response.data;
+};
+
+export const fetchSpeciesObservations = async (
+  speciesId: number,
+  signal?: AbortController["signal"]
+): Promise<IObservationList> => {
+  const response = await API.get<IObservationList>(`/species/${speciesId}/observations`, {
     signal,
   });
   return response.data;

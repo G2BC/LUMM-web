@@ -18,6 +18,7 @@ import { BibliographyCard } from "./components/bibliographyCard";
 import { ConservationStatusIcon } from "@/components/conservation-status-icon";
 import { CuriositiesCard } from "./components/curiositiesCard";
 import { ExternalLinksCard } from "./components/externalLinksCard";
+import { ObservationMapCard } from "./components/observationMapCard";
 import { SpeciesRequestCard } from "./components/speciesRequestCard";
 import { TaxonomyCard } from "./components/taxonomyCard";
 import { LumCard } from "./components/lumCard";
@@ -87,9 +88,33 @@ export default function SpeciesPage() {
           {t("common.back")}
         </Button>
       )}
-      <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-8">
+      {/* título mobile — aparece acima de tudo, escondido no desktop */}
+      <header className="xl:hidden mb-6">
+        <div className="flex items-center gap-5">
+          <h1 className="text-[34px] font-bold leading-[38px] italic tracking-tight">
+            {dados?.scientific_name}
+          </h1>
+          <span className="flex items-center gap-3 shrink-0">
+            <CountryTypeIcon
+              country={dados?.type_country ?? ""}
+              description={t("common.type_country_description", {
+                country: getCountryName(dados?.type_country, lang ?? DEFAULT_LOCALE),
+              })}
+              imageClassName="w-12 h-12 shrink-0"
+            />
+            <ConservationStatusIcon
+              code={conservationStatusCode}
+              label={conservationStatusLabel}
+              description={conservationStatusDescription}
+            />
+          </span>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-4 lg:gap-8">
         <div className="min-w-0 text-white max-xl:order-1">
-          <header className="xl:max-w-[95%]">
+          {/* título desktop — escondido no mobile */}
+          <header className="xl:max-w-[95%] max-xl:hidden">
             <div className="flex items-center gap-5 xl:gap-6">
               <h1 className="text-[34px] xl:text-[48px] font-bold leading-[38px] xl:leading-[52px] italic tracking-tight">
                 {dados?.scientific_name}
@@ -111,7 +136,7 @@ export default function SpeciesPage() {
             </div>
           </header>
 
-          <div className="mt-6 space-y-4 xl:max-w-[95%]">
+          <div className="xl:mt-6 space-y-4 xl:max-w-[95%]">
             <LumCard
               sectionCardClass={sectionCardClass}
               sectionCardContentClass={sectionCardContentClass}
@@ -215,6 +240,18 @@ export default function SpeciesPage() {
 
         <div className="min-w-0 xl:sticky xl:top-20 xl:self-start">
           {!!photos?.length && <Slide slides={photos} />}
+          {dados?.id && (
+            <div className="mt-6">
+              <ObservationMapCard
+                speciesId={dados.id}
+                sectionCardClass={sectionCardClass}
+                sectionCardContentClass={sectionCardContentClass}
+                sectionTitleWrapClass={sectionTitleWrapClass}
+                sectionIconWrapClass={sectionIconWrapClass}
+                sectionTitleClass={sectionTitleClass}
+              />
+            </div>
+          )}
           <section className="mt-6 hidden rounded-2xl border border-primary/35 bg-gradient-to-r from-primary/15 via-primary/5 to-transparent p-5 xl:block">
             <p className="text-sm font-semibold text-white">{t("species_page.contribute_title")}</p>
             <p className="mt-1 text-sm text-white/75">{t("species_page.contribute_text")}</p>

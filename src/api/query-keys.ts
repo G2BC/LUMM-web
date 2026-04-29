@@ -5,6 +5,7 @@ export const speciesKeys = {
   details: () => [...speciesKeys.all, "detail"] as const,
   detail: (id: string | number) => [...speciesKeys.details(), id] as const,
   ncbi: (id: string | number) => [...speciesKeys.detail(id), "ncbi"] as const,
+  observations: (id: string | number) => [...speciesKeys.detail(id), "observations"] as const,
   explore: (params: Record<string, unknown>) => [...speciesKeys.all, "explore", params] as const,
   outdated: (params: Record<string, unknown>) => [...speciesKeys.all, "outdated", params] as const,
 };

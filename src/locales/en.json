@@ -307,6 +307,20 @@
           "bold_system": "BOLD System",
           "unite": "UNITE"
         }
+      },
+      "observations": {
+        "title": "Observations",
+        "total": "{{count}} observation recorded",
+        "total_plural": "{{count}} observations recorded",
+        "source_inaturalist": "iNaturalist",
+        "source_mushroom_observer": "Mushroom Observer",
+        "observed_on": "Observed on",
+        "quality_research": "Research grade",
+        "quality_needs_id": "Needs ID",
+        "quality_casual": "Casual",
+        "location_approximate": "Approximate location",
+        "view_on_source": "View on {{source}}",
+        "no_observations": "No observations recorded yet."
       }
     },
     "species_request": {

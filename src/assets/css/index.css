@@ -209,3 +209,28 @@ body {
     transform: none;
   }
 }
+
+/* strip Leaflet popup wrapper — let shadcn Card own all styling */
+.leaflet-popup-content-wrapper {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+}
+
+.leaflet-popup-tip-container {
+  display: none;
+}
+
+.leaflet-popup-close-button {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 18px !important;
+  top: 4px !important;
+  right: 6px !important;
+}

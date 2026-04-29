@@ -53,7 +53,7 @@ const Slide: React.FC<PropType> = (props) => {
   }, [emblaMainApi, onSelect]);
 
   return (
-    <div className="embla h-full">
+    <div className="embla">
       <div className="relative">
         <div className="embla__viewport" ref={emblaMainRef}>
           <div className="embla__container">
