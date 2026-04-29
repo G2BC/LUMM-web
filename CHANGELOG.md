@@ -1,3 +1,10 @@
+## [1.41.1](https://github.com/G2BC/LUMM-web/compare/v1.41.0...v1.41.1) (2026-04-29)
+
+
+### Bug Fixes
+
+* simplify Leaflet popup wrapper styling ([2e99e5b](https://github.com/G2BC/LUMM-web/commit/2e99e5bfe82b247e12b688bfafe0857fa68296a9))
+
 # [1.41.0](https://github.com/G2BC/LUMM-web/compare/v1.40.0...v1.41.0) (2026-04-29)
 
 
