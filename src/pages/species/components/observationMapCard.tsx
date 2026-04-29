@@ -67,7 +67,7 @@ function ObservationPopup({ obs }: { obs: IObservation }) {
           )}
         </div>
       </CardContent>
-      {obs.url && (
+      {obs.url && obs.source !== "mushroom_observer" && (
         <CardFooter className="px-3 pb-2.5 pt-1">
           <a
             href={obs.url}
