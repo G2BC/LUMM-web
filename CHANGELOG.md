@@ -1,3 +1,10 @@
+# [1.42.0](https://github.com/G2BC/LUMM-web/compare/v1.41.2...v1.42.0) (2026-04-30)
+
+
+### Features
+
+* enhance observation sources and localization ([1beb70b](https://github.com/G2BC/LUMM-web/commit/1beb70b9a62c41b7a614890986e9bd355d321aa6))
+
 ## [1.41.2](https://github.com/G2BC/LUMM-web/compare/v1.41.1...v1.41.2) (2026-04-29)
 
 
