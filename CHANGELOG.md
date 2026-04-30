@@ -1,3 +1,10 @@
+# [1.46.0](https://github.com/G2BC/LUMM-web/compare/v1.45.0...v1.46.0) (2026-04-30)
+
+
+### Features
+
+* enhance build configuration and implement lazy loading for ReactQueryDevtools ([adebf6f](https://github.com/G2BC/LUMM-web/commit/adebf6f7b9e42580379defdb71fb4cb277f24f61))
+
 # [1.45.0](https://github.com/G2BC/LUMM-web/compare/v1.44.1...v1.45.0) (2026-04-30)
 
 
