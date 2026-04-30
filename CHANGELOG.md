@@ -1,3 +1,10 @@
+# [1.44.0](https://github.com/G2BC/LUMM-web/compare/v1.43.0...v1.44.0) (2026-04-30)
+
+
+### Features
+
+* update dependencies and enhance observation map ([f46c0ff](https://github.com/G2BC/LUMM-web/commit/f46c0ff6136a74551f732c11beb000dcd9a696d8))
+
 # [1.43.0](https://github.com/G2BC/LUMM-web/compare/v1.42.0...v1.43.0) (2026-04-30)
 
 
