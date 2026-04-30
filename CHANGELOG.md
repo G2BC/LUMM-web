@@ -1,3 +1,10 @@
+# [1.43.0](https://github.com/G2BC/LUMM-web/compare/v1.42.0...v1.43.0) (2026-04-30)
+
+
+### Features
+
+* improve ComboboxAsync and FilterModal components ([187f432](https://github.com/G2BC/LUMM-web/commit/187f43226b31a643d29fd86ecf423a772c9f5c8c))
+
 # [1.42.0](https://github.com/G2BC/LUMM-web/compare/v1.41.2...v1.42.0) (2026-04-30)
 
 
