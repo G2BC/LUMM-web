@@ -23,6 +23,7 @@ function FitBounds({ observations }: { observations: IObservation[] }) {
 const SOURCE_COLORS = {
   inaturalist: "#22c55e",
   mushroom_observer: "#f59e0b",
+  specieslink: "#60a5fa",
 } as const;
 
 function ObservationPopup({ obs }: { obs: IObservation }) {
@@ -37,14 +38,10 @@ function ObservationPopup({ obs }: { obs: IObservation }) {
       })
     : null;
 
-  const qualityLabel =
-    obs.quality_grade === "research"
-      ? t("species_page.observations.quality_research")
-      : obs.quality_grade === "needs_id"
-        ? t("species_page.observations.quality_needs_id")
-        : obs.quality_grade === "casual"
-          ? t("species_page.observations.quality_casual")
-          : null;
+  const qualityKey = obs.quality_grade
+    ? `species_page.observations.quality_${obs.quality_grade}`
+    : null;
+  const qualityLabel = qualityKey && i18n.exists(qualityKey) ? t(qualityKey) : null;
 
   return (
     <Card className="w-[200px] overflow-hidden !border-0 outline-none bg-[#1c1f1c] text-white shadow-xl py-0 gap-0">
