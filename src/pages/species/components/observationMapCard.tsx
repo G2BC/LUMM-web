@@ -101,7 +101,8 @@ function MapContent({ observations }: { observations: IObservation[] }) {
       <MarkerClusterGroup
         chunkedLoading
         showCoverageOnHover={false}
-        iconCreateFunction={(cluster) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        iconCreateFunction={(cluster: any) => {
           const count = cluster.getChildCount();
           const size = count < 10 ? 32 : count < 100 ? 38 : 44;
           return L.divIcon({
