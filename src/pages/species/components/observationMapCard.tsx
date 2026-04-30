@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { MapPin, Loader2, Maximize2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import React from "react";
 import { useIsMobile } from "@/hooks/use-is-mobile";
@@ -98,46 +97,23 @@ function MapContent({ observations }: { observations: IObservation[] }) {
         url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://carto.com/">CARTO</a>'
       />
-      <MarkerClusterGroup
-        chunkedLoading
-        showCoverageOnHover={false}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        iconCreateFunction={(cluster: any) => {
-          const count = cluster.getChildCount();
-          const size = count < 10 ? 32 : count < 100 ? 38 : 44;
-          return L.divIcon({
-            html: `<div style="
-              width:${size}px;height:${size}px;
-              background:rgba(0,192,0,0.25);
-              border:2px solid #00c000;
-              border-radius:50%;
-              display:flex;align-items:center;justify-content:center;
-              color:#00c000;font-size:11px;font-weight:700;
-            ">${count}</div>`,
-            className: "",
-            iconSize: [size, size],
-            iconAnchor: [size / 2, size / 2],
-          });
-        }}
-      >
-        {observations.map((obs) => (
-          <CircleMarker
-            key={obs.id}
-            center={[obs.latitude, obs.longitude]}
-            radius={5}
-            pathOptions={{
-              color: SOURCE_COLORS[obs.source] ?? "#6b7280",
-              fillColor: SOURCE_COLORS[obs.source] ?? "#6b7280",
-              fillOpacity: 0.75,
-              weight: 1,
-            }}
-          >
-            <Popup>
-              <ObservationPopup obs={obs} />
-            </Popup>
-          </CircleMarker>
-        ))}
-      </MarkerClusterGroup>
+      {observations.map((obs) => (
+        <CircleMarker
+          key={obs.id}
+          center={[obs.latitude, obs.longitude]}
+          radius={5}
+          pathOptions={{
+            color: SOURCE_COLORS[obs.source] ?? "#6b7280",
+            fillColor: SOURCE_COLORS[obs.source] ?? "#6b7280",
+            fillOpacity: 0.75,
+            weight: 1,
+          }}
+        >
+          <Popup>
+            <ObservationPopup obs={obs} />
+          </Popup>
+        </CircleMarker>
+      ))}
     </MapContainer>
   );
 }
