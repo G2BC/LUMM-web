@@ -1,3 +1,10 @@
+## [1.44.1](https://github.com/G2BC/LUMM-web/compare/v1.44.0...v1.44.1) (2026-04-30)
+
+
+### Bug Fixes
+
+* add type annotation to iconCreateFunction in observationMapCard ([215c544](https://github.com/G2BC/LUMM-web/commit/215c54477a413f57bfd05a46509acbe8eaca2097))
+
 # [1.44.0](https://github.com/G2BC/LUMM-web/compare/v1.43.0...v1.44.0) (2026-04-30)
 
 
