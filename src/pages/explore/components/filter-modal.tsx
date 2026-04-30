@@ -187,44 +187,53 @@ export function FilterModal({
 
   const formContent = (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2 px-4">
-      <Input
-        className="sm:col-span-2"
-        value={draftSearch}
-        onChange={(e) => setDraftSearch(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleApply()}
-        placeholder={t("explore_page.input_placeholder")}
-      />
-      <ComboboxAsync
-        variant="dark"
-        placeholder={t("explore_page.select_lineage")}
-        fetchOptions={fetchLineageOptions}
-        initialKnownOptions={lineageInitialOptions}
-        value={draftLineage || null}
-        onSelect={(id) => setDraftLineage(id ? String(id) : "")}
-        onSelectOption={(opt) => setDraftLineageLabel(opt?.label)}
-      />
-      <ComboboxAsync
-        variant="dark"
-        placeholder={t("explore_page.select_country")}
-        fetchOptions={fetchCountryOptions}
-        value={draftCountry || null}
-        onSelect={(id) => setDraftCountry(id ? String(id) : "")}
-      />
-      <ComboboxAsync
-        variant="dark"
-        multiple
-        className="sm:col-span-2"
-        placeholder={t("explore_page.select_distributions")}
-        fetchOptions={fetchDistributionOptions}
-        initialKnownOptions={distributionInitialOptions}
-        value={draftDistributions}
-        onSelect={(ids) => setDraftDistributions(ids.map(String))}
-        onSelectOption={(opts) => {
-          const labels: Record<string, string> = {};
-          for (const opt of opts) labels[String(opt.id)] = opt.label;
-          setDraftDistributionLabels(labels);
-        }}
-      />
+      <label className="sm:col-span-2 flex flex-col gap-1.5">
+        <span className="text-sm text-muted-foreground">{t("explore_page.input_placeholder")}</span>
+        <Input
+          value={draftSearch}
+          onChange={(e) => setDraftSearch(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleApply()}
+          placeholder={t("common.search")}
+        />
+      </label>
+      <label className="flex flex-col gap-1.5">
+        <span className="text-sm text-muted-foreground">{t("explore_page.select_lineage")}</span>
+        <ComboboxAsync
+          variant="dark"
+          fetchOptions={fetchLineageOptions}
+          initialKnownOptions={lineageInitialOptions}
+          value={draftLineage || null}
+          onSelect={(id) => setDraftLineage(id ? String(id) : "")}
+          onSelectOption={(opt) => setDraftLineageLabel(opt?.label)}
+        />
+      </label>
+      <label className="flex flex-col gap-1.5">
+        <span className="text-sm text-muted-foreground">{t("explore_page.select_country")}</span>
+        <ComboboxAsync
+          variant="dark"
+          fetchOptions={fetchCountryOptions}
+          value={draftCountry || null}
+          onSelect={(id) => setDraftCountry(id ? String(id) : "")}
+        />
+      </label>
+      <label className="sm:col-span-2 flex flex-col gap-1.5">
+        <span className="text-sm text-muted-foreground">
+          {t("explore_page.select_distributions")}
+        </span>
+        <ComboboxAsync
+          variant="dark"
+          multiple
+          fetchOptions={fetchDistributionOptions}
+          initialKnownOptions={distributionInitialOptions}
+          value={draftDistributions}
+          onSelect={(ids) => setDraftDistributions(ids.map(String))}
+          onSelectOption={(opts) => {
+            const labels: Record<string, string> = {};
+            for (const opt of opts) labels[String(opt.id)] = opt.label;
+            setDraftDistributionLabels(labels);
+          }}
+        />
+      </label>
     </div>
   );
 

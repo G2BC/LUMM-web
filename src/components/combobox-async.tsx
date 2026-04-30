@@ -68,6 +68,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
   });
 
   const variant = props.variant ?? "dark";
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
 
   React.useEffect(() => {
     if (props.multiple) {
@@ -189,6 +190,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
               value={search}
               onValueChange={setSearch}
               placeholder={t("common.search")}
+              autoFocus={!isMobile}
             />
             <CommandList className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
               <CommandEmpty>{t("common.no_results")}</CommandEmpty>

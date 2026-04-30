@@ -45,7 +45,7 @@ export function FilterTags({
   const { t, i18n } = useTranslation();
   const lang = i18n.language as Locale;
 
-  const distributionValue = distributions.map((d) => filterLabels.distributions[d] ?? d).join(", ");
+  const distributionValue = distributions.join(", ");
 
   const tags = [
     search
