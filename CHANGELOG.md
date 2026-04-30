@@ -1,3 +1,10 @@
+## [1.41.2](https://github.com/G2BC/LUMM-web/compare/v1.41.1...v1.41.2) (2026-04-29)
+
+
+### Bug Fixes
+
+* exclude Mushroom Observer source from observation URL display ([987347f](https://github.com/G2BC/LUMM-web/commit/987347f9fd7f5e63863dab383b6233d914337a6e))
+
 ## [1.41.1](https://github.com/G2BC/LUMM-web/compare/v1.41.0...v1.41.1) (2026-04-29)
 
 
