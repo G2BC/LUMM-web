@@ -1,3 +1,10 @@
+# [1.45.0](https://github.com/G2BC/LUMM-web/compare/v1.44.1...v1.45.0) (2026-04-30)
+
+
+### Features
+
+* lazy load ObservationMapCard with React.Suspense ([c2979b9](https://github.com/G2BC/LUMM-web/commit/c2979b99dfb7bfb869d82a911b025fd81040db9b))
+
 ## [1.44.1](https://github.com/G2BC/LUMM-web/compare/v1.44.0...v1.44.1) (2026-04-30)
 
 
