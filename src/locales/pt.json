@@ -7,6 +7,8 @@
       "loading": "Carregando...",
       "lineage": "Linhagem",
       "no_results": "Sem resultados",
+      "expand": "Expandir",
+      "collapse": "Recolher",
       "taxonomy": "Taxonomia",
       "external_links": "Links externos",
       "source": "Fonte",
