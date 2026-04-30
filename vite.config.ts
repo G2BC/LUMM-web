@@ -169,6 +169,25 @@ export default defineConfig(({ mode }) => {
         includeAssets: ["sitemap.xml", "robots.txt", "manifest.webmanifest", "favicon.ico"],
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            "vendor-react": ["react", "react-dom"],
+            "vendor-router": ["react-router"],
+            "vendor-query": ["@tanstack/react-query"],
+            "vendor-i18n": ["i18next", "react-i18next"],
+            "vendor-ui": [
+              "@radix-ui/react-dialog",
+              "@radix-ui/react-popover",
+              "@radix-ui/react-select",
+              "cmdk",
+            ],
+            "vendor-form": ["react-hook-form", "@hookform/resolvers", "zod"],
+          },
+        },
+      },
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
