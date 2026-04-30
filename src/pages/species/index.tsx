@@ -1,3 +1,4 @@
+import React from "react";
 import Slide from "@/pages/species/components/slide";
 import { ChevronLeft, Loader2, PencilLine } from "lucide-react";
 import "@/assets/css/slide.css";
@@ -18,7 +19,9 @@ import { BibliographyCard } from "./components/bibliographyCard";
 import { ConservationStatusIcon } from "@/components/conservation-status-icon";
 import { CuriositiesCard } from "./components/curiositiesCard";
 import { ExternalLinksCard } from "./components/externalLinksCard";
-import { ObservationMapCard } from "./components/observationMapCard";
+const ObservationMapCard = React.lazy(() =>
+  import("./components/observationMapCard").then((m) => ({ default: m.ObservationMapCard }))
+);
 import { SpeciesRequestCard } from "./components/speciesRequestCard";
 import { TaxonomyCard } from "./components/taxonomyCard";
 import { LumCard } from "./components/lumCard";
@@ -242,14 +245,16 @@ export default function SpeciesPage() {
           {!!photos?.length && <Slide slides={photos} />}
           {dados?.id && (
             <div className="mt-6">
-              <ObservationMapCard
-                speciesId={dados.id}
-                sectionCardClass={sectionCardClass}
-                sectionCardContentClass={sectionCardContentClass}
-                sectionTitleWrapClass={sectionTitleWrapClass}
-                sectionIconWrapClass={sectionIconWrapClass}
-                sectionTitleClass={sectionTitleClass}
-              />
+              <React.Suspense fallback={null}>
+                <ObservationMapCard
+                  speciesId={dados.id}
+                  sectionCardClass={sectionCardClass}
+                  sectionCardContentClass={sectionCardContentClass}
+                  sectionTitleWrapClass={sectionTitleWrapClass}
+                  sectionIconWrapClass={sectionIconWrapClass}
+                  sectionTitleClass={sectionTitleClass}
+                />
+              </React.Suspense>
             </div>
           )}
           <section className="mt-6 hidden rounded-2xl border border-primary/35 bg-gradient-to-r from-primary/15 via-primary/5 to-transparent p-5 xl:block">
