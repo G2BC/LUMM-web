@@ -1,3 +1,10 @@
+## [1.46.1](https://github.com/G2BC/LUMM-web/compare/v1.46.0...v1.46.1) (2026-04-30)
+
+
+### Bug Fixes
+
+* update package versions and remove unused dependencies ([c4eb7af](https://github.com/G2BC/LUMM-web/commit/c4eb7af007ecd3451627cfc4f253a94af64a35bc))
+
 # [1.46.0](https://github.com/G2BC/LUMM-web/compare/v1.45.0...v1.46.0) (2026-04-30)
 
 
