@@ -8,6 +8,8 @@ import { AuthGuard } from "./components/auth-guard";
 
 const HomePage = React.lazy(() => import("./pages/home"));
 const ExplorePage = React.lazy(() => import("./pages/explore"));
+const GlossaryPage = React.lazy(() => import("./pages/glossary"));
+const GuidancePage = React.lazy(() => import("./pages/guidance-&-orientations"));
 const AboutPage = React.lazy(() => import("./pages/about"));
 const PublicationsPage = React.lazy(() => import("./pages/publications"));
 const LoginPage = React.lazy(() => import("./pages/login"));
@@ -66,7 +68,9 @@ function Router() {
           <Route path="distribuicao" element={<DistributionPage />} />
           <Route path="explorar" element={<ExplorePage />} />
           <Route path="sobre" element={<AboutPage />} />
+          <Route path="glossario" element={<GlossaryPage />} />
           <Route path="publicacoes" element={<PublicationsPage />} />
+          <Route path="guia" element={<GuidancePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="cadastro" element={<RegisterPage />} />
           <Route path="trocar-senha" element={<AuthGuard requireUser={false} />}>
