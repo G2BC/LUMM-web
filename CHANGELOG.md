@@ -1,3 +1,15 @@
+# [1.47.0](https://github.com/G2BC/LUMM-web/compare/v1.46.1...v1.47.0) (2026-05-04)
+
+
+### Bug Fixes
+
+* uniformize title glossary ([bcbb241](https://github.com/G2BC/LUMM-web/commit/bcbb24168e1394fd37d54321b34160a43ea1f549))
+
+
+### Features
+
+* add glossary terms and guidance page ([eb8b600](https://github.com/G2BC/LUMM-web/commit/eb8b600b9ee1f2b4792cb6bf0b4be0568766eb25))
+
 ## [1.46.1](https://github.com/G2BC/LUMM-web/compare/v1.46.0...v1.46.1) (2026-04-30)
 
 
