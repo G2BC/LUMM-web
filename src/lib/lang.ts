@@ -1,6 +1,6 @@
 export const SUPPORTED_LOCALES = ["pt", "en"] as const;
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = "pt";
+export const DEFAULT_LOCALE: Locale = "en";
 
 export function isSupported(l?: string): l is Locale {
   return !!l && SUPPORTED_LOCALES.includes(l as Locale);

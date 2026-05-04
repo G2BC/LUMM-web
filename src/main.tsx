@@ -1,7 +1,7 @@
 import { StrictMode, Suspense, lazy } from "react";
 import { createRoot } from "react-dom/client";
 import "./assets/css/index.css";
-import "@/lib/i18n.ts";
+import { initI18n } from "@/lib/i18n.ts";
 import "@/api/setup-interceptors";
 import Router from "./router.tsx";
 import { BrowserRouter } from "react-router";
@@ -20,23 +20,25 @@ const ReactQueryDevtools = import.meta.env.DEV
     )
   : null;
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthBootstrap>
-          <Suspense fallback={<RouteAwareLoader />}>
-            <ScrollToTop />
-            <RouteAwareThemeColor />
-            <Router />
+initI18n.then(() => {
+  createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthBootstrap>
+            <Suspense fallback={<RouteAwareLoader />}>
+              <ScrollToTop />
+              <RouteAwareThemeColor />
+              <Router />
+            </Suspense>
+          </AuthBootstrap>
+        </BrowserRouter>
+        {ReactQueryDevtools && (
+          <Suspense fallback={null}>
+            <ReactQueryDevtools initialIsOpen={false} />
           </Suspense>
-        </AuthBootstrap>
-      </BrowserRouter>
-      {ReactQueryDevtools && (
-        <Suspense fallback={null}>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </Suspense>
-      )}
-    </QueryClientProvider>
-  </StrictMode>
-);
+        )}
+      </QueryClientProvider>
+    </StrictMode>
+  );
+});

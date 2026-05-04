@@ -94,6 +94,7 @@ export default defineConfig(({ mode }) => {
           skipWaiting: true,
           clientsClaim: true,
           globPatterns: ["**/*.{js,css,svg,png,webp,woff2}"],
+          globIgnores: ["**/locale-*.js"],
           runtimeCaching: [
             {
               urlPattern: ({ request }) => request.destination === "document",
@@ -172,18 +173,36 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks: {
-            "vendor-react": ["react", "react-dom"],
-            "vendor-router": ["react-router"],
-            "vendor-query": ["@tanstack/react-query"],
-            "vendor-i18n": ["i18next", "react-i18next"],
-            "vendor-ui": [
-              "@radix-ui/react-dialog",
-              "@radix-ui/react-popover",
-              "@radix-ui/react-select",
-              "cmdk",
-            ],
-            "vendor-form": ["react-hook-form", "@hookform/resolvers", "zod"],
+          manualChunks(id) {
+            const normalizedId = id.split(path.sep).join("/");
+
+            if (normalizedId.includes("/src/locales/")) {
+              return `locale-${path.basename(id, ".json")}`;
+            }
+
+            const vendorChunks: Record<string, string[]> = {
+              "vendor-react": ["react", "react-dom"],
+              "vendor-router": ["react-router"],
+              "vendor-query": ["@tanstack/react-query"],
+              "vendor-i18n": ["i18next", "react-i18next"],
+              "vendor-ui": [
+                "@radix-ui/react-dialog",
+                "@radix-ui/react-popover",
+                "@radix-ui/react-select",
+                "cmdk",
+              ],
+              "vendor-form": ["react-hook-form", "@hookform/resolvers", "zod"],
+            };
+
+            for (const [chunkName, packages] of Object.entries(vendorChunks)) {
+              if (
+                packages.some((packageName) =>
+                  normalizedId.includes(`/node_modules/${packageName}/`)
+                )
+              ) {
+                return chunkName;
+              }
+            }
           },
         },
       },
