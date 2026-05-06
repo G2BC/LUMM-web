@@ -4,7 +4,14 @@ dist
 .git
 .gitignore
 .env
+.env.me
+.env.*.me
 *.log
 *.pem
 *.key
 *.crt
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
