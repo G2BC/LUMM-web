@@ -1,10 +1,13 @@
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
+import { config as loadDotenvVault } from "dotenv";
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import sitemap from "vite-plugin-sitemap";
 import { vitePrerenderPlugin } from "vite-prerender-plugin";
 import { VitePWA } from "vite-plugin-pwa";
+
+loadDotenvVault({ quiet: true });
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {

@@ -27,6 +27,15 @@ npm install
 npm run dev
 ```
 
+### Variáveis de ambiente
+
+Localmente, copie `.env.sample` para `.env` e preencha os valores.
+
+Em produção, as variáveis `VITE_*` são injetadas no bundle durante o build. O deploy usa
+o `.env.vault` versionado no repositório e a secret `DOTENV_KEY` cadastrada em
+`Settings > Secrets and variables > Actions`; não é necessário cadastrar cada `VITE_*`
+como secret separada no GitHub Actions.
+
 ### ⚠️ Mantenha as regras de Lint e Formatação
 
 Para garantir a consistência e a qualidade do código neste projeto, **antes de mesclar uma PR**, certifique-se de que seu código passou nas ferramentas de lint e formatação (`eslint` e `prettier`) durante a execução da action de CI.

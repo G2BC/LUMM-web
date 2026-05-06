@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.env.me
+.env.*.me
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
