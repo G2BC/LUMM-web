@@ -1,3 +1,10 @@
+# [1.48.0](https://github.com/G2BC/LUMM-web/compare/v1.47.0...v1.48.0) (2026-05-06)
+
+
+### Features
+
+* update environment variable management and add dotenv support ([d035f7f](https://github.com/G2BC/LUMM-web/commit/d035f7fb432d2993ff5dc13f9f2dd2272dd3dfe6))
+
 # [1.47.0](https://github.com/G2BC/LUMM-web/compare/v1.46.1...v1.47.0) (2026-05-04)
 
 
