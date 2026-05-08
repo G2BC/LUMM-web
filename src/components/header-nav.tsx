@@ -18,6 +18,8 @@ const mainLinks = [
 
 const sobreLinks = [
   { path: "/sobre", label: "header.about" },
+  { path: "/glossario", label: "header.glossary" },
+  { path: "/guia", label: "header.guidance" },
   { path: "/colaboradores", label: "header.collaborators" },
   { path: "/dados", label: "header.data" },
 ];
