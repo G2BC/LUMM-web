@@ -26,6 +26,7 @@ function FitBounds({ observations }: { observations: IObservation[] }) {
 const SOURCE_COLORS = {
   mushroom_observer: "#f59e0b",
   specieslink: "#60a5fa",
+  bold: "#f9a8d4",
 } as const;
 
 const INATURALIST_NEEDS_ID_COLOR = "#E0E000";
@@ -181,6 +182,8 @@ export function ObservationMapCard({
         counts.mushroomObserver += 1;
       } else if (obs.source === "specieslink") {
         counts.specieslink += 1;
+      } else if (obs.source === "bold") {
+        counts.bold += 1;
       }
 
       return counts;
@@ -190,6 +193,7 @@ export function ObservationMapCard({
       inaturalistNeedsId: 0,
       mushroomObserver: 0,
       specieslink: 0,
+      bold: 0,
     }
   );
 
@@ -221,6 +225,12 @@ export function ObservationMapCard({
       color: SOURCE_COLORS.specieslink,
       label: t("species_page.observations.source_specieslink"),
       count: observationCounts.specieslink,
+    },
+    {
+      key: "bold",
+      color: SOURCE_COLORS.bold,
+      label: t("species_page.observations.source_bold"),
+      count: observationCounts.bold,
     },
   ];
 

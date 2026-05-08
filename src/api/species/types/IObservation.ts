@@ -1,4 +1,4 @@
-export type ObservationSource = "inaturalist" | "mushroom_observer" | "specieslink";
+export type ObservationSource = "inaturalist" | "mushroom_observer" | "specieslink" | "bold";
 
 export interface IObservation {
   id: number;
