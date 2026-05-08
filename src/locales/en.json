@@ -24,6 +24,8 @@
       "distribution": "Distribution",
       "explore": "Explore",
       "about": "About",
+      "glossary": "Glossary",
+      "guidance": "Guidance",
       "publications": "Publications",
       "collaborators": "Collaborators",
       "data": "Download",
@@ -929,7 +931,7 @@
     },
     "glossary_page": {
       "title": "Glossary",
-      "paragraph1": "This glossary provides definitions for terms that are useful in understanding zebrafish development, anatomy, genetics and bioinformatics. Terms are defined in a general sense as they apply to eukaryotic genetics, particularly zebrafish genetics; some terms are also defined as they are specifically used in ZFIN (e.g., gene). This list will grow as time goes on. If there is a term you think should be included in this list, please contact ZFIN User Support.",
+      "paragraph1": "This glossary provides definitions and information regarding the taxonomy, morphology, and distribution of bioluminescent fungi, with a focus on data integrated into the LUMM (Luminescent Mushroom Database) repository. If there is a term you believe should be included, please contact us.",
       "paragraph2": "The terms are alphabetically ordered across all categories. Categories: [Morphology] based on Vellinga (Flora Agaricina Neerlandica, Cap. 2 and 8); [Ecology] based on Põlme et al. 2021 (FungalTraits); [Bioluminescence] based on Kaskova et al. 2017, Purtov et al. 2015 and subsequent literature; [Collection] based on Lodge et al. 2004 and IAPT nomenclature standards.",
       "paragraph3": "Click on a letter below to navigate through the taxonomy and morphology terms in the LUMM Glossary.",
       "morphology": "Morphology",
