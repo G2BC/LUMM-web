@@ -24,15 +24,35 @@ function FitBounds({ observations }: { observations: IObservation[] }) {
 }
 
 const SOURCE_COLORS = {
-  inaturalist: "#22c55e",
   mushroom_observer: "#f59e0b",
   specieslink: "#60a5fa",
 } as const;
 
+const INATURALIST_NEEDS_ID_COLOR = "#E0E000";
+const INATURALIST_RESEARCH_COLOR = "#75AC00";
+
+const isINaturalistResearchGrade = (qualityGrade: string | null) =>
+  qualityGrade === "research" || qualityGrade === "research_grade";
+
+const isINaturalistResearchObservation = (obs: IObservation) =>
+  obs.source === "inaturalist" && isINaturalistResearchGrade(obs.quality_grade);
+
+const getObservationColor = (obs: IObservation) => {
+  if (isINaturalistResearchObservation(obs)) {
+    return INATURALIST_RESEARCH_COLOR;
+  }
+
+  if (obs.source === "inaturalist") {
+    return INATURALIST_NEEDS_ID_COLOR;
+  }
+
+  return SOURCE_COLORS[obs.source] ?? "#6b7280";
+};
+
 function ObservationPopup({ obs }: { obs: IObservation }) {
   const { t, i18n } = useTranslation();
   const sourceName = t(`species_page.observations.source_${obs.source}`);
-  const sourceColor = SOURCE_COLORS[obs.source] ?? "#6b7280";
+  const sourceColor = getObservationColor(obs);
   const formattedDate = obs.observed_on
     ? new Date(obs.observed_on + "T00:00:00").toLocaleDateString(i18n.language, {
         day: "2-digit",
@@ -103,8 +123,8 @@ function MapContent({ observations }: { observations: IObservation[] }) {
           center={[obs.latitude, obs.longitude]}
           radius={5}
           pathOptions={{
-            color: SOURCE_COLORS[obs.source] ?? "#6b7280",
-            fillColor: SOURCE_COLORS[obs.source] ?? "#6b7280",
+            color: getObservationColor(obs),
+            fillColor: getObservationColor(obs),
             fillOpacity: 0.75,
             weight: 1,
           }}
@@ -151,12 +171,44 @@ export function ObservationMapCard({
 
   if (!isLoading && total === 0) return null;
 
+  const legendItems = [
+    {
+      key: "inaturalist_research",
+      color: INATURALIST_RESEARCH_COLOR,
+      label: `${t("species_page.observations.source_inaturalist")} (${t(
+        "species_page.observations.quality_research"
+      )})`,
+    },
+    {
+      key: "inaturalist_needs_id",
+      color: INATURALIST_NEEDS_ID_COLOR,
+      label: `${t("species_page.observations.source_inaturalist")} (${t(
+        "species_page.observations.quality_needs_id"
+      )})`,
+    },
+    {
+      key: "mushroom_observer",
+      color: SOURCE_COLORS.mushroom_observer,
+      label: t("species_page.observations.source_mushroom_observer"),
+    },
+    {
+      key: "specieslink",
+      color: SOURCE_COLORS.specieslink,
+      label: t("species_page.observations.source_specieslink"),
+    },
+  ];
+
   const legend = (
-    <div className="flex items-center gap-4 text-xs text-white/40">
-      {Object.entries(SOURCE_COLORS).map(([source, color]) => (
-        <span key={source} className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-          {t(`species_page.observations.source_${source}`)}
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/40">
+      {legendItems.map(({ key, color, label }) => (
+        <span key={key} className="flex items-center gap-1.5">
+          <span
+            className="inline-block h-2 w-2 rounded-full"
+            style={{
+              backgroundColor: color,
+            }}
+          />
+          {label}
         </span>
       ))}
     </div>
