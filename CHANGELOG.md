@@ -1,3 +1,10 @@
+## [1.48.1](https://github.com/G2BC/LUMM-web/compare/v1.48.0...v1.48.1) (2026-05-08)
+
+
+### Bug Fixes
+
+* update localization strings for English and Portuguese ([d15b8d6](https://github.com/G2BC/LUMM-web/commit/d15b8d68c79c57f85e6a8e98d2dac76648ff749a))
+
 # [1.48.0](https://github.com/G2BC/LUMM-web/compare/v1.47.0...v1.48.0) (2026-05-06)
 
 
