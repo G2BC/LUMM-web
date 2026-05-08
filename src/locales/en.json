@@ -227,7 +227,7 @@
         },
         "edible": "Edible",
         "cultivation_possible": "Cultivation possible",
-        "no_information": "No information",
+        "no_information": "Unknown",
         "cultivation": "Cultivation",
         "finding_tips": "Finding tips",
         "nearby_trees": "Associated plant species",
