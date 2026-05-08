@@ -1,3 +1,10 @@
+## [1.48.3](https://github.com/G2BC/LUMM-web/compare/v1.48.2...v1.48.3) (2026-05-08)
+
+
+### Bug Fixes
+
+* update .env.sample to remove NODE_ENV default value ([ae8a88e](https://github.com/G2BC/LUMM-web/commit/ae8a88e9734384c1e56ae24d9747ba950da26fbb))
+
 ## [1.48.2](https://github.com/G2BC/LUMM-web/compare/v1.48.1...v1.48.2) (2026-05-08)
 
 
