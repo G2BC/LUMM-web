@@ -171,6 +171,28 @@ export function ObservationMapCard({
 
   if (!isLoading && total === 0) return null;
 
+  const observationCounts = observations.reduce(
+    (counts, obs) => {
+      if (isINaturalistResearchObservation(obs)) {
+        counts.inaturalistResearch += 1;
+      } else if (obs.source === "inaturalist") {
+        counts.inaturalistNeedsId += 1;
+      } else if (obs.source === "mushroom_observer") {
+        counts.mushroomObserver += 1;
+      } else if (obs.source === "specieslink") {
+        counts.specieslink += 1;
+      }
+
+      return counts;
+    },
+    {
+      inaturalistResearch: 0,
+      inaturalistNeedsId: 0,
+      mushroomObserver: 0,
+      specieslink: 0,
+    }
+  );
+
   const legendItems = [
     {
       key: "inaturalist_research",
@@ -178,6 +200,7 @@ export function ObservationMapCard({
       label: `${t("species_page.observations.source_inaturalist")} (${t(
         "species_page.observations.quality_research"
       )})`,
+      count: observationCounts.inaturalistResearch,
     },
     {
       key: "inaturalist_needs_id",
@@ -185,22 +208,25 @@ export function ObservationMapCard({
       label: `${t("species_page.observations.source_inaturalist")} (${t(
         "species_page.observations.quality_needs_id"
       )})`,
+      count: observationCounts.inaturalistNeedsId,
     },
     {
       key: "mushroom_observer",
       color: SOURCE_COLORS.mushroom_observer,
       label: t("species_page.observations.source_mushroom_observer"),
+      count: observationCounts.mushroomObserver,
     },
     {
       key: "specieslink",
       color: SOURCE_COLORS.specieslink,
       label: t("species_page.observations.source_specieslink"),
+      count: observationCounts.specieslink,
     },
   ];
 
   const legend = (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/40">
-      {legendItems.map(({ key, color, label }) => (
+      {legendItems.map(({ key, color, label, count }) => (
         <span key={key} className="flex items-center gap-1.5">
           <span
             className="inline-block h-2 w-2 rounded-full"
@@ -208,7 +234,8 @@ export function ObservationMapCard({
               backgroundColor: color,
             }}
           />
-          {label}
+          <span>{label}</span>
+          <span className="text-white/30">· {count}</span>
         </span>
       ))}
     </div>
