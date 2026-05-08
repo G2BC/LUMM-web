@@ -1,3 +1,12 @@
+# [1.49.0](https://github.com/G2BC/LUMM-web/compare/v1.48.4...v1.49.0) (2026-05-08)
+
+
+### Features
+
+* add BOLD Systems as a new observation source ([c037a53](https://github.com/G2BC/LUMM-web/commit/c037a532d5b770f4257cfb7f5a1eb58e3fd35629))
+* add observation counts to the map card legend ([cecab45](https://github.com/G2BC/LUMM-web/commit/cecab459a621d59b7e518ae734c8ba9abdfa53a8))
+* enhance observation color coding in the map card ([82b147e](https://github.com/G2BC/LUMM-web/commit/82b147e588f7202641825e36635d78dfbc6a7c56))
+
 ## [1.48.4](https://github.com/G2BC/LUMM-web/compare/v1.48.3...v1.48.4) (2026-05-08)
 
 
