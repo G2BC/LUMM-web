@@ -11,6 +11,7 @@ import { RouteAwareLoader } from "./components/route-aware-loader.tsx";
 import { RouteAwareThemeColor } from "./components/route-aware-theme-color.tsx";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query-client";
+import { initClarity } from "@/lib/clarity";
 
 const ReactQueryDevtools = import.meta.env.DEV
   ? lazy(() =>
@@ -21,6 +22,8 @@ const ReactQueryDevtools = import.meta.env.DEV
   : null;
 
 initI18n.then(() => {
+  initClarity();
+
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
