@@ -261,7 +261,7 @@
       "lumm": {
         "section_title": "Bioluminescent Anatomy",
         "mycelium": "Mycelium",
-        "basidiome": "Basidiome",
+        "basidiome": "Basidiome (Whole fruiting body)",
         "stipe": "Stipe (Stem)",
         "pileus": "Pileus (Cap)",
         "lamellae": "Gills or Pores",
@@ -349,7 +349,7 @@
       "lum_part_toggle_enable": "Change",
       "lum_part_toggle_clear": "Clear",
       "lum_part_mycelium": "Mycelium",
-      "lum_part_basidiome": "Basidiome",
+      "lum_part_basidiome": "Basidiome (Whole fruiting body)",
       "lum_part_stipe": "Stipe (Stem)",
       "lum_part_pileus": "Pileus (Cap)",
       "lum_part_lamellae": "Gills or Pores",

@@ -261,7 +261,7 @@
       "lumm": {
         "section_title": "Anatomia Bioluminescente",
         "mycelium": "Micélio",
-        "basidiome": "Basidioma",
+        "basidiome": "Basidioma (Corpo de frutificação inteiro)",
         "stipe": "Estipe (Caule)",
         "pileus": "Píleo (Chapéu)",
         "lamellae": "Lamelas ou Poros",
@@ -349,7 +349,7 @@
       "lum_part_toggle_enable": "Alterar",
       "lum_part_toggle_clear": "Limpar",
       "lum_part_mycelium": "Micélio",
-      "lum_part_basidiome": "Basidioma",
+      "lum_part_basidiome": "Basidioma (Corpo de frutificação inteiro)",
       "lum_part_stipe": "Estipe (Caule)",
       "lum_part_pileus": "Píleo (Chapéu)",
       "lum_part_lamellae": "Lamelas ou Poros",
