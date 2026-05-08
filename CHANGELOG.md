@@ -1,3 +1,10 @@
+## [1.48.4](https://github.com/G2BC/LUMM-web/compare/v1.48.3...v1.48.4) (2026-05-08)
+
+
+### Reverts
+
+* Revert "refactor: clean up index.html and enhance nginx configuration" ([c3f5879](https://github.com/G2BC/LUMM-web/commit/c3f5879fca62456d113478518db84378fd18befc))
+
 ## [1.48.3](https://github.com/G2BC/LUMM-web/compare/v1.48.2...v1.48.3) (2026-05-08)
 
 
