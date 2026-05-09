@@ -12,6 +12,7 @@
       "taxonomy": "Taxonomy",
       "external_links": "External links",
       "source": "Source",
+      "show": "Show",
       "view_more": "View more",
       "type_country_description": "Type specimen country: {{country}}",
       "continue": "Continue",
