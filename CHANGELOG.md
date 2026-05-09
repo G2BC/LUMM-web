@@ -1,3 +1,10 @@
+# [1.51.0](https://github.com/G2BC/LUMM-web/compare/v1.50.0...v1.51.0) (2026-05-09)
+
+
+### Features
+
+* add glossary and guidance links to header navigation and translations ([aa6c7b4](https://github.com/G2BC/LUMM-web/commit/aa6c7b426ae112dbcba8b1b50bc58a1d17f76c72))
+
 # [1.50.0](https://github.com/G2BC/LUMM-web/compare/v1.49.0...v1.50.0) (2026-05-09)
 
 
