@@ -66,6 +66,7 @@ export interface SpeciesCharacteristics {
 
 export interface ISpecie {
   id: number;
+  uid?: string;
   lineage: string;
   is_visible?: boolean;
   similar_species?: SpeciesTopLevelSimpleOption[];

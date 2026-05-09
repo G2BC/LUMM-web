@@ -37,9 +37,11 @@ export function SpecieCard(props: ISpecie) {
     }
   );
 
+  const speciesIdentifier = props.uid ?? props.id;
+
   return (
     <Link
-      to={`/${lang ?? DEFAULT_LOCALE}/especie/${props.id}`}
+      to={`/${lang ?? DEFAULT_LOCALE}/especie/${speciesIdentifier}`}
       className="group block w-full lg:w-[280px]"
     >
       <Card className="p-0 border-0 overflow-hidden w-full h-[500px] md:h-[390px]">
