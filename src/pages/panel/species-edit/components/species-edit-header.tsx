@@ -9,10 +9,10 @@ import {
 import {
   ArrowLeft,
   BookOpen,
-  Edit2,
   ExternalLink,
   ImagePlus,
   MoreHorizontal,
+  Send,
   Trash2,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -22,10 +22,10 @@ type SpeciesEditHeaderProps = {
   scientificName: string;
   subtitle: string;
   backPath: string;
-  editPath: string;
   publicPath: string;
   photosPath: string;
   referencesPath: string;
+  requestUpdatePath: string;
   isViewMode: boolean;
   isDeletingSpecies: boolean;
   onDelete: () => void;
@@ -35,10 +35,10 @@ export function SpeciesEditHeader({
   scientificName,
   subtitle,
   backPath,
-  editPath,
   publicPath,
   photosPath,
   referencesPath,
+  requestUpdatePath,
   isViewMode,
   isDeletingSpecies,
   onDelete,
@@ -67,45 +67,45 @@ export function SpeciesEditHeader({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             {isViewMode ? (
+              <DropdownMenuItem asChild>
+                <Link to={requestUpdatePath}>
+                  <Send className="h-4 w-4" />
+                  {t("species_page.request_update_cta")}
+                </Link>
+              </DropdownMenuItem>
+            ) : (
               <>
                 <DropdownMenuItem asChild>
-                  <Link to={editPath}>
-                    <Edit2 className="h-4 w-4" />
-                    {t("panel_page.action_manage")}
+                  <Link to={photosPath}>
+                    <ImagePlus className="h-4 w-4" />
+                    {t("panel_page.action_manage_photos")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to={referencesPath}>
+                    <BookOpen className="h-4 w-4" />
+                    {t("panel_page.action_manage_references")}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to={publicPath} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4" />
+                    {t("panel_page.species_photos_open_public")}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  variant="destructive"
+                  onSelect={() => void onDelete()}
+                  disabled={isDeletingSpecies}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  {t("panel_page.species_delete_action")}
+                </DropdownMenuItem>
               </>
-            ) : null}
-            <DropdownMenuItem asChild>
-              <Link to={photosPath}>
-                <ImagePlus className="h-4 w-4" />
-                {t("panel_page.action_manage_photos")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to={referencesPath}>
-                <BookOpen className="h-4 w-4" />
-                {t("panel_page.action_manage_references")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link to={publicPath} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="h-4 w-4" />
-                {t("panel_page.species_photos_open_public")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant="destructive"
-              onSelect={() => void onDelete()}
-              disabled={isDeletingSpecies}
-            >
-              <Trash2 className="h-4 w-4" />
-              {t("panel_page.species_delete_action")}
-            </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
