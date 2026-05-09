@@ -5,9 +5,11 @@ import EJunior from "@/assets/contributors/E_Junior.jpg";
 import DMendel from "@/assets/contributors/D_Mendel.jpeg";
 import CStevani from "@/assets/contributors/C_Stevani.jpeg";
 import JArthur from "@/assets/contributors/J_Arthur.jpeg";
+import AHenrique from "@/assets/contributors/A_Henrique.jpeg";
 import g2bc from "@/assets/contributors/G2BC.jpeg";
 import funsynbio from "@/assets/contributors/funsynbio.jpeg";
 import lbf from "@/assets/contributors/LBF.jpeg";
+import IPBio from "@/assets/contributors/IPBio.jpeg";
 import React from "react";
 
 export type Contributor = {
@@ -47,11 +49,6 @@ export const contributors: Contributor[] = [
         icon: <LiaOrcid className="w-6 h-6" />,
         href: "https://orcid.org/0000-0001-6699-2899",
         title: "ORCID",
-      },
-      {
-        icon: <Github className="w-5 h-5" />,
-        href: "https://github.com/G2BC",
-        title: "GitHub",
       },
     ],
   },
@@ -165,6 +162,31 @@ export const contributors: Contributor[] = [
       },
     ],
   },
+  {
+    avatar: AHenrique,
+    name: "Adão Henrique Rosa Domingos",
+    bio: {
+      pt: "Biólogo, graduado pela UNISEPE em 2007, atuante nas áreas de micologia, biodiversidade e conservação da Mata Atlântica, desenvolvendo suas atividades junto ao IPBio – Instituto de Pesquisas da Biodiversidade, especialmente na Reserva Betary, localizada no Vale do Ribeira, em Iporanga (SP). Desde 2015, participa ativamente de expedições científicas voltadas à prospecção de fungos bioluminescentes em diferentes regiões da Mata Atlântica brasileira, contribuindo para a descoberta, documentação ecológica, registro fotográfico e descrição de mais de uma dezena de espécies luminescentes. Seu trabalho concentra-se na busca e monitoramento de fungos bioluminescentes em ambientes florestais naturais, incluindo estudos sobre ocorrência, distribuição, substratos de crescimento e registro de habitats associados às espécies. Atua também na documentação fotográfica de fungos luminescentes em campo, produzindo imagens utilizadas em atividades científicas, educacionais e de divulgação da biodiversidade. Sua experiência em observação de campo e conhecimento dos ecossistemas do Vale do Ribeira têm contribuído significativamente para projetos científicos relacionados à diversidade e ecologia de fungos bioluminescentes da Mata Atlântica. Além das atividades de pesquisa e prospecção, participa de iniciativas de educação ambiental e divulgação científica promovidas pelo IPBio, auxiliando na aproximação entre ciência, conservação e sociedade, especialmente em temas relacionados à biodiversidade fúngica e aos ecossistemas cavernícolas e florestais da região do PETAR.",
+      en: "Biologist, graduated from UNISEPE in 2007, active in the areas of mycology, biodiversity, and conservation of the Atlantic Forest, developing his activities at IPBio – Institute for Biodiversity Research, especially in the Betary Reserve, located in the Ribeira Valley, Iporanga (SP). Since 2015, he has been actively participating in scientific expeditions aimed at prospecting bioluminescent fungi in different regions of the Brazilian Atlantic Forest, contributing to the discovery, ecological documentation, photographic recording, and description of more than a dozen luminescent species. His work focuses on the search and monitoring of bioluminescent fungi in natural forest environments, including studies on occurrence, distribution, growth substrates, and habitat records associated with the species. He also works on the photographic documentation of luminescent fungi in the field, producing images used in scientific activities, educational initiatives, and biodiversity outreach. His experience in field observation and knowledge of the ecosystems of the Ribeira Valley have significantly contributed to scientific projects related to the diversity and ecology of bioluminescent fungi in the Atlantic Forest. In addition to research and prospecting activities, he participates in environmental education initiatives and scientific outreach promoted by IPBio, helping to bridge science, conservation, and society, especially on topics related to fungal biodiversity and cave and forest ecosystems in the PETAR region.",
+    },
+    links: [
+      {
+        icon: <Mail className="w-5 h-5" />,
+        href: "mailto:henrique.domingos@ipbio.org.br",
+        title: "Email",
+      },
+      {
+        icon: <Link className="w-5 h-5" />,
+        href: "http://lattes.cnpq.br/4946643875474487",
+        title: "Lattes",
+      },
+      {
+        icon: <LiaOrcid className="w-6 h-6" />,
+        href: "https://orcid.org/0009-0009-9229-7705",
+        title: "ORCID",
+      },
+    ],
+  },
 ];
 
 export const research_groups: Contributor[] = [
@@ -181,6 +203,11 @@ export const research_groups: Contributor[] = [
         icon: <Instagram className="w-5 h-5" />,
         href: "https://www.instagram.com/g2bc.uneb/",
         title: "Instagram",
+      },
+      {
+        icon: <Github className="w-5 h-5" />,
+        href: "https://github.com/G2BC",
+        title: "GitHub",
       },
     ],
   },
@@ -214,6 +241,22 @@ export const research_groups: Contributor[] = [
       {
         icon: <Instagram className="w-5 h-5" />,
         href: "https://www.instagram.com/funsynbio/",
+        title: "Instagram",
+      },
+    ],
+  },
+  {
+    avatar: IPBio,
+    name: "IPBio",
+    bio: {
+      pt: "O IPBio – Instituto de Pesquisas da Biodiversidade é uma organização dedicada à pesquisa científica, conservação da biodiversidade e educação ambiental, localizada no Vale do Ribeira, uma das regiões mais preservadas da Mata Atlântica brasileira. Suas atividades concentram-se principalmente na Reserva Betary, em Iporanga (SP), próxima ao PETAR (Parque Estadual Turístico do Alto Ribeira), área reconhecida pela elevada diversidade biológica e pela presença de cavernas, rios e remanescentes florestais de grande importância ecológica. O instituto desenvolve projetos de monitoramento da fauna e flora, bioacústica, conservação de ecossistemas e divulgação científica, integrando pesquisadores, estudantes e visitantes em atividades voltadas ao conhecimento e preservação da Mata Atlântica. Além da pesquisa, o IPBio atua fortemente em educação ambiental e turismo científico, promovendo experiências imersivas que aproximam o público da biodiversidade regional e incentivam a conservação dos ambientes naturais. Desde 2008, o IPBio colabora com o Prof. Stevani na procura, preservação e identificação de fungos bioluminescentes.",
+      en: "IPBio – Institute for Biodiversity Research is an organization dedicated to scientific research, biodiversity conservation, and environmental education, located in the Ribeira Valley, one of the most preserved regions of the Brazilian Atlantic Forest. Its activities are mainly concentrated in the Betary Reserve, in Iporanga (SP), near PETAR (Alto Ribeira Tourist State Park), an area recognized for its high biological diversity and the presence of caves, rivers, and forest remnants of great ecological importance. The institute develops projects on fauna and flora monitoring, bioacoustics, ecosystem conservation, and scientific outreach, integrating researchers, students, and visitors in activities aimed at knowledge and preservation of the Atlantic Forest. In addition to research, IPBio is strongly involved in environmental education and scientific tourism, promoting immersive experiences that bring the public closer to regional biodiversity and encourage the conservation of natural environments. Since 2008, IPBio has collaborated with Prof. Stevani in the search, preservation, and identification of bioluminescent fungi.",
+    },
+    links: [
+      { icon: <Link className="w-5 h-5" />, href: "https://ipbio.org.br/", title: "Site" },
+      {
+        icon: <Instagram className="w-5 h-5" />,
+        href: "https://www.instagram.com/ipbio_institutopesquisasbio/",
         title: "Instagram",
       },
     ],
