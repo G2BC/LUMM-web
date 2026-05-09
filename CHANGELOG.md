@@ -1,3 +1,10 @@
+# [1.50.0](https://github.com/G2BC/LUMM-web/compare/v1.49.0...v1.50.0) (2026-05-09)
+
+
+### Features
+
+* enhance observation map card with source filtering and localization updates ([01bd0ea](https://github.com/G2BC/LUMM-web/commit/01bd0ead830f7643a49b0d4e941a3f4792684534))
+
 # [1.49.0](https://github.com/G2BC/LUMM-web/compare/v1.48.4...v1.49.0) (2026-05-08)
 
 
