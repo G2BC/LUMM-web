@@ -1,3 +1,17 @@
+# [1.54.0](https://github.com/G2BC/LUMM-web/compare/v1.53.0...v1.54.0) (2026-05-09)
+
+
+### Features
+
+* add new contributors Adão Henrique Rosa Domingos and IPBio with their details and images ([9410d5d](https://github.com/G2BC/LUMM-web/commit/9410d5dedf92f1a513752c6402b44fe052612534))
+
+# [1.53.0](https://github.com/G2BC/LUMM-web/compare/v1.52.0...v1.53.0) (2026-05-09)
+
+
+### Features
+
+* add request update functionality to species edit page ([52f79bb](https://github.com/G2BC/LUMM-web/commit/52f79bb9a4cbb3a31e5f76c14ff9c27aa2d1d18c))
+
 # [1.52.0](https://github.com/G2BC/LUMM-web/compare/v1.51.0...v1.52.0) (2026-05-09)
 
 
