@@ -2,7 +2,6 @@ import React from "react";
 import { SpecieCard } from "@/pages/explore/components/specie-card";
 import { SpecieCardSkeleton } from "@/pages/explore/components/specie-card-skeleton";
 import { useExplorePage } from "./useExplorePage";
-import { Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { FilterModal } from "./components/filter-modal";
@@ -32,6 +31,7 @@ export default function ExplorePage() {
   const { t } = useTranslation();
 
   const loadMoreSentinelRef = React.useRef<HTMLDivElement | null>(null);
+  const loadingMoreSkeletons = Array.from({ length: 4 });
 
   React.useEffect(() => {
     if (!canAutoLoadMore) return;
@@ -99,31 +99,26 @@ export default function ExplorePage() {
       </div>
 
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,280px)] gap-6 justify-center">
-        {loading
-          ? Array.from({ length: 8 }).map((_, i) => <SpecieCardSkeleton key={i} />)
-          : dados?.items.map((specie) => <SpecieCard key={specie.id} {...specie} />)}
+        {loading ? (
+          Array.from({ length: 8 }).map((_, i) => <SpecieCardSkeleton key={i} />)
+        ) : (
+          <>
+            {dados?.items.map((specie) => <SpecieCard key={specie.id} {...specie} />)}
+            {loadingMore &&
+              loadingMoreSkeletons.map((_, i) => <SpecieCardSkeleton key={`loading-more-${i}`} />)}
+          </>
+        )}
       </div>
 
       {!loading && (
         <>
           {canAutoLoadMore && <div ref={loadMoreSentinelRef} className="h-12 w-full" />}
 
-          {showManualLoadMore && (
+          {showManualLoadMore && !loadingMore && (
             <div className="w-full flex justify-center my-4">
-              <Button
-                className="cursor-pointer h-[40px]"
-                onClick={() => void loadMore("manual")}
-                disabled={loadingMore}
-              >
+              <Button className="cursor-pointer h-[40px]" onClick={() => void loadMore("manual")}>
                 {t("common.view_more")}
               </Button>
-            </div>
-          )}
-
-          {loadingMore && (
-            <div className="w-full h-full flex flex-col justify-center items-center my-6">
-              <Loader2 className="w-7 h-7 text-primary animate-spin mb-2" />
-              <p className="text-[#00C000] text-sm font-semibold">{t("common.loading")}</p>
             </div>
           )}
         </>
