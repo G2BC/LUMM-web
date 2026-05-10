@@ -1,3 +1,10 @@
+## [1.54.1](https://github.com/G2BC/LUMM-web/compare/v1.54.0...v1.54.1) (2026-05-10)
+
+
+### Bug Fixes
+
+* enhance loading experience on explore page ([8c36fc7](https://github.com/G2BC/LUMM-web/commit/8c36fc77a012bdd4d30c7dd1aafe91d22ab0c7d7))
+
 # [1.54.0](https://github.com/G2BC/LUMM-web/compare/v1.53.0...v1.54.0) (2026-05-09)
 
 
