@@ -1,3 +1,10 @@
+## [1.54.2](https://github.com/G2BC/LUMM-web/compare/v1.54.1...v1.54.2) (2026-05-11)
+
+
+### Bug Fixes
+
+* **main:** update CHANGELOG.md to reflect recent changes ([3c0cccc](https://github.com/G2BC/LUMM-web/commit/3c0cccc9139aa04eb77c236c2b3021d38c142abb))
+
 ## [1.54.1](https://github.com/G2BC/LUMM-web/compare/v1.54.0...v1.54.1) (2026-05-10)
 
 
