@@ -1,3 +1,10 @@
+## [1.54.3](https://github.com/G2BC/LUMM-web/compare/v1.54.2...v1.54.3) (2026-05-12)
+
+
+### Bug Fixes
+
+* **contributors:** update contributor bios for clarity and detail ([e892ada](https://github.com/G2BC/LUMM-web/commit/e892adae5b17201f7f10e120566a837ecad3087f))
+
 ## [1.54.2](https://github.com/G2BC/LUMM-web/compare/v1.54.1...v1.54.2) (2026-05-11)
 
 
