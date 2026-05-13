@@ -32,7 +32,7 @@ export function Hero() {
             {t("home.hero.cta")}
           </Button>
         </div>
-        <div className="hero-image-reveal flex-1 self-end select-none">
+        <div className="hero-image-reveal flex-1 self-end select-none relative">
           <img
             loading="eager"
             fetchPriority="high"
@@ -48,6 +48,9 @@ export function Hero() {
             alt="LUMM Banner"
             className="md:hidden"
           />
+          <p className="absolute bottom-2 right-2 text-white/40 text-[10px] leading-tight text-right pointer-events-none">
+            © Douglas M. M. Soares, all rights reserved
+          </p>
         </div>
       </section>
     </div>
