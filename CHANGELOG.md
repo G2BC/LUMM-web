@@ -1,3 +1,10 @@
+## [1.54.4](https://github.com/G2BC/LUMM-web/compare/v1.54.3...v1.54.4) (2026-05-13)
+
+
+### Bug Fixes
+
+* **hero:** enhance hero component with copyright notice ([edd7eb3](https://github.com/G2BC/LUMM-web/commit/edd7eb3d5f56612990c5799d91b3c7843aee58e0))
+
 ## [1.54.3](https://github.com/G2BC/LUMM-web/compare/v1.54.2...v1.54.3) (2026-05-12)
 
 
