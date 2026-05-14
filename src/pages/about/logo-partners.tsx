@@ -5,6 +5,7 @@ import logoUNESP from "@/assets/about/logo-unesp.webp";
 import logoUNEB from "@/assets/about/logo_uneb.webp";
 import logoUSP from "@/assets/about/logo-usp.webp";
 import logoFUNSYNBIO from "@/assets/about/logo-funsynbio.webp";
+import logoIPBIO from "@/assets/about/logo-ipbio.webp";
 import { useTranslation } from "react-i18next";
 
 interface Institution {
@@ -52,6 +53,13 @@ const institutions: Institution[] = [
     url: "https://www2.unesp.br/",
     category: "instituicao",
   },
+  {
+    id: 7,
+    logoSrc: logoIPBIO,
+    alt: "Logo IPBio",
+    url: "https://ipbio.org.br/",
+    category: "grupo",
+  },
 ];
 
 const LogoGrid = ({ items }: { items: Institution[] }) => (
@@ -67,7 +75,7 @@ const LogoGrid = ({ items }: { items: Institution[] }) => (
         <img
           src={inst.logoSrc}
           alt={inst.alt}
-          className="h-55 w-auto max-w-[150px] max-w-[220px] object-contain transition-opacity duration-300 hover:opacity-80"
+          className="h-55 w-auto max-w-[300px] object-contain transition-opacity duration-300 hover:opacity-80"
         />
       </a>
     ))}
