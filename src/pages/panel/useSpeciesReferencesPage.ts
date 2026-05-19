@@ -241,18 +241,25 @@ export function useSpeciesReferencesPage() {
       return;
     }
 
-    const payload: UpdateReferencePayload = {};
     const nextApa = apa;
     const nextDoi = doi || null;
     const nextUrl = url || null;
-    if (nextApa !== (editingReference.apa ?? null)) payload.apa = nextApa;
-    if (nextDoi !== (editingReference.doi ?? null)) payload.doi = nextDoi;
-    if (nextUrl !== (editingReference.url ?? null)) payload.url = nextUrl;
 
-    if (Object.keys(payload).length === 0) {
+    const hasChanges =
+      nextApa !== (editingReference.apa ?? null) ||
+      nextDoi !== (editingReference.doi ?? null) ||
+      nextUrl !== (editingReference.url ?? null);
+
+    if (!hasChanges) {
       setEditMessage(t("panel_page.species_references_edit_no_changes"));
       return;
     }
+
+    const payload: UpdateReferencePayload = {
+      apa: nextApa,
+      doi: nextDoi,
+      url: nextUrl,
+    };
 
     setSavingReferenceId(editingReference.id);
     try {
