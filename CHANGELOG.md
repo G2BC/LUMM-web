@@ -1,3 +1,10 @@
+## [1.54.6](https://github.com/G2BC/LUMM-web/compare/v1.54.5...v1.54.6) (2026-05-19)
+
+
+### Bug Fixes
+
+* **speciesReferences:** update DOI field to URL format and enhance validation ([1f16dc5](https://github.com/G2BC/LUMM-web/commit/1f16dc5db195c039621f2ae9f5eed86e28fcecfa))
+
 ## [1.54.5](https://github.com/G2BC/LUMM-web/compare/v1.54.4...v1.54.5) (2026-05-19)
 
 
