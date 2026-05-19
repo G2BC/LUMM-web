@@ -93,6 +93,7 @@ export function SpeciesReferencesCreateForm({
                 {t("panel_page.species_references_field_doi")}
               </p>
               <Input
+                type="url"
                 placeholder={t("panel_page.species_references_field_doi_placeholder")}
                 value={values.doi}
                 onChange={(e) => onChange("doi", e.target.value)}

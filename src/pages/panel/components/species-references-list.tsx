@@ -48,7 +48,9 @@ export function SpeciesReferencesList({
   const { t } = useTranslation();
 
   function getReferenceLink(ref: IReference): string | null {
-    if (ref.doi) return `https://doi.org/${ref.doi}`;
+    if (ref.doi) {
+      return ref.doi.startsWith("http") ? ref.doi : `https://doi.org/${ref.doi}`;
+    }
     return ref.url ?? null;
   }
 
@@ -185,6 +187,8 @@ export function SpeciesReferencesList({
                   {t("panel_page.species_references_field_doi")}
                 </p>
                 <Input
+                  type="url"
+                  placeholder={t("panel_page.species_references_field_doi_placeholder")}
                   value={editingValues.doi}
                   onChange={(e) => onUpdateEditField("doi", e.target.value)}
                   disabled={savingReferenceId !== null}

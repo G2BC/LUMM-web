@@ -156,6 +156,11 @@ export function useSpeciesReferencesPage() {
       return false;
     }
 
+    if (doi && !validateUrl(doi)) {
+      setCreateMessage(t("panel_page.species_references_validation_url"));
+      return false;
+    }
+
     if (url && !validateUrl(url)) {
       setCreateMessage(t("panel_page.species_references_validation_url"));
       return false;
@@ -233,6 +238,11 @@ export function useSpeciesReferencesPage() {
 
     if (!apa) {
       setEditMessage(t("panel_page.species_references_validation_apa"));
+      return;
+    }
+
+    if (doi && !validateUrl(doi)) {
+      setEditMessage(t("panel_page.species_references_validation_url"));
       return;
     }
 
