@@ -1,3 +1,10 @@
+## [1.54.5](https://github.com/G2BC/LUMM-web/compare/v1.54.4...v1.54.5) (2026-05-19)
+
+
+### Bug Fixes
+
+* **speciesReferences:** streamline reference update logic ([d6cd0c1](https://github.com/G2BC/LUMM-web/commit/d6cd0c1e91ad9bd3726395d951acd7e9d2ea02c2))
+
 ## [1.54.4](https://github.com/G2BC/LUMM-web/compare/v1.54.3...v1.54.4) (2026-05-13)
 
 
