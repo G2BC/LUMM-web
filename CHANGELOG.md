@@ -1,3 +1,10 @@
+# [1.55.0](https://github.com/G2BC/LUMM-web/compare/v1.54.6...v1.55.0) (2026-05-22)
+
+
+### Features
+
+* **api:** update endpoints to use '/admin' prefix for user and reference management ([ea545a9](https://github.com/G2BC/LUMM-web/commit/ea545a91abc6ff1f0d2c5c8d866ee1726e84db66))
+
 ## [1.54.6](https://github.com/G2BC/LUMM-web/compare/v1.54.5...v1.54.6) (2026-05-19)
 
 
