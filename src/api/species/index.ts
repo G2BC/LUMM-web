@@ -308,7 +308,7 @@ export type UpdateReferencePayload = Partial<{
 }>;
 
 export const searchReferences = async (search?: string, signal?: AbortController["signal"]) => {
-  const response = await API.get<IReference[]>("/references/select", {
+  const response = await API.get<IReference[]>("/admin/references/select", {
     params: { search },
     signal,
   });
@@ -337,7 +337,7 @@ export const updateReference = async (
   referenceId: number,
   payload: UpdateReferencePayload
 ): Promise<IReference> => {
-  const response = await API.patch<IReference>(`/references/${referenceId}`, payload);
+  const response = await API.patch<IReference>(`/admin/references/${referenceId}`, payload);
   return response.data;
 };
 

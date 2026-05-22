@@ -8,7 +8,7 @@ type SendContactResponse = { ok?: boolean; error?: string };
 export const sendContact = async (
   values: z.infer<typeof contactFormSchema>
 ): Promise<SendContactResponse> => {
-  const resposta: AxiosResponse<SendContactResponse> = await API.post(`/contact`, {
+  const resposta: AxiosResponse<SendContactResponse> = await API.post(`/contact-messages`, {
     name: values.name,
     email: values.email,
     subject: values.subject,

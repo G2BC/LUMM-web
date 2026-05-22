@@ -18,7 +18,7 @@ export const login = async (payload: LoginPayload): Promise<AuthTokens> => {
 };
 
 export const registerUser = async (payload: RegisterPayload): Promise<AuthTokens> => {
-  const response = await API.post<AuthTokens>("/users", payload);
+  const response = await API.post<AuthTokens>("/admin/users", payload);
   return response.data;
 };
 
@@ -56,31 +56,31 @@ export const changePassword = async (payload: ChangePasswordPayload): Promise<Au
 };
 
 export const listUsers = async (params?: ListUsersParams): Promise<PaginatedUsers> => {
-  const response = await API.get<PaginatedUsers>("/users", { params });
+  const response = await API.get<PaginatedUsers>("/admin/users", { params });
   return response.data;
 };
 
 export const activateUser = async (id: string): Promise<AuthUser> => {
-  const response = await API.patch<AuthUser>(`/users/${id}/activate`);
+  const response = await API.patch<AuthUser>(`/admin/users/${id}/activate`);
   return response.data;
 };
 
 export const approveUser = async (id: string): Promise<AuthUser> => {
-  const response = await API.patch<AuthUser>(`/users/${id}/approve`);
+  const response = await API.patch<AuthUser>(`/admin/users/${id}/approve`);
   return response.data;
 };
 
 export const deactivateUser = async (id: string): Promise<AuthUser> => {
-  const response = await API.patch<AuthUser>(`/users/${id}/deactivate`);
+  const response = await API.patch<AuthUser>(`/admin/users/${id}/deactivate`);
   return response.data;
 };
 
 export const adminResetPassword = async (id: string): Promise<AdminResetPasswordResponse> => {
-  const response = await API.post<AdminResetPasswordResponse>(`/users/${id}/reset-password`);
+  const response = await API.post<AdminResetPasswordResponse>(`/admin/users/${id}/reset-password`);
   return response.data;
 };
 
 export const updateUserRole = async (id: string, role: AuthUserRole): Promise<AuthUser> => {
-  const response = await API.patch<AuthUser>(`/users/${id}/role`, { role });
+  const response = await API.patch<AuthUser>(`/admin/users/${id}/role`, { role });
   return response.data;
 };

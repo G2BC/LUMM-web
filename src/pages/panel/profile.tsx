@@ -51,7 +51,7 @@ export default function PanelProfilePage() {
   const handleUpdate = async (field: string, value: string) => {
     setLoading(true);
     try {
-      const response = await API.patch(`/users/me`, {
+      const response = await API.patch(`/admin/users/me`, {
         [field]: value,
       });
 
