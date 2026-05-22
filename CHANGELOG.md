@@ -1,3 +1,10 @@
+## [1.55.1](https://github.com/G2BC/LUMM-web/compare/v1.55.0...v1.55.1) (2026-05-22)
+
+
+### Bug Fixes
+
+* **api:** update species and snapshot endpoints for consistency and clarity ([eed3246](https://github.com/G2BC/LUMM-web/commit/eed324613680567a73716bf390bd2ab9a6a80fec))
+
 # [1.55.0](https://github.com/G2BC/LUMM-web/compare/v1.54.6...v1.55.0) (2026-05-22)
 
 
