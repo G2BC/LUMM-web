@@ -1,3 +1,10 @@
+## [1.55.2](https://github.com/G2BC/LUMM-web/compare/v1.55.1...v1.55.2) (2026-05-26)
+
+
+### Bug Fixes
+
+* **specie-card:** simplify species identifier assignment by using props.id directly ([57a07a5](https://github.com/G2BC/LUMM-web/commit/57a07a524754fba0b55063cc9f9446d8654232d8))
+
 ## [1.55.1](https://github.com/G2BC/LUMM-web/compare/v1.55.0...v1.55.1) (2026-05-22)
 
 
