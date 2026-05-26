@@ -37,7 +37,7 @@ export function SpecieCard(props: ISpecie) {
     }
   );
 
-  const speciesIdentifier = props.uid ?? props.id;
+  const speciesIdentifier = props.id;
 
   return (
     <Link
