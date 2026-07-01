@@ -13,7 +13,10 @@
     "prettier:format": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --write",
     "prettier:check": "prettier \"src/**/*.{ts,tsx,js,jsx,json,md}\" --check",
     "dev-preview": "echo $run_number.lumm.surge.sh > dist/CNAME && surge dist",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -58,6 +61,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@playwright/test": "^1.61.1",
     "@types/lodash": "^4.17.20",
     "@types/node": "^22.15.29",
     "@types/react": "^19.1.2",
