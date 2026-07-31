@@ -1,3 +1,10 @@
+# [1.56.0](https://github.com/G2BC/LUMM-web/compare/v1.55.2...v1.56.0) (2026-07-31)
+
+
+### Features
+
+* **v-libras:** add VLibras accessibility widget and global types ([2d28a35](https://github.com/G2BC/LUMM-web/commit/2d28a357c7b122746fc4e54f6d958cccd2ba9176))
+
 ## [1.55.2](https://github.com/G2BC/LUMM-web/compare/v1.55.1...v1.55.2) (2026-05-26)
 
 
