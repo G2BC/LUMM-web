@@ -1,3 +1,10 @@
+## [1.56.2](https://github.com/G2BC/LUMM-web/compare/v1.56.1...v1.56.2) (2026-07-31)
+
+
+### Bug Fixes
+
+* vlibras loading ([820e9c7](https://github.com/G2BC/LUMM-web/commit/820e9c714cf807ba5d92ad62dd13142f34eed9c6))
+
 ## [1.56.1](https://github.com/G2BC/LUMM-web/compare/v1.56.0...v1.56.1) (2026-07-31)
 
 
