@@ -96,7 +96,7 @@ export default defineConfig(({ mode }) => {
         workbox: {
           skipWaiting: true,
           clientsClaim: true,
-          globPatterns: ["**/*.{js,css,svg,png,webp,woff2}"],
+          globPatterns: ["index.html", "**/*.{js,css,svg,png,webp,woff2}"],
           globIgnores: ["**/locale-*.js"],
           runtimeCaching: [
             {
