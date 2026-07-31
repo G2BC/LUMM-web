@@ -1,3 +1,10 @@
+## [1.56.1](https://github.com/G2BC/LUMM-web/compare/v1.56.0...v1.56.1) (2026-07-31)
+
+
+### Bug Fixes
+
+* **Dockerfile:** update curl installation to latest version ([65b77d2](https://github.com/G2BC/LUMM-web/commit/65b77d28916189ecc9d8494e6b3f637d3e8f90e8))
+
 # [1.56.0](https://github.com/G2BC/LUMM-web/compare/v1.55.2...v1.56.0) (2026-07-31)
 
 
