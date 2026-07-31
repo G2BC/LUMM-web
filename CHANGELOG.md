@@ -1,3 +1,10 @@
+## [1.57.2](https://github.com/G2BC/LUMM-web/compare/v1.57.1...v1.57.2) (2026-07-31)
+
+
+### Bug Fixes
+
+* css global ([2dd6a57](https://github.com/G2BC/LUMM-web/commit/2dd6a5786c537621e464650791024f2976ed2975))
+
 ## [1.57.1](https://github.com/G2BC/LUMM-web/compare/v1.57.0...v1.57.1) (2026-07-31)
 
 
