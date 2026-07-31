@@ -11,7 +11,6 @@ import { RouteAwareLoader } from "./components/route-aware-loader.tsx";
 import { RouteAwareThemeColor } from "./components/route-aware-theme-color.tsx";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query-client";
-import VLibras from "./components/v-libras.tsx";
 
 const ReactQueryDevtools = import.meta.env.DEV
   ? lazy(() =>
@@ -30,7 +29,6 @@ initI18n.then(() => {
             <Suspense fallback={<RouteAwareLoader />}>
               <ScrollToTop />
               <RouteAwareThemeColor />
-              <VLibras />
               <Router />
             </Suspense>
           </AuthBootstrap>
