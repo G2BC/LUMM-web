@@ -19,7 +19,12 @@
       "warning": "Aviso",
       "open_link": "Abrir link"
     },
+    "auth": {
+      "hide_password": "Ocultar senha",
+      "show_password": "Exibir senha"
+    },
     "header": {
+      "menu_open": "Abrir menu",
       "home": "Início",
       "distribution": "Distribuição",
       "explore": "Explorar",

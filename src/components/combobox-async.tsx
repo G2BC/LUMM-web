@@ -1,6 +1,4 @@
-"use client";
-
-import * as React from "react";
+import { useState, type ReactNode, useMemo, useEffect, useRef } from "react";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
@@ -30,7 +28,7 @@ type ComboboxAsyncBaseProps = {
   className?: string;
   popoverContainer?: HTMLElement | null;
   initialKnownOptions?: ComboboxOption[];
-  renderOptionExtra?: (_option: ComboboxOption) => React.ReactNode;
+  renderOptionExtra?: (_option: ComboboxOption) => ReactNode;
 };
 
 type ComboboxAsyncSingleProps = ComboboxAsyncBaseProps & {
@@ -51,18 +49,18 @@ export type ComboboxAsyncProps = ComboboxAsyncSingleProps | ComboboxAsyncMultipl
 
 export function ComboboxAsync(props: ComboboxAsyncProps) {
   const { t } = useTranslation();
-  const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
-  const [loading, setLoading] = React.useState(true);
-  const [options, setOptions] = React.useState<ComboboxOption[]>([]);
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [options, setOptions] = useState<ComboboxOption[]>([]);
 
-  const initialKnownOptionsRef = React.useRef(props.initialKnownOptions);
-  const [knownOptions, setKnownOptions] = React.useState<Record<string, ComboboxOption>>(() => {
+  const initialKnownOptionsRef = useRef(props.initialKnownOptions);
+  const [knownOptions, setKnownOptions] = useState<Record<string, ComboboxOption>>(() => {
     const items = initialKnownOptionsRef.current ?? [];
     return Object.fromEntries(items.map((item) => [String(item.id), item]));
   });
 
-  const [selectedIds, setSelectedIds] = React.useState<string[]>(() => {
+  const [selectedIds, setSelectedIds] = useState<string[]>(() => {
     if (props.multiple) return (props.value ?? []).map((v) => String(v));
     return props.value != null ? [String(props.value)] : [];
   });
@@ -70,7 +68,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
   const variant = props.variant ?? "dark";
   const isMobile = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.multiple) {
       setSelectedIds((props.value ?? []).map((v) => String(v)));
     } else {
@@ -78,7 +76,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
     }
   }, [props.multiple, props.value]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const ctrl = new AbortController();
 
     const fetcher = async (query: string) => {
@@ -111,9 +109,10 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
       clearTimeout(timer);
       ctrl.abort();
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.fetchOptions, search]);
 
-  const buttonLabel = React.useMemo(() => {
+  const buttonLabel = useMemo(() => {
     if (loading) return t("common.loading");
     if (!selectedIds.length) return props.placeholder ?? "Selecione";
 
@@ -190,6 +189,7 @@ export function ComboboxAsync(props: ComboboxAsyncProps) {
               value={search}
               onValueChange={setSearch}
               placeholder={t("common.search")}
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={!isMobile}
             />
             <CommandList className="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">

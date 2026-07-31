@@ -1,5 +1,5 @@
 interface AlphabetNavigationProps {
-  onLetterClick?: (letter: string) => void;
+  onLetterClick?: (_letter: string) => void;
 }
 
 export default function AlphabetNavigation({ onLetterClick }: AlphabetNavigationProps) {

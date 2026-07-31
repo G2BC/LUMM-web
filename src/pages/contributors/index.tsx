@@ -7,15 +7,19 @@ export default function ContributorsPage() {
 
   return (
     <section className="container mx-auto pt-10 px-4">
-      <h2 className="text-[34px] xl:text-[50px] font-bold text-white">
+      <h1 className="text-[40px] xl:text-[50px] font-bold text-white mb-10">
+        {t("header.collaborators")}
+      </h1>
+
+      <h2 className="text-[28px] xl:text-[34px] font-semibold text-white mb-6">
         {t("collaborators_page.groups")}
       </h2>
 
       <ResearchGroupsSection />
 
-      <h1 className="text-[34px] xl:text-[50px] font-bold text-white">
+      <h2 className="text-[28px] xl:text-[34px] font-semibold text-white mt-12 mb-6">
         {t("collaborators_page.team")}
-      </h1>
+      </h2>
 
       <CollaboratorsSection />
     </section>

@@ -20,18 +20,21 @@ export function HoverPopover({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <span
+        <button
+          type="button"
           className={cn(
             !triggerClassName && "underline decoration-dotted",
-            "cursor-pointer select-none",
+            "cursor-pointer select-none bg-transparent p-0 border-none inline-flex focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
             triggerClassName
           )}
           onPointerDown={(e) => e.preventDefault()}
           onMouseEnter={() => setOpen(true)}
           onMouseLeave={() => setOpen(false)}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
         >
           {trigger}
-        </span>
+        </button>
       </PopoverTrigger>
       <PopoverContent
         className={cn(

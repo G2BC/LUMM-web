@@ -210,9 +210,9 @@ export default function GuidancePage() {
 
         <div className="grid md:grid-cols-2 gap-x-12 gap-y-16">
           <div>
-            <h4 className="text-xl text-white mb-5 uppercase tracking-wider">
+            <h3 className="text-xl text-white mb-5 uppercase tracking-wider">
               {t("guidance.photo_guide.cam_title")}
-            </h4>
+            </h3>
             <ul className="list-disc pl-4 space-y-3 text-white text-lg leading-relaxed">
               <li>{t("guidance.photo_guide.cam1")}</li>
               <li>{t("guidance.photo_guide.cam2")}</li>
@@ -223,9 +223,9 @@ export default function GuidancePage() {
           </div>
 
           <div>
-            <h4 className="text-xl text-white mb-5 uppercase tracking-wider">
+            <h3 className="text-xl text-white mb-5 uppercase tracking-wider">
               {t("guidance.photo_guide.prot_title")}
-            </h4>
+            </h3>
             <ul className="list-disc pl-4 space-y-3 text-white text-lg leading-relaxed">
               <li>{t("guidance.photo_guide.prot1")}</li>
               <li>{t("guidance.photo_guide.prot2")}</li>
@@ -235,9 +235,9 @@ export default function GuidancePage() {
           </div>
 
           <div>
-            <h4 className="text-xl text-white mb-5 uppercase tracking-wider">
+            <h3 className="text-xl text-white mb-5 uppercase tracking-wider">
               {t("guidance.photo_guide.meta_title")}
-            </h4>
+            </h3>
             <ul className="list-disc pl-4 space-y-3 text-white text-lg leading-relaxed">
               <li>{t("guidance.photo_guide.meta1")}</li>
               <li>{t("guidance.photo_guide.meta2")}</li>
@@ -249,9 +249,9 @@ export default function GuidancePage() {
           </div>
 
           <div>
-            <h4 className="text-xl text-white mb-5 uppercase tracking-wider">
+            <h3 className="text-xl text-white mb-5 uppercase tracking-wider">
               {t("guidance.photo_guide.ethics_title")}
-            </h4>
+            </h3>
             <ul className="list-disc pl-4 space-y-3 text-white text-lg leading-relaxed">
               <li>{t("guidance.photo_guide.ethics1")}</li>
               <li>{t("guidance.photo_guide.ethics2")}</li>

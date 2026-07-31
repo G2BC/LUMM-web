@@ -137,7 +137,12 @@ body {
 
 @layer base {
   * {
-    @apply border-border outline-none;
+    @apply border-border;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--primary, #00c000);
+    outline-offset: 2px;
   }
 
   body {

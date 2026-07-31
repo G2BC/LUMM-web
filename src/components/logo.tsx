@@ -11,7 +11,7 @@ type LummLogoProps = {
 export function LummLogo({ textClassName, textOnly = false, textStyles = {} }: LummLogoProps) {
   return (
     <div className={cn("flex items-center", textOnly ? "gap-0" : "gap-2")}>
-      {!textOnly && <img src={logo} alt="Logo LUMM" />}
+      {!textOnly && <img src={logo} alt="" />}
       <div
         className={cn(
           "flex flex-col text-white font-(family-name:--font-syne) text-nowrap overflow-hidden",

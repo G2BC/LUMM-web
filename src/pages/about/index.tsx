@@ -15,9 +15,9 @@ export default function AboutPage() {
         <p className="text-lg leading-relaxed">{t("about_page.paragraph1")}</p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph2")}</p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph3")}</p>
-        <h2 className="text-lg leading-relaxed whitespace-pre-wrap pl-4">
+        <p className="text-lg leading-relaxed whitespace-pre-wrap pl-4">
           {t("about_page.lineages_list")}
-        </h2>
+        </p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph4")}</p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph5")}</p>
         <p className="text-lg leading-relaxed">{t("about_page.paragraph6")}</p>
@@ -34,9 +34,9 @@ export default function AboutPage() {
         <p className="text-lg leading-relaxed">{t("about_page.paragraph8")}</p>
       </div>
 
-      <h3 className="mt-12 text-[34px] xl:text-[30px] font-semibold leading-[38px] xl:leading-[54px] mb-12">
+      <h2 className="mt-12 text-[34px] xl:text-[30px] font-semibold leading-[38px] xl:leading-[54px] mb-12">
         {t("about_page.references")}
-      </h3>
+      </h2>
       <ul className="mx-auto space-y-6">
         <li className="list-none">
           <p className="text-lg leading-relaxed">{t("about_page.reference1")}</p>

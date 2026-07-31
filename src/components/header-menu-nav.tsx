@@ -35,7 +35,7 @@ export function HeaderMenuNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="link" className="p-0">
+        <Button variant="link" className="p-0" aria-label={t("header.menu_open")}>
           <Menu className="text-[#00C000] min-w-8 w-8 min-h-8 h-8 cursor-pointer" />
         </Button>
       </SheetTrigger>
