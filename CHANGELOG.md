@@ -1,3 +1,10 @@
+## [1.57.3](https://github.com/G2BC/LUMM-web/compare/v1.57.2...v1.57.3) (2026-07-31)
+
+
+### Bug Fixes
+
+* improve VLibras component initialization and script loading ([d55aeb4](https://github.com/G2BC/LUMM-web/commit/d55aeb4a7c79f3edc16bbf824d6d0ce9c6620f95))
+
 ## [1.57.2](https://github.com/G2BC/LUMM-web/compare/v1.57.1...v1.57.2) (2026-07-31)
 
 
