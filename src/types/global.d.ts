@@ -5,5 +5,6 @@ declare global {
     VLibras?: {
       Widget: new (_url: string) => void;
     };
+    VLibrasWidgetInitialized?: boolean;
   }
 }

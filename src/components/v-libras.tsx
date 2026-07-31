@@ -6,29 +6,42 @@ export const VLibras = () => {
   const isPortuguese = i18n.language?.toLowerCase().startsWith("pt");
 
   useEffect(() => {
+    if (!isPortuguese) return;
+
     const scriptId = "vlibras-script";
     let script = document.getElementById(scriptId) as HTMLScriptElement | null;
 
-    if (isPortuguese) {
-      if (!script) {
-        script = document.createElement("script");
-        script.id = scriptId;
-        script.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
-        script.async = true;
-        script.onload = () => {
-          if (window.VLibras) {
-            new window.VLibras.Widget("https://vlibras.gov.br/app");
-          }
-        };
-        document.body.appendChild(script);
-      } else if (window.VLibras) {
+    const initWidget = () => {
+      if (window.VLibras && !window.VLibrasWidgetInitialized) {
         new window.VLibras.Widget("https://vlibras.gov.br/app");
+        window.VLibrasWidgetInitialized = true;
       }
+    };
+
+    if (!script) {
+      script = document.createElement("script");
+      script.id = scriptId;
+      script.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
+      script.async = true;
+      script.onload = () => {
+        initWidget();
+        // O script do VLibras subscreve o window.onload para inicializar seus elementos.
+        // Se a página já terminou de carregar (comum em SPAs ou carregamento dinâmico),
+        // o navegador não disparará o window.onload novamente. Portanto, chamamos manualmente.
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+          if (typeof window.onload === "function") {
+            window.onload(new Event("load"));
+          }
+        }
+      };
+      document.body.appendChild(script);
+    } else if (window.VLibras) {
+      initWidget();
     }
 
     const widgetElement = document.querySelector("[vw]") as HTMLElement | null;
     if (widgetElement) {
-      widgetElement.style.display = isPortuguese ? "block" : "none";
+      widgetElement.style.display = "block";
     }
   }, [isPortuguese]);
 
