@@ -1,3 +1,10 @@
+# [1.57.0](https://github.com/G2BC/LUMM-web/compare/v1.56.2...v1.57.0) (2026-07-31)
+
+
+### Features
+
+* update ESLint configuration and dependencies ([14dfee3](https://github.com/G2BC/LUMM-web/commit/14dfee3bb48e12e155366e08c6084587ca0eae96))
+
 ## [1.56.2](https://github.com/G2BC/LUMM-web/compare/v1.56.1...v1.56.2) (2026-07-31)
 
 
