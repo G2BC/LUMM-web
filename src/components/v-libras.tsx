@@ -1,58 +1,81 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-export const VLibras = () => {
+const SCRIPT_ID = "vlibras-script";
+const ROOT = "https://vlibras.gov.br/app";
+
+export default function VLibras() {
   const { i18n } = useTranslation();
+
   const isPortuguese = i18n.language?.toLowerCase().startsWith("pt");
 
   useEffect(() => {
-    if (!isPortuguese) return;
-
-    const scriptId = "vlibras-script";
-    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-    const initWidget = () => {
+    const init = () => {
       if (window.VLibras && !window.VLibrasWidgetInitialized) {
-        new window.VLibras.Widget("https://vlibras.gov.br/app");
+        new window.VLibras.Widget(ROOT);
         window.VLibrasWidgetInitialized = true;
       }
     };
 
-    if (!script) {
-      script = document.createElement("script");
-      script.id = scriptId;
-      script.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
-      script.async = true;
-      script.onload = () => {
-        initWidget();
-        // O script do VLibras subscreve o window.onload para inicializar seus elementos.
-        // Se a página já terminou de carregar (comum em SPAs ou carregamento dinâmico),
-        // o navegador não disparará o window.onload novamente. Portanto, chamamos manualmente.
-        if (document.readyState === "complete" || document.readyState === "interactive") {
-          if (typeof window.onload === "function") {
-            window.onload(new Event("load"));
-          }
+    const waitForVLibras = () => {
+      let attempts = 0;
+
+      const interval = window.setInterval(() => {
+        attempts++;
+
+        if (window.VLibras) {
+          clearInterval(interval);
+          init();
         }
-      };
-      document.body.appendChild(script);
-    } else if (window.VLibras) {
-      initWidget();
+
+        if (attempts > 100) {
+          clearInterval(interval);
+        }
+      }, 100);
+    };
+
+    if (window.VLibrasWidgetInitialized) {
+      return;
     }
 
-    const widgetElement = document.querySelector("[vw]") as HTMLElement | null;
-    if (widgetElement) {
-      widgetElement.style.display = "block";
+    const existingScript = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
+
+    if (existingScript) {
+      waitForVLibras();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = SCRIPT_ID;
+    script.src = `${ROOT}/vlibras-plugin.js`;
+    script.async = true;
+
+    script.onload = waitForVLibras;
+
+    document.body.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    const widget = document.querySelector("[vw]") as HTMLElement | null;
+
+    if (widget) {
+      widget.style.display = isPortuguese ? "block" : "none";
     }
   }, [isPortuguese]);
 
   return (
-    <div vw="true" className="enabled" style={{ display: isPortuguese ? "block" : "none" }}>
+    <div
+      vw="true"
+      className="enabled"
+      style={{
+        display: isPortuguese ? "block" : "none",
+      }}
+    >
       <div vw-access-button="true" className="active" />
+
       <div vw-plugin-wrapper="true">
         <div className="vw-plugin-top-wrapper" />
       </div>
     </div>
   );
-};
-
-export default VLibras;
+}
