@@ -112,7 +112,7 @@ export default defineConfig(({ mode }) => {
             {
               urlPattern: ({ request }) =>
                 request.destination === "script" || request.destination === "style",
-              handler: "StaleWhileRevalidate",
+              handler: "NetworkFirst",
               options: {
                 cacheName: "static-assets",
                 cacheableResponse: { statuses: [0, 200] },
@@ -154,7 +154,7 @@ export default defineConfig(({ mode }) => {
           name: "LUMM - Luminescent Mushrooms",
           short_name: "LUMM",
           description: "Banco de dados científico sobre fungos luminescentes.",
-          start_url: "/",
+          start_url: "/pt",
           scope: "/",
           theme_color: "#0a100b",
           background_color: "#0a100b",
