@@ -1,3 +1,15 @@
+# [1.58.0](https://github.com/G2BC/LUMM-web/compare/v1.57.3...v1.58.0) (2026-07-31)
+
+
+### Bug Fixes
+
+* update service worker caching strategy and start URL ([8add80e](https://github.com/G2BC/LUMM-web/commit/8add80ec535cb1012bf61cee3b326f089fa3960d))
+
+
+### Features
+
+* integrate VLibras widget directly in HTML and remove component ([72394cc](https://github.com/G2BC/LUMM-web/commit/72394cc41fccdadefc16e85b0683b01ebe8596d0))
+
 ## [1.57.3](https://github.com/G2BC/LUMM-web/compare/v1.57.2...v1.57.3) (2026-07-31)
 
 
