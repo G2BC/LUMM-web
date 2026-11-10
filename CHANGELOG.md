@@ -1,3 +1,10 @@
+## [1.58.1](https://github.com/G2BC/LUMM-web/compare/v1.58.0...v1.58.1) (2026-11-10)
+
+
+### Bug Fixes
+
+* update Node.js version in release workflow ([c193233](https://github.com/G2BC/LUMM-web/commit/c19323349a3efa0678770eba1a1da4f40bc2767b))
+
 # [1.58.0](https://github.com/G2BC/LUMM-web/compare/v1.57.3...v1.58.0) (2026-07-31)
 
 
