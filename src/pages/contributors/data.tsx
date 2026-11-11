@@ -6,6 +6,7 @@ import DMendel from "@/assets/contributors/D_Mendel.jpeg";
 import CStevani from "@/assets/contributors/C_Stevani.jpeg";
 import JArthur from "@/assets/contributors/J_Arthur.jpeg";
 import AHenrique from "@/assets/contributors/A_Henrique.jpeg";
+import Antonio from "@/assets/contributors/Antonio.jpeg";
 import g2bc from "@/assets/contributors/G2BC.jpeg";
 import funsynbio from "@/assets/contributors/funsynbio.jpeg";
 import lbf from "@/assets/contributors/LBF.jpeg";
@@ -160,6 +161,36 @@ export const contributors: Contributor[] = [
         href: "https://github.com/ArthXD",
         title: "GitHub",
       },
+    ],
+  },
+  {
+    avatar: Antonio,
+    name: "Antônio Pedro Costa Grave",
+    bio: {
+      pt: "",
+      en: "",
+    },
+    links: [
+      /*{
+        icon: <Mail className="w-5 h-5" />,
+        href: "mailto:joaoarthurvalentelima2@gmail.com",
+        title: "Email",
+      },
+      {
+        icon: <Link className="w-5 h-5" />,
+        href: "https://lattes.cnpq.br/0556706706006912",
+        title: "Lattes",
+      },
+      // {
+      //   icon: <LiaOrcid className="w-6 h-6" />,
+      //   href: "https://orcid.org/0009-0002-6069-932X",
+      //   title: "ORCID",
+      // },
+      {
+        icon: <Github className="w-5 h-5" />,
+        href: "https://github.com/ArthXD",
+        title: "GitHub",
+      },*/
     ],
   },
   {
